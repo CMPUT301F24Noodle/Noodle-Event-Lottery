@@ -1,11 +1,11 @@
 
 
-# MainActivity
+### MainActivity
 | Reponsibilities | Collaborators |
 | --- | --- |
 | - Run the app <br> - onCreate will ensure deviceID is stored in firebase <br> - Cache the users deviceID and profile information <br> have listeners for all interactive fragments | - almost all classes with collaborate directly or indirectly with MainActivity, either by a listener, an arrayadapter, or a view update |
 
-# EntrantScannedEventFragment
+### EntrantScannedEventFragment
 | Reponsibilities | Collaborators |
 | --- | --- |
 | - Displays the event when a user scans an event QR code <br> - Gives entrant the option to enter the lottery for the event | - accesses an Event object <br> - will have an associated view view_event_fragment |
