@@ -5,6 +5,13 @@
 | --- | --- |
 | - Run the app <br> - onCreate will ensure deviceID is stored in firebase <br> - Cache the users deviceID and profile information <br> have listeners for all interactive fragments | - almost all classes with collaborate directly or indirectly with MainActivity, either by a listener, an arrayadapter, or a view update |
 
+# EntrantScannedEventFragment
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - Displays the event when a user scans an event QR code <br> - Gives entrant the option to enter the lottery for the event | - accesses an Event object <br> - will have an associated view view_event_fragment |
+
+
+## User Profile
 # UserProfile
 | Reponsibilities | Collaborators |
 | --- | --- |
@@ -19,6 +26,18 @@
 | Reponsibilities | Collaborators |
 | --- | --- |
 | - constructs the dialog that appears when the user wants to edit their profile information <br> - take in the users input and updates the given instance of the UserProfile class <br> - allow a user to delete their profile, and must have a method to carry out that deletion in firebase | - accesses a UserProfile object <br> - will have an associated view edit_profile_fragment that contains the XML to format the dialog <br> - updates Firebase db |
+
+
+##Organizers Event Creation
+# Facility
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - facility must be unique and "owned" by one and only one organizer <br> - if a facility is deleted, all events hosted by that facility must also be deleted | - a user with admin privileges can delete a facility, can select facility from list displayed by FacilityListAdapter class <br> - Every instantiation of the Event class must have one associated Facility object where it is being hosted, a facility can have 0..* events |
+
+# CreateFacilityFragment
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - constructs the dialog for a user to create a Facility <br> - facility cannot already be created <br> - user assumes organizer privilges once they create a facility | - creates a Facility object <br> - updates Firebase db |
 
 # Event
 | Reponsibilities | Collaborators |
@@ -35,20 +54,17 @@
 | --- | --- |
 | - constructs the dialog that appears when the user wants to edit their event information <br> - take in the users input and updates the given instance of the Event class <br> - allow a user to delete their event, and must have a method to carry out that deletion in firebase | - accesses an Event object <br> - will have an associated view edit_event_fragment that contains the XML to format the dialog <br> - Will be accessed when a user selects an event from list displayed by MyEventListArrayAdapter class, or EventListArrayAdapter class <br> - updates Firebase db |
 
-# EntrantViewEventFragment
-| Reponsibilities | Collaborators |
-| --- | --- |
-| - Displays the event when a user scans an event QR code <br> - Gives entrant the option to enter the lottery for the event | - accesses an Event object <br> - will have an associated view view_event_fragment |
 
-# Facility
+##Organizer Event Listing
+# MyOrganizedEventsFragment
 | Reponsibilities | Collaborators |
 | --- | --- |
-| - facility must be unique and "owned" by one and only one organizer <br> - if a facility is deleted, all events hosted by that facility must also be deleted | - a user with admin privileges can delete a facility, can select facility from list displayed by FacilityListAdapter class <br> - Every instantiation of the Event class must have one associated Facility object where it is being hosted, a facility can have 0..* events |
+| - display the list of all events the current user has organized <br> - all events are selectable so the organzier can view the waiting list or attendee list | AttendeeListArrayAdapter, WaitingListArrayAdapter,  MyOrganizedEventsListArrayAdapter |
 
-# CreateFacilityFragment
+# MyOrganizedEventsListArrayAdapter
 | Reponsibilities | Collaborators |
 | --- | --- |
-| - constructs the dialog for a user to create a Facility <br> - facility cannot already be created <br> - user assumes organizer privilges once they create a facility | - creates a Facility object <br> - updates Firebase db |
+| - adapter for the list of all events the current user has organized <br> | - used by MainActivity <br> - will have an associated view edit_event_fragment <br> |
 
 # WaitingListArrayAdapter
 | Reponsibilities | Collaborators |
@@ -60,20 +76,29 @@
 | --- | --- |
 | - adapter for the list of chosen entrants for one event <br> only the organizer can view the list of entrants for their event <br> entrants must be selectable, so the organizer can remove them if they want to <br> - will also display whether the attendee has accepted their invitation or not |- used by MainActivity <br> - will need to be updated everytime a attendee accepts or declines an invitation <br> - will have a view to format it's display <br> if the organzier decides to remove an attendee, a method of the event class must be called to select a replacement |
 
-# MyEventsListArrayAdapter
+
+##Entrant Event Listing
+# MyEnteredEventsFragment
 | Reponsibilities | Collaborators |
 | --- | --- |
-| - adapter for the list of all events the current user has organized <br> | - used by MainActivity <br> - will have an associated view edit_event_fragment <br> |
+| - display the list of all events current user has entered the lottery for <br> - will include entry status for each event <br> - each event is selectable | - used by MainActivity <br> - will have an associated view to format display <br> this will be the home page|
 
 # MyEnteredEventsListArrayAdapter
 | Reponsibilities | Collaborators |
 | --- | --- |
-| - adapter for the list of all events current user has entered the lottery for <br> - will include entry status for each event <br> | - used by MainActivity <br> - will access each Event object <br> - will have an associated view to format display |
+| - adapter for the list of all events current user has entered the lottery for <br>  | - used by MainActivity <br> - will access each Event object <br> |
 
+
+##Notifcations
 # Notification
 | Reponsibilities | Collaborators |
 | --- | --- |
 | - Knows content of message, reciepient and sender | - instantiated by a SendNotificationFragment |
+
+# MyNotificationsFragment
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - display a users list of notifications | - MyNotificationsArrayAdapter |
 
 # SendNotificationFragment
 | Reponsibilities | Collaborators |
@@ -84,6 +109,7 @@
 | Reponsibilities | Collaborators |
 | --- | --- |
 |- Adapter for the list of notifcations a user has received | - used by MainActivity <br> - will access each Notification object for that user |
+
 
 ##Admins
 # AllUsersArrayAdapter
