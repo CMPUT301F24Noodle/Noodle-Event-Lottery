@@ -112,7 +112,7 @@
 
 
 # Admin Privlege Classes
-###AdminFragment
+### AdminFragment
 | Reponsibilities | Collaborators |
 | --- | --- |
 | - page for admins to access all their admin-only lists and access to the objects of those lists to edit or delete | - AllUsersArrayAdapter <br> - AllImagesArrayAdapter <br> -  FacilitiesArrayAdapter <br> - AllEventListArrayAdapter |
