@@ -59,7 +59,7 @@
 ### MyOrganizedEventsFragment
 | Reponsibilities | Collaborators |
 | --- | --- |
-| - display the list of all events the current user has organized <br> - all events are selectable so the organzier can view the waiting list or attendee list | AttendeeListArrayAdapter, WaitingListArrayAdapter,  MyOrganizedEventsListArrayAdapter |
+| - display the list of all events the current user has organized <br> - all events are selectable so the organzier can view the waiting list or attendee list | - AttendeeListArrayAdapter <br> - WaitingListArrayAdapter <br> - MyOrganizedEventsListArrayAdapter |
 
 ### MyOrganizedEventsListArrayAdapter
 | Reponsibilities | Collaborators |
