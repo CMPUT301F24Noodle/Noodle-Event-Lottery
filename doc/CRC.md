@@ -3,7 +3,7 @@
 ### MainActivity
 | Reponsibilities | Collaborators |
 | --- | --- |
-| - Run the app <br> - onCreate will ensure deviceID is stored in firebase <br> - Cache the users deviceID and profile information <br> - have listeners for all interactive fragments | - almost all classes with collaborate directly or indirectly with MainActivity, either by a listener, an arrayadapter, or a view update |
+| * Run the app <br> - onCreate will ensure deviceID is stored in firebase <br> - Cache the users deviceID and profile information <br> - have listeners for all interactive fragments | - almost all classes with collaborate directly or indirectly with MainActivity, either by a listener, an arrayadapter, or a view update |
 
 ### EntrantScannedEventFragment
 | Reponsibilities | Collaborators |
