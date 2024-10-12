@@ -32,3 +32,7 @@
 | --- | --- |
 | - constructs the dialog that appears for the user to enter their events information <br> - take in the users input and creates a new instance of the Event class, and adds it to firebase <br> - creates a QR code | - creates an Event object <br> - will have an associated view create_event_fragment that contains the XML to format the dialog |
 
+# EditEventFragment
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - constructs the dialog that appears when the user wants to edit their event information <br> - take in the users input and updates the given instance of the Event class <br> - allow a user to delete their event, and must have a method to carry out that deletion in firebase | - accesses an Event object <br> - will have an associated view edit_event_fragment that contains the XML to format the dialog <br> - Will be accessed when a user selects an event from list displayed by MyEventListArrayAdapter class, or EventListArrayAdapter class |
