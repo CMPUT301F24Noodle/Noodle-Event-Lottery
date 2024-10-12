@@ -36,3 +36,13 @@
 | Reponsibilities | Collaborators |
 | --- | --- |
 | - constructs the dialog that appears when the user wants to edit their event information <br> - take in the users input and updates the given instance of the Event class <br> - allow a user to delete their event, and must have a method to carry out that deletion in firebase | - accesses an Event object <br> - will have an associated view edit_event_fragment that contains the XML to format the dialog <br> - Will be accessed when a user selects an event from list displayed by MyEventListArrayAdapter class, or EventListArrayAdapter class |
+
+# SendNotificationFragment
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - constructs the dialog that appears when an organizer wants to construct a message to send to an entrant <br> - take in the users input of a string message, and an entrant they select | - accesses 2 UserProfile objects, an entrant recipient and an organizer sender <br> - is triggered by user response to the AttendeesListArrayAdapter class and EntrantsListArrayAdapter class <br> - will have an associated view send_notif_fragment that contains the XML to format the dialog |
+
+# Facility
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - facility must be unique and "owned" by one organizer <br> - if an event is deleted, all events hosted by that facility must also be deleted | - a user with admin privileges can delete a facility, can select facility from list displayed by FacilityListAdapter class <br> - Every instantiation of the Event class must have one associated Facility object where it is being hosted, a facility can have 0..* events |
