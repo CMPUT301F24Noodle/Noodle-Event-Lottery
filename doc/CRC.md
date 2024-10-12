@@ -112,6 +112,11 @@
 
 
 # Admin Privlege Classes
+###AdminFragment
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - page for admins to access all their admin-only lists and access to the objects of those lists to edit or delete | - AllUsersArrayAdapter <br> - AllImagesArrayAdapter <br> -  FacilitiesArrayAdapter <br> - AllEventListArrayAdapter |
+
 ### AllUsersArrayAdapter
 | Reponsibilities | Collaborators |
 | --- | --- |
@@ -130,5 +135,5 @@
 ### AllEventListArrayAdapter
 | Reponsibilities | Collaborators |
 | --- | --- |
-| - adapter for the list of all Events <br> - available only to admin users <br> |- used by MainActivity <br> - will access Event objects |
+| - adapter for the list of all Events <br> - available only to admin users <br> |- will access Event objects |
 
