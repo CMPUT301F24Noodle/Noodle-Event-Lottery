@@ -7,7 +7,7 @@
 
 ### EntrantScannedEventFragment
 | Reponsibilities | Collaborators |
-| --- | --- |
+| ------------------------------------- | ---------------------------------------- |
 | - Displays the event when a user scans an event QR code <br> - Gives entrant the option to enter the lottery for the event | - accesses an Event object <br> - will have an associated view view_event_fragment |
 
 
