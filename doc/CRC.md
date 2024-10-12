@@ -48,4 +48,14 @@
 # Facility
 | Reponsibilities | Collaborators |
 | --- | --- |
-| - facility must be unique and "owned" by one organizer <br> - if an event is deleted, all events hosted by that facility must also be deleted | - a user with admin privileges can delete a facility, can select facility from list displayed by FacilityListAdapter class <br> - Every instantiation of the Event class must have one associated Facility object where it is being hosted, a facility can have 0..* events |
+| - facility must be unique and "owned" by one and only one organizer <br> - if an event is deleted, all events hosted by that facility must also be deleted | - a user with admin privileges can delete a facility, can select facility from list displayed by FacilityListAdapter class <br> - Every instantiation of the Event class must have one associated Facility object where it is being hosted, a facility can have 0..* events |
+
+# WaitingListArrayAdapter
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - adapter for the list of entrants for one event <br> only the organizer can view the list of entrants for their event <br> entrants must be selectable, so the organizer can remove them if they want <br> | - will collaborate with a view to display the array of entrants <br> |
+
+# AttendeeListArrayAdapter
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - adapter for the list of chosen entrants for one event <br> only the organizer can view the list of entrants for their event <br> entrants must be selectable, so the organizer can remove them if they want to <br> - will also display whether the attendee has accepted their invitation or not | - will need to be updated everytime a attendee accepts or declines an invitation <br> - will have a view to format it's display <br> if the organzier decides to remove an attendee, a method of the event class must be called to select a replacement |
