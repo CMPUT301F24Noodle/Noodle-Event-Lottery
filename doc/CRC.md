@@ -9,7 +9,7 @@
 # UserProfile
 | Reponsibilities | Collaborators |
 | --- | --- |
-| - have attributes for all of a users profile information <br> - have getters and setters for all of a users profile info  <br>  - keep track of what app permissions a user has  <br> - have a method to generate a profile picture | - Every instantiation of the Event class must have one associated UserProfile user who organized it  <br> - Every institation of the Event class can have 0..* users it is associated with, who are the entrants  <br> - When MainActivity is launched on a device, there is one UserProfile that should be fetched and represents the current user of that device  <br> - CreateProfileFragment class will create an instance of the UserProfile class |
+| - have attributes for all of a users profile information <br> - have getters and setters for all of a users profile info <br> - keep track of what app permissions a user has  <br> - have a method to generate a profile picture | - Every instantiation of the Event class must have one associated UserProfile user who organized it <br> - Every institation of the Event class can have 0..* users it is associated with, who are the entrants <br> - When MainActivity is launched on a device, there is one UserProfile that should be fetched and represents the current user of that device  <br> - CreateProfileFragment class will create an instance of the UserProfile class |
 
 
 # CreateProfileFragment
@@ -25,4 +25,10 @@
 # Event
 | Reponsibilities | Collaborators |
 | --- | --- |
-| - have attributes for all event information, including the instance of UserProfile who organized it <br> - have getters and setters for all event info and entrant lists <br> - method to end lottery, which will need methods to select winners, notify winners, notify losers <br> - method that responds to a declined invitation and picks a new winner | - Every instantiation of the Event class must have one associated UserProfile user who organized it <br> - Every institation of the Event class can have 0..* users it is associated with, who are the entrants <br> -  Every instantiation of the Event class must have one associated Facility object where it is being hosted |
+| - have attributes for all event information, including the instance of UserProfile who organized it <br> - have getters and setters for all event info and entrant lists <br> - method to end lottery, which will need methods to select winners, notify winners, notify losers <br> - method that responds to a declined invitation and picks a new winner | - Every instantiation of the Event class must have one associated UserProfile who organized it <br> - Every institation of the Event class can have 0..* users it is associated with, who are the entrants <br> -  Every instantiation of the Event class must have one associated Facility object where it is being hosted |
+
+# CreateEventFragment
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - constructs the dialog that appears for the user to enter their events information <br> - take in the users input and creates a new instance of the Event class, and adds it to firebase <br> - creates a QR code | - creates an Event object <br> - will have an associated view create_event_fragment that contains the XML to format the dialog |
+
