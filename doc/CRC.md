@@ -81,7 +81,7 @@
 ### MyEnteredEventsFragment
 | Reponsibilities | Collaborators |
 | --- | --- |
-| - display the list of all events current user has entered the lottery for <br> - will include entry status for each event <br> - each event is selectable | - used by MainActivity <br> - will have an associated view to format display <br> this will be the home page|
+| - display the list of all events current user has entered the lottery for <br> - will include entry status for each event <br> - each event is selectable so the user could unjoin if they want | - used by MainActivity <br> - will have an associated view to format display <br> this will be the home page|
 
 ### MyEnteredEventsListArrayAdapter
 | Reponsibilities | Collaborators |
@@ -103,7 +103,7 @@
 ### SendNotificationFragment
 | Reponsibilities | Collaborators |
 | --- | --- |
-| - constructs the dialog that appears when an organizer wants to construct a message to send to an entrant <br> - take in the users input of a string message, and an entrant they select - creates Notification object | - used by MainActivity - accesses 2 UserProfile objects, an entrant recipient and an organizer sender <br> - will have an associated view send_notif_fragment that formats the dialog |
+| - fragment for sending a notifcation - constructs the dialog that appears when an organizer wants to send to entrant(s) <br> - take in the users input of a string message, and entrant(s) they select - creates Notification object | - used by MainActivity - accesses 2..* UserProfile objects, entrant recipient(s) and an organizer sender <br> - will have an associated view send_notif_fragment that formats the dialog |
 
 ### MyNotificationsArrayAdapter
 | Reponsibilities | Collaborators |
