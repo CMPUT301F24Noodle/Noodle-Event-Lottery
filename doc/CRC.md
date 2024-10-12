@@ -68,4 +68,32 @@
 # MyEventsListArrayAdapter
 | Reponsibilities | Collaborators |
 | --- | --- |
-| - adapter for the list of all events the current user has organized <br> - Events must be selectable so the user can edit or delete an event <br> | - will have an associated view edit_event_fragment that contains the XML to format <br> - will initiate an EditEventFragment when organizer wants to edit or delete an event
+| - adapter for the list of all events the current user has organized <br> - Events must be selectable so the user can edit or delete an event <br> | - will have an associated view edit_event_fragment that contains the XML to format <br> - will initiate an EditEventFragment when organizer wants to edit or delete an event|
+
+# MyEnteredEventsListArrayAdapter
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - adapter for the list of all events current user has entered the lottery for <br> - will include their entry status for each event <br> | - will access each Event object <br> - will have an associated view to format display |
+
+
+##Admins
+# AllUsersArrayAdapter
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - adapter for the list of all app users <br> - available only to admin users <br> - admin can delete users | - will access all UserProfile objects, and is able to delete them |
+
+# AllImagesArrayAdapter
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - adapter for the list of all Event poster images <br> - available only to admin users <br> - admin can delete images | - will access all Event objects, and is able to edit them in order to remove the image |
+
+# FacilitiesArrayAdapter
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - adapter for the list of all Facilities <br> - available only to admin users <br> - admin can delete facilities | - will access all Facility objects, and is able to delete them, and any events associated with them |
+
+# AllEventListArrayAdapter
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - adapter for the list of all Events <br> - available only to admin users <br> - admin can delete events | - will access all Event objects, and is able to delete them |
+
