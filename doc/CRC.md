@@ -77,7 +77,7 @@
 | - adapter for the list of chosen entrants for one event <br> only the organizer can view the list of entrants for their event <br> entrants must be selectable, so the organizer can remove them if they want to <br> - will also display whether the attendee has accepted their invitation or not |- used by MainActivity <br> - will need to be updated everytime a attendee accepts or declines an invitation <br> - will have a view to format it's display <br> if the organzier decides to remove an attendee, a method of the event class must be called to select a replacement |
 
 
-#Entrant Event Listing Classes
+# Entrant Event Listing Classes
 ### MyEnteredEventsFragment
 | Reponsibilities | Collaborators |
 | --- | --- |
@@ -89,7 +89,7 @@
 | - adapter for the list of all events current user has entered the lottery for <br>  | - used by MainActivity <br> - will access each Event object <br> |
 
 
-#Notifcation Classes
+# Notifcation Classes
 ### Notification
 | Reponsibilities | Collaborators |
 | --- | --- |
@@ -111,7 +111,7 @@
 |- Adapter for the list of notifcations a user has received | - used by MainActivity <br> - will access each Notification object for that user |
 
 
-#Admin Privlege Classes
+# Admin Privlege Classes
 ### AllUsersArrayAdapter
 | Reponsibilities | Collaborators |
 | --- | --- |
