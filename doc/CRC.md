@@ -40,6 +40,11 @@
 | --- | --- |
 | - constructs the dialog that appears when the user wants to edit their event information <br> - take in the users input and updates the given instance of the Event class <br> - allow a user to delete their event, and must have a method to carry out that deletion in firebase | - accesses an Event object <br> - will have an associated view edit_event_fragment that contains the XML to format the dialog <br> - Will be accessed when a user selects an event from list displayed by MyEventListArrayAdapter class, or EventListArrayAdapter class |
 
+# EntrantViewEventFragment
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - Displays the event when a user scans an event QR code <br> - Gives entrant the option to enter the lottery for the event | - accesses an Event object <br> - will have an associated view view_event_fragment |
+
 # SendNotificationFragment
 | Reponsibilities | Collaborators |
 | --- | --- |
@@ -59,3 +64,8 @@
 | Reponsibilities | Collaborators |
 | --- | --- |
 | - adapter for the list of chosen entrants for one event <br> only the organizer can view the list of entrants for their event <br> entrants must be selectable, so the organizer can remove them if they want to <br> - will also display whether the attendee has accepted their invitation or not | - will need to be updated everytime a attendee accepts or declines an invitation <br> - will have a view to format it's display <br> if the organzier decides to remove an attendee, a method of the event class must be called to select a replacement |
+
+# MyEventsListArrayAdapter
+| Reponsibilities | Collaborators |
+| --- | --- |
+| - adapter for the list of all events the current user has organized <br> - Events must be selectable so the user can edit or delete an event <br> | - will have an associated view edit_event_fragment that contains the XML to format <br> - will initiate an EditEventFragment when organizer wants to edit or delete an event
