@@ -11,7 +11,7 @@
 | - Displays the event when a user scans an event QR code <br> - Gives entrant the option to enter the lottery for the event | - accesses an Event object <br> - will have an associated view view_event_fragment |
 
 
-# Profile Data
+# Profile Classes
 ### UserProfile
 | Reponsibilities | Collaborators |
 | --- | --- |
@@ -28,7 +28,7 @@
 | - constructs the dialog that appears when the user wants to edit their profile information <br> - take in the users input and updates the given instance of the UserProfile class <br> - allow a user to delete their profile, and must have a method to carry out that deletion in firebase | - accesses a UserProfile object <br> - will have an associated view edit_profile_fragment that contains the XML to format the dialog <br> - updates Firebase db |
 
 
-# Organizers Event Creation
+# Organizers Event Creation Class
 ### Facility
 | Reponsibilities | Collaborators |
 | --- | --- |
@@ -55,7 +55,7 @@
 | - constructs the dialog that appears when the user wants to edit their event information <br> - take in the users input and updates the given instance of the Event class <br> - allow a user to delete their event, and must have a method to carry out that deletion in firebase | - accesses an Event object <br> - will have an associated view edit_event_fragment that contains the XML to format the dialog <br> - Will be accessed when a user selects an event from list displayed by MyEventListArrayAdapter class, or EventListArrayAdapter class <br> - updates Firebase db |
 
 
-# Organizer Event Listing
+# Organizer Event Listing Classes
 ### MyOrganizedEventsFragment
 | Reponsibilities | Collaborators |
 | --- | --- |
@@ -77,7 +77,7 @@
 | - adapter for the list of chosen entrants for one event <br> only the organizer can view the list of entrants for their event <br> entrants must be selectable, so the organizer can remove them if they want to <br> - will also display whether the attendee has accepted their invitation or not |- used by MainActivity <br> - will need to be updated everytime a attendee accepts or declines an invitation <br> - will have a view to format it's display <br> if the organzier decides to remove an attendee, a method of the event class must be called to select a replacement |
 
 
-#Entrant Event Listing
+#Entrant Event Listing Classes
 ### MyEnteredEventsFragment
 | Reponsibilities | Collaborators |
 | --- | --- |
@@ -89,7 +89,7 @@
 | - adapter for the list of all events current user has entered the lottery for <br>  | - used by MainActivity <br> - will access each Event object <br> |
 
 
-#Notifcations
+#Notifcation Classes
 ### Notification
 | Reponsibilities | Collaborators |
 | --- | --- |
@@ -111,7 +111,7 @@
 |- Adapter for the list of notifcations a user has received | - used by MainActivity <br> - will access each Notification object for that user |
 
 
-#Admins
+#Admin Privlege Classes
 ### AllUsersArrayAdapter
 | Reponsibilities | Collaborators |
 | --- | --- |
