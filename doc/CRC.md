@@ -14,12 +14,11 @@
 
 # CreateProfileFragment
 | Reponsibilities | Collaborators |
-| --- | --- |
+| -------------------------------------------------- | -------------------------------------------------- |
 |- constructs the dialog that appears when the user enters the app for the first time, and it prompted to fill out some profile information <br> - take in the users input and create a new instance of the UserProfile class, and adds the profile to firebase | - creates a UserProfile object <br> - will have an associated view create_profile_fragment that contains the XML to format the dialog |
 
 # EditProfileFragment
 | Reponsibilities | Collaborators |
-| --- | --- |
+| -------------------------------------------------- | -------------------------------------------------- |
 | - constructs the dialog that appears when the user wants to edit their profile information <br> - take in the users input and updates the given instance of the UserProfile class <br> - allow a user to delete their profile, and must have a method to carry out that deletion in firebase | - accesses a UserProfile object <br> - will have an associated view edit_profile_fragment that contains the XML to format the dialog |
 
-: {tbl-colwidths="[50, 50]"}
