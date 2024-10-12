@@ -1,6 +1,7 @@
 
-## Class
+# Class
 | Reponsibilities | Collaborators |
 | --- | --- |
 |  |  |
 |  |  |
+
