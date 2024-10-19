@@ -2,8 +2,8 @@ package com.example.myapplication.objects.eventClasses;
 
 import android.media.Image;
 
-import com.example.myapplication.objects.Facility;
-import com.example.myapplication.objects.UserProfile;
+import com.example.myapplication.objects.facilityClasses.Facility;
+import com.example.myapplication.objects.userProfileClasses.UserProfile;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -104,6 +104,7 @@ public class Event {
 
     public void setMaxEntrants(Integer maxEntrants) {
         this.maxEntrants = maxEntrants;
+        setEventFull(); //if they choose to add a capacity, update whether the event is already full. No entrants are removed if the event is already over the capacity.
     }
 
     public Date getLotteryCloses() {

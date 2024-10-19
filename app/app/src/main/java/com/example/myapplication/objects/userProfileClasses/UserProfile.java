@@ -1,11 +1,11 @@
-package com.example.myapplication.objects;
+package com.example.myapplication.objects.userProfileClasses;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.Image;
 
 import com.example.myapplication.objects.eventClasses.Event;
-import com.google.protobuf.NullValue;
+import com.example.myapplication.objects.facilityClasses.Facility;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -44,7 +44,7 @@ public class UserProfile {
         this.firstName = "None";
         this.lastName = "None";
         this.email = "None";
-        this.privileges = 0; //defaults to entrant privleges
+        this.privileges = 0; //defaults to entrant privileges
         this.allowNotifs = Boolean.TRUE; //defaults to allow notifications
         this.geoLocationOn = Boolean.FALSE; //defaults to false, need to ask user for permission first
         this.isAdmin = Boolean.FALSE;

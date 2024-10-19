@@ -1,4 +1,6 @@
-package com.example.myapplication.objects;
+package com.example.myapplication.objects.facilityClasses;
+
+import com.example.myapplication.objects.userProfileClasses.UserProfile;
 
 /**
  * Author: Erin-Marie

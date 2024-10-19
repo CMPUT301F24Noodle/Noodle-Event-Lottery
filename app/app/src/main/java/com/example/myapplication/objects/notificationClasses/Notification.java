@@ -1,4 +1,6 @@
-package com.example.myapplication.objects;
+package com.example.myapplication.objects.notificationClasses;
+
+import com.example.myapplication.objects.userProfileClasses.UserProfile;
 
 import java.util.Date;
 
