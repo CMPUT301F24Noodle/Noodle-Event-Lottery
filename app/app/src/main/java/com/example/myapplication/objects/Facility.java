@@ -13,7 +13,13 @@ public class Facility {
     String location; //Facility address
     //QUESTION: do we need an array for the events being hosted at the facility? we don't need to be able to filter by facility to display events, so I don't think so?
 
-    //Class constructor
+    /**
+     * Erin-Marie
+     * Constructor for Facility Class
+     * @param facilityName the name of the new facility
+     * @param owner the UserProfile instance that created the facility
+     * @param location the address of the facility
+     */
     public Facility(String facilityName, UserProfile owner, String location) {
         this.facilityName = facilityName;
         this.owner = owner;
@@ -25,6 +31,7 @@ public class Facility {
     }
 
     //QUESTION: should it be possible to set the owner of a facility to a different owner?
+    //TODO: update facility db
     public void setOwner(UserProfile owner) {
         this.owner = owner;
     }
@@ -33,6 +40,7 @@ public class Facility {
         return location;
     }
 
+    //TODO: update facility db
     public void setLocation(String location) {
         this.location = location;
     }
@@ -41,6 +49,7 @@ public class Facility {
         return facilityName;
     }
 
+    //TODO: update facility db
     public void setFacilityName(String facilityName) {
         this.facilityName = facilityName;
     }
