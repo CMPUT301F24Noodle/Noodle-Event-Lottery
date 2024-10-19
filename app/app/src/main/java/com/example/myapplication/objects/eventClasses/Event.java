@@ -53,7 +53,7 @@ public class Event {
         this.lotteryCloses = lotteryCloses;
         this.geoLocation = geoLocation;
         this.eventFull = Boolean.FALSE;
-        //TODO: Need to create QR code
+        //TODO: Need to create QR code and do something with hash data
 
     }
 
