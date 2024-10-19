@@ -31,6 +31,7 @@ public class Event {
     Image eventPoster; //the event poster image
     Date eventDate; //date the actual event will occur
     Integer maxEntrants; //-1 if organizer does not want to restrict capacity
+    Boolean geoLocation; //False if organizer does not require entrants to have geoLocation on
     //TODO: need QR code attribute idk how that is stored though
 
     //For status of the lottery
@@ -42,7 +43,7 @@ public class Event {
     ArrayList<UserProfile> losersList; //list of all users who lost the lottery
 
     //Event Class Constructor
-    public Event(Facility facility, UserProfile organizer, String eventName, Image eventPoster, Date eventDate, Integer maxEntrants, Date lotteryCloses) {
+    public Event(Facility facility, UserProfile organizer, String eventName, Image eventPoster, Date eventDate, Integer maxEntrants, Date lotteryCloses, Boolean geoLocation) {
         this.facility = facility;
         this.organizer = organizer;
         this.eventName = eventName;
@@ -50,6 +51,7 @@ public class Event {
         this.eventDate = eventDate;
         this.maxEntrants = maxEntrants;
         this.lotteryCloses = lotteryCloses;
+        this.geoLocation = geoLocation;
         this.eventFull = Boolean.FALSE;
         //TODO: Need to create QR code
 
@@ -124,7 +126,8 @@ public class Event {
      * Author: Erin-Marie
      * Called anytime an entrant is added or removed from the entrants list
      * Updates whether the event entrant limit has been reached
-     * TODO: write tests for this method
+     * TESTME: if capacity is already maxed,
+     *         if capacity is 1, then add new entrant, now check that it is returning maxed
      */
     public void setEventFull(){
         if (this.maxEntrants == -1 | this.maxEntrants > this.entrantsList.size()){
@@ -140,13 +143,15 @@ public class Event {
      * Checks that the entrant is not already in the list of entrants
      * @param entrant UserProfile that wants to enter event lottery
      * @return 1 if the user was added to the entrant list, or 0 if not
-     * TODO: write tests
-     *       needs to update firebase db
+     * TODO: needs to update firebase db
+     * TESTME: if capacity it maxed, should return 0
+     *         if capacity is not maxed, should return 1 and check that the entrant is now in the entrantsList
      */
     public int addEntrant(UserProfile entrant){
         //check that entrant is not already in the entrantList, and the event is not full
         if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE){
             this.entrantsList.add(entrant);
+            entrant.addEvent(this); //add the event to the entrants list of events
             setEventFull(); //update whether the event is full
             return 1; }
 
@@ -159,11 +164,12 @@ public class Event {
      * Adds an entrant to the list of entrants for the event
      * Checks that the entrant is not already in the list of entrants
      * @param entrant UserProfile that wants to un-enter the event lottery
-     * TODO: write tests
-     *       needs to update firebase db
+     * TODO: needs to update firebase db
+     * TESTME: check that entrant is actually removed from the entrantList
      */
     public void removeEntrant(UserProfile entrant){
         this.entrantsList.remove(entrant);
+        entrant.leaveEvent(this); // remove the event from the entrants list of events
         setEventFull(); //update whether the event is full
     }
 
