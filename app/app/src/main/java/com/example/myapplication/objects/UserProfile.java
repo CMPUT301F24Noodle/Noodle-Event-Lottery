@@ -137,6 +137,8 @@ public class UserProfile {
      * grants the user organizer privileges
      * @param facility Facility the user owns
      * @return 0 if the facility is successfully attached to the user, or 1 if not (user already has a facility)
+     * TESTME: test that the facility has been set
+     *         test that if the user already has a facility, that the facility is not being overwritten
      */
     public Integer setFacility(Facility facility){
         //Check that the user does not already have a facility
@@ -153,17 +155,22 @@ public class UserProfile {
 
     /**
      * Author: Erin-Marie
-     *
+     * checks that the facility is the users facility
+     * removes the facility from the owners profile
+     * demotes the users privileges to just entrant (0)
      * @param facility facility that is being deleted
+     * TODO: update the users profile in firebase db
+     * TESTME: test that the facility has been removed from the users profile
+     *         test that the user now only has entrant privileges
      */
     public void removeFacility(Facility facility){
         if (myFacility == facility){
             this.myFacility = null;
             this.privileges = 0; //removing your facility means you are no longer an organizer
             //MAYBE: need to delete all events that they were hosting at this facility?
+            //       deleting the facility from the db will be done by the calling method probably?
         }
     }
-
 
     /**
      * Author: Erin-Marie
