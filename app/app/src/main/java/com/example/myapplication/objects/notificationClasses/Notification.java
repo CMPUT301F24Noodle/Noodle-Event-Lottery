@@ -13,6 +13,7 @@ import java.util.Date;
 public class Notification {
 
     UserProfile sender; //user that send the message
+    //QUESTION: should this be a list of recipients?
     UserProfile recipient; //user that receives the message
     String message; //content of the message
     Date sentDate; //date the message was sent
