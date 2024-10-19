@@ -32,12 +32,6 @@ public class Facility {
         return owner;
     }
 
-    //QUESTION: should it be possible to set the owner of a facility to a different owner?
-    //TODO: update facility db
-    public void setOwner(UserProfile owner) {
-        this.owner = owner;
-    }
-
     public String getLocation() {
         return location;
     }
