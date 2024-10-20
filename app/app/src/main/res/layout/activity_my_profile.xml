@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Profile"
+        android:textSize="24sp"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/profile_username_text"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:id="@+id/profile_email_text"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:id="@+id/profile_phone_number_text"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:id="@+id/profile_address_text"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Facility"
+        android:textSize="24sp"
+        android:layout_gravity="center"/>
+
+    <!-- Horizontal LinearLayout for buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/create_facility_button"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:visibility="visible"
+            android:clickable="true"
+            android:text="Add Facility" />
+
+        <Button
+            android:id="@+id/edit_facility_button"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:visibility="visible"
+            android:clickable="true" />
+
+        <Button
+            android:id="@+id/delete_facility_button"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:visibility="visible"
+            android:clickable="true" />
+    </LinearLayout>
+
+</LinearLayout>
