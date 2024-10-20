@@ -21,6 +21,8 @@ import com.example.myapplication.objects.userProfileClasses.UserProfile;
 
 // TODO add a class header
 // TODO add all strings here and in xml to string resource file
+// TODO set up a ping system to let the activity know when the fragment has closed
+// TODO add more facility attributes?
 public class CreateFacilityFragment extends DialogFragment {
     private Facility facility;
     private UserProfile user;

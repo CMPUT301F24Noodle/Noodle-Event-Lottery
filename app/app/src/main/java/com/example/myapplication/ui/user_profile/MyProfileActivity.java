@@ -21,6 +21,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  * Class for the activity for users to view their profile, and manage their facility.
  * TODO: ADD METHOD TO GET DEVICE ID
  * TODO add all strings here and in xml to string resource file
+ * TODO: add a way to know if a facility was succesfully created or removed (to make the now useless buttons invisible) and to update the text views for facility
+ * TODO
  */
 public class MyProfileActivity extends AppCompatActivity{
     UserProfile user;
@@ -55,16 +57,40 @@ public class MyProfileActivity extends AppCompatActivity{
         Button editFacilityButton = findViewById(R.id.edit_facility_button);
         Button deleteFacilityButton = findViewById(R.id.delete_facility_button);
 
-        createFacilityButton.setOnClickListener(new View.OnClickListener() { // TODO after adding a successful adding 
+
+        createFacilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateFacilityFragment createFacilityFragment = new CreateFacilityFragment();
+                if(user.getFacility() == null){ // for now, nothing happens if the user has a facility
+                    CreateFacilityFragment createFacilityFragment = new CreateFacilityFragment();
 
-                createFacilityFragment.show(getSupportFragmentManager(), "createFacility"); // now show the fragment
-
-                int a = 1+1;
+                    createFacilityFragment.show(getSupportFragmentManager(), "createFacility"); // now show the fragment
+                }
             }
         });
+
+        editFacilityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(user.getFacility() == null){ // for now, nothing happens if the user has a facility
+                    EditFacilityFragment editFacilityFragment = new EditFacilityFragment();
+
+                    EditFacilityFragment.show(getSupportFragmentManager(), "editFacility"); // now show the fragment
+                }
+            }
+        });
+
+        deleteFacilityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(user.getFacility() == null){ // for now, nothing happens if the user has a facility
+                    CreateFacilityFragment createFacilityFragment = new CreateFacilityFragment();
+
+                    createFacilityFragment.show(getSupportFragmentManager(), "createFacility"); // now show the fragment
+                }
+            }
+        });
+
 
 
 
