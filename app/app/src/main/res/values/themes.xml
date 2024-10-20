@@ -6,9 +6,9 @@
         <item name="colorPrimaryVariant">@color/accent_pink</item>
         <item name="colorOnPrimary">@color/bonus_yellow</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/back_gray</item>
-        <item name="colorSecondaryVariant">@color/fore_purple</item>
-        <item name="colorOnSecondary">@color/text_cyan</item>
+        <item name="colorSecondary">@color/fore_purple</item>
+        <item name="colorSecondaryVariant">@color/accent_pink</item>
+        <item name="colorOnSecondary">@color/bonus_yellow</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
