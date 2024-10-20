@@ -29,8 +29,8 @@ public class HomeFragment extends Fragment {
 
         // Sample data for the list (Heading and two Subheadings)
         List<ListItem> sampleList = new ArrayList<>();
-        sampleList.add(new ListItem("Event Name", "Event Date", "Event Time"));
-        sampleList.add(new ListItem("Event DOS", "Stuff", "Why are we here?"));
+        sampleList.add(new ListItem("Event Name", "Event Date", "Event Time", "Organizer"));
+        sampleList.add(new ListItem("Event DOS", "Stuff", "Why are we here?", "Sleepy Rn"));
 
         // Set up the custom adapter
         CustomAdapter adapter = new CustomAdapter(requireContext(), sampleList);

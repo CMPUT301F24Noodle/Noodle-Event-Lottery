@@ -35,11 +35,13 @@ public class CustomAdapter extends ArrayAdapter<ListItem> {
         TextView headingView = convertView.findViewById(R.id.heading);
         TextView subheading1View = convertView.findViewById(R.id.subheading1);
         TextView subheading2View = convertView.findViewById(R.id.subheading2);
+        TextView subheading3View = convertView.findViewById(R.id.subheading3);
 
         // Populate the data into the template view using the data object
         headingView.setText(listItem.getHeading());
         subheading1View.setText(listItem.getSubheading1());
         subheading2View.setText(listItem.getSubheading2());
+        subheading3View.setText(listItem.getSubheading3());
 
         // Return the completed view to render on screen
         return convertView;
