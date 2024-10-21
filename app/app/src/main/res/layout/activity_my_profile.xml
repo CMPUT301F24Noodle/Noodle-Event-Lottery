@@ -23,6 +23,12 @@
         android:layout_height="50dp"
         android:text="email"/>
 
+    <Button
+        android:id="@+id/edit_profile_button"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="Edit Profile"
+        android:layout_gravity="center"/>
 
 
     <TextView

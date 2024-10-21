@@ -12,6 +12,7 @@ import android.provider.Settings;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -26,6 +27,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  * TODO add other attributes to profile for phone number or address for example
  *
  */
+
+// generally noticed a lot of cases of storyboards not matching attributes, or missing attributes... those will have to be added in later
 public class MyProfileActivity extends AppCompatActivity{
     UserProfile user;
 
@@ -44,20 +47,43 @@ public class MyProfileActivity extends AppCompatActivity{
         TextView usernameText = findViewById(R.id.profile_full_name_text);
         TextView emailTest = findViewById(R.id.profile_email_text);
 
+        TextView facilityName = findViewById(R.id.profile_facility_name_text);
+        TextView facilityLocation = findViewById(R.id.profile_facility_location_text);
+        TextView facilityOrganizer = findViewById(R.id.profile_facility_organizer_text);
+
         String userFullName = user.getFirstName()+" " + user.getLastName();
 
+        // display user info
         usernameText.setText(userFullName);
         emailTest.setText(user.getEmail());
 
+        if(user.getFacility() != null){
+            Facility facility = user.getFacility();
+            UserProfile organizer = facility.getOwner();
+            String organizerName = organizer.getFirstName() + " " + organizer.getLastName();
+
+            facilityName.setText(facility.getFacilityName());
+            facilityLocation.setText(facility.getLocation());
+            facilityOrganizer.setText(organizerName);
+        }
+        else{
+            // TODO should actually set the fields to invisible if no facility, but I'm waiting for DB integration first so I can set a listener for changes to the db
+            facilityName.setText("None");
+            facilityLocation.setText("None");
+            facilityOrganizer.setText("None");
+        }
+
+        // set up buttons
         Button createFacilityButton = findViewById(R.id.create_facility_button);
         Button editFacilityButton = findViewById(R.id.edit_facility_button);
         Button deleteFacilityButton = findViewById(R.id.delete_facility_button);
 
 
+
         createFacilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(user.getFacility() == null){ // for now, nothing happens if the user has a facility
+                if(user.getFacility() == null){ // TODO make this button invisible if there is a facility
                     CreateFacilityFragment createFacilityFragment = new CreateFacilityFragment();
 
                     createFacilityFragment.show(getSupportFragmentManager(), "createFacility"); // now show the fragment
@@ -68,7 +94,7 @@ public class MyProfileActivity extends AppCompatActivity{
         editFacilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(user.getFacility() == null){ // for now, nothing happens if the user has a facility
+                if(user.getFacility() != null){ // TODO make this button invisible if no facility
                     EditFacilityFragment editFacilityFragment = new EditFacilityFragment();
 
                     editFacilityFragment.show(getSupportFragmentManager(), "editFacility"); // now show the fragment
@@ -79,10 +105,10 @@ public class MyProfileActivity extends AppCompatActivity{
         deleteFacilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(user.getFacility() == null){ // for now, nothing happens if the user has a facility
+                if(user.getFacility() != null){ // TODO make this button invisible if no facility
                     CreateFacilityFragment createFacilityFragment = new CreateFacilityFragment();
 
-                    createFacilityFragment.show(getSupportFragmentManager(), "createFacility"); // now show the fragment
+                    createFacilityFragment.show(getSupportFragmentManager(), "deleteFacility"); // now show the fragment
                 }
             }
         });
