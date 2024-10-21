@@ -77,7 +77,18 @@ public class MyProfileActivity extends AppCompatActivity{
         Button createFacilityButton = findViewById(R.id.create_facility_button);
         Button editFacilityButton = findViewById(R.id.edit_facility_button);
         Button deleteFacilityButton = findViewById(R.id.delete_facility_button);
+        Button editProfileButton = findViewById(R.id.edit_profile_button);
 
+        editProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                EditProfileFragment editProfileFragment = new EditProfileFragment();
+
+                editProfileFragment.show(getSupportFragmentManager(), "editProfile"); // now show the fragment
+
+            }
+        });
 
 
         createFacilityButton.setOnClickListener(new View.OnClickListener() {

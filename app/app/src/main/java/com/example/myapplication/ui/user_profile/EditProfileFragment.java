@@ -64,7 +64,6 @@ public class EditProfileFragment extends DialogFragment {
                         user.setEmail(email);
                     }
                     // TODO edit database
-                    // TODO edit
 
                 })
                 .create();
