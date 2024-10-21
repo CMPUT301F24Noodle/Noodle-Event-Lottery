@@ -22,7 +22,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  * TODO: ADD METHOD TO GET DEVICE ID
  * TODO add all strings here and in xml to string resource file
  * TODO: add a way to know if a facility was succesfully created or removed (to make the now useless buttons invisible) and to update the text views for facility
- * TODO
+ * TODO could do the above by just adding a database listener that updates things when it detects a change in database
+ * TODO add other attributes to profile for phone number or address for example
+ *
  */
 public class MyProfileActivity extends AppCompatActivity{
     UserProfile user;
@@ -34,24 +36,18 @@ public class MyProfileActivity extends AppCompatActivity{
         setContentView(R.layout.activity_my_profile); // Ensure this layout file exists
 
         // Intents should not be needed to pass info, because we can get the user info from the database
+        // might need intents to get the database
 
-        //Intent intent = getIntent();
-        //String cityName = intent.getStringExtra("cityName");
 
         user = new UserProfile(); // TODO Grab the user from the database using the device identifier
 
-        TextView usernameText = findViewById(R.id.profile_username_text);
+        TextView usernameText = findViewById(R.id.profile_full_name_text);
         TextView emailTest = findViewById(R.id.profile_email_text);
-        TextView phoneNumberText = findViewById(R.id.profile_phone_number_text);
-        TextView addressText = findViewById(R.id.profile_address_text);
 
         String userFullName = user.getFirstName()+" " + user.getLastName();
 
         usernameText.setText(userFullName);
         emailTest.setText(user.getEmail());
-
-        phoneNumberText.setVisibility(View.INVISIBLE); // TODO Add phone number to user attributes
-        addressText.setVisibility(View.INVISIBLE); // TODO Add address to user attributes
 
         Button createFacilityButton = findViewById(R.id.create_facility_button);
         Button editFacilityButton = findViewById(R.id.edit_facility_button);
@@ -75,7 +71,7 @@ public class MyProfileActivity extends AppCompatActivity{
                 if(user.getFacility() == null){ // for now, nothing happens if the user has a facility
                     EditFacilityFragment editFacilityFragment = new EditFacilityFragment();
 
-                    EditFacilityFragment.show(getSupportFragmentManager(), "editFacility"); // now show the fragment
+                    editFacilityFragment.show(getSupportFragmentManager(), "editFacility"); // now show the fragment
                 }
             }
         });

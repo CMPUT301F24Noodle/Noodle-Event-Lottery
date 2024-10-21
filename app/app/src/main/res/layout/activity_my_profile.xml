@@ -12,10 +12,10 @@
         android:layout_gravity="center"/>
 
     <TextView
-        android:id="@+id/profile_username_text"
+        android:id="@+id/profile_full_name_text"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="uesername"/>
+        android:text="first and last name"/>
 
     <TextView
         android:id="@+id/profile_email_text"
@@ -23,17 +23,7 @@
         android:layout_height="50dp"
         android:text="email"/>
 
-    <TextView
-        android:id="@+id/profile_phone_number_text"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="phone number"/>
 
-    <TextView
-        android:id="@+id/profile_address_text"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="address"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -79,14 +69,16 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:visibility="visible"
-            android:clickable="true" />
+            android:clickable="true"
+            android:text="Edit Facility"/>
 
         <Button
             android:id="@+id/delete_facility_button"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:visibility="visible"
-            android:clickable="true" />
+            android:clickable="true"
+            android:text="Remove Facility"/>
     </LinearLayout>
 
 </LinearLayout>
