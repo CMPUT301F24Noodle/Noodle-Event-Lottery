@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/back_gray">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/new_event_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:textColor="@color/text_cyan"
+        android:layout_marginTop="70dp"
+        tools:context=".MainActivity">
+
+        <EditText
+            android:id="@+id/event_name_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ems="12"
+            android:hint="Event Name"
+            android:textAlignment="center"
+            android:textColorHint="@color/text_cyan"
+            android:backgroundTint="@color/text_cyan"/>
+
+        <EditText
+            android:id="@+id/event_location_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ems="12"
+            android:hint="Event Location"
+            android:textAlignment="center"
+            android:textColorHint="@color/text_cyan"
+            android:backgroundTint="@color/text_cyan"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="160dp"
+        tools:context=".MainActivity"
+        android:textColor="@color/text_cyan">
+
+        <EditText
+            android:id="@+id/date_picker_DD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="2"
+            android:hint="DD"
+            android:textColorHint="@color/text_cyan"
+            android:backgroundTint="@color/text_cyan"
+            android:maxLength="2"
+            android:maxEms="2"
+            android:minEms="2"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/date_picker_MM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:ems="2"
+            android:maxLength="2"
+            android:maxEms="2"
+            android:minEms="2"
+            android:hint="MM"
+            android:textColorHint="@color/text_cyan"
+            android:backgroundTint="@color/text_cyan"/>
+
+        <EditText
+            android:id="@+id/date_picker_YY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:ems="2"
+            android:maxLength="2"
+            android:maxEms="2"
+            android:minEms="2"
+            android:hint="YY"
+            android:textColorHint="@color/text_cyan"
+            android:backgroundTint="@color/text_cyan"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="220dp"
+        android:orientation="vertical"
+        tools:context=".MainActivity"
+        android:textColor="@color/text_cyan"
+        android:backgroundTint="@color/text_cyan">
+
+        <EditText
+            android:id="@+id/textbox_detail"
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:hint="Details"
+            android:textColorHint="@color/text_cyan"
+            android:background="@drawable/detail_border_textbox"/>
+
+        <EditText
+            android:id="@+id/contact_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:ems="12"
+            android:hint="Contact Number (Optional)"
+            android:textColorHint="@color/text_cyan"
+            android:backgroundTint="@color/text_cyan"/>
+
+        <EditText
+            android:id="@+id/max_participants"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:ems="12"
+            android:hint="Maximum Participants"
+            android:textColorHint="@color/text_cyan"
+            android:backgroundTint="@color/text_cyan"/>
+
+        <EditText
+            android:id="@+id/waiting_list_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:ems="12"
+            android:hint="Waiting List Limit (Optional)"
+            android:textColorHint="@color/text_cyan"
+            android:backgroundTint="@color/text_cyan"/>
+
+        <Button
+            android:id="@+id/add_poster_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Poster"
+            android:textColorHint="@color/text_cyan"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"/>
+
+        <TextView
+            android:id="@+id/current_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Current: "
+            android:textColor="@color/text_cyan"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/remove_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="REMOVE"
+            android:textColor="@color/text_cyan"
+            android:backgroundTint="@color/text_cyan"
+            android:clickable="true"
+            android:layout_marginTop="15dp"/>
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"/>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
