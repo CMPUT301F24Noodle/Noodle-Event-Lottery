@@ -227,29 +227,7 @@ public class UserProfile {
 
     }
 
-    /**
-     * Author: Erin-Marie
-     * Method to get the users unique UUID
-     * Citation: <a href="https://developer.android.com/training/data-storage/shared-preferences">...</a>
-     * @param context which will provide the calling activity
-     * @return strUUID, which is the users UUID in string form
-     * TESTME
-     */
-    protected String getUUID(Context context) {
-        //SharedPreferences is for storing data in key-value pairs in a local XML
-        SharedPreferences sharedPreferences;
-        //get info from shared preference file, using MODE_PRIVATE to only access the shared preference from the calling activity
-        sharedPreferences = context.getApplicationContext().getSharedPreferences("preference", Context.MODE_PRIVATE);
-        //get the UUID as a key-value pair, using "UUID" as the key
-        String strUuid = sharedPreferences.getString("UUID", null);
-        // if they don't have a UUID need to make one and store it
-        if (strUuid == null) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            strUuid = UUID.randomUUID().toString();
-            editor.putString("UUID", strUuid);
-            editor.apply();
-        }
-        return strUuid;
-    }
+
+
 }
 
