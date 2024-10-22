@@ -2,6 +2,7 @@ package com.example.myapplication.database;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -12,11 +13,25 @@ import java.util.UUID;
  * Author: Erin-Marie
  * DBConnector class connects to the Firestore Firebase Database where app data will be stored
  * Gets the current Users ID and connects to their collection
+ * Reference: <a href="https://firebase.google.com/docs/android/setup#:~:text=Open%20the%20Firebase%20Assistant%3A%20Tools,your%20Android%20project%20with%20Firebase">...</a>.
+ * QUESTION: Does the user need to authenticate with firebase, or do we just yoink their data for them?
  */
-public class DBConnector {
+public class DBConnection {
 
     private FirebaseFirestore db; //firebase instance
     private String uuid; //Store the users ID
+    private static final String TAG = "DBConnection"; //Database ID
+
+    /**
+     * Constructor method for class.
+     * sets the db instance, stores the users UUID, logs the UUID value
+     * @param context
+     */
+    public DBConnection(Context context) {
+        this.db = FirebaseFirestore.getInstance();
+        this.uuid = getUUID(context); //get UUID
+        Log.d(TAG, "UUID: " + uuid); //for debugging purpose, keeps track of UUID value in logcat
+    }
 
 
     /**
@@ -27,6 +42,8 @@ public class DBConnector {
     public FirebaseFirestore getDB() {
         return this.db;
     }
+
+
 
     /**
      * Author: Erin-Marie
