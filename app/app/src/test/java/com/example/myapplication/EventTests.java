@@ -36,12 +36,12 @@ public class EventTests {
     }
 
     /**
-     * this tests that the addEvents fuction does not add an event when the entrant max has been reach
-     * and that addEvents is updating the eventFull attribute after an entrant is added
+     * this tests that the addEvents method does not add an event when the entrant max has been reached, but does if it has not been reached
+     * and that addEvents is updating the eventFull attribute after an entrant is added, by calling setEventFull
      * @throws ParseException if the date string is the wrong format
      */
     @Test
-    public void testSetEventFull() throws ParseException {
+    public void testAddEntrant() throws ParseException {
         //Make a new event
         Event event = makeTestEvent();
         Integer entrantCount = event.countEntrants();
@@ -51,7 +51,9 @@ public class EventTests {
         assertEquals(event.getEventFull(), Boolean.FALSE);
         //add an entrant and ensure it is successful
         assertEquals(event.addEntrant(entrant), 1);
-        //updatye entrantCount value
+        //and check that they were added to the entrants list
+        assertEquals(event.getEntrants().contains(entrant), Boolean.TRUE);
+        //update entrantCount value
         entrantCount = event.countEntrants();
         //now check that the event is at the max entrants of 1
         assertEquals(entrantCount.longValue(), event.getMaxEntrants().longValue());

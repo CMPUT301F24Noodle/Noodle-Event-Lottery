@@ -143,7 +143,8 @@ public class Event {
      * Author: Erin-Marie
      * Called anytime an entrant is added or removed from the entrants list
      * Updates whether the event entrant limit has been reached
-     * TESTME: if capacity is already maxed,
+     * TESTED: tested in EventTests.java testAddEntrant()
+     *         if capacity is already maxed,
      *         if capacity is 1, then add new entrant, now check that it is returning maxed
      */
     public void setEventFull(){
@@ -166,7 +167,8 @@ public class Event {
      * @return 1 if the user was added to the entrant list, or 0 if not
      * calling function needs to add the event to the users myevents list, dependent on the return value of addEntrant
      * TODO: needs to update firebase db
-     * TESTME: if capacity it maxed, should return 0
+     * TESTED: tested in EventTests.java testAddEntrant()
+     *         if capacity it maxed, should return 0
      *         if capacity is not maxed, should return 1 and check that the entrant is now in the entrantsList
      */
     public int addEntrant(UserProfile entrant){
