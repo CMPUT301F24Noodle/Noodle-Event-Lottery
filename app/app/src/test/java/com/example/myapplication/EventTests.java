@@ -44,6 +44,8 @@ public class EventTests {
     public void testAddEntrant() throws ParseException {
         //Make a new event
         Event event = makeTestEvent();
+
+        //Test that you can add an entrant if the max is not reached
         Integer entrantCount = event.countEntrants();
         //first check that the event is empty
         assertEquals(entrantCount.longValue(), 0);
@@ -54,6 +56,8 @@ public class EventTests {
         //and check that they were added to the entrants list
         assertEquals(event.getEntrants().contains(entrant), Boolean.TRUE);
         //update entrantCount value
+
+        //Test that you cannot add an entrant if the max is reached
         entrantCount = event.countEntrants();
         //now check that the event is at the max entrants of 1
         assertEquals(entrantCount.longValue(), event.getMaxEntrants().longValue());
