@@ -23,6 +23,11 @@ import com.example.myapplication.objects.userProfileClasses.UserProfile;
 // TODO add all strings here and in xml to string resource file
 // TODO set up a ping system to let the activity know when the fragment has closed (for updating the displayed values)
 // TODO add more facility attributes?
+/**
+ * Author: Xavier Salm
+ * Class for the fragment to edit a facility
+ *
+ */
 public class EditFacilityFragment extends DialogFragment {
     private Facility facility;
     private UserProfile user;

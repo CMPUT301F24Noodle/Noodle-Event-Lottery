@@ -19,6 +19,11 @@ import com.example.myapplication.objects.userProfileClasses.UserProfile;
 // TODO add all strings here and in xml to string resource file
 // TODO set up a ping system to let the activity know when the fragment has closed (for updating the displayed values)
 // TODO OKay so uh this was not in story boards, but it works a little easier so uh we doing it
+/**
+ * Author: Xavier Salm
+ * Class for the fragment to edit a profile
+ *
+ */
 public class EditProfileFragment extends DialogFragment {
     private Facility facility;
     private UserProfile user;
