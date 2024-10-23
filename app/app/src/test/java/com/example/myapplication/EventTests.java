@@ -28,8 +28,8 @@ public class EventTests {
      * @throws ParseException if the string format of the date is wrong but it wont be because its hardcoded for these tests
      */
     public Event makeTestEvent() throws ParseException {
-        Date dateEvent = new SimpleDateFormat("dd/mm/yyyy").parse("29/05/2002");
-        Date dateClose = new SimpleDateFormat("dd/mm/yyyy").parse("30/05/2002");
+        Date dateEvent = new SimpleDateFormat("dd/MM/yyyy").parse("29/05/2002");
+        Date dateClose = new SimpleDateFormat("dd/MM/yyyy").parse("30/05/2002");
         //event with default details, geolocation off, max participants is 10
         Event event = new Event(facility, organizer, "TestEvent", null, dateEvent, 1, dateClose, Boolean.FALSE);
         return event;
