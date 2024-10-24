@@ -52,7 +52,8 @@
                 android:checked="true"
                 android:thumbTint="@color/accent_pink"
                 android:trackTint="@color/accent_pink"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
         </LinearLayout>
 
     </com.google.android.material.navigation.NavigationView>
