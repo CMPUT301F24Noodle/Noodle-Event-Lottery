@@ -32,14 +32,5 @@
         app:maxImageSize="28dp"
         app:srcCompat="@drawable/ic_qr_scanner" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/filter_button"
-        android:layout_width="75dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_marginStart="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
-        app:maxImageSize="28dp"
-        app:srcCompat="@drawable/ic_filter" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
