@@ -27,12 +27,16 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="@string/your_name"
         android:textSize="18dp"
+        android:fontFamily="@font/belanosima"
+        android:textColor="@color/bonus_yellow"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/email_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/bonus_yellow"
+        android:fontFamily="@font/aleo_medium"
         android:text="@string/email_address"
         android:textSize="16dp"/>
 </LinearLayout>
