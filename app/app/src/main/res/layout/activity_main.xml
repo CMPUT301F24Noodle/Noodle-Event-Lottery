@@ -41,6 +41,7 @@
                 android:layout_weight="0.8"
                 android:text="@string/enable_notifications"
                 android:textColor="@color/bonus_yellow"
+                android:fontFamily="@font/belanosima"
                 android:textSize="16sp"
                 android:gravity="center_vertical" />
 

@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
-        <item>@font/</item>
         <item>@font/aleo_medium</item>
-        <item>@font/amatic_sc_bold</item>
-        <item>@font/anybody_extralight</item>
         <item>@font/anybody_light</item>
         <item>@font/bebas_neue</item>
         <item>@font/belanosima</item>
