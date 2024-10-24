@@ -13,4 +13,12 @@
     <string name="notifications">Notifications</string>
     <string name="enable_notifications">Enable Notifications</string>
     <string name="admin_menu">App Management</string>
+    <string name="your_name">Your Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="address">Address</string>
+    <string name="profile_picture">Profile Picture</string>
+    <string name="for_organizers">For Organizers:</string>
+    <string name="facility_name">Facility Name</string>
+    <string name="facility_location">Facility Location</string>
 </resources>

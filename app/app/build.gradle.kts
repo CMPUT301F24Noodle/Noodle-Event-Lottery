@@ -39,6 +39,7 @@ dependencies {
 
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation(libs.constraintlayout)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
@@ -49,7 +50,10 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+
     // dependencies for Firebase Authentication and Cloud Firestore
     implementation("com.google.firebase:firebase-bom:32.7.1")
     implementation("com.google.firebase:firebase-firestore")
+
+    implementation ("de.hdodenhof:circleimageview:3.1.0") //For Circular Profile Picture
 }
