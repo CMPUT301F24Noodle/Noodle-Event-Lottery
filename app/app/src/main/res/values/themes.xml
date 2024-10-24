@@ -23,4 +23,13 @@
     <style name="Theme.MyApplication.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.MyApplication.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="MyNavigationViewStyle" parent="Widget.MaterialComponents.NavigationView">
+        <item name="android:background">@color/back_gray</item>
+    </style>
+
+    <style name="MyNavigationViewTextStyle" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/bonus_yellow</item>
+    </style>
+
 </resources>
