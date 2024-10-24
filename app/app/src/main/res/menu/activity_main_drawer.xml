@@ -20,6 +20,10 @@
             android:id="@+id/nav_registered"
             android:icon="@drawable/registered_events"
             android:title="@string/menu_registeredevents" />
+        <item
+            android:id="@+id/admin_menu"
+            android:icon="@drawable/admin_menu"
+            android:title="@string/admin_menu" />
 
     </group>
 </menu>
