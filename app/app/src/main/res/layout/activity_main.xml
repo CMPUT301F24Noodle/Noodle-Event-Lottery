@@ -24,5 +24,37 @@
         style="@style/MyNavigationViewStyle"
         app:itemTextColor="@color/bonus_yellow"
         app:itemIconTint="@color/bonus_yellow"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="bottom"
+            android:padding="16dp"
+            android:layout_gravity="bottom"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:text="@string/enable_notifications"
+                android:textColor="@color/bonus_yellow"
+                android:textSize="16sp"
+                android:gravity="center_vertical" />
+
+            <Switch
+                android:id="@+id/switch_notifications"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:checked="true"
+                android:thumbTint="@color/accent_pink"
+                android:trackTint="@color/accent_pink"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+
+    </com.google.android.material.navigation.NavigationView>
+
 </androidx.drawerlayout.widget.DrawerLayout>
