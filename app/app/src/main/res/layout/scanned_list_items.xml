@@ -10,21 +10,24 @@
         android:id="@+id/heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/alexandria_semibold"
+        android:textColor="@color/text_cyan"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/text_cyan" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/subheading1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textColor="@color/text_cyan" />
+        android:fontFamily="@font/aleo_medium"
+        android:textColor="@color/text_cyan"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/subheading2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/aleo_medium"
         android:textSize="18sp"
         android:textColor="@color/text_cyan" />
 
@@ -32,6 +35,7 @@
         android:id="@+id/subheading3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/aleo_medium"
         android:textSize="18sp"
         android:textColor="@color/text_cyan" />
 
