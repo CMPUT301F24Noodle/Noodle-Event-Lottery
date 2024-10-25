@@ -21,4 +21,6 @@
     <string name="for_organizers">For Organizers:</string>
     <string name="facility_name">Facility Name</string>
     <string name="facility_location">Facility Location</string>
+
+    <string name="facility_delete_confirmation">Are you sure you would like to delete this facility?</string>
 </resources>

@@ -84,7 +84,7 @@ public class MyProfileActivity extends AppCompatActivity{
 
         Button deleteFacilityButton = findViewById(R.id.profile_delete_facility_button);
         Button saveInfoButton = findViewById(R.id.profile_save_info_button);
-        Switch toggleFacilitySwitch = findViewById(R.id.profile_facility_toggle_switch)
+        Switch toggleFacilitySwitch = findViewById(R.id.profile_facility_toggle_switch);
 
         deleteFacilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
