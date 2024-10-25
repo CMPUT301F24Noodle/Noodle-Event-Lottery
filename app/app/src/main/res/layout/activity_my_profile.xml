@@ -90,10 +90,10 @@
                 android:textColor="@color/text_cyan"/>
 
             <Switch
-                android:id="@+id/switch_notifications"
+                android:id="@+id/profile_facility_toggle_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
+                android:checked="false"
                 android:thumbTint="@color/accent_pink"
                 android:trackTint="@color/accent_pink"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
@@ -131,7 +131,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp">
             <Button
-                android:id="@+id/profile_save_button"
+                android:id="@+id/profile_save_info_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

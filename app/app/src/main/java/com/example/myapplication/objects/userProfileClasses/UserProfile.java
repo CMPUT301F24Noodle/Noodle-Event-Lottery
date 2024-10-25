@@ -98,7 +98,7 @@ public class UserProfile {
 
     //TODO: need to update firebase
     public void setAddress(String address) { this.address = address; }
-    
+
     public Image getProfilePicture() {
         return profilePicture;
     }

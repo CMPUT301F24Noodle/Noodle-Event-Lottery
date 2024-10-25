@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.provider.Settings;
+import android.widget.Toast;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
@@ -58,7 +61,8 @@ public class MyProfileActivity extends AppCompatActivity{
         // display user info
         usernameText.setText(userFullName);
         emailTest.setText(user.getEmail());
-        phoneNumberText.setText(user.get)
+        phoneNumberText.setText(user.getPhoneNumber());
+        addressText.setText(user.getAddress());
 
         if(user.getFacility() != null){
             Facility facility = user.getFacility();
@@ -73,54 +77,42 @@ public class MyProfileActivity extends AppCompatActivity{
             // TODO should actually set the fields to invisible if no facility, but I'm waiting for DB integration first so I can set a listener for changes to the db
             facilityName.setText("None");
             facilityLocation.setText("None");
-            facilityOrganizer.setText("None");
+
         }
 
         // set up buttons
 
-        Button deleteFacilityButton = findViewById(R.id.delete_facility_button);
-
-        editProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                EditProfileFragment editProfileFragment = new EditProfileFragment();
-
-                editProfileFragment.show(getSupportFragmentManager(), "editProfile"); // now show the fragment
-
-            }
-        });
-
-
-        createFacilityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(user.getFacility() == null){ // TODO make this button invisible if there is a facility
-                    CreateFacilityFragment createFacilityFragment = new CreateFacilityFragment();
-
-                    createFacilityFragment.show(getSupportFragmentManager(), "createFacility"); // now show the fragment
-                }
-            }
-        });
-
-        editFacilityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(user.getFacility() != null){ // TODO make this button invisible if no facility
-                    EditFacilityFragment editFacilityFragment = new EditFacilityFragment();
-
-                    editFacilityFragment.show(getSupportFragmentManager(), "editFacility"); // now show the fragment
-                }
-            }
-        });
+        Button deleteFacilityButton = findViewById(R.id.profile_delete_facility_button);
+        Button saveInfoButton = findViewById(R.id.profile_save_info_button);
+        Switch toggleFacilitySwitch = findViewById(R.id.profile_facility_toggle_switch)
 
         deleteFacilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(user.getFacility() != null){ // TODO make this button invisible if no facility
-                    CreateFacilityFragment createFacilityFragment = new CreateFacilityFragment();
+                if(user.getFacility() != null){
+                    DeleteFacilityFragment deleteFacilityFragment = new DeleteFacilityFragment();
 
-                    createFacilityFragment.show(getSupportFragmentManager(), "deleteFacility"); // now show the fragment
+                    deleteFacilityFragment.show(getSupportFragmentManager(), "deleteFacility"); // now show the fragment
+                }
+            }
+        });
+
+        saveInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // do something :)
+            }
+        });
+
+        toggleFacilitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    // do something when switched on
+                    int a =  1+1;
+                } else {
+                    // do something else when switched off
+                    int b = 1+1;
                 }
             }
         });
