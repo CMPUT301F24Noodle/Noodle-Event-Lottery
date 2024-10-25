@@ -16,6 +16,8 @@ import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+// TODO: YOU CAN JUST MAKE IT AN INTERFACE THATS IMPLEMENTED HERE, THEN IT COULD UPDATE THE VIEWS AND BUTTON IN MAIN
+// TODO THIS WOULD STILL NEED DATABASE INTEGRATION SPECIFICALLY IF THE USER PROFILE GETS DELETED, BUT OTHER THAN THAT, ITS GOOD
 
 /**
  * Author: Xavier Salm
