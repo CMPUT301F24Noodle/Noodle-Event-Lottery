@@ -74,10 +74,8 @@ public class MyProfileActivity extends AppCompatActivity{
         }
 
         // set up buttons
-        Button createFacilityButton = findViewById(R.id.create_facility_button);
-        Button editFacilityButton = findViewById(R.id.edit_facility_button);
+
         Button deleteFacilityButton = findViewById(R.id.delete_facility_button);
-        Button editProfileButton = findViewById(R.id.edit_profile_button);
 
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override

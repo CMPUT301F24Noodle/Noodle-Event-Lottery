@@ -124,14 +124,28 @@
             android:textAlignment="center"
             android:textColorHint="@color/text_cyan" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp">
+            <Button
+                android:id="@+id/profile_save_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/belanosima"
+                android:text="Save" />
         <Button
-            android:id="@+id/profile_save_button"
+            android:id="@+id/profile_delete_facility_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
             android:fontFamily="@font/belanosima"
-            android:text="Save" />
+            android:text="Delete Facility" />
+    </LinearLayout>
 
 
     </LinearLayout>
