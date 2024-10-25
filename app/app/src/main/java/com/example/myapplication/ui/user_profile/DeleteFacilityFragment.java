@@ -30,7 +30,7 @@ public class DeleteFacilityFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = getLayoutInflater().inflate(R.layout.fragment_create_facility, null);
+        View view = getLayoutInflater().inflate(R.layout.fragment_delete_facility, null);
 
         // get the user
         user = new UserProfile(); // TODO get the existing profile from database using device ID

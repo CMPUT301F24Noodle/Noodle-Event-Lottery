@@ -44,18 +44,21 @@ public class MyProfileActivity extends AppCompatActivity{
 
         user = new UserProfile(); // TODO Grab the user from the database using the device identifier
 
-        TextView usernameText = findViewById(R.id.profile_full_name_text);
-        TextView emailTest = findViewById(R.id.profile_email_text);
+        TextView usernameText = findViewById(R.id.profile_user_full_name);
+        TextView emailTest = findViewById(R.id.profile_user_email);
+        TextView phoneNumberText = findViewById(R.id.profile_user_contact_number);
+        TextView addressText = findViewById(R.id.profile_user_address);
 
-        TextView facilityName = findViewById(R.id.profile_facility_name_text);
-        TextView facilityLocation = findViewById(R.id.profile_facility_location_text);
-        TextView facilityOrganizer = findViewById(R.id.profile_facility_organizer_text);
+        TextView facilityName = findViewById(R.id.profile_facility_name);
+        TextView facilityLocation = findViewById(R.id.profile_facility_location);
+
 
         String userFullName = user.getFirstName()+" " + user.getLastName();
 
         // display user info
         usernameText.setText(userFullName);
         emailTest.setText(user.getEmail());
+        phoneNumberText.setText(user.get)
 
         if(user.getFacility() != null){
             Facility facility = user.getFacility();
@@ -64,7 +67,7 @@ public class MyProfileActivity extends AppCompatActivity{
 
             facilityName.setText(facility.getFacilityName());
             facilityLocation.setText(facility.getLocation());
-            facilityOrganizer.setText(organizerName);
+
         }
         else{
             // TODO should actually set the fields to invisible if no facility, but I'm waiting for DB integration first so I can set a listener for changes to the db

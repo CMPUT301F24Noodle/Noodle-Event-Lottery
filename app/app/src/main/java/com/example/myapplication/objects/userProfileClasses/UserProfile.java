@@ -20,6 +20,8 @@ public class UserProfile {
     String firstName;
     String lastName;
     String email;
+    String phoneNumber;
+    String address;
     Image profilePicture;
     Integer privileges; //0 is default, means they are just an entrant, 1 means they also have organizer privilege
     ArrayList<Event> myEvents; //the users ENTERED events
@@ -81,6 +83,22 @@ public class UserProfile {
         this.email = email;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    //TODO: need to update firebase
+    public void setPhoneNumber(String number) {
+        this.phoneNumber = number;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    //TODO: need to update firebase
+    public void setAddress(String address) { this.address = address; }
+    
     public Image getProfilePicture() {
         return profilePicture;
     }

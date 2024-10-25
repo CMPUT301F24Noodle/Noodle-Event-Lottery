@@ -24,7 +24,7 @@
             android:contentDescription="@string/profile_picture" />
 
         <EditText
-            android:id="@+id/user_full_name"
+            android:id="@+id/profile_user_full_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -36,7 +36,7 @@
             android:backgroundTint="@color/text_cyan"/>
 
         <EditText
-            android:id="@+id/email_address"
+            android:id="@+id/profile_user_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -48,7 +48,7 @@
             android:backgroundTint="@color/text_cyan"/>
 
         <EditText
-            android:id="@+id/user_contact_number"
+            android:id="@+id/profile_user_contact_number"
             android:layout_width="249dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -60,7 +60,7 @@
             android:textColorHint="@color/text_cyan" />
 
         <EditText
-            android:id="@+id/user_address"
+            android:id="@+id/profile_user_address"
             android:layout_width="249dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -101,7 +101,7 @@
 
 
         <EditText
-            android:id="@+id/facility_name"
+            android:id="@+id/profile_facility_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -113,7 +113,7 @@
             android:backgroundTint="@color/text_cyan"/>
 
         <EditText
-            android:id="@+id/facility_location"
+            android:id="@+id/profile_facility_location"
             android:layout_width="249dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
