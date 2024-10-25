@@ -67,8 +67,6 @@ public class MyProfileActivity extends AppCompatActivity{
 
         if(user.getFacility() != null){
             facility = user.getFacility();
-            UserProfile organizer = facility.getOwner();
-            String organizerName = organizer.getFirstName() + " " + organizer.getLastName();
 
             facilityNameText.setText(facility.getFacilityName());
             facilityLocationText.setText(facility.getLocation());
@@ -113,8 +111,23 @@ public class MyProfileActivity extends AppCompatActivity{
                     String facilityName = facilityNameText.getText().toString();
                     String facilityLocation = facilityLocationText.getText().toString();
 
-                    facility.setFacilityName(facilityName);
-                    facility.setLocation(facilityLocation);
+                    if(user.getFacility() == null){
+                        if(!facilityName.equals(" ") && !facilityLocation.equals(" ")){
+                            facility = new Facility(facilityName, user, facilityLocation);
+                            user.setFacility(facility); // create a facility for the user!
+
+                            // and set the text fields
+                            facility.setFacilityName(facilityName);
+                            facility.setLocation(facilityLocation);
+                        }
+                    }
+
+                    else{
+                        // otherwise, just set the text fields
+                        facility.setFacilityName(facilityName);
+                        facility.setLocation(facilityLocation);
+                    }
+
                 }
             }
         });
