@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+        //TODO: add UserProfile to the nav drawer so it can be selected and we can view the UserProfile fragment
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_myevents, R.id.nav_registered)
                 .setOpenableLayout(drawer)

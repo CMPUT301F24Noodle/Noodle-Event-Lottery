@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "663940683185",
+    "project_id": "noodle-event-lottery",
+    "storage_bucket": "noodle-event-lottery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:663940683185:android:6100b83d55c64119c25990",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlUFRj355M1C_SJCjxCf7TNZnpPU35BRM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

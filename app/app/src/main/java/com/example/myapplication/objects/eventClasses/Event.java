@@ -47,12 +47,16 @@ public class Event {
         this.facility = facility;
         this.organizer = organizer;
         this.eventName = eventName;
-        this.eventPoster = eventPoster;
-        this.eventDate = eventDate;
+        this.eventPoster = eventPoster; //can be null
+        this.eventDate = eventDate; //event date is converted to a date when the input is taken
         this.maxEntrants = maxEntrants;
         this.lotteryCloses = lotteryCloses;
         this.geoLocation = geoLocation;
-        this.eventFull = Boolean.FALSE;
+        this.eventFull = Boolean.FALSE; // event capacity cannot be 0, so it is always false at init
+        this.entrantsList = new ArrayList<UserProfile>(); //have to intialize so .size() wont return null
+        this.winnersList = new ArrayList<UserProfile>(); //have to intialize so .size() wont return null
+        this.losersList = new ArrayList<UserProfile>(); //have to intialize so .size() wont return null
+
         //TODO: Need to create QR code and do something with hash data
 
     }
@@ -123,11 +127,24 @@ public class Event {
         this.eventOver = eventOver;
     }
 
+    public ArrayList<UserProfile> getEntrants(){
+        return this.entrantsList;
+    }
+
+    /**
+     * returns count of how many users have entered the event lottery
+     * @return
+     */
+    public Integer countEntrants(){
+        return this.entrantsList.size();
+    }
+
     /**
      * Author: Erin-Marie
      * Called anytime an entrant is added or removed from the entrants list
      * Updates whether the event entrant limit has been reached
-     * TESTME: if capacity is already maxed,
+     * TESTED: tested in EventTests.java testAddEntrant()
+     *         if capacity is already maxed,
      *         if capacity is 1, then add new entrant, now check that it is returning maxed
      */
     public void setEventFull(){
@@ -138,21 +155,27 @@ public class Event {
         }
     }
 
+    public Boolean getEventFull(){
+        return this.eventFull;
+    }
+
     /**
      * Author: Erin-Marie
      * Adds an entrant to the list of entrants for the event
      * Checks that the entrant is not already in the list of entrants
      * @param entrant UserProfile that wants to enter event lottery
      * @return 1 if the user was added to the entrant list, or 0 if not
+     * calling function needs to add the event to the users myevents list, dependent on the return value of addEntrant
      * TODO: needs to update firebase db
-     * TESTME: if capacity it maxed, should return 0
+     * TESTED: tested in EventTests.java testAddEntrant()
+     *         if capacity it maxed, should return 0
      *         if capacity is not maxed, should return 1 and check that the entrant is now in the entrantsList
      */
     public int addEntrant(UserProfile entrant){
         //check that entrant is not already in the entrantList, and the event is not full
         if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE){
             this.entrantsList.add(entrant);
-            entrant.addEvent(this); //add the event to the entrants list of events
+            //entrant.addEvent(this); //add the event to the entrants list of events
             setEventFull(); //update whether the event is full
             return 1; }
 
