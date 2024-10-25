@@ -110,7 +110,9 @@
             android:textAlignment="center"
             android:textColorHint="@color/text_cyan"
             android:fontFamily="@font/anybody_light"
-            android:backgroundTint="@color/text_cyan"/>
+            android:backgroundTint="@color/text_cyan"
+            android:visibility="gone"
+            />
 
         <EditText
             android:id="@+id/profile_facility_location"
@@ -122,7 +124,8 @@
             android:fontFamily="@font/anybody_light"
             android:hint="@string/facility_location"
             android:textAlignment="center"
-            android:textColorHint="@color/text_cyan" />
+            android:textColorHint="@color/text_cyan"
+            android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -137,14 +140,16 @@
                 android:layout_gravity="center"
                 android:fontFamily="@font/belanosima"
                 android:text="Save" />
-        <Button
-            android:id="@+id/profile_delete_facility_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
-            android:fontFamily="@font/belanosima"
-            android:text="Delete Facility" />
+            <Button
+                android:id="@+id/profile_delete_facility_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/belanosima"
+                android:text="Delete Facility"
+                android:visibility="gone"
+                />
     </LinearLayout>
 
 
