@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.UUID;
@@ -29,7 +29,7 @@ public class DBConnection {
      */
     public DBConnection(Context context) {
         this.db = FirebaseFirestore.getInstance();
-        this.uuid = getUUID(context); //get UUID
+        this.uuid = genUUID(context); //get UUID the first time
         Log.d(TAG, "UUID: " + uuid); //for debugging purpose, keeps track of UUID value in logcat
     }
 
@@ -43,6 +43,9 @@ public class DBConnection {
         return this.db;
     }
 
+    public String getUUID(){
+        return this.uuid;
+    }
 
 
     /**
@@ -54,7 +57,7 @@ public class DBConnection {
      * @return strUUID, which is the users UUID in string form
      * TESTME
      */
-    protected String getUUID(Context context) {
+    protected String genUUID(Context context) {
         //SharedPreferences is for storing data in key-value pairs in a local XML
         SharedPreferences sharedPreferences;
         //get info from shared preference file, using MODE_PRIVATE to only access the shared preference from the calling activity
@@ -73,13 +76,33 @@ public class DBConnection {
 
     /**
      * Author: Erin-Marie
-     * getUserCollection(subCollection) retrieves a reference to the users subcollection of the DB
-     * @param subCollection the tag for the subcollection of the current Users collection
-     * @return returns a CollectionReference to the collection associated with the current UUID
+     * getUserDocument() retrieves a reference to the users document of the AllUsers collection of the DB
+     * @return returns a DocumentReference to the Document associated with the current UUID
+     * The document contains the users information, as well as an array of their entered events and organized events.
      * TESTME
      */
-    public CollectionReference getUserCollection(String subCollection) {
-        CollectionReference doc = this.db.collection("AllUsers").document("User" + uuid).collection(subCollection);
+    public DocumentReference getUserDocument() {
+        //CollectionReference doc = this.db.collection("AllUsers").document("User" + uuid).collection(subCollection);
+        DocumentReference doc = this.db.collection("AllUsers").document("User" + uuid);
         return doc;
     }
+
+    /**
+     * Author: Erin-Marie
+     * getFacilityDocument() retrieves a reference to the users facility
+     * @return returns a DocumentReference to the Facility associated with the current UUID
+     * The document contains the Facility information
+     * TESTME
+     */
+    public DocumentReference getFacilityDocument() {
+        //CollectionReference doc = this.db.collection("AllUsers").document("User" + uuid).collection(subCollection);
+        DocumentReference doc = this.db.collection("AllFacilities").document("Facility" + uuid);
+        return doc;
+    }
+
+
+
+    //TODO: make a method to get the allusers collection
+    //reference to AllUsers collection
+    //private CollectionReference allUsersCollection;
 }
