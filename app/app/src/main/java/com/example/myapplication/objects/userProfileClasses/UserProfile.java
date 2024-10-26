@@ -24,7 +24,7 @@ public class UserProfile {
     Image profilePicture;
     Integer privileges; //0 is default, means they are just an entrant, 1 means they also have organizer privilege
     ArrayList<Event> myEvents; //the users ENTERED events
-    UUID uuid;
+    String uuid;
     //organizer privilege attributes
     ArrayList<Event> myOrgEvents; //the users ORGANIZED events
     Facility myFacility ; //the users facility they created, can only have one
@@ -43,7 +43,7 @@ public class UserProfile {
      * UserProfile is initially created with ony default values, since the user is not required to enter their profile information
      * If the user wants to edit anything, it will be done through the getter and setter methods called from the ProfileActivity
      */
-    public UserProfile(UUID uuid) {
+    public UserProfile(String uuid) {
 
         this.firstName = "None";
         this.lastName = "None";
@@ -68,7 +68,7 @@ public class UserProfile {
         return isAdmin;
     }
 
-    public UUID getUuid(){
+    public String getUuid(){
         return uuid;
     }
 
