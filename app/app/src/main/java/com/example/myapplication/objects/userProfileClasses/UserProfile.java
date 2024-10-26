@@ -56,6 +56,8 @@ public class UserProfile {
 
 
 
+
+
         //TODO: make a res file with a default profile picture to use until a user submits their own
         //this.profilePicture =
     }

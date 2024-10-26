@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.Menu;
 
 import com.example.myapplication.database.DBConnection;
+import com.example.myapplication.database.UserDB;
+import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -23,10 +25,19 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    public DBConnection connection;
+    public UserDB userDB;
+    public UserProfile user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Add the user to the db
+        this.connection = new DBConnection(getBaseContext());
+        this.userDB = new UserDB(this.connection);
+        this.user = new UserProfile(connection.getUUID());
+        this.userDB.addUser(this.user);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

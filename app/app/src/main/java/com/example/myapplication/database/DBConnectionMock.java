@@ -2,6 +2,8 @@ package com.example.myapplication.database;
 
 import android.content.Context;
 
+import com.google.firebase.FirebaseApp;
+
 import java.util.UUID;
 
 /**
@@ -18,9 +20,18 @@ public class DBConnectionMock extends DBConnection{
         super(null);
     }
 
+    /**
+     * Gets the UUID of the device, to identify the user.
+     * Since this is a mock class,
+     *
+     * @param context: the context of the application
+     */
     @Override protected String genUUID(Context context) {
-        String uuid = "uuidtest1"; //this is what i made a test collection in the db for
+
+        String uuid = "test" + UUID.randomUUID().toString();
         return uuid;
     }
+
+
 
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -28,9 +29,10 @@ public class DBConnection {
      * @param context
      */
     public DBConnection(Context context) {
+        FirebaseApp.initializeApp(context);
         this.db = FirebaseFirestore.getInstance();
         this.uuid = genUUID(context); //get UUID the first time
-        Log.d(TAG, "UUID: " + uuid); //for debugging purpose, keeps track of UUID value in logcat
+        Log.v(TAG, "UUID: " + uuid); //for debugging purpose, keeps track of UUID value in logcat
     }
 
 

@@ -30,7 +30,7 @@ public class UserDB {
     //reference to the current users document in the AllUsers collection
     private DocumentReference userDocument;
     private DBConnection storeConnection;
-    private FirebaseFirestore db = storeConnection.getDB();
+    private FirebaseFirestore db;
 
     public UserDB(DBConnection connection) {
         //Gets a reference to the current users document in the db
@@ -46,6 +46,7 @@ public class UserDB {
      */
     public void addUser(UserProfile newUser){
         userDocument.set(newUser);
+        Log.v("DatabaseRead", "Successfully read from the database: " + newUser.getUuid());
     }
 
     /**
