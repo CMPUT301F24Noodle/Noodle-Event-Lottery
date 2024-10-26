@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.Image;
 
+import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.facilityClasses.Facility;
 
@@ -23,7 +24,7 @@ public class UserProfile {
     Image profilePicture;
     Integer privileges; //0 is default, means they are just an entrant, 1 means they also have organizer privilege
     ArrayList<Event> myEvents; //the users ENTERED events
-
+    UUID uuid;
     //organizer privilege attributes
     ArrayList<Event> myOrgEvents; //the users ORGANIZED events
     Facility myFacility ; //the users facility they created, can only have one
@@ -35,12 +36,15 @@ public class UserProfile {
     Boolean geoLocationOn; //True if they allow geoLocation, False if not
 
 
+    public UserProfile() {} //need for firebase
+
     /**
      * Author: Erin-Marie
      * UserProfile is initially created with ony default values, since the user is not required to enter their profile information
      * If the user wants to edit anything, it will be done through the getter and setter methods called from the ProfileActivity
      */
-    public UserProfile() {
+    public UserProfile(UUID uuid) {
+
         this.firstName = "None";
         this.lastName = "None";
         this.email = "None";
@@ -48,9 +52,24 @@ public class UserProfile {
         this.allowNotifs = Boolean.TRUE; //defaults to allow notifications
         this.geoLocationOn = Boolean.FALSE; //defaults to false, need to ask user for permission first
         this.isAdmin = Boolean.FALSE;
+        this.uuid = uuid;
+
+
 
         //TODO: make a res file with a default profile picture to use until a user submits their own
         //this.profilePicture =
+    }
+
+    public Facility getMyFacility() {
+        return myFacility;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public UUID getUuid(){
+        return uuid;
     }
 
     //QUESTION: do we put input validation here or within the EditUserProfile fragment that will call these setters?
