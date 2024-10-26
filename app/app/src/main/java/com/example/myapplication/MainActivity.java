@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Add the user to the db
+        //Add the user to the db, added by Erin-Marie, if it breaks everything its my fault
         this.connection = new DBConnection(getBaseContext());
         this.userDB = new UserDB(this.connection);
         this.user = new UserProfile(connection.getUUID());
