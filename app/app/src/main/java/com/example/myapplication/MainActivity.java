@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import static java.security.AccessController.getContext;
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -26,18 +28,27 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     public DBConnection connection;
-    public UserDB userDB;
+    public UserDB userDB; //userDB instance for the current user
+    public String uuid;
     public UserProfile user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Add the user to the db, added by Erin-Marie, if it breaks everything its my fault
-        this.connection = new DBConnection(getBaseContext());
-        this.userDB = new UserDB(this.connection);
-        this.user = new UserProfile(connection.getUUID());
-        this.userDB.addUser(this.user);
+//        //Add the user to the db, added by Erin-Marie, if it breaks everything its my fault
+//        this.connection = new DBConnection(getBaseContext());
+//        this.userDB = new UserDB(this.connection);
+//        this.uuid = connection.getUUID(); //store the users uuid
+//        if (connection.checkUserDocExists() == Boolean.FALSE) {
+//            this.user = new UserProfile(this.uuid); //make a new UserProfile
+//            this.userDB.addUser(this.user); //add the new user to the db
+//            //TESTME: write a test that confirms the user was just added
+//        } else {
+//            this.user = userDB.getCurrentUser();
+//        }
+        //will get the current Users Profile, initialize db connections
+        setUpDB();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -78,4 +89,30 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-}
+
+    /**
+     * Author: Erin-Marie
+     * Sets up the db when main activity launches
+     * gets the current users USerProfile object based on the data stored in the db
+     * If the user is not in the db, it adds them to the db.
+     */
+    public void setUpDB(){
+        //Add the user to the db, added by Erin-Marie, if it breaks everything its my fault
+        this.connection = new DBConnection(this);
+        this.userDB = new UserDB(this.connection);
+        this.uuid = connection.getUUID(); //store the users uuid
+
+        //BROKEN: this null case doesn't work, it is not checking if the user exists already and it overwrite the stored data
+        if (this.userDB.getUserDocument() != null) {
+            this.user = new UserProfile(this.uuid); //make a new UserProfile
+            this.userDB.addUser(this.user); //add the new user to the db
+            this.userDB = new UserDB(this.connection);
+            this.user = this.connection.getDocumentSnapshot(this.userDB.getUserDocument());
+            //TEST: this.userDB.userDocument.update("firstName", "Erin");
+
+        }
+
+
+
+        }
+    }

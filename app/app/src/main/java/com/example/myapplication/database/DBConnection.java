@@ -4,10 +4,18 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.ref.Reference;
 import java.util.UUID;
 
 /**
@@ -80,14 +88,62 @@ public class DBConnection {
      * Author: Erin-Marie
      * getUserDocument() retrieves a reference to the users document of the AllUsers collection of the DB
      * @return returns a DocumentReference to the Document associated with the current UUID
-     * The document contains the users information, as well as an array of their entered events and organized events.
      * TESTME
      */
-    public DocumentReference getUserDocument() {
+    public DocumentReference getUserDocumentRef() {
         //CollectionReference doc = this.db.collection("AllUsers").document("User" + uuid).collection(subCollection);
-        DocumentReference doc = this.db.collection("AllUsers").document("User" + uuid);
-        return doc;
+        DocumentReference docRef = this.db.collection("AllUsers").document("User" + uuid);
+        return docRef;
     }
+
+    /**
+     * Author: Erin-Marie
+     * returns a snapshot (the contents) of a single document that is passed to it
+     * @param docRef a DocumentReference to a document that does or does not exist in the DB
+     * @return returns a DocumentSnapshot of the document
+     * TESTME
+     */
+    public UserProfile getDocumentSnapshot(DocumentReference docRef) {
+        //final DocumentSnapshot[] snapshot = new DocumentSnapshot[1];
+        final UserProfile[] user = new UserProfile[1];
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                user[0] = task.getResult().toObject(UserProfile.class);
+
+//                if (snapshot[0].exists()) {
+//                    Log.d(TAG, "DocumentSnapshot data: " + snapshot[0].getData());
+//                } else {
+//                    Log.d(TAG, "No such document");
+//                }
+//            } else {
+//                Log.d(TAG, "get failed with ", task.getException());
+//            }
+        }});
+
+        return user[0];
+    }
+
+    /**
+     * Checks if the current user is in the db or not
+     * Takes no parameters, will call getUserDocRef and getDocumentSnapshot within method
+     * Checks if the snapshot returned by GetDocumentSnapshot exists or not
+     * @return doesExist Boolean, if TRUE the user already exists in the db
+     */
+//    public Boolean checkUserDocExists(){
+//        DocumentReference docRef = getUserDocumentRef();
+//        DocumentSnapshot snapshot = getDocumentSnapshot(docRef);
+//        if (snapshot.exists() == Boolean.TRUE) {
+//            Log.d(TAG, "DocumentSnapshot data: " + snapshot.getData());
+//            return Boolean.TRUE;
+//        } else if (snapshot.exists() == Boolean.FALSE) {
+//            Log.d(TAG, "No such document");
+//            return Boolean.FALSE;
+//        } else {
+//            Log.d(TAG, "checkUserDocExists is still broken");
+//        }
+//
+//        return Boolean.FALSE;
+//    }
 
     /**
      * Author: Erin-Marie
@@ -100,6 +156,10 @@ public class DBConnection {
         //CollectionReference doc = this.db.collection("AllUsers").document("User" + uuid).collection(subCollection);
         DocumentReference doc = this.db.collection("AllFacilities").document("Facility" + uuid);
         return doc;
+    }
+
+    public CollectionReference getAllUsersCollection(){
+        return this.db.collection("AllUsers");
     }
 
 
