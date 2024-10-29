@@ -32,9 +32,8 @@ public class MainActivity extends AppCompatActivity {
         binding.appBarMain.qrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .setAnchorView(R.id.qr_button).show();
+                NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_content_main);
+                navController.navigate(R.id.nav_qr_fragment);
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
