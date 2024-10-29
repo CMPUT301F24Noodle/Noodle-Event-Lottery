@@ -8,9 +8,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
-
-import java.util.UUID;
+import com.google.firebase.firestore.auth.User;
 
 /**
  * Author: Erin-Marie
@@ -27,6 +25,7 @@ public class UserDB {
     public DBConnection storeConnection;
     public CollectionReference allUsers;
     public FirebaseFirestore db;
+    public UserProfile currentUser;
     public String uuid;
 
     public UserDB(DBConnection connection) {
@@ -38,36 +37,57 @@ public class UserDB {
         this.db = connection.getDB();
     }
 
+    public void updateUserDB(){
+        //update the users DocumentReference value
+
+
+    }
+
     public DocumentReference getUserDocument(){
         this.userDocument = this.storeConnection.getUserDocumentRef();
         return this.userDocument;
     }
+
     /**
      * Author: Erin-Marie
      * adds the newUser the AllUsers collection
      * stored as a custom object, which requires the public empty constructor in the UserProfile class
-     * @param newUser object
      * Reference: <a href="https://firebase.google.com/docs/firestore/manage-data/add-data?_gl=1">...</a>*189tp3e*_up*MQ..*_ga*MTI4NzA3MTQ3MC4xNzI5NzI3MjA0*_ga_CW55HF8NVT*MTcyOTcyNzIwNC4xLjAuMTcyOTcyNzIwNC4wLjAuMA..
      */
-    public void addUser(UserProfile newUser){
+    public void addUser(){
+        UserProfile newUser = new UserProfile(this.uuid);
         this.db.collection("AllUsers").document("User" + uuid).set(newUser);
-        this.userDocument = this.storeConnection.getUserDocumentRef();
-        Log.v("DatabaseRead", "Successfully read from the database: " + newUser.getUuid());
+        this.userDocument = getUserDocument();
+        this.currentUser = newUser;
+        Log.v("DatabaseRead", "Successfully added New user to db, User:  " + newUser.getUuid());
     }
 
-    /**
-     * Author: Erin-Marie
-     * gets the given users data from their document, and returns it as a UserProfile object
-     * stored as a custom object, so we have to convert the fetched data back into a UserProfile object
-     * @return user UserProfile object that was requested
-     * Reference: <a href="https://firebase.google.com/docs/firestore/manage-data/add-data?_gl=1">...</a>*189tp3e*_up*MQ..*_ga*MTI4NzA3MTQ3MC4xNzI5NzI3MjA0*_ga_CW55HF8NVT*MTcyOTcyNzIwNC4xLjAuMTcyOTcyNzIwNC4wLjAuMA..
-     */
-//    public UserProfile getCurrentUser(){
-//        DocumentReference docRef = storeConnection.getUserDocumentRef();
-//        DocumentSnapshot documentSnapshot = storeConnection.getDocumentSnapshot(docRef);
-//        Log.v(TAG, "going to make userProfile object from documentSnapshot");
-//       UserProfile user = documentSnapshot.toObject(UserProfile.class);
-//        Log.v(TAG, "userProfile object made from documentSnapshot");
-//        return user;
-//    }
+    public void setProfile(DocumentSnapshot snapshot){
+        UserProfile user = snapshot.toObject(UserProfile.class);
+        this.currentUser = user;
+        this.userDocument = getUserDocument();
+
+    }
+
+    //Returns a DocumentSnapshot object through an onComplete listener
+    public void checkUserExists(OnSuccessListener<DocumentSnapshot> listener) {
+        DocumentReference docRef = this.storeConnection.getUserDocumentRef();; // get the document reference for the current users document from the AllUsers Collection
+        docRef.get().addOnSuccessListener(snapshot -> {
+            if (snapshot.exists()) {
+                Log.d(TAG, "user already exists:" + uuid);
+                listener.onSuccess(snapshot);
+            } else {
+                Log.d(TAG, "user not already exists:" + uuid);
+                listener.onSuccess(null);
+
+            }
+        });
+
+
+    }
+
+    public UserProfile getCurrentUser(){
+        return this.currentUser;
+    }
 }
+

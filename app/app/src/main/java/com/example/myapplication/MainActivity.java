@@ -1,14 +1,15 @@
 package com.example.myapplication;
 
-import static java.security.AccessController.getContext;
-
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -20,8 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.databinding.ActivityMainBinding;
-import com.google.firebase.Firebase;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,17 +36,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        //Add the user to the db, added by Erin-Marie, if it breaks everything its my fault
-//        this.connection = new DBConnection(getBaseContext());
-//        this.userDB = new UserDB(this.connection);
-//        this.uuid = connection.getUUID(); //store the users uuid
-//        if (connection.checkUserDocExists() == Boolean.FALSE) {
-//            this.user = new UserProfile(this.uuid); //make a new UserProfile
-//            this.userDB.addUser(this.user); //add the new user to the db
-//            //TESTME: write a test that confirms the user was just added
-//        } else {
-//            this.user = userDB.getCurrentUser();
-//        }
         //will get the current Users Profile, initialize db connections
         setUpDB();
 
@@ -93,26 +82,38 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Author: Erin-Marie
      * Sets up the db when main activity launches
-     * gets the current users USerProfile object based on the data stored in the db
+     * gets the current users UserProfile object based on the data stored in the db
      * If the user is not in the db, it adds them to the db.
+     * No return, but does set the currentUser attributes of MainActivity and UserDB
      */
     public void setUpDB(){
         //Add the user to the db, added by Erin-Marie, if it breaks everything its my fault
-        this.connection = new DBConnection(this);
-        this.userDB = new UserDB(this.connection);
-        this.uuid = connection.getUUID(); //store the users uuid
+        this.connection = new DBConnection(this); //connection to the base db
+        this.userDB = new UserDB(this.connection); //the current users collection reference
+        this.uuid = connection.getUUID(); //store the current users uuid
+        //check if the user is already in the db
+        this.userDB.checkUserExists(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot snapshot) {
+                if (snapshot != null){  //user is already in the database
+                    //fetch their profile data, make it a userprofile object, and store it as currentUser
+                    //done through addUser() method in order to get the value returned from checkUserExists()
+                    userDB.setProfile(snapshot);
+                    Log.v("SetUpDB", "Set profile for existing user");
 
-        //BROKEN: this null case doesn't work, it is not checking if the user exists already and it overwrite the stored data
-        if (this.userDB.getUserDocument() != null) {
-            this.user = new UserProfile(this.uuid); //make a new UserProfile
-            this.userDB.addUser(this.user); //add the new user to the db
-            this.userDB = new UserDB(this.connection);
-            this.user = this.connection.getDocumentSnapshot(this.userDB.getUserDocument());
-            //TEST: this.userDB.userDocument.update("firstName", "Erin");
+                } else { //User is not already in the database
+                    //create a new profile objet, and store it in the db
+                    //done through addUser() method in order to get the value returned from checkUserExists()
+                    userDB.addUser();
+                    Log.v("SetUpDB", "Set profile for new user");
+                }
+            }
+        });
+        //sets the currentUser attribute for MainActivity
+        this.user = this.userDB.getCurrentUser();
+        //TESTME: omg this fucking worked it fetched the profile without creating a new one or overwriting it
+        //Task<Void> update = this.userDB.getUserDocument().update("firstName", "Erin");
 
-        }
 
-
-
-        }
     }
+}
