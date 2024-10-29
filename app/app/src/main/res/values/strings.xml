@@ -23,4 +23,5 @@
     <string name="facility_location">Facility Location</string>
 
     <string name="facility_delete_confirmation">Are you sure you would like to delete this facility?</string>
+    <string name="your_profile">Your Profile</string>
 </resources>
