@@ -73,7 +73,8 @@
             android:maxEms="2"
             android:minEms="2"
             android:fontFamily="@font/anybody_light"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:layout_marginLeft="16dp"/>
 
         <EditText
             android:id="@+id/date_picker_MM"
@@ -103,6 +104,51 @@
             android:textColorHint="@color/text_cyan"
             android:backgroundTint="@color/text_cyan"/>
 
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <EditText
+            android:id="@+id/time_picker_hh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:ems="2"
+            android:maxLength="2"
+            android:maxEms="2"
+            android:minEms="2"
+            android:hint="22"
+            android:fontFamily="@font/anybody_light"
+            android:textColorHint="@color/text_cyan"
+            android:backgroundTint="@color/text_cyan"/>
+
+        <TextView
+            android:id="@+id/colon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/text_cyan"
+            android:fontFamily="@font/anybody_light"
+            android:layout_marginTop="4dp"
+            android:text=":"
+            android:textColor="@color/text_cyan"
+            android:textSize="26dp"/>
+
+        <EditText
+            android:id="@+id/time_picker_mm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:ems="2"
+            android:maxLength="2"
+            android:maxEms="2"
+            android:minEms="2"
+            android:hint="00"
+            android:fontFamily="@font/anybody_light"
+            android:textColorHint="@color/text_cyan"
+            android:backgroundTint="@color/text_cyan"
+            android:layout_marginRight="16dp"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -130,7 +176,6 @@
             android:layout_width="249dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
             android:backgroundTint="@color/text_cyan"
             android:ems="12"
             android:fontFamily="@font/anybody_light"
@@ -162,12 +207,40 @@
             android:textColorHint="@color/text_cyan"
             android:backgroundTint="@color/text_cyan"/>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textAlignment="textStart"
+                android:backgroundTint="@color/text_cyan"
+                android:ems="12"
+                android:fontFamily="@font/aleo_medium"
+                android:textSize="18dp"
+                android:text="@string/require_geolocation"
+                android:textColor="@color/text_cyan"/>
+
+            <Switch
+                android:id="@+id/profile_facility_toggle_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:thumbTint="@color/accent_pink"
+                android:trackTint="@color/accent_pink"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+        </LinearLayout>
+
         <Button
             android:id="@+id/add_poster_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/belanosima"
             android:text="Add Poster"
             android:textColorHint="@color/text_cyan" />
@@ -187,7 +260,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:backgroundTint="@color/text_cyan"
             android:clickable="true"
             android:fontFamily="@font/anybody_light"
@@ -199,7 +272,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/belanosima"
             android:text="Save" />
 
