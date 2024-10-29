@@ -9,7 +9,6 @@ import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -98,13 +97,13 @@ public class MainActivity extends AppCompatActivity {
                 if (snapshot != null){  //user is already in the database
                     //fetch their profile data, make it a userprofile object, and store it as currentUser
                     //done through addUser() method in order to get the value returned from checkUserExists()
-                    userDB.setProfile(snapshot);
+                    userDB.setCurrentProfile(snapshot);
                     Log.v("SetUpDB", "Set profile for existing user");
 
                 } else { //User is not already in the database
                     //create a new profile objet, and store it in the db
                     //done through addUser() method in order to get the value returned from checkUserExists()
-                    userDB.addUser();
+                    userDB.addCurrentUser();
                     Log.v("SetUpDB", "Set profile for new user");
                 }
             }
