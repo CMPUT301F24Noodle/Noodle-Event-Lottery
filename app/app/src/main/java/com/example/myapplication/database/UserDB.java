@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -141,6 +142,17 @@ public class UserDB {
         });
 
 
+    }
+
+    /**
+     * Author: Erin-Marie
+     * Call this after editing a user profile to have the db reflect the updates
+     * @param user
+     * IDK if this will actually work but in theory it does
+     * QUESTION: idk how this'll react to arrays
+     */
+    public void updateUserDocument(UserProfile user){
+        this.userDocument.set(user);
     }
     
 }
