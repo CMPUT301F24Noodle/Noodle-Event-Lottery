@@ -14,7 +14,8 @@ import java.util.UUID;
 /**
  * Author: Erin-Marie
  * Class for a user object, stores any profile data they choose to add, and has method to get their UUID
- * TODO: connect UserProfile to db, to get the users db, and their collection
+ * TODONE: connect UserProfile to db, to get the users db, and their collection
+ * TODO: need to initialize the array attributes
  */
 public class UserProfile {
 
@@ -81,7 +82,7 @@ public class UserProfile {
         return firstName;
     }
 
-    //TODO: need to update firebase
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -90,7 +91,7 @@ public class UserProfile {
         return lastName;
     }
 
-    //TODO: need to update firebase
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -99,7 +100,7 @@ public class UserProfile {
         return email;
     }
 
-    //TODO: need to update firebase
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -108,7 +109,7 @@ public class UserProfile {
         return phoneNumber;
     }
 
-    //TODO: need to update firebase
+
     public void setPhoneNumber(String number) {
         this.phoneNumber = number;
     }
@@ -117,14 +118,14 @@ public class UserProfile {
         return address;
     }
 
-    //TODO: need to update firebase
+
     public void setAddress(String address) { this.address = address; }
 
     public Image getProfilePicture() {
         return profilePicture;
     }
 
-    //TODO: need to update firebase
+
     public void setProfilePicture(Image profilePicture) {
         this.profilePicture = profilePicture;
     }
@@ -133,7 +134,7 @@ public class UserProfile {
         return privileges;
     }
 
-    //TODO: need to update firebase
+
     public void setPrivileges(Integer privileges) {
         this.privileges = privileges;
     }
@@ -150,7 +151,7 @@ public class UserProfile {
         return allowNotifs;
     }
 
-    //TODO: need to update firebase
+
     public void setAllowNotifs(Boolean allowNotifs) {
         this.allowNotifs = allowNotifs;
     }
@@ -160,7 +161,7 @@ public class UserProfile {
         return geoLocationOn;
     }
 
-    //TODO: need to update firebase
+
     //MAYBE: if geoLocation is stored within sharedPreferences this will need to be more complex
     public void setGeoLocationOn(Boolean geoLocationOn) {
         this.geoLocationOn = geoLocationOn;
