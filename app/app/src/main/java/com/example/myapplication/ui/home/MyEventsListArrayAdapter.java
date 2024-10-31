@@ -11,39 +11,44 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.myapplication.R;
+import com.example.myapplication.objects.eventClasses.Event;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MyEventsListArrayAdapter extends ArrayAdapter<ListItem> {
+public class MyEventsListArrayAdapter extends ArrayAdapter<Event> {
+    private ArrayList<Event> events;
+    private Context context;
 
-    public MyEventsListArrayAdapter(@NonNull Context context, @NonNull List<ListItem> items) {
+    public MyEventsListArrayAdapter(@NonNull Context context, @NonNull List<Event> items) {
         super(context, 0, items);
+        this.events = new ArrayList<>(events);
+        this.context = context;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        // Get the data item for this position
-        ListItem listItem = getItem(position);
+        View view = convertView;
 
         // Check if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.scanned_list_items, parent, false);
+        if (view == null) {
+            view = LayoutInflater.from(getContext()).inflate(R.layout.scanned_list_items, parent, false);
         }
 
         // Lookup view for data population
-        TextView headingView = convertView.findViewById(R.id.heading);
-        TextView subheading1View = convertView.findViewById(R.id.subheading1);
-        TextView subheading2View = convertView.findViewById(R.id.subheading2);
-        TextView subheading3View = convertView.findViewById(R.id.subheading3);
+        Event event = events.get(position);
+        TextView eventName = convertView.findViewById(R.id.event_title);
+        TextView eventDate = convertView.findViewById(R.id.event_date);
+        TextView eventTime = convertView.findViewById(R.id.event_time);
+        TextView orgName = convertView.findViewById(R.id.organizer_name);
 
         // Populate the data into the template view using the data object
-        headingView.setText(listItem.getHeading());
-        subheading1View.setText(listItem.getSubheading1());
-        subheading2View.setText(listItem.getSubheading2());
-        subheading3View.setText(listItem.getSubheading3());
+        eventName.setText(event.getEventName());
+        eventDate.setText(event.getEventDate() != null ? event.getEventDate().toString() : "No Date");
+        eventTime.setText(event.getEventTime());
+        orgName.setText(event.getOrganizer() != null ? event.getEventDate().toString() : "No Org");
 
-        // Return the completed view to render on screen
-        return convertView;
+        return view;
     }
 }

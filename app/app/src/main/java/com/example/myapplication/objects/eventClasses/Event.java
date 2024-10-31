@@ -4,6 +4,9 @@ import android.media.Image;
 
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.google.firebase.firestore.IgnoreExtraProperties;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,57 +14,74 @@ import java.util.Date;
 /**
  * Event Class
  * Author: Erin-Marie
- * Purpose: Event object contains all information and methods for an event an organizer creates
+ * Purpose: Event object contains all information and methods for an event an
+ * organizer creates
  * TODO: make method for creating a QR code
- *       make methods for ending the contest and selecting winners
- *       make getters and setters for the winnersList and loserList
- *       make method for notifying winners and losers and sending their invitations
- *       make method for making the list of confirmed attendants
- *       make method for selecting a new winner if someone rejects an invitation
- *       add db interaction through EventDB controller class for all methods
- *       make method for organizer to send a notification with custom message to all users of specific group
+ * make methods for ending the contest and selecting winners
+ * make getters and setters for the winnersList and loserList
+ * make method for notifying winners and losers and sending their invitations
+ * make method for making the list of confirmed attendants
+ * make method for selecting a new winner if someone rejects an invitation
+ * add db interaction through EventDB controller class for all methods
+ * make method for organizer to send a notification with custom message to all
+ * users of specific group
  */
+@IgnoreExtraProperties // Ignore extra properties from Firebase
 public class Event {
-    //Other class objects connected to the event
-    Facility facility; //Facility where the event is held
-    UserProfile organizer; //User who organized the event
+    // Other class objects connected to the event
+    private Facility facility; // Facility where the event is held
+    private UserProfile organizer; // User who organized the event
 
-    //For the details of the event
-    String eventName;
-    Image eventPoster; //the event poster image
-    Date eventDate; //date the actual event will occur
-    Integer maxEntrants; //-1 if organizer does not want to restrict capacity
-    Boolean geoLocation; //False if organizer does not require entrants to have geoLocation on
-    //TODO: need QR code attribute idk how that is stored though
+    // For the details of the event
+    private String eventName;
+    private String eventPoster; // URL or base64 string for the event poster image
+    private Date eventDate; // date the actual event will occur
+    private String eventTime; // Sam: I added this variable, not sure what type it should be
+    private Integer maxEntrants; // -1 if organizer does not want to restrict capacity
+    private Boolean geoLocation; // False if organizer does not require entrants to have geoLocation on
+    // TODO: need QR code attribute idk how that is stored though
 
-    //For status of the lottery
-    Date lotteryCloses; //date winners will be selected and notified
-    Boolean eventOver; //False until the event attendance list is finalized, or the eventDate has passed
-    Boolean eventFull; //False if there is still room for entrants, or if maxAttendents == -1
-    ArrayList<UserProfile> entrantsList; //list of all entrants
-    ArrayList<UserProfile> winnersList; //list of all users who won the lottery, may have max length equal to maxAttendents, unless maxAttendents == -1
-    ArrayList<UserProfile> losersList; //list of all users who lost the lottery
+    // For status of the lottery
+    private Date lotteryCloses; // date winners will be selected and notified
+    private Boolean eventOver; // False until the event attendance list is finalized, or the eventDate has
+                               // passed
+    private Boolean eventFull; // False if there is still room for entrants, or if maxAttendents == -1
+    private ArrayList<UserProfile> entrantsList; // list of all entrants
+    private ArrayList<UserProfile> winnersList; // list of all users who won the lottery, may have max length equal to
+                                                // maxAttendents, unless maxAttendents == -1
+    private ArrayList<UserProfile> losersList; // list of all users who lost the lottery
 
-    //Event Class Constructor
-    public Event(Facility facility, UserProfile organizer, String eventName, Image eventPoster, Date eventDate, Integer maxEntrants, Date lotteryCloses, Boolean geoLocation) {
+    // Editor: Sam
+    // No-arg constructor for Firebase
+    private Event() {
+        // Initialize lists to avoid null references
+        this.entrantsList = new ArrayList<>();
+        this.winnersList = new ArrayList<>();
+        this.losersList = new ArrayList<>();
+    }
+
+    // Event Class Constructor
+    public Event(Facility facility, UserProfile organizer, String eventName, String eventPoster, Date eventDate,
+            Integer maxEntrants, Date lotteryCloses, Boolean geoLocation) {
         this.facility = facility;
         this.organizer = organizer;
         this.eventName = eventName;
-        this.eventPoster = eventPoster; //can be null
-        this.eventDate = eventDate; //event date is converted to a date when the input is taken
+        this.eventPoster = eventPoster; // can be null
+        this.eventDate = eventDate; // event date is converted to a date when the input is taken
+        this.eventTime = eventTime;
         this.maxEntrants = maxEntrants;
         this.lotteryCloses = lotteryCloses;
         this.geoLocation = geoLocation;
         this.eventFull = Boolean.FALSE; // event capacity cannot be 0, so it is always false at init
-        this.entrantsList = new ArrayList<UserProfile>(); //have to intialize so .size() wont return null
-        this.winnersList = new ArrayList<UserProfile>(); //have to intialize so .size() wont return null
-        this.losersList = new ArrayList<UserProfile>(); //have to intialize so .size() wont return null
+        this.entrantsList = new ArrayList<>(); // have to intialize so .size() wont return null
+        this.winnersList = new ArrayList<>(); // have to intialize so .size() wont return null
+        this.losersList = new ArrayList<>(); // have to intialize so .size() wont return null
 
-        //TODO: Need to create QR code and do something with hash data
+        // TODO: Need to create QR code and do something with hash data
 
     }
 
-    //Getters and Setters
+    // Getters and Setters
     public Facility getFacility() {
         return facility;
     }
@@ -70,6 +90,7 @@ public class Event {
         this.facility = facility;
     }
 
+    @Nullable //Sam: added Nullable for testing purpose
     public UserProfile getOrganizer() {
         return organizer;
     }
@@ -86,16 +107,25 @@ public class Event {
         this.eventName = eventName;
     }
 
-    public Image getEventPoster() {
+    public String getEventPoster() {
         return eventPoster;
     }
 
-    public void setEventPoster(Image eventPoster) {
+    public void setEventPoster(String eventPoster) {
         this.eventPoster = eventPoster;
     }
 
+    @Nullable //Sam: added Nullable for testing purpose
     public Date getEventDate() {
         return eventDate;
+    }
+
+    public String getEventTime() {
+        return eventTime;
+    }
+
+    public void setEventTime(String eventTime) {
+        this.eventTime = eventTime;
     }
 
     public void setEventDate(Date eventDate) {
@@ -108,7 +138,8 @@ public class Event {
 
     public void setMaxEntrants(Integer maxEntrants) {
         this.maxEntrants = maxEntrants;
-        setEventFull(); //if they choose to add a capacity, update whether the event is already full. No entrants are removed if the event is already over the capacity.
+        setEventFull(); // if they choose to add a capacity, update whether the event is already full.
+                        // No entrants are removed if the event is already over the capacity.
     }
 
     public Date getLotteryCloses() {
@@ -127,15 +158,16 @@ public class Event {
         this.eventOver = eventOver;
     }
 
-    public ArrayList<UserProfile> getEntrants(){
+    public ArrayList<UserProfile> getEntrants() {
         return this.entrantsList;
     }
 
     /**
      * returns count of how many users have entered the event lottery
+     * 
      * @return
      */
-    public Integer countEntrants(){
+    public Integer countEntrants() {
         return this.entrantsList.size();
     }
 
@@ -144,18 +176,18 @@ public class Event {
      * Called anytime an entrant is added or removed from the entrants list
      * Updates whether the event entrant limit has been reached
      * TESTED: tested in EventTests.java testAddEntrant()
-     *         if capacity is already maxed,
-     *         if capacity is 1, then add new entrant, now check that it is returning maxed
+     * if capacity is already maxed,
+     * if capacity is 1, then add new entrant, now check that it is returning maxed
      */
-    public void setEventFull(){
-        if (this.maxEntrants == -1 | this.maxEntrants > this.entrantsList.size()){
+    public void setEventFull() {
+        if (this.maxEntrants == -1 | this.maxEntrants > this.entrantsList.size()) {
             this.eventFull = Boolean.FALSE;
         } else {
             this.eventFull = Boolean.TRUE;
         }
     }
 
-    public Boolean getEventFull(){
+    public Boolean getEventFull() {
         return this.eventFull;
     }
 
@@ -163,23 +195,28 @@ public class Event {
      * Author: Erin-Marie
      * Adds an entrant to the list of entrants for the event
      * Checks that the entrant is not already in the list of entrants
+     * 
      * @param entrant UserProfile that wants to enter event lottery
      * @return 1 if the user was added to the entrant list, or 0 if not
-     * calling function needs to add the event to the users myevents list, dependent on the return value of addEntrant
-     * TODO: needs to update firebase db
-     * TESTED: tested in EventTests.java testAddEntrant()
+     *         calling function needs to add the event to the users myevents list,
+     *         dependent on the return value of addEntrant
+     *         TODO: needs to update firebase db
+     *         TESTED: tested in EventTests.java testAddEntrant()
      *         if capacity it maxed, should return 0
-     *         if capacity is not maxed, should return 1 and check that the entrant is now in the entrantsList
+     *         if capacity is not maxed, should return 1 and check that the entrant
+     *         is now in the entrantsList
      */
-    public int addEntrant(UserProfile entrant){
-        //check that entrant is not already in the entrantList, and the event is not full
-        if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE){
+    public int addEntrant(UserProfile entrant) {
+        // check that entrant is not already in the entrantList, and the event is not
+        // full
+        if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE) {
             this.entrantsList.add(entrant);
-            //entrant.addEvent(this); //add the event to the entrants list of events
-            setEventFull(); //update whether the event is full
-            return 1; }
+            // entrant.addEvent(this); //add the event to the entrants list of events
+            setEventFull(); // update whether the event is full
+            return 1;
+        }
 
-        //return 0 if user is not added to the list
+        // return 0 if user is not added to the list
         return 0;
     }
 
@@ -187,14 +224,16 @@ public class Event {
      * Author: Erin-Marie
      * Adds an entrant to the list of entrants for the event
      * Checks that the entrant is not already in the list of entrants
+     * 
      * @param entrant UserProfile that wants to un-enter the event lottery
-     * TODO: needs to update firebase db
-     * TESTME: check that entrant is actually removed from the entrantList
+     *                TODO: needs to update firebase db
+     *                TESTME: check that entrant is actually removed from the
+     *                entrantList
      */
-    public void removeEntrant(UserProfile entrant){
+    public void removeEntrant(UserProfile entrant) {
         this.entrantsList.remove(entrant);
         entrant.leaveEvent(this); // remove the event from the entrants list of events
-        setEventFull(); //update whether the event is full
+        setEventFull(); // update whether the event is full
     }
 
 }
