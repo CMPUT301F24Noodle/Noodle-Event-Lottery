@@ -14,9 +14,9 @@ import com.example.myapplication.R;
 
 import java.util.List;
 
-public class CustomAdapter extends ArrayAdapter<ListItem> {
+public class MyEventsListArrayAdapter extends ArrayAdapter<ListItem> {
 
-    public CustomAdapter(@NonNull Context context, @NonNull List<ListItem> items) {
+    public MyEventsListArrayAdapter(@NonNull Context context, @NonNull List<ListItem> items) {
         super(context, 0, items);
     }
 
