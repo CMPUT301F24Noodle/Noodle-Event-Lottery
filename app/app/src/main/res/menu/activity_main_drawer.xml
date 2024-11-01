@@ -23,7 +23,7 @@
         <item
             android:id="@+id/nav_registered"
             android:icon="@drawable/registered_events"
-            android:title="@string/menu_registeredevents" />
+            android:title="@string/menu_enteredevents" />
         <item
             android:id="@+id/nav_admin"
             android:icon="@drawable/admin_menu"
