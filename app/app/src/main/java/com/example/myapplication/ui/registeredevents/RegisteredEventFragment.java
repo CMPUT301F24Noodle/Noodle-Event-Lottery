@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplication.databinding.FragmentRegisteredEventsBinding;
-import com.example.myapplication.ui.home.CustomAdapter;
+import com.example.myapplication.ui.home.MyEventsListArrayAdapter;
 import com.example.myapplication.ui.home.ListItem;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class RegisteredEventFragment extends Fragment {
         sampleList.add(new ListItem("Event Beta", "12 April 2022", "Why are we here?", "Sleepy Rn"));
 
         // Set up the custom adapter
-        CustomAdapter adapter = new CustomAdapter(requireContext(), sampleList);
+        MyEventsListArrayAdapter adapter = new MyEventsListArrayAdapter(requireContext(), sampleList);
 
         listView.setAdapter(adapter);
         return root;
