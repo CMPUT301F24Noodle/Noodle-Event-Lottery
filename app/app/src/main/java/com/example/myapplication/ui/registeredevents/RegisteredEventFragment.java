@@ -36,9 +36,9 @@ public class RegisteredEventFragment extends Fragment {
         sampleList.add(new ListItem("Event Beta", "12 April 2022", "Why are we here?", "Sleepy Rn"));
 
         // Set up the custom adapter
-        MyEventsListArrayAdapter adapter = new MyEventsListArrayAdapter(requireContext(), sampleList);
+       // MyEventsListArrayAdapter adapter = new MyEventsListArrayAdapter(requireContext(), sampleList);
 
-        listView.setAdapter(adapter);
+        //listView.setAdapter(adapter);
         return root;
     }
 

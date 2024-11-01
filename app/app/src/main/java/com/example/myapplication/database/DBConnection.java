@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
@@ -127,61 +128,6 @@ public class DBConnection {
         return docRef;
     }
 
-
-//    /**
-//     * Author: Erin-Marie
-//     * returns a snapshot (the contents) of a single document that is passed to it
-//     *
-//     * @param docRef a DocumentReference to a document that does or does not exist in the DB
-//     * @return returns a DocumentSnapshot of the document, or null if the document does not exist
-//     * TESTME
-//     */
-//    public void getDocumentSnapshot(DocumentReference docRef, getDocumentSnapshotCallback callback) {
-//        //final UserProfile[] user = new UserProfile[1];
-//
-//        return docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        UserProfile user = document.toObject(UserProfile.class);
-//                    } else {
-//                        Log.d("TAG", "No such document");
-//                    }
-//                } else {
-//                    Log.d("TAG", "get failed with ", task.getException());
-//                }
-//            }
-//            callback.onCallback(user);
-//        });
-//    }
-
-
-
-
-
-//                new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                Boolean doesExist = Boolean.FALSE;
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        doesExist = Boolean.TRUE;
-//                    } else {
-//                        Log.d("TAG", "No such document");
-//                    }
-//                } else {
-//                    Log.d("TAG", "get failed with ", task.getException());
-//                }
-//                callback.onCallback(doesExist);
-//            }
-//
-//        });
-
-
-
     /**
      * Author: Erin-Marie
      * getFacilityDocument() retrieves a reference to the users facility
@@ -198,7 +144,7 @@ public class DBConnection {
     /**
      * Author: Erin-Marie
      * getAllUsersCollection() retrieves a reference to the AllUsersCollection
-     * @return returns a DocumentReference to the Facility associated with the current UUID
+     * @return returns a DocumentReference to the user associated with the current UUID
      * The document contains the Facility information
      * TESTME
      */
@@ -207,6 +153,14 @@ public class DBConnection {
     }
 
 
-
+    /**
+     * Author: Erin-Marie
+     * getAllEventsCollection() retrieves a reference to the AllEventsCollection
+     * @return returns a DocumentReference to the AllEvents collection
+     * TESTME
+     */
+    public CollectionReference getAllEventsCollection(){
+        return this.db.collection("AllEvents");
+    }
 
 }

@@ -13,7 +13,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 /**
  * Author: Erin-Marie
  * class that does all database operations for UserProfile objects
- * QUESTION: where is the instance of the UserDB that will call these methods?
  */
 public class UserDB {
 
