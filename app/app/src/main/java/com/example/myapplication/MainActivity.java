@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.databinding.ActivityMainBinding;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.auth.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,9 +58,20 @@ public class MainActivity extends AppCompatActivity {
                 navController.navigate(R.id.nav_qr_fragment);
 //                Event event = new Event();
 //                String eventId = eventDB.addEvent(event);
+//                ;
 //                if (eventId != null){
+//                    event.setEventID(eventId);
 //                    Log.v(TAG, "eventid returned to main");
+//                    event.addEntrant(userDB.getUserDocument());
+//                    UserProfile user = userDB.getCurrentUser();
+//                    if (user != null){
+//                        user.addEvent(event);
+//                        userDB.updateUserDocument(user);
+//                    }
+//                    eventDB.updateEvent(event);
+//
 //              }
+
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
@@ -68,8 +80,9 @@ public class MainActivity extends AppCompatActivity {
         // menu should be considered as top level destinations.g
         // TODO: add UserProfile to the nav drawer so it can be selected and we can view
         // the UserProfile fragment
+        //MAYBE: to add nav_home activity back into the menu, uncomment the MAYBE below, as well as both MAYBE in mobile_navigation.XML and in activity_drawer_main.XML
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_profile, R.id.nav_myevents, R.id.nav_registered)
+                /*MAYBE R.id.nav_home,*/ R.id.nav_profile, R.id.nav_myevents, R.id.nav_registered)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
