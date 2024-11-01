@@ -20,9 +20,9 @@ public class MyEventsListArrayAdapter extends ArrayAdapter<Event> {
     private ArrayList<Event> events;
     private Context context;
 
-    public MyEventsListArrayAdapter(@NonNull Context context, @NonNull List<Event> items) {
-        super(context, 0, items);
-        this.events = new ArrayList<>(events);
+    public MyEventsListArrayAdapter(@NonNull Context context, @NonNull ArrayList<Event> events) {
+        super(context, 0, events);
+        this.events = events;
         this.context = context;
     }
 
@@ -38,10 +38,10 @@ public class MyEventsListArrayAdapter extends ArrayAdapter<Event> {
 
         // Lookup view for data population
         Event event = events.get(position);
-        TextView eventName = convertView.findViewById(R.id.event_title);
-        TextView eventDate = convertView.findViewById(R.id.event_date);
-        TextView eventTime = convertView.findViewById(R.id.event_time);
-        TextView orgName = convertView.findViewById(R.id.organizer_name);
+        TextView eventName = view.findViewById(R.id.event_title);
+        TextView eventDate = view.findViewById(R.id.event_date);
+        TextView eventTime = view.findViewById(R.id.event_time);
+        TextView orgName = view.findViewById(R.id.organizer_name);
 
         // Populate the data into the template view using the data object
         eventName.setText(event.getEventName());
