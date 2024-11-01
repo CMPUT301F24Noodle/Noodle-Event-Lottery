@@ -9,8 +9,6 @@ import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -60,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         // TODO: add UserProfile to the nav drawer so it can be selected and we can view
         // the UserProfile fragment
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.view_profile, R.id.nav_myevents, R.id.nav_registered)
+                R.id.nav_home, R.id.nav_profile, R.id.nav_myevents, R.id.nav_registered)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);

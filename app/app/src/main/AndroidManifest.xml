@@ -28,8 +28,11 @@
 
         <activity
             android:name=".ui.user_profile.MyProfileActivity"
-            android:label="MyProfile" />
+            android:label="My Profile" />
 
+<!--        <activity-->
+<!--            android:name=".ui.notifications.NotificationsFragment"-->
+<!--            android:label="My Notifications" />-->
 
         <meta-data
             android:name="preloaded_fonts"
