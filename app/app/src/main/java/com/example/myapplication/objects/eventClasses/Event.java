@@ -53,7 +53,7 @@ public class Event {
 
     // Editor: Sam
     // No-arg constructor for Firebase
-    private Event() {
+    public Event() {
         // Initialize lists to avoid null references
         this.entrantsList = new ArrayList<>();
         this.winnersList = new ArrayList<>();

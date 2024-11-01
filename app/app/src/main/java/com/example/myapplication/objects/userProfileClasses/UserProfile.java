@@ -56,7 +56,7 @@ public class UserProfile {
         this.geoLocationOn = Boolean.FALSE; //defaults to false, need to ask user for permission first
         this.isAdmin = Boolean.FALSE;
         this.uuid = uuid;
-
+        //this.myEvents = ;
 
 
 

@@ -55,10 +55,11 @@ public class MainActivity extends AppCompatActivity {
                 NavController navController = Navigation.findNavController(MainActivity.this,
                         R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.nav_qr_fragment);
-//                Event event = eventDB.getEvent("testevent");
-//                if (event != null){
-//                    Log.v(TAG, "event returned to main");
-//                }
+//                Event event = new Event();
+//                String eventId = eventDB.addEvent(event);
+//                if (eventId != null){
+//                    Log.v(TAG, "eventid returned to main");
+//              }
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
