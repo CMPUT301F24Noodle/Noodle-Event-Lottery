@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         // menu should be considered as top level destinations.
         //TODO: add UserProfile to the nav drawer so it can be selected and we can view the UserProfile fragment
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_myevents, R.id.nav_registered)
+                R.id.nav_home, R.id.view_profile, R.id.nav_myevents, R.id.nav_registered)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
