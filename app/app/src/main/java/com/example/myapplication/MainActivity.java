@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.Menu;
 
 import com.example.myapplication.database.DBConnection;
+import com.example.myapplication.database.EventDB;
 import com.example.myapplication.database.UserDB;
+import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -25,10 +25,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 public class MainActivity extends AppCompatActivity {
 
+    //for logcat
+    private String TAG = "Main Activity";
+
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     public DBConnection connection;
     public UserDB userDB; // userDB instance for the current user
+    public EventDB eventDB;
     public String uuid;
     public UserProfile user;
 
@@ -47,10 +51,14 @@ public class MainActivity extends AppCompatActivity {
         binding.appBarMain.qrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 NavController navController = Navigation.findNavController(MainActivity.this,
                         R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.nav_qr_fragment);
-                testUpdate();
+//                Event event = eventDB.getEvent("testevent");
+//                if (event != null){
+//                    Log.v(TAG, "event returned to main");
+//                }
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
@@ -60,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         // TODO: add UserProfile to the nav drawer so it can be selected and we can view
         // the UserProfile fragment
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.view_profile, R.id.nav_myevents, R.id.nav_registered)
+                R.id.nav_home, R.id.nav_profile, R.id.nav_myevents, R.id.nav_registered)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -94,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         // fault
         this.connection = new DBConnection(this); // connection to the base db
         this.userDB = new UserDB(this.connection); // the current users collection reference
+        this.eventDB = new EventDB(this.connection);
         this.uuid = connection.getUUID(); // store the current users uuid
         // check if the user is already in the db
         this.userDB.checkUserExists(new OnSuccessListener<DocumentSnapshot>() {

@@ -1,5 +1,8 @@
 package com.example.myapplication.ui.notifications;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 /**
  * Author: Erin-Marie
  * USERSTORIES: US.01.04.01, US.01.04.02
@@ -7,6 +10,6 @@ package com.example.myapplication.ui.notifications;
  * TODO: make the class that will represent the notifications activity
  *       display the users array of notifications, notifications are not interacted with beyond scrolling
  */
-public class NotificationsFragment {
+public class NotificationsFragment extends Fragment {
 
 }
