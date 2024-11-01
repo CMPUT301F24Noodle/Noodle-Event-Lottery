@@ -23,7 +23,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
-    private List<Event> eventList;
+    private ArrayList<Event> eventList;
     private MyEventsListArrayAdapter adapter;
 
     @Override
