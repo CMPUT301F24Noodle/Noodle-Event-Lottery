@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -20,7 +19,7 @@ public class UserDB {
     private final static String TAG = "UserDB";
 
     //reference to the current users document in the AllUsers collection
-    public DocumentReference userDocument;
+    public DocumentReference userDocumentReference;
     public DBConnection storeConnection;
     public CollectionReference allUsers;
     public FirebaseFirestore db;
@@ -32,7 +31,7 @@ public class UserDB {
         this.storeConnection = connection;
         this.allUsers = connection.getAllUsersCollection();
         this.uuid = connection.getUUID();
-        this.userDocument = connection.getUserDocumentRef();
+        this.userDocumentReference = connection.getUserDocumentRef();
         this.db = connection.getDB();
     }
 
@@ -44,8 +43,8 @@ public class UserDB {
         this.storeConnection = storeConnection;
     }
 
-    public void setUserDocument(DocumentReference userDocument) {
-        this.userDocument = userDocument;
+    public void setUserDocumentReference(DocumentReference userDocumentReference) {
+        this.userDocumentReference = userDocumentReference;
     }
 
     public FirebaseFirestore getDb() {
@@ -86,9 +85,9 @@ public class UserDB {
      * Getter for the DocumentReference of the current users document in AllUsers collection
      * @return DocumentReference of the current users document in AllUsers collection
      */
-    public DocumentReference getUserDocument(){
-        this.userDocument = this.storeConnection.getUserDocumentRef();
-        return this.userDocument;
+    public DocumentReference getUserDocumentReference(){
+        this.userDocumentReference = this.storeConnection.getUserDocumentRef();
+        return this.userDocumentReference;
     }
 
     /**
@@ -101,7 +100,7 @@ public class UserDB {
     public void addCurrentUser(){
         UserProfile newUser = new UserProfile(this.uuid);
         this.db.collection("AllUsers").document("User" + uuid).set(newUser);
-        this.userDocument = getUserDocument();
+        this.userDocumentReference = this.db.collection("AllUsers").document("User" + uuid);
         this.currentUser = newUser;
         Log.v("DatabaseRead", "Successfully added New user to db, User:  " + newUser.getUuid());
     }
@@ -115,9 +114,8 @@ public class UserDB {
      * Reference <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/firestore/DocumentSnapshot">...</a>
      */
     public void setCurrentProfile(DocumentSnapshot snapshot){
-        UserProfile user = snapshot.toObject(UserProfile.class);
-        this.currentUser = user;
-        this.userDocument = getUserDocument();
+        this.currentUser = snapshot.toObject(UserProfile.class);
+        this.userDocumentReference = getUserDocumentReference();
 
     }
 
@@ -151,7 +149,7 @@ public class UserDB {
      * QUESTION: idk how this'll react to arrays
      */
     public void updateUserDocument(UserProfile user){
-        this.userDocument.set(user);
+        this.userDocumentReference.set(user);
     }
     
 }

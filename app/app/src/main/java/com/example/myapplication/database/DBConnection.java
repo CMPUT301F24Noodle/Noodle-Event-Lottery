@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -127,6 +128,28 @@ public class DBConnection {
         DocumentReference docRef = this.db.collection("AllUsers").document("User" + uuid);
         return docRef;
     }
+
+    /**
+     * returns the document reference for the event with the given eventID
+     * @param eventID event id of interest
+     * @return docRef for the event
+     */
+    public DocumentReference getEventDocumentRef(String eventID){
+        DocumentReference docRef = this.db.collection("AllEvents").document(eventID);
+        return docRef;
+    }
+
+    /**
+     * returns the document reference for the event with the given eventID
+     * @param event event object of interest
+     * @return docRef for the event
+     */
+    public DocumentReference getEventDocumentRef(Event event){
+        String eventID = event.getEventID();
+        return getEventDocumentRef(eventID);
+    }
+
+
 
     /**
      * Author: Erin-Marie

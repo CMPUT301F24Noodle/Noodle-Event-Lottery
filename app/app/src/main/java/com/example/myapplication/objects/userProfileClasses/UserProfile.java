@@ -7,6 +7,7 @@ import android.media.Image;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.facilityClasses.Facility;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -26,10 +27,10 @@ public class UserProfile {
     String address;
     Image profilePicture;
     Integer privileges; //0 is default, means they are just an entrant, 1 means they also have organizer privilege
-    ArrayList<Event> myEvents; //the users ENTERED events
+    ArrayList<DocumentReference> myEvents; //the users ENTERED events
     String uuid;
     //organizer privilege attributes
-    ArrayList<Event> myOrgEvents; //the users ORGANIZED events
+    ArrayList<DocumentReference> myOrgEvents; //the users ORGANIZED events
     Facility myFacility ; //the users facility they created, can only have one
 
     Boolean isAdmin; //true if the user has admin privileges
@@ -40,6 +41,8 @@ public class UserProfile {
 
 
     public UserProfile() {} //need for firebase
+
+
 
     /**
      * Author: Erin-Marie
@@ -56,6 +59,8 @@ public class UserProfile {
         this.geoLocationOn = Boolean.FALSE; //defaults to false, need to ask user for permission first
         this.isAdmin = Boolean.FALSE;
         this.uuid = uuid;
+        this.myEvents = new ArrayList<DocumentReference>();
+        this.myOrgEvents = new ArrayList<DocumentReference>();
         //this.myEvents = ;
 
 
@@ -63,6 +68,15 @@ public class UserProfile {
 
         //TODO: make a res file with a default profile picture to use until a user submits their own
         //this.profilePicture =
+    }
+
+
+    public void setMyEvents(ArrayList<DocumentReference> myEvents) {
+        this.myEvents = myEvents;
+    }
+
+    public void setMyOrgEvents(ArrayList<DocumentReference> myOrgEvents) {
+        this.myOrgEvents = myOrgEvents;
     }
 
     public Facility getMyFacility() {
@@ -139,11 +153,11 @@ public class UserProfile {
         this.privileges = privileges;
     }
 
-    public ArrayList<Event> getMyEvents() {
+    public ArrayList<DocumentReference> getMyEvents() {
         return myEvents;
     }
 
-    public ArrayList<Event> getMyOrgEvents() {
+    public ArrayList<DocumentReference> getMyOrgEvents() {
         return myOrgEvents;
     }
 
@@ -217,12 +231,12 @@ public class UserProfile {
      * adds an event to the users list of entered events
      * assumes that the entrant has already been approved to enter the event ie the addEntrant method of the event class has already been executed
      * called by the addEntrant() method of the Event class
-     * @param event the Event being entered
+     * @param event the doc reference for the Event being entered
      * TODO: need to update firebase
      * TESTME: test that the event is now in myEvents
      */
     public void addEvent(Event event) {
-        this.myEvents.add(event);
+        myEvents.add(event.getDocRef());
     }
 
     /**
@@ -231,11 +245,10 @@ public class UserProfile {
      * assumes that the entrant has already been removed from the events list of entrants
      * called by the removeEntrant() method of the Event class
      * @param event the Event being left
-     * TODO: need to update firebase
      * TESTME: test that the event is no longer in myEvents
      */
     public void leaveEvent(Event event){
-        this.myEvents.remove(event);
+        this.myEvents.remove(event.getDocRef());
     }
 
     /**
@@ -245,7 +258,7 @@ public class UserProfile {
      * TESTME: test that the event is returning correct bool
      */
     public Boolean checkIsEntrant(Event event){
-        return this.myEvents.contains(event);
+        return this.myEvents.contains(event.getDocRef());
     }
 
     /**
@@ -253,15 +266,16 @@ public class UserProfile {
      * adds an event to the users list of organized events
      * checks that the event is hosted at the users facility, and is not already in their list of events, if not, returns 1
      * @param event the Event being created
-     * TODO: need to update firebase
+     * @return 1 if the user cannot create the event
+     * @return 2 if the user successfully created the event
      * TESTME: test that the event is now in myOrgEvents
      *         test that the method returns 1 if the event facility is not the users facility
      */
     public Integer addOrgEvent(Event event) {
-        if (event.getFacility() != myFacility | myOrgEvents.contains(event)) {
+        if (event.getFacility() != myFacility | myOrgEvents.contains(event.getDocRef())) {
             return 1;
         }else{
-            this.myOrgEvents.add(event);
+            this.myOrgEvents.add(event.getDocRef());
             return 0;
         }
 

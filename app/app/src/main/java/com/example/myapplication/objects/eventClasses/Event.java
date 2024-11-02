@@ -1,12 +1,13 @@
 package com.example.myapplication.objects.eventClasses;
 
-import android.media.Image;
-
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import org.jetbrains.annotations.Nullable;
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +35,8 @@ public class Event {
 
     // For the details of the event
     private String eventName;
+    private String eventID;
+    private DocumentReference docRef;
     private String eventPoster; // URL or base64 string for the event poster image
     private Date eventDate; // date the actual event will occur
     private String eventTime; // Sam: I added this variable, not sure what type it should be
@@ -46,10 +49,10 @@ public class Event {
     private Boolean eventOver; // False until the event attendance list is finalized, or the eventDate has
                                // passed
     private Boolean eventFull; // False if there is still room for entrants, or if maxAttendents == -1
-    private ArrayList<UserProfile> entrantsList; // list of all entrants
-    private ArrayList<UserProfile> winnersList; // list of all users who won the lottery, may have max length equal to
+    private ArrayList<DocumentReference> entrantsList; // list of all entrants, by document reference
+    private ArrayList<DocumentReference> winnersList; // list of all users who won the lottery, may have max length equal to
                                                 // maxAttendents, unless maxAttendents == -1
-    private ArrayList<UserProfile> losersList; // list of all users who lost the lottery
+    private ArrayList<DocumentReference> losersList; // list of all users who lost the lottery
 
     // Editor: Sam
     // No-arg constructor for Firebase
@@ -73,7 +76,7 @@ public class Event {
         this.lotteryCloses = lotteryCloses;
         this.geoLocation = geoLocation;
         this.eventFull = Boolean.FALSE; // event capacity cannot be 0, so it is always false at init
-        this.entrantsList = new ArrayList<>(); // have to intialize so .size() wont return null
+        this.entrantsList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
         this.winnersList = new ArrayList<>(); // have to intialize so .size() wont return null
         this.losersList = new ArrayList<>(); // have to intialize so .size() wont return null
 
@@ -88,6 +91,14 @@ public class Event {
 
     public void setFacility(Facility facility) {
         this.facility = facility;
+    }
+
+    public void setDocRef(DocumentReference docRef){
+        this.docRef = docRef;
+    }
+
+    public DocumentReference getDocRef(){
+        return this.docRef;
     }
 
     @Nullable //Sam: added Nullable for testing purpose
@@ -158,10 +169,21 @@ public class Event {
         this.eventOver = eventOver;
     }
 
-    public ArrayList<UserProfile> getEntrants() {
+    public ArrayList<DocumentReference> getEntrantsList() {
         return this.entrantsList;
     }
 
+    public ArrayList<DocumentReference> getWinnersList() {
+        return this.winnersList;
+    }
+
+    public ArrayList<DocumentReference> getLosersList() {
+        return this.losersList;
+    }
+
+    public String getEventID(){return this.eventID;}
+
+    public void setEventID(String eventID ){this.eventID = eventID;}
     /**
      * returns count of how many users have entered the event lottery
      * 
@@ -206,15 +228,29 @@ public class Event {
      *         if capacity is not maxed, should return 1 and check that the entrant
      *         is now in the entrantsList
      */
-    public int addEntrant(UserProfile entrant) {
-        // check that entrant is not already in the entrantList, and the event is not
-        // full
-        if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE) {
-            this.entrantsList.add(entrant);
-            // entrant.addEvent(this); //add the event to the entrants list of events
-            setEventFull(); // update whether the event is full
-            return 1;
-        }
+//    public int addEntrant(UserProfile entrant) {
+//        // check that entrant is not already in the entrantList, and the event is not
+//        // full
+////        if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE) {
+//            if (!this.entrantsList.contains(entrant)) {
+//                this.entrantsList.add(entrant);
+//                // entrant.addEvent(this); //add the event to the entrants list of events
+//                //setEventFull(); // update whether the event is full
+//                return 1;
+//            }
+
+    /**
+     * this is just for testing temporarily
+     */
+        public int addEntrant(DocumentReference entrant) {
+            // check that entrant is not already in the entrantList, and the event is not
+            // full
+            if (!this.entrantsList.contains(entrant)) {
+                this.entrantsList.add(entrant);
+                 //add the event to the entrants list of events
+                //setEventFull(); // update whether the event is full
+                return 1;
+            }
 
         // return 0 if user is not added to the list
         return 0;
@@ -230,9 +266,9 @@ public class Event {
      *                TESTME: check that entrant is actually removed from the
      *                entrantList
      */
-    public void removeEntrant(UserProfile entrant) {
+    public void removeEntrant(DocumentReference entrant) {
         this.entrantsList.remove(entrant);
-        entrant.leaveEvent(this); // remove the event from the entrants list of events
+        //entrant.leaveEvent(this.getEventID()); // remove the event from the entrants list of events
         setEventFull(); // update whether the event is full
     }
 
