@@ -1,10 +1,18 @@
 package com.example.myapplication.objects.eventClasses;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
+
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.IgnoreExtraProperties;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+
 
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Document;
@@ -42,7 +50,10 @@ public class Event {
     private String eventTime; // Sam: I added this variable, not sure what type it should be
     private Integer maxEntrants; // -1 if organizer does not want to restrict capacity
     private Boolean geoLocation; // False if organizer does not require entrants to have geoLocation on
-    // TODO: need QR code attribute idk how that is stored though
+
+    // QRCODE STUFF
+    private Bitmap QRCode; // the bitmap of the QR code
+    private String HashedString; // TODO for part 4, do stuff with hash
 
     // For status of the lottery
     private Date lotteryCloses; // date winners will be selected and notified
@@ -270,6 +281,48 @@ public class Event {
         this.entrantsList.remove(entrant);
         //entrant.leaveEvent(this.getEventID()); // remove the event from the entrants list of events
         setEventFull(); // update whether the event is full
+    }
+
+
+    // START OF QR CODE STUFF
+
+
+    public Bitmap getQRCode() {
+        return QRCode;
+    }
+
+    /**
+     * Author: Xavier Salm
+     * Generates a QR code for the event based on an input string
+     */
+    public Bitmap generateQRCode(String QRText, int width, int height) throws WriterException {
+        QRCodeWriter writer = new QRCodeWriter(); // create the thing that will encode the string
+
+        BitMatrix bitMatrix = writer.encode(QRText, BarcodeFormat.QR_CODE, width, height); // create a matrix of bits, where the bit in each cell determines if that pixel should be black or white
+
+        // TODO unit test that makes sure that width and height are equal to width and height of the matrix
+
+        // creates an empty QR code with the dimensions of bitMatrix
+        // the Bitmap.Config.RGB_565 is used because the QR code just needs to be black and white, and doesn't need a lot of colors
+        // basically, RGB_565 determines what colors can be assigned to which pixels
+        Bitmap QRCode = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+
+        // now fill out the bitmap to match the assignments of bitMatrix by going through each pixel
+        for (int row = 0; row < width; row++) {
+            for (int col = 0; col < height; col++) {
+                // for each pixel, set the pixel to white if its true in the bitmatrix, otherwise set it to white
+                int color;
+                if (bitMatrix.get(row, col)){
+                    color = Color.WHITE;
+                }
+                else{
+                    color = Color.BLACK;
+                }
+                QRCode.setPixel(row, col, color); // actually set the color for that pixel
+            }
+        }
+        this.QRCode = QRCode;
+        return QRCode;
     }
 
 }
