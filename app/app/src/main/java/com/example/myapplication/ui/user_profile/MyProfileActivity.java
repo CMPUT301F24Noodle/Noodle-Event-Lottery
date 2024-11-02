@@ -17,7 +17,6 @@ import com.example.myapplication.objects.userProfileClasses.UserProfile;
 /**
  * Author: Xavier Salm
  * Class for the activity for users to view their profile, and manage their facility.
- * TODO add other attributes to profile for phone number or address for example
  *
  */
 
@@ -68,6 +67,7 @@ public class MyProfileActivity extends AppCompatActivity {
         Button saveInfoButton = findViewById(R.id.profile_save_info_button);
         Switch toggleFacilitySwitch = findViewById(R.id.profile_facility_toggle_switch);
 
+        // BUTTON CONFIRMING A DELETION OF THE USER'S FACILITY
         deleteFacilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,6 +79,7 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
+        // BUTTON FOR SAVING ANY EDITS MADE TO THE TEXT FIELDS FOR USER OR FACILITY
         saveInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,6 +146,7 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
+        // SWITCH TO TOGGLE FACILITY FIELDS DISPLAY
         toggleFacilitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -163,9 +165,6 @@ public class MyProfileActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
 
     }
 }
