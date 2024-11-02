@@ -35,7 +35,7 @@
         android:id="@id/nav_notifications"
         android:name="com.example.myapplication.ui.notifications.NotificationsFragment"
         android:label="Notifications"
-        tools:layout="@layout/notifications_activty"/>
+        tools:layout="@layout/fragment_notifications"/>
 
     <fragment
         android:id="@id/nav_admin"

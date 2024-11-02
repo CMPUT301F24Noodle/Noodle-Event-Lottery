@@ -186,4 +186,15 @@ public class DBConnection {
         return this.db.collection("AllEvents");
     }
 
+
+    /**
+     * Author: Erin-Marie
+     * getAllNotificationsCollection() retrieves a reference to the AllUsersCollection
+     * @return returns a DocumentReference to the user associated with the current UUID
+     * The document contains the Facility information
+     * TESTME
+     */
+    public CollectionReference getAllNotificationsCollection(){
+        return this.db.collection("AllNotifications");
+    }
 }
