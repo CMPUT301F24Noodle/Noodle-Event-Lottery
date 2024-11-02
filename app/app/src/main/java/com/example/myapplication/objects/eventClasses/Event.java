@@ -76,7 +76,7 @@ public class Event {
 
     // Event Class Constructor
     public Event(Facility facility, UserProfile organizer, String eventName, String eventPoster, Date eventDate,
-                 Integer maxEntrants, Date lotteryCloses, Boolean geoLocation) {
+                 Integer maxEntrants, Date lotteryCloses, Boolean geoLocation) throws WriterException {
         this.facility = facility;
         this.organizer = organizer;
         this.eventName = eventName;
@@ -92,6 +92,9 @@ public class Event {
         this.losersList = new ArrayList<>(); // have to intialize so .size() wont return null
 
         // TODO: Need to create QR code and do something with hash data
+        if(this.eventID != null){
+            this.QRCode = generateQRCode(eventID, 200, 200);
+        }
 
     }
 
