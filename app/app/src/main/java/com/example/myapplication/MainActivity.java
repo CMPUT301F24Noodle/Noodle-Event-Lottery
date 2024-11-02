@@ -55,29 +55,13 @@ public class MainActivity extends AppCompatActivity {
                 NavController navController = Navigation.findNavController(MainActivity.this,
                         R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.nav_qr_fragment);
-                Event event = new Event();
-                //add event also sets the events attr for eventID and eventDocRef
-                eventDB.addEvent(event);
-                if (event.getEventID() != null){
-                    event.addEntrant(userDB.getUserDocumentReference());
-                    eventDB.updateEvent(event);
-                    UserProfile user = userDB.getCurrentUser();
-                    if (user != null){
-                        user.addEvent(event);
-                        userDB.updateUserDocument(user);
-                    }
-                    eventDB.updateEvent(event);
-
-              }
-
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.g
-        // TODO: add UserProfile to the nav drawer so it can be selected and we can view
-        // the UserProfile fragment
+        // TODONE: add UserProfile to the nav drawer so it can be selected and we can view the UserProfile fragment
         //MAYBE: to add nav_home activity back into the menu, uncomment the MAYBE below, as well as both MAYBE in mobile_navigation.XML and in activity_drawer_main.XML
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 /*MAYBE R.id.nav_home,*/ R.id.nav_profile, R.id.nav_myevents, R.id.nav_registered)
