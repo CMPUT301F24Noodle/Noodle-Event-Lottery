@@ -197,4 +197,10 @@ public class Event {
         setEventFull(); //update whether the event is full
     }
 
+    /**
+     * Author: Xavier Salm
+     */
+    public void generateQRCode(){
+        
+    }
 }
