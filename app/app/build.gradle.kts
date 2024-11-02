@@ -69,4 +69,6 @@ dependencies {
     
     implementation ("de.hdodenhof:circleimageview:3.1.0") //For Circular Profile Picture
 
+    implementation("com.google.zxing:core:3.4.1") // for QR code generation
+
 }
