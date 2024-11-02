@@ -28,5 +28,5 @@
         app:srcCompat="@drawable/ic_qr_scanner"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"/>
-    
+
 </androidx.constraintlayout.widget.ConstraintLayout>
