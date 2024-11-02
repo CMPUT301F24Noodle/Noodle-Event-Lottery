@@ -23,16 +23,10 @@ import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-// TODO: YOU CAN JUST MAKE IT AN INTERFACE THATS IMPLEMENTED HERE, THEN IT COULD UPDATE THE VIEWS AND BUTTON IN MAIN
-// TODO THIS WOULD STILL NEED DATABASE INTEGRATION SPECIFICALLY IF THE USER PROFILE GETS DELETED, BUT OTHER THAN THAT, ITS GOOD
 
 /**
  * Author: Xavier Salm
  * Class for the activity for users to view their profile, and manage their facility.
- * TODO: ADD METHOD TO GET DEVICE ID
- * TODO add all strings here and in xml to string resource file
- * TODO: add a way to know if a facility was succesfully created or removed (to make the now useless buttons invisible) and to update the text views for facility
- * TODO could do the above by just adding a database listener that updates things when it detects a change in database
  * TODO add other attributes to profile for phone number or address for example
  *
  */
@@ -109,9 +103,21 @@ public class MyProfileActivity extends AppCompatActivity {
                 String address = addressText.getText().toString();
 
                 // TODO verify proper input (no empty fields)
-                user.setEmail(email);
+                if(email.isEmpty()){
+                    emailText.setText(user.getEmail());
+                }
+                else{
+                    user.setEmail(email);
+
+                }
+
                 user.setPhoneNumber(number);
                 user.setAddress(address);
+
+                emailText.setText(user.getEmail());
+                phoneNumberText.setText(user.getPhoneNumber());
+
+                // TODO figure out how first name last name stuff is working
 
                 if(toggleFacilitySwitch.isChecked()){ // if the user can see facility stuff
                     // Get the new values and set them in the user's facility
