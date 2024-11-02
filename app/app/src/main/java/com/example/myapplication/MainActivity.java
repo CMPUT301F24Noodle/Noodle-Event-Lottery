@@ -62,12 +62,6 @@ public class MainActivity extends AppCompatActivity {
                         R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.nav_qr_fragment);
 
-                Event event = new Event();
-                event.setEventName("testeventname2");
-                ArrayList<DocumentReference> recipients = new ArrayList<DocumentReference>();
-                recipients.add(userDB.userDocumentReference);
-                Notification notif = new Notification("Did this work", recipients, event);
-                notifDB.addNotification(notif);
 
             }
         });
