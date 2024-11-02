@@ -101,19 +101,17 @@ public class MyProfileActivity extends AppCompatActivity {
                 String email = emailText.getText().toString();
                 String number = phoneNumberText.getText().toString();
                 String address = addressText.getText().toString();
-
-                // TODO verify proper input (no empty fields)
-                if(email.isEmpty()){
+                
+                // verify input
+                if(!email.isEmpty()){
                     emailText.setText(user.getEmail());
                 }
-                else{
-                    user.setEmail(email);
 
+                if (!number.isEmpty()){
+                    user.setPhoneNumber(number);
                 }
 
-                user.setPhoneNumber(number);
-                user.setAddress(address);
-
+                // set the text fields
                 emailText.setText(user.getEmail());
                 phoneNumberText.setText(user.getPhoneNumber());
 
