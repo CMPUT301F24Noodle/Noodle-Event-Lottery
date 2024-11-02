@@ -45,7 +45,10 @@ public class Event {
     private String eventTime; // Sam: I added this variable, not sure what type it should be
     private Integer maxEntrants; // -1 if organizer does not want to restrict capacity
     private Boolean geoLocation; // False if organizer does not require entrants to have geoLocation on
-    // TODO: need QR code attribute idk how that is stored though
+
+    // QRCODE STUFF
+    private Bitmap QRCode; // the bitmap of the QR code
+    private String HashedString; // the hash of the string used to encode it
 
     // For status of the lottery
     private Date lotteryCloses; // date winners will be selected and notified
@@ -56,6 +59,8 @@ public class Event {
     private ArrayList<UserProfile> winnersList; // list of all users who won the lottery, may have max length equal to
                                                 // maxAttendents, unless maxAttendents == -1
     private ArrayList<UserProfile> losersList; // list of all users who lost the lottery
+
+
 
     // Editor: Sam
     // No-arg constructor for Firebase
@@ -242,6 +247,13 @@ public class Event {
         setEventFull(); // update whether the event is full
     }
 
+    // START OF QR CODE STUFF
+
+
+    public Bitmap getQRCode() {
+        return QRCode;
+    }
+
     /**
      * Author: Xavier Salm
      * Generates a QR code for the event based on an input string
@@ -272,6 +284,7 @@ public class Event {
                 QRCode.setPixel(row, col, color); // actually set the color for that pixel
             }
         }
+        this.QRCode = QRCode;
         return QRCode;
     }
 
