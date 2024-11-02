@@ -11,10 +11,11 @@ import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentHomeBinding;
+import com.example.myapplication.ui.QRFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import android.content.Intent;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
