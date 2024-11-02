@@ -89,7 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/aleo_medium"
-        android:text="Waiting List: 9/10"
+        android:text="Current Participants: 33/45"
         android:textColor="@color/text_cyan"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -102,7 +102,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/anybody_light"
-        android:text="Current Status: Accepting Entries"
+        android:text="Current Status: Selected"
         android:textColor="@color/text_cyan"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -115,62 +115,32 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/event_status">
+        app:layout_constraintTop_toBottomOf="@id/event_status"
+        android:layout_marginTop="20dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/anybody_light"
-            android:text="@string/loc_confirm"
-            android:textAlignment="center"
-            android:textColor="@color/accent_pink"
-            android:textSize="14dp"/>
-
-        <CheckBox
-            android:id="@+id/location_sharing_checkbox"
+        <Button
+            android:id="@+id/accept_invite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/bonus_yellow" />
-    </LinearLayout>
+            android:fontFamily="@font/belanosima"
+            android:text="Accept"
+            android:layout_marginLeft="20dp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/event_save_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-        <TextView
+        <View
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_weight="1"
-            android:text="@string/register_for_lottery"
-            android:textColor="@color/text_cyan"
-            android:textSize="18dp" />
+            android:layout_weight="1" />
 
-        <Switch
-            android:id="@+id/lottery_switch"
+        <Button
+            android:id="@+id/decline_invite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="50dp"
-            android:thumbTint="@color/bonus_yellow"
-            android:trackTint="@color/bonus_yellow"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
+            android:fontFamily="@font/belanosima"
+            android:text="Decline"
+            android:layout_marginRight="20dp"/>
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/event_save_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

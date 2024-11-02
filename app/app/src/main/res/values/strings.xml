@@ -25,4 +25,11 @@
     <string name="facility_delete_confirmation">Are you sure you would like to delete this facility?</string>
     <string name="your_profile">Your Profile</string>
     <string name="require_geolocation">Require Geolocation</string>
+    <string name="event_name">Event Name</string>
+    <string name="poster">Poster</string>
+    <string name="no_poster">(No Poster)</string>
+    <string name="sample_date_time">3:00 PM on 3 November 2024</string>
+    <string name="ccis_university_of_alberta">CCIS, University of Alberta</string>
+    <string name="loc_confirm">This event requires you to share your location with the organizer. Are you sure?</string>
+    <string name="register_for_lottery">Register For Lottery</string>
 </resources>
