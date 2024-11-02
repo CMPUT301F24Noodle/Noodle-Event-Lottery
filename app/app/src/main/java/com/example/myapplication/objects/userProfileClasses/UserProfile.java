@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.Image;
 
+import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.facilityClasses.Facility;
 
@@ -13,17 +14,20 @@ import java.util.UUID;
 /**
  * Author: Erin-Marie
  * Class for a user object, stores any profile data they choose to add, and has method to get their UUID
- * TODO: connect UserProfile to db, to get the users db, and their collection
+ * TODONE: connect UserProfile to db, to get the users db, and their collection
+ * TODO: need to initialize the array attributes
  */
 public class UserProfile {
 
     String firstName;
     String lastName;
     String email;
+    String phoneNumber;
+    String address;
     Image profilePicture;
     Integer privileges; //0 is default, means they are just an entrant, 1 means they also have organizer privilege
     ArrayList<Event> myEvents; //the users ENTERED events
-
+    String uuid;
     //organizer privilege attributes
     ArrayList<Event> myOrgEvents; //the users ORGANIZED events
     Facility myFacility ; //the users facility they created, can only have one
@@ -35,12 +39,15 @@ public class UserProfile {
     Boolean geoLocationOn; //True if they allow geoLocation, False if not
 
 
+    public UserProfile() {} //need for firebase
+
     /**
      * Author: Erin-Marie
      * UserProfile is initially created with ony default values, since the user is not required to enter their profile information
      * If the user wants to edit anything, it will be done through the getter and setter methods called from the ProfileActivity
      */
-    public UserProfile() {
+    public UserProfile(String uuid) {
+
         this.firstName = "None";
         this.lastName = "None";
         this.email = "None";
@@ -48,9 +55,26 @@ public class UserProfile {
         this.allowNotifs = Boolean.TRUE; //defaults to allow notifications
         this.geoLocationOn = Boolean.FALSE; //defaults to false, need to ask user for permission first
         this.isAdmin = Boolean.FALSE;
+        this.uuid = uuid;
+        //this.myEvents = ;
+
+
+
 
         //TODO: make a res file with a default profile picture to use until a user submits their own
         //this.profilePicture =
+    }
+
+    public Facility getMyFacility() {
+        return myFacility;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public String getUuid(){
+        return uuid;
     }
 
     //QUESTION: do we put input validation here or within the EditUserProfile fragment that will call these setters?
@@ -58,7 +82,7 @@ public class UserProfile {
         return firstName;
     }
 
-    //TODO: need to update firebase
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -67,7 +91,7 @@ public class UserProfile {
         return lastName;
     }
 
-    //TODO: need to update firebase
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -76,16 +100,32 @@ public class UserProfile {
         return email;
     }
 
-    //TODO: need to update firebase
+
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+
+    public void setPhoneNumber(String number) {
+        this.phoneNumber = number;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+
+    public void setAddress(String address) { this.address = address; }
 
     public Image getProfilePicture() {
         return profilePicture;
     }
 
-    //TODO: need to update firebase
+
     public void setProfilePicture(Image profilePicture) {
         this.profilePicture = profilePicture;
     }
@@ -94,7 +134,7 @@ public class UserProfile {
         return privileges;
     }
 
-    //TODO: need to update firebase
+
     public void setPrivileges(Integer privileges) {
         this.privileges = privileges;
     }
@@ -111,7 +151,7 @@ public class UserProfile {
         return allowNotifs;
     }
 
-    //TODO: need to update firebase
+
     public void setAllowNotifs(Boolean allowNotifs) {
         this.allowNotifs = allowNotifs;
     }
@@ -121,7 +161,7 @@ public class UserProfile {
         return geoLocationOn;
     }
 
-    //TODO: need to update firebase
+
     //MAYBE: if geoLocation is stored within sharedPreferences this will need to be more complex
     public void setGeoLocationOn(Boolean geoLocationOn) {
         this.geoLocationOn = geoLocationOn;

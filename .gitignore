@@ -29,5 +29,9 @@ render.experimental.xml
 # Google Services (e.g. APIs or Firebase)
 google-services.json
 
+# Sometimes I need to work on vscode for some reason :)
+.vscode/
+
+
 # Android Profiling
 *.hprof

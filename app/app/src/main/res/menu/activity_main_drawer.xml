@@ -4,17 +4,30 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+<!--  MAYBE       <item-->
+<!--            android:id="@+id/nav_home"-->
+<!--            android:icon="@drawable/home_screen"-->
+<!--            android:title="@string/menu_home" />-->
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/profile"
+            android:title="@string/your_profile" />
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/notifications"
+            android:title="@string/notifications" />
         <item
             android:id="@+id/nav_myevents"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/my_events"
             android:title="@string/menu_myevents" />
         <item
             android:id="@+id/nav_registered"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_registeredevents" />
+            android:icon="@drawable/registered_events"
+            android:title="@string/menu_enteredevents" />
+        <item
+            android:id="@+id/nav_admin"
+            android:icon="@drawable/admin_menu"
+            android:title="@string/admin_menu" />
+
     </group>
 </menu>

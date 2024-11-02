@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/eventname_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/alexandria_semibold"
+            android:textColor="@color/text_cyan"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/event_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/aleo_medium"
+            android:textColor="@color/text_cyan"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/event_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/aleo_medium"
+            android:textSize="18sp"
+            android:textColor="@color/text_cyan" />
+
+        <TextView
+            android:id="@+id/organizer_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/aleo_medium"
+            android:textSize="18sp"
+            android:textColor="@color/text_cyan" />
+
+    </LinearLayout>
+
+    <!-- ImageView for icon -->
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/update"
+        android:layout_gravity="end"
+        android:contentDescription="Event Icon"
+        android:tint="@color/text_cyan"/>
+
+</LinearLayout>

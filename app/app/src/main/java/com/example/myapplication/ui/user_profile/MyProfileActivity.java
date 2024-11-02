@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.provider.Settings;
+import android.widget.Toast;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
@@ -33,6 +36,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 // generally noticed a lot of cases of storyboards not matching attributes, or missing attributes... those will have to be added in later
 public class MyProfileActivity extends AppCompatActivity{
     UserProfile user;
+    Facility facility;
 
 
     @Override
@@ -46,82 +50,105 @@ public class MyProfileActivity extends AppCompatActivity{
 
         user = new UserProfile(); // TODO Grab the user from the database using the device identifier
 
-        TextView usernameText = findViewById(R.id.profile_full_name_text);
-        TextView emailTest = findViewById(R.id.profile_email_text);
+        TextView usernameText = findViewById(R.id.profile_user_full_name);
+        TextView emailText = findViewById(R.id.profile_user_email);
+        TextView phoneNumberText = findViewById(R.id.profile_user_contact_number);
+        TextView addressText = findViewById(R.id.profile_user_address);
 
-        TextView facilityName = findViewById(R.id.profile_facility_name_text);
-        TextView facilityLocation = findViewById(R.id.profile_facility_location_text);
-        TextView facilityOrganizer = findViewById(R.id.profile_facility_organizer_text);
+        TextView facilityNameText = findViewById(R.id.profile_facility_name);
+        TextView facilityLocationText = findViewById(R.id.profile_facility_location);
+
 
         String userFullName = user.getFirstName()+" " + user.getLastName();
 
         // display user info
         usernameText.setText(userFullName);
-        emailTest.setText(user.getEmail());
+        emailText.setText(user.getEmail());
+        phoneNumberText.setText(user.getPhoneNumber());
+        addressText.setText(user.getAddress());
 
         if(user.getFacility() != null){
-            Facility facility = user.getFacility();
-            UserProfile organizer = facility.getOwner();
-            String organizerName = organizer.getFirstName() + " " + organizer.getLastName();
+            facility = user.getFacility();
 
-            facilityName.setText(facility.getFacilityName());
-            facilityLocation.setText(facility.getLocation());
-            facilityOrganizer.setText(organizerName);
-        }
-        else{
-            // TODO should actually set the fields to invisible if no facility, but I'm waiting for DB integration first so I can set a listener for changes to the db
-            facilityName.setText("None");
-            facilityLocation.setText("None");
-            facilityOrganizer.setText("None");
+            facilityNameText.setText(facility.getFacilityName());
+            facilityLocationText.setText(facility.getLocation());
+
         }
 
         // set up buttons
-        Button createFacilityButton = findViewById(R.id.create_facility_button);
-        Button editFacilityButton = findViewById(R.id.edit_facility_button);
-        Button deleteFacilityButton = findViewById(R.id.delete_facility_button);
-        Button editProfileButton = findViewById(R.id.edit_profile_button);
 
-        editProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                EditProfileFragment editProfileFragment = new EditProfileFragment();
-
-                editProfileFragment.show(getSupportFragmentManager(), "editProfile"); // now show the fragment
-
-            }
-        });
-
-
-        createFacilityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(user.getFacility() == null){ // TODO make this button invisible if there is a facility
-                    CreateFacilityFragment createFacilityFragment = new CreateFacilityFragment();
-
-                    createFacilityFragment.show(getSupportFragmentManager(), "createFacility"); // now show the fragment
-                }
-            }
-        });
-
-        editFacilityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(user.getFacility() != null){ // TODO make this button invisible if no facility
-                    EditFacilityFragment editFacilityFragment = new EditFacilityFragment();
-
-                    editFacilityFragment.show(getSupportFragmentManager(), "editFacility"); // now show the fragment
-                }
-            }
-        });
+        Button deleteFacilityButton = findViewById(R.id.profile_delete_facility_button);
+        Button saveInfoButton = findViewById(R.id.profile_save_info_button);
+        Switch toggleFacilitySwitch = findViewById(R.id.profile_facility_toggle_switch);
 
         deleteFacilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(user.getFacility() != null){ // TODO make this button invisible if no facility
-                    CreateFacilityFragment createFacilityFragment = new CreateFacilityFragment();
+                if(user.getFacility() != null){
+                    DeleteFacilityFragment deleteFacilityFragment = new DeleteFacilityFragment();
 
-                    createFacilityFragment.show(getSupportFragmentManager(), "deleteFacility"); // now show the fragment
+                    deleteFacilityFragment.show(getSupportFragmentManager(), "deleteFacility"); // now show the fragment
+                }
+            }
+        });
+
+        saveInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO its REALLY annoying that users have a first name and then a last name, will change this later but I don't want to ping Erin so late tonight :)
+                //String username =
+
+                // Get the new values and set them in userProfile
+                String email = emailText.getText().toString();
+                String number = phoneNumberText.getText().toString();
+                String address = addressText.getText().toString();
+
+                // TODO verify proper input (no empty fields)
+                user.setEmail(email);
+                user.setPhoneNumber(number);
+                user.setAddress(address);
+
+                if(toggleFacilitySwitch.isChecked()){ // if the user can see facility stuff
+                    // Get the new values and set them in the user's facility
+                    String facilityName = facilityNameText.getText().toString();
+                    String facilityLocation = facilityLocationText.getText().toString();
+
+                    if(user.getFacility() == null){
+                        if(!facilityName.equals(" ") && !facilityLocation.equals(" ")){
+                            facility = new Facility(facilityName, user, facilityLocation);
+                            user.setFacility(facility); // create a facility for the user!
+
+                            // and set the text fields
+                            facility.setFacilityName(facilityName);
+                            facility.setLocation(facilityLocation);
+                        }
+                    }
+
+                    else{
+                        // otherwise, just set the text fields
+                        facility.setFacilityName(facilityName);
+                        facility.setLocation(facilityLocation);
+                    }
+
+                }
+            }
+        });
+
+        toggleFacilitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    // if toggled on, make all facility fields and buttons visible
+                    facilityNameText.setVisibility(View.VISIBLE);
+                    facilityLocationText.setVisibility(View.VISIBLE);
+                    deleteFacilityButton.setVisibility(View.VISIBLE);
+
+                    // if the user doesn't have a facility, create one for them
+                } else {
+                    // if toggled off, make all facility fields and buttons invisible
+                    facilityNameText.setVisibility(View.GONE);
+                    facilityLocationText.setVisibility(View.GONE);
+                    deleteFacilityButton.setVisibility(View.GONE);
                 }
             }
         });

@@ -33,12 +33,16 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {
 
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation(libs.constraintlayout)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
@@ -46,10 +50,23 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
 
     // dependencies for Firebase Authentication and Cloud Firestore
     implementation("com.google.firebase:firebase-bom:32.7.1")
     implementation("com.google.firebase:firebase-firestore")
+
+
+    testImplementation("org.json:json:20180813")
+    androidTestImplementation("androidx.test:rules:1.2.0")
+
+    //for Mockito
+    testImplementation("junit:junit:4.12")
+    testImplementation("org.mockito:mockito-core:2.19.0")
+    
+    implementation ("de.hdodenhof:circleimageview:3.1.0") //For Circular Profile Picture
+
 }

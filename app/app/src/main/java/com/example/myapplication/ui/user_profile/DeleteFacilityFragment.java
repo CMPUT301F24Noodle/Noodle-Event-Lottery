@@ -19,13 +19,10 @@ import com.example.myapplication.R;
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 
-// TODO add a class header
-// TODO add all strings here and in xml to string resource file
-// TODO set up a ping system to let the activity know when the fragment has closed (for updating the displayed values)
-// TODO add more facility attributes?
 /**
  * Author: Xavier Salm
- * Class for the fragment to delete a facility
+ * Class for the activity for users to view their profile, and manage their facility.
+ * //TODO could maybe just set up a builder inside of profile activity, making this redundant
  *
  */
 public class DeleteFacilityFragment extends DialogFragment {
@@ -35,7 +32,7 @@ public class DeleteFacilityFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = getLayoutInflater().inflate(R.layout.fragment_create_facility, null);
+        View view = getLayoutInflater().inflate(R.layout.fragment_delete_facility, null);
 
         // get the user
         user = new UserProfile(); // TODO get the existing profile from database using device ID
@@ -45,7 +42,7 @@ public class DeleteFacilityFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
                 .setView(view)
-                .setTitle("Are you sure you want to delete your facility?")
+                .setTitle("test for where alert dialogue builder appears, and if it uses font and such")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Confirm", (dialog, which) -> {
                     user.removeFacility(facility);
