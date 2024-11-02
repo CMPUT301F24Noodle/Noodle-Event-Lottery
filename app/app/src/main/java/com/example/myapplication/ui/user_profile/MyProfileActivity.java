@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.user_profile;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,18 +9,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.provider.Settings;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 /**
@@ -48,7 +38,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
         user = new UserProfile(); // TODO Grab the user from the database using the device identifier
 
-        TextView usernameText = findViewById(R.id.profile_user_full_name);
+        TextView usernameText = findViewById(R.id.profile_user_name);
         TextView emailText = findViewById(R.id.profile_user_email);
         TextView phoneNumberText = findViewById(R.id.profile_user_contact_number);
         TextView addressText = findViewById(R.id.profile_user_address);
@@ -57,14 +47,13 @@ public class MyProfileActivity extends AppCompatActivity {
         TextView facilityLocationText = findViewById(R.id.profile_facility_location);
 
 
-        String userFullName = user.getFirstName()+" " + user.getLastName();
-
         // display user info
-        usernameText.setText(userFullName);
+        usernameText.setText(user.getName());
         emailText.setText(user.getEmail());
         phoneNumberText.setText(user.getPhoneNumber());
         addressText.setText(user.getAddress());
 
+        // if they have a facility, set their facility info
         if(user.getFacility() != null){
             facility = user.getFacility();
 
@@ -93,29 +82,34 @@ public class MyProfileActivity extends AppCompatActivity {
         saveInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO its REALLY annoying that users have a first name and then a last name, will change this later but I don't want to ping Erin so late tonight :)
-                // HELLO this is erin i can change it to being just name? also ping me anytime, I dont have notifs for discord on on my phone, so i would not see it until morning anyways
-                //String username =
 
                 // Get the new values and set them in userProfile
+                String username = usernameText.getText().toString();
                 String email = emailText.getText().toString();
                 String number = phoneNumberText.getText().toString();
                 String address = addressText.getText().toString();
 
                 // verify input
+                if(!username.isEmpty()){
+                    user.setName(username);
+                }
                 if(!email.isEmpty()){
-                    emailText.setText(user.getEmail());
+                    user.setEmail(email);
                 }
 
                 if (!number.isEmpty()){
                     user.setPhoneNumber(number);
                 }
 
+                if (!address.isEmpty()){
+                    user.setAddress(address);
+                }
+
                 // set the text fields
+                usernameText.setText(user.getName());
                 emailText.setText(user.getEmail());
                 phoneNumberText.setText(user.getPhoneNumber());
-
-                // TODO figure out how first name last name stuff is working
+                addressText.setText(user.getAddress());
 
                 if(toggleFacilitySwitch.isChecked()){ // if the user can see facility stuff
                     // Get the new values and set them in the user's facility

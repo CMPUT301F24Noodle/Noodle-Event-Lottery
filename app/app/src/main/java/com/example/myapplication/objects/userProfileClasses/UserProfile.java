@@ -1,16 +1,12 @@
 package com.example.myapplication.objects.userProfileClasses;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.media.Image;
 
-import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * Author: Erin-Marie
@@ -20,8 +16,8 @@ import java.util.UUID;
  */
 public class UserProfile {
 
-    String firstName;
-    String lastName;
+    String name;
+    String lastName; // TODO THIS IS COMPLETELY USELESS AND SHOULD BE REMOVED
     String email;
     String phoneNumber;
     String address;
@@ -51,7 +47,7 @@ public class UserProfile {
      */
     public UserProfile(String uuid) {
 
-        this.firstName = "None";
+        this.name = "None";
         this.lastName = "None";
         this.email = "None";
         this.privileges = 0; //defaults to entrant privileges
@@ -92,13 +88,13 @@ public class UserProfile {
     }
 
     //QUESTION: do we put input validation here or within the EditUserProfile fragment that will call these setters?
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getLastName() {
