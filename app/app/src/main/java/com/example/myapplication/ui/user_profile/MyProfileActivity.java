@@ -13,6 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.provider.Settings;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.objects.facilityClasses.Facility;
@@ -34,7 +38,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  */
 
 // generally noticed a lot of cases of storyboards not matching attributes, or missing attributes... those will have to be added in later
-public class MyProfileActivity extends AppCompatActivity{
+public class MyProfileActivity extends AppCompatActivity {
     UserProfile user;
     Facility facility;
 
@@ -96,6 +100,7 @@ public class MyProfileActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 // TODO its REALLY annoying that users have a first name and then a last name, will change this later but I don't want to ping Erin so late tonight :)
+                // HELLO this is erin i can change it to being just name? also ping me anytime, I dont have notifs for discord on on my phone, so i would not see it until morning anyways
                 //String username =
 
                 // Get the new values and set them in userProfile
