@@ -101,7 +101,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 String email = emailText.getText().toString();
                 String number = phoneNumberText.getText().toString();
                 String address = addressText.getText().toString();
-                
+
                 // verify input
                 if(!email.isEmpty()){
                     emailText.setText(user.getEmail());
@@ -123,7 +123,7 @@ public class MyProfileActivity extends AppCompatActivity {
                     String facilityLocation = facilityLocationText.getText().toString();
 
                     if(user.getFacility() == null){
-                        if(!facilityName.equals(" ") && !facilityLocation.equals(" ")){
+                        if(!facilityName.isEmpty() && !facilityLocation.isEmpty()){
                             facility = new Facility(facilityName, user, facilityLocation);
                             user.setFacility(facility); // create a facility for the user!
 
@@ -134,9 +134,17 @@ public class MyProfileActivity extends AppCompatActivity {
                     }
 
                     else{
-                        // otherwise, just set the text fields
-                        facility.setFacilityName(facilityName);
-                        facility.setLocation(facilityLocation);
+                        // validate input
+                        if(!facilityName.isEmpty()){
+                            facility.setFacilityName(facilityName);
+                        }
+                        if(!facilityLocation.isEmpty()){
+                            facility.setLocation(facilityLocation);
+                        }
+
+                        // actually set the next fields
+                        facilityNameText.setText(facility.getFacilityName());
+                        facilityLocationText.setText(facility.getLocation());
                     }
 
                 }
