@@ -59,7 +59,7 @@ public class Notification {
         this.title = title;
         this.message = message;
         this.recipients = recipients;
-        this.sender = senderUser.getFirstName();
+        this.sender = senderUser.getName();
         this.sentTime = new Timestamp(now());
     }
 
@@ -92,7 +92,7 @@ public class Notification {
     }
 
     public void setUserSender(UserProfile sender) {
-        this.sender = sender.getFirstName();
+        this.sender = sender.getName();
     }
 
     public void setEventSender(Event event) {
