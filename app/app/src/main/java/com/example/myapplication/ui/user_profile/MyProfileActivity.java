@@ -37,7 +37,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
         user = new UserProfile(); // TODO Grab the user from the database using the device identifier
 
-        TextView usernameText = findViewById(R.id.profile_user_name);
+        TextView usernameText = findViewById(R.id.profile_user_full_name);
         TextView emailText = findViewById(R.id.profile_user_email);
         TextView phoneNumberText = findViewById(R.id.profile_user_contact_number);
         TextView addressText = findViewById(R.id.profile_user_address);
