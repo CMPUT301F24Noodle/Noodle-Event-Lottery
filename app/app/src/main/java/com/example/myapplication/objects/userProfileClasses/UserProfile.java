@@ -7,6 +7,8 @@ import android.media.Image;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.facilityClasses.Facility;
+import com.example.myapplication.ui.notifications.Notification;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -14,7 +16,8 @@ import java.util.UUID;
 /**
  * Author: Erin-Marie
  * Class for a user object, stores any profile data they choose to add, and has method to get their UUID
- * TODO: connect UserProfile to db, to get the users db, and their collection
+ * TODONE: connect UserProfile to db, to get the users db, and their collection
+ * TODO: need to initialize the array attributes
  */
 public class UserProfile {
 
@@ -25,11 +28,16 @@ public class UserProfile {
     String address;
     Image profilePicture;
     Integer privileges; //0 is default, means they are just an entrant, 1 means they also have organizer privilege
-    ArrayList<Event> myEvents; //the users ENTERED events
+    ArrayList<DocumentReference> myEvents; //the users ENTERED events
     String uuid;
+
     //organizer privilege attributes
-    ArrayList<Event> myOrgEvents; //the users ORGANIZED events
+    ArrayList<DocumentReference> myOrgEvents; //the users ORGANIZED events
     Facility myFacility ; //the users facility they created, can only have one
+
+
+
+    ArrayList<DocumentReference> myNotifications;
 
     Boolean isAdmin; //true if the user has admin privileges
 
@@ -39,6 +47,8 @@ public class UserProfile {
 
 
     public UserProfile() {} //need for firebase
+
+
 
     /**
      * Author: Erin-Marie
@@ -55,13 +65,31 @@ public class UserProfile {
         this.geoLocationOn = Boolean.FALSE; //defaults to false, need to ask user for permission first
         this.isAdmin = Boolean.FALSE;
         this.uuid = uuid;
-
+        this.myEvents = new ArrayList<DocumentReference>();
+        this.myOrgEvents = new ArrayList<DocumentReference>();
+        this.myNotifications = new ArrayList<DocumentReference>();
 
 
 
 
         //TODO: make a res file with a default profile picture to use until a user submits their own
         //this.profilePicture =
+    }
+
+
+    public void setMyEvents(ArrayList<DocumentReference> myEvents) {
+        this.myEvents = myEvents;
+    }
+
+    public void setMyOrgEvents(ArrayList<DocumentReference> myOrgEvents) {
+        this.myOrgEvents = myOrgEvents;
+    }
+    public ArrayList<DocumentReference> getMyNotifications() {
+        return myNotifications;
+    }
+
+    public void setMyNotifications(ArrayList<DocumentReference> myNotifications) {
+        this.myNotifications = myNotifications;
     }
 
     public Facility getMyFacility() {
@@ -81,7 +109,7 @@ public class UserProfile {
         return firstName;
     }
 
-    //TODO: need to update firebase
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -90,7 +118,7 @@ public class UserProfile {
         return lastName;
     }
 
-    //TODO: need to update firebase
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -99,7 +127,7 @@ public class UserProfile {
         return email;
     }
 
-    //TODO: need to update firebase
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -108,7 +136,7 @@ public class UserProfile {
         return phoneNumber;
     }
 
-    //TODO: need to update firebase
+
     public void setPhoneNumber(String number) {
         this.phoneNumber = number;
     }
@@ -117,14 +145,14 @@ public class UserProfile {
         return address;
     }
 
-    //TODO: need to update firebase
+
     public void setAddress(String address) { this.address = address; }
 
     public Image getProfilePicture() {
         return profilePicture;
     }
 
-    //TODO: need to update firebase
+
     public void setProfilePicture(Image profilePicture) {
         this.profilePicture = profilePicture;
     }
@@ -133,16 +161,16 @@ public class UserProfile {
         return privileges;
     }
 
-    //TODO: need to update firebase
+
     public void setPrivileges(Integer privileges) {
         this.privileges = privileges;
     }
 
-    public ArrayList<Event> getMyEvents() {
+    public ArrayList<DocumentReference> getMyEvents() {
         return myEvents;
     }
 
-    public ArrayList<Event> getMyOrgEvents() {
+    public ArrayList<DocumentReference> getMyOrgEvents() {
         return myOrgEvents;
     }
 
@@ -150,7 +178,7 @@ public class UserProfile {
         return allowNotifs;
     }
 
-    //TODO: need to update firebase
+
     public void setAllowNotifs(Boolean allowNotifs) {
         this.allowNotifs = allowNotifs;
     }
@@ -160,7 +188,7 @@ public class UserProfile {
         return geoLocationOn;
     }
 
-    //TODO: need to update firebase
+
     //MAYBE: if geoLocation is stored within sharedPreferences this will need to be more complex
     public void setGeoLocationOn(Boolean geoLocationOn) {
         this.geoLocationOn = geoLocationOn;
@@ -216,12 +244,12 @@ public class UserProfile {
      * adds an event to the users list of entered events
      * assumes that the entrant has already been approved to enter the event ie the addEntrant method of the event class has already been executed
      * called by the addEntrant() method of the Event class
-     * @param event the Event being entered
+     * @param event the doc reference for the Event being entered
      * TODO: need to update firebase
      * TESTME: test that the event is now in myEvents
      */
     public void addEvent(Event event) {
-        this.myEvents.add(event);
+        myEvents.add(event.getDocRef());
     }
 
     /**
@@ -230,11 +258,10 @@ public class UserProfile {
      * assumes that the entrant has already been removed from the events list of entrants
      * called by the removeEntrant() method of the Event class
      * @param event the Event being left
-     * TODO: need to update firebase
      * TESTME: test that the event is no longer in myEvents
      */
     public void leaveEvent(Event event){
-        this.myEvents.remove(event);
+        this.myEvents.remove(event.getDocRef());
     }
 
     /**
@@ -244,7 +271,7 @@ public class UserProfile {
      * TESTME: test that the event is returning correct bool
      */
     public Boolean checkIsEntrant(Event event){
-        return this.myEvents.contains(event);
+        return this.myEvents.contains(event.getDocRef());
     }
 
     /**
@@ -252,20 +279,24 @@ public class UserProfile {
      * adds an event to the users list of organized events
      * checks that the event is hosted at the users facility, and is not already in their list of events, if not, returns 1
      * @param event the Event being created
-     * TODO: need to update firebase
+     * @return 1 if the user cannot create the event
+     * @return 2 if the user successfully created the event
      * TESTME: test that the event is now in myOrgEvents
      *         test that the method returns 1 if the event facility is not the users facility
      */
     public Integer addOrgEvent(Event event) {
-        if (event.getFacility() != myFacility | myOrgEvents.contains(event)) {
+        if (event.getFacility() != myFacility | myOrgEvents.contains(event.getDocRef())) {
             return 1;
         }else{
-            this.myOrgEvents.add(event);
+            this.myOrgEvents.add(event.getDocRef());
             return 0;
         }
 
     }
 
+    public void clearNotifs(){
+        myNotifications = new ArrayList<DocumentReference>();
+    }
 
 
 }

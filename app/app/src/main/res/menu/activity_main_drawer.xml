@@ -4,16 +4,16 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+<!--  MAYBE       <item-->
+<!--            android:id="@+id/nav_home"-->
+<!--            android:icon="@drawable/home_screen"-->
+<!--            android:title="@string/menu_home" />-->
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/home_screen"
-            android:title="@string/menu_home" />
-        <item
-            android:id="@+id/view_profile"
+            android:id="@+id/nav_profile"
             android:icon="@drawable/profile"
             android:title="@string/your_profile" />
         <item
-            android:id="@+id/notifications"
+            android:id="@+id/nav_notifications"
             android:icon="@drawable/notifications"
             android:title="@string/notifications" />
         <item
@@ -23,9 +23,9 @@
         <item
             android:id="@+id/nav_registered"
             android:icon="@drawable/registered_events"
-            android:title="@string/menu_registeredevents" />
+            android:title="@string/menu_enteredevents" />
         <item
-            android:id="@+id/admin_menu"
+            android:id="@+id/nav_admin"
             android:icon="@drawable/admin_menu"
             android:title="@string/admin_menu" />
 

@@ -144,7 +144,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/belanosima"
-                android:text="Save" />
+                android:text="Save"
+                android:background="@drawable/mybutton"/>
             <Button
                 android:id="@+id/profile_delete_facility_button"
                 android:layout_width="wrap_content"
@@ -154,7 +155,7 @@
                 android:fontFamily="@font/belanosima"
                 android:text="Delete Facility"
                 android:visibility="gone"
-                />
+                android:background="@drawable/mybutton"/>
     </LinearLayout>
 
 

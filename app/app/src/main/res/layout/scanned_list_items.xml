@@ -6,7 +6,7 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/heading"
+        android:id="@+id/event_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/alexandria_semibold"
@@ -15,7 +15,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/subheading1"
+        android:id="@+id/event_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/aleo_medium"
@@ -23,7 +23,7 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/subheading2"
+        android:id="@+id/event_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/aleo_medium"
@@ -31,7 +31,7 @@
         android:textColor="@color/text_cyan" />
 
     <TextView
-        android:id="@+id/subheading3"
+        android:id="@+id/organizer_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/aleo_medium"

@@ -26,6 +26,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/belanosima"
         android:text="Scan"
+        android:background="@drawable/mybutton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

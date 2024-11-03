@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.myapplication.R;
-import com.example.myapplication.ui.home.ListItem;
 
 import java.util.List;
 
@@ -34,9 +33,9 @@ public class RegisteredEventAdapter extends ArrayAdapter<RegisteredEvent> {
 
         // Lookup view for data population
         TextView headingView = convertView.findViewById(R.id.eventname_status);
-        TextView subheading1View = convertView.findViewById(R.id.subheading1);
-        TextView subheading2View = convertView.findViewById(R.id.subheading2);
-        TextView subheading3View = convertView.findViewById(R.id.subheading3);
+        TextView subheading1View = convertView.findViewById(R.id.event_date);
+        TextView subheading2View = convertView.findViewById(R.id.event_time);
+        TextView subheading3View = convertView.findViewById(R.id.organizer_name);
 
         // Populate the data into the template view using the data object
         headingView.setText(listItem.getheadStatus());

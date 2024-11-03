@@ -51,6 +51,7 @@
         tools:context=".MainActivity"
         android:textColor="@color/text_cyan">
 
+        <!--    Date    -->
         <EditText
             android:id="@+id/date_picker_DD"
             android:layout_width="wrap_content"
@@ -102,6 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
+        <!--    Time    -->
         <EditText
             android:id="@+id/time_picker_hh"
             android:layout_width="wrap_content"
@@ -242,7 +244,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/belanosima"
             android:text="Add Poster"
-            android:textColorHint="@color/text_cyan" />
+            android:background="@drawable/mybutton"/>
 
         <TextView
             android:id="@+id/current_status"
@@ -252,6 +254,7 @@
             android:fontFamily="@font/aleo_medium"
             android:text="Current: "
             android:textColor="@color/text_cyan"
+            android:layout_marginTop="5dp"
             android:textStyle="bold" />
 
         <TextView
@@ -259,7 +262,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:backgroundTint="@color/text_cyan"
             android:clickable="true"
             android:fontFamily="@font/anybody_light"
@@ -272,6 +275,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
+            android:background="@drawable/mybutton"
             android:fontFamily="@font/belanosima"
             android:text="Save" />
 

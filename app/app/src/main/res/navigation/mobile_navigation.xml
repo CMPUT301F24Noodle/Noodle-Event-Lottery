@@ -3,13 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@id/nav_registered">
+<!-- MAYBE   app:startDestination="@+id/nav_home">-->
 
-    <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.myapplication.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+
+<!-- MAYBE <fragment-->
+<!--        android:id="@+id/nav_home"-->
+<!--        android:name="com.example.myapplication.ui.home.HomeFragment"-->
+<!--        android:label="@string/menu_home"-->
+<!--        tools:layout="@layout/fragment_home" />-->
 
     <fragment
         android:id="@+id/nav_myevents"
@@ -20,8 +22,26 @@
     <fragment
         android:id="@+id/nav_registered"
         android:name="com.example.myapplication.ui.registeredevents.RegisteredEventFragment"
-        android:label="@string/menu_registeredevents"
+        android:label="@string/menu_enteredevents"
         tools:layout="@layout/fragment_registered_events" />
+
+    <activity
+        android:id="@id/nav_profile"
+        android:name="com.example.myapplication.ui.user_profile.MyProfileActivity"
+        android:label="Your Profile"
+        tools:layout="@layout/activity_my_profile"/>
+
+    <fragment
+        android:id="@id/nav_notifications"
+        android:name="com.example.myapplication.ui.notifications.NotificationsFragment"
+        android:label="Notifications"
+        tools:layout="@layout/fragment_notifications"/>
+
+    <fragment
+        android:id="@id/nav_admin"
+        android:name="com.example.myapplication.ui.admin.AdminFragment"
+        android:label="App Management"
+        tools:layout="@layout/fragment_admin"/>
 
     <fragment
         android:id="@+id/nav_qr_fragment"
