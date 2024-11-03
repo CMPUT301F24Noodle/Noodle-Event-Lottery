@@ -6,29 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/back_gray">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/new_event_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="MANAGE EVENT"
-            android:textSize="30dp"
-            android:layout_gravity="center"
-            android:id="@+id/toolbar_title"
-            android:fontFamily="@font/anybody_light"
-            android:textColor="@color/white"/>
-    </androidx.appcompat.widget.Toolbar>
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -48,7 +25,8 @@
             android:textAlignment="center"
             android:textColorHint="@color/text_cyan"
             android:fontFamily="@font/anybody_light"
-            android:backgroundTint="@color/text_cyan"/>
+            android:backgroundTint="@color/text_cyan"
+            android:textColor="@color/text_cyan"/>
 
         <EditText
             android:id="@+id/event_location_edit"
@@ -60,7 +38,8 @@
             android:textAlignment="center"
             android:textColorHint="@color/text_cyan"
             android:fontFamily="@font/anybody_light"
-            android:backgroundTint="@color/text_cyan"/>
+            android:backgroundTint="@color/text_cyan"
+            android:textColor="@color/text_cyan"/>
 
     </LinearLayout>
 
@@ -86,7 +65,8 @@
             android:minEms="2"
             android:fontFamily="@font/anybody_light"
             android:textAlignment="center"
-            android:layout_marginLeft="16dp"/>
+            android:layout_marginLeft="16dp"
+            android:textColor="@color/text_cyan"/>
 
         <EditText
             android:id="@+id/date_picker_MM"
@@ -100,7 +80,8 @@
             android:hint="MM"
             android:fontFamily="@font/anybody_light"
             android:textColorHint="@color/text_cyan"
-            android:backgroundTint="@color/text_cyan"/>
+            android:backgroundTint="@color/text_cyan"
+            android:textColor="@color/text_cyan"/>
 
         <EditText
             android:id="@+id/date_picker_YY"
@@ -114,7 +95,8 @@
             android:hint="YYYY"
             android:fontFamily="@font/anybody_light"
             android:textColorHint="@color/text_cyan"
-            android:backgroundTint="@color/text_cyan"/>
+            android:backgroundTint="@color/text_cyan"
+            android:textColor="@color/text_cyan"/>
 
         <Space
             android:layout_width="0dp"
@@ -134,7 +116,8 @@
             android:hint="22"
             android:fontFamily="@font/anybody_light"
             android:textColorHint="@color/text_cyan"
-            android:backgroundTint="@color/text_cyan"/>
+            android:backgroundTint="@color/text_cyan"
+            android:textColor="@color/text_cyan"/>
 
         <TextView
             android:id="@+id/colon"
@@ -145,7 +128,7 @@
             android:layout_marginTop="4dp"
             android:text=":"
             android:textColor="@color/text_cyan"
-            android:textSize="26dp"/>
+            android:textSize="26dp" />
 
         <EditText
             android:id="@+id/time_picker_mm"
@@ -160,7 +143,8 @@
             android:fontFamily="@font/anybody_light"
             android:textColorHint="@color/text_cyan"
             android:backgroundTint="@color/text_cyan"
-            android:layout_marginRight="16dp"/>
+            android:layout_marginRight="16dp"
+            android:textColor="@color/text_cyan"/>
 
     </LinearLayout>
 
@@ -182,7 +166,8 @@
             android:hint="Details"
             android:fontFamily="@font/anybody_light"
             android:textColorHint="@color/text_cyan"
-            android:background="@drawable/detail_border_textbox"/>
+            android:background="@drawable/detail_border_textbox"
+            android:textColor="@color/text_cyan"/>
 
         <EditText
             android:id="@+id/contact_num"
@@ -194,7 +179,8 @@
             android:fontFamily="@font/anybody_light"
             android:hint="Contact Number (Optional)"
             android:textAlignment="center"
-            android:textColorHint="@color/text_cyan" />
+            android:textColorHint="@color/text_cyan"
+            android:textColor="@color/text_cyan"/>
 
         <EditText
             android:id="@+id/max_participants"
@@ -206,7 +192,8 @@
             android:fontFamily="@font/anybody_light"
             android:hint="Maximum Participants"
             android:textColorHint="@color/text_cyan"
-            android:backgroundTint="@color/text_cyan"/>
+            android:backgroundTint="@color/text_cyan"
+            android:textColor="@color/text_cyan"/>
 
         <EditText
             android:id="@+id/waiting_list_limit"
@@ -218,7 +205,8 @@
             android:fontFamily="@font/anybody_light"
             android:hint="Waiting List Limit (Optional)"
             android:textColorHint="@color/text_cyan"
-            android:backgroundTint="@color/text_cyan"/>
+            android:backgroundTint="@color/text_cyan"
+            android:textColor="@color/text_cyan"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

@@ -143,6 +143,8 @@ public class MyProfileActivity extends AppCompatActivity {
                     }
 
                 }
+
+                // TODO update the DB
             }
         });
 

@@ -4,6 +4,7 @@ import android.media.Image;
 
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.facilityClasses.Facility;
+import com.example.myapplication.ui.notifications.Notification;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
@@ -25,9 +26,14 @@ public class UserProfile {
     Integer privileges; //0 is default, means they are just an entrant, 1 means they also have organizer privilege
     ArrayList<DocumentReference> myEvents; //the users ENTERED events
     String uuid;
+
     //organizer privilege attributes
     ArrayList<DocumentReference> myOrgEvents; //the users ORGANIZED events
     Facility myFacility ; //the users facility they created, can only have one
+
+
+
+    ArrayList<DocumentReference> myNotifications;
 
     Boolean isAdmin; //true if the user has admin privileges
 
@@ -57,7 +63,7 @@ public class UserProfile {
         this.uuid = uuid;
         this.myEvents = new ArrayList<DocumentReference>();
         this.myOrgEvents = new ArrayList<DocumentReference>();
-        //this.myEvents = ;
+        this.myNotifications = new ArrayList<DocumentReference>();
 
 
 
@@ -73,6 +79,13 @@ public class UserProfile {
 
     public void setMyOrgEvents(ArrayList<DocumentReference> myOrgEvents) {
         this.myOrgEvents = myOrgEvents;
+    }
+    public ArrayList<DocumentReference> getMyNotifications() {
+        return myNotifications;
+    }
+
+    public void setMyNotifications(ArrayList<DocumentReference> myNotifications) {
+        this.myNotifications = myNotifications;
     }
 
     public Facility getMyFacility() {
@@ -277,6 +290,9 @@ public class UserProfile {
 
     }
 
+    public void clearNotifs(){
+        myNotifications = new ArrayList<DocumentReference>();
+    }
 
 
 }

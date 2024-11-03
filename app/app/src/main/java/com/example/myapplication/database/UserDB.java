@@ -130,15 +130,13 @@ public class UserDB {
         DocumentReference docRef = this.storeConnection.getUserDocumentRef();; // get the document reference for the current users document from the AllUsers Collection
         docRef.get().addOnSuccessListener(snapshot -> {
             if (snapshot.exists()) {
-                Log.d(TAG, "user already exists:" + uuid);
+                Log.v(TAG, "user already exists:" + uuid);
                 listener.onSuccess(snapshot);
             } else {
-                Log.d(TAG, "user not already exists:" + uuid);
+                Log.v(TAG, "user not already exists:" + uuid);
                 listener.onSuccess(null);
             }
         });
-
-
     }
 
     /**

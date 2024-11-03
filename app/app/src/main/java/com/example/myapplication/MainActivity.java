@@ -7,9 +7,11 @@ import android.view.Menu;
 
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
+import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.ui.notifications.Notification;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 
@@ -21,7 +23,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.databinding.ActivityMainBinding;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public DBConnection connection;
     public UserDB userDB; // userDB instance for the current user
     public EventDB eventDB;
+    public NotificationDB notifDB;
     public String uuid;
     public UserProfile user;
 
@@ -48,15 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.qrButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                NavController navController = Navigation.findNavController(MainActivity.this,
-                        R.id.nav_host_fragment_content_main);
-                navController.navigate(R.id.nav_qr_fragment);
-            }
-        });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
@@ -64,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         // TODONE: add UserProfile to the nav drawer so it can be selected and we can view the UserProfile fragment
         //MAYBE: to add nav_home activity back into the menu, uncomment the MAYBE below, as well as both MAYBE in mobile_navigation.XML and in activity_drawer_main.XML
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                /*MAYBE R.id.nav_home,*/ R.id.nav_profile, R.id.nav_myevents, R.id.nav_registered)
+                /*MAYBE R.id.nav_home,*/ R.id.nav_profile, R.id.nav_myevents, R.id.nav_registered, R.id.nav_notifications)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -99,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         this.connection = new DBConnection(this); // connection to the base db
         this.userDB = new UserDB(this.connection); // the current users collection reference
         this.eventDB = new EventDB(this.connection);
+        this.notifDB = new NotificationDB(this.connection);
         this.uuid = connection.getUUID(); // store the current users uuid
         // check if the user is already in the db
         this.userDB.checkUserExists(new OnSuccessListener<DocumentSnapshot>() {
@@ -110,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                     // done through addUser() method in order to get the value returned from
                     // checkUserExists()
                     userDB.setCurrentProfile(snapshot);
+                    //notifDB.getUserNotifications(); //this return value doesn't matter, this just needs to be called to intitiate their list of notifications
                     Log.v("SetUpDB", "Set profile for existing user");
 
                 } else { // User is not already in the database
