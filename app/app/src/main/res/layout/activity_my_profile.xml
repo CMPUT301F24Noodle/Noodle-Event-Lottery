@@ -34,7 +34,10 @@
             android:textColorHint="@color/text_cyan"
             android:fontFamily="@font/anybody_light"
             android:backgroundTint="@color/text_cyan"
-            android:textColor="@color/text_cyan"/>
+            android:textColor="@color/text_cyan"
+            android:maxLength="50"
+
+            />
 
         <EditText
             android:id="@+id/profile_user_email"
@@ -47,7 +50,8 @@
             android:textColorHint="@color/text_cyan"
             android:fontFamily="@font/anybody_light"
             android:backgroundTint="@color/text_cyan"
-            android:textColor="@color/text_cyan"/>
+            android:textColor="@color/text_cyan"
+            android:maxLength="50"/>
 
         <EditText
             android:id="@+id/profile_user_contact_number"
@@ -60,7 +64,9 @@
             android:hint="@string/contact_number"
             android:textAlignment="center"
             android:textColorHint="@color/text_cyan"
-            android:textColor="@color/text_cyan"/>
+            android:textColor="@color/text_cyan"
+            android:maxLength="11"
+            android:inputType="number"/>
 
         <EditText
             android:id="@+id/profile_user_address"
@@ -73,7 +79,8 @@
             android:hint="@string/address"
             android:textAlignment="center"
             android:textColorHint="@color/text_cyan"
-            android:textColor="@color/text_cyan"/>
+            android:textColor="@color/text_cyan"
+            android:maxLength="50"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -116,7 +123,8 @@
             android:fontFamily="@font/anybody_light"
             android:backgroundTint="@color/text_cyan"
             android:visibility="gone"
-            android:textColor="@color/text_cyan"/>
+            android:textColor="@color/text_cyan"
+            android:maxLength="50"/>
 
         <EditText
             android:id="@+id/profile_facility_location"
@@ -130,7 +138,8 @@
             android:textAlignment="center"
             android:textColorHint="@color/text_cyan"
             android:visibility="gone"
-            android:textColor="@color/text_cyan"/>
+            android:textColor="@color/text_cyan"
+            android:maxLength="50"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

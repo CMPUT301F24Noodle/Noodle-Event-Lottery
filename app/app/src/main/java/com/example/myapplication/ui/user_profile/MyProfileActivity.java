@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.user_profile;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,28 +9,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.provider.Settings;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 /**
  * Author: Xavier Salm
  * Class for the activity for users to view their profile, and manage their facility.
- * TODO: ADD METHOD TO GET DEVICE ID
- * TODO add all strings here and in xml to string resource file
- * TODO: add a way to know if a facility was succesfully created or removed (to make the now useless buttons invisible) and to update the text views for facility
- * TODO could do the above by just adding a database listener that updates things when it detects a change in database
- * TODO add other attributes to profile for phone number or address for example
  *
  */
 
@@ -61,14 +46,13 @@ public class MyProfileActivity extends AppCompatActivity {
         TextView facilityLocationText = findViewById(R.id.profile_facility_location);
 
 
-        String userFullName = user.getFirstName()+" " + user.getLastName();
-
         // display user info
-        usernameText.setText(userFullName);
+        usernameText.setText(user.getName());
         emailText.setText(user.getEmail());
         phoneNumberText.setText(user.getPhoneNumber());
         addressText.setText(user.getAddress());
 
+        // if they have a facility, set their facility info
         if(user.getFacility() != null){
             facility = user.getFacility();
 
@@ -83,6 +67,7 @@ public class MyProfileActivity extends AppCompatActivity {
         Button saveInfoButton = findViewById(R.id.profile_save_info_button);
         Switch toggleFacilitySwitch = findViewById(R.id.profile_facility_toggle_switch);
 
+        // BUTTON CONFIRMING A DELETION OF THE USER'S FACILITY
         deleteFacilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,22 +79,38 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
+        // BUTTON FOR SAVING ANY EDITS MADE TO THE TEXT FIELDS FOR USER OR FACILITY
         saveInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO its REALLY annoying that users have a first name and then a last name, will change this later but I don't want to ping Erin so late tonight :)
-                // HELLO this is erin i can change it to being just name? also ping me anytime, I dont have notifs for discord on on my phone, so i would not see it until morning anyways
-                //String username =
 
                 // Get the new values and set them in userProfile
+                String username = usernameText.getText().toString();
                 String email = emailText.getText().toString();
                 String number = phoneNumberText.getText().toString();
                 String address = addressText.getText().toString();
 
-                // TODO verify proper input (no empty fields)
-                user.setEmail(email);
-                user.setPhoneNumber(number);
-                user.setAddress(address);
+                // verify input
+                if(!username.isEmpty()){
+                    user.setName(username);
+                }
+                if(!email.isEmpty()){
+                    user.setEmail(email);
+                }
+
+                if (!number.isEmpty()){
+                    user.setPhoneNumber(number);
+                }
+
+                if (!address.isEmpty()){
+                    user.setAddress(address);
+                }
+
+                // set the text fields
+                usernameText.setText(user.getName());
+                emailText.setText(user.getEmail());
+                phoneNumberText.setText(user.getPhoneNumber());
+                addressText.setText(user.getAddress());
 
                 if(toggleFacilitySwitch.isChecked()){ // if the user can see facility stuff
                     // Get the new values and set them in the user's facility
@@ -117,7 +118,7 @@ public class MyProfileActivity extends AppCompatActivity {
                     String facilityLocation = facilityLocationText.getText().toString();
 
                     if(user.getFacility() == null){
-                        if(!facilityName.equals(" ") && !facilityLocation.equals(" ")){
+                        if(!facilityName.isEmpty() && !facilityLocation.isEmpty()){
                             facility = new Facility(facilityName, user, facilityLocation);
                             user.setFacility(facility); // create a facility for the user!
 
@@ -128,15 +129,26 @@ public class MyProfileActivity extends AppCompatActivity {
                     }
 
                     else{
-                        // otherwise, just set the text fields
-                        facility.setFacilityName(facilityName);
-                        facility.setLocation(facilityLocation);
+                        // validate input
+                        if(!facilityName.isEmpty()){
+                            facility.setFacilityName(facilityName);
+                        }
+                        if(!facilityLocation.isEmpty()){
+                            facility.setLocation(facilityLocation);
+                        }
+
+                        // actually set the next fields
+                        facilityNameText.setText(facility.getFacilityName());
+                        facilityLocationText.setText(facility.getLocation());
                     }
 
                 }
+
+                // TODO update the DB
             }
         });
 
+        // SWITCH TO TOGGLE FACILITY FIELDS DISPLAY
         toggleFacilitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -155,9 +167,6 @@ public class MyProfileActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
 
     }
 }
