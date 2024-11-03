@@ -17,6 +17,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Document;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -36,7 +37,7 @@ import java.util.Date;
  * users of specific group
  */
 @IgnoreExtraProperties // Ignore extra properties from Firebase
-public class Event {
+public class Event implements Serializable {
     // Other class objects connected to the event
     private Facility facility; // Facility where the event is held
     private UserProfile organizer; // User who organized the event

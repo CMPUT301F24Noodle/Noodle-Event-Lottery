@@ -1,3 +1,5 @@
+import org.apache.commons.io.filefilter.FalseFileFilter
+
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
@@ -49,10 +51,22 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.firebase.firestore)
+    implementation(libs.play.services.tasks)
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter)
+    testImplementation(libs.ext.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // Android test dependencies
+    androidTestImplementation ("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.4.0")
+    testImplementation ("junit:junit:4.13.2")
+    testImplementation ("androidx.test:core:1.4.0")
+    testImplementation ("androidx.test.ext:junit:1.1.3")
+    testImplementation ("androidx.test:runner:1.4.0")
+    testImplementation ("androidx.test:rules:1.4.0")
+
 
 
     // dependencies for Firebase Authentication and Cloud Firestore
@@ -69,6 +83,7 @@ dependencies {
     
     implementation ("de.hdodenhof:circleimageview:3.1.0") //For Circular Profile Picture
 
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0") {isTransitive=false}
     implementation("com.google.zxing:core:3.4.1") // for QR code generation
 
 }

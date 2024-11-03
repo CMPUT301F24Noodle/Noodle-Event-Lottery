@@ -9,7 +9,9 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentRegisteredEventsBinding;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.ui.home.MyEventsListArrayAdapter;
@@ -20,11 +22,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
- * Author: Who?
- * Editor: Sam Lee; I chaged the hard-coded version of  arrayadapter handling
- * so the arrayadapter take List<Event> instead of List<ListItem>
+ * Author: Sam Lee
+ * Fragment for displaying a list of registered events and
+ * FAB to navigate to the QR scanner.
  */
 public class RegisteredEventFragment extends Fragment {
 
@@ -32,15 +33,21 @@ public class RegisteredEventFragment extends Fragment {
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
     private ArrayList<Event> eventList;
-    private MyEventsListArrayAdapter adapter;
+    private RegisteredEventArrayAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        RegisteredEventViewModel registeredEventViewModel =
-                new ViewModelProvider(this).get(RegisteredEventViewModel.class);
+            ViewGroup container, Bundle savedInstanceState) {
+        RegisteredEventViewModel registeredEventViewModel = new ViewModelProvider(this)
+                .get(RegisteredEventViewModel.class);
 
-            binding = FragmentRegisteredEventsBinding.inflate(inflater, container, false);
+        binding = FragmentRegisteredEventsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        // Set OnClickListener for the FAB
+        binding.qrButton.setOnClickListener(v -> {
+            // Navigate to QRFragment
+            Navigation.findNavController(v).navigate(R.id.nav_qr_fragment);
+        });
 
         // Initialize Firebase Firestore
         db = FirebaseFirestore.getInstance();
@@ -51,7 +58,7 @@ public class RegisteredEventFragment extends Fragment {
 
         // Initialize the event list and adapter
         eventList = new ArrayList<>();
-        adapter = new MyEventsListArrayAdapter(requireContext(), eventList);
+        adapter = new RegisteredEventArrayAdapter(requireContext(), eventList);
         listView.setAdapter(adapter);
 
         // load events from Firestore
@@ -67,6 +74,11 @@ public class RegisteredEventFragment extends Fragment {
             adapter.notifyDataSetChanged();
         });
     }
+
+    public RegisteredEventArrayAdapter getRegisteredEventArrayAdapter() {
+        return adapter;
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

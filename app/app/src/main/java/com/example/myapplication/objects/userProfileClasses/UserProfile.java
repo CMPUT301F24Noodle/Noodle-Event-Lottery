@@ -7,6 +7,7 @@ import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.ui.notifications.Notification;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +16,7 @@ import java.util.ArrayList;
  * TODONE: connect UserProfile to db, to get the users db, and their collection
  * TODO: need to initialize the array attributes
  */
-public class UserProfile {
+public class UserProfile implements Serializable {
 
     String name;
     String lastName; // TODO THIS IS COMPLETELY USELESS AND SHOULD BE REMOVED

@@ -2,12 +2,14 @@ package com.example.myapplication.objects.facilityClasses;
 
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 
+import java.io.Serializable;
+
 /**
  * Author: Erin-Marie
  * Facility Class contains all information about a facility
  * An organizer can only own one Facility, a Facility can only have one owner. Only the owner of that facility can organize events at the facility
  */
-public class Facility {
+public class Facility implements Serializable {
 
     //QUESTION: do we need an attribute to mark a facility as unique? a facility cannot be created twice, is that just going to be based on facility name? or address? or both?
     UserProfile owner; //UserProfile instance of the facility creator

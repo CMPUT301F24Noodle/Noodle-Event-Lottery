@@ -33,6 +33,15 @@
 <!--        <activity-->
 <!--            android:name=".ui.notifications.NotificationsFragment"-->
 <!--            android:label="My Notifications" />-->
+        <activity
+            android:name="com.example.myapplication.ui.ViewEventActivity"
+            android:exported="true"
+            android:label="View Event">
+            <intent-filter>
+                <action android:name="com.example.myapplication.ACTION_VIEW_EVENT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"

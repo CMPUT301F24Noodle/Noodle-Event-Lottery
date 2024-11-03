@@ -6,7 +6,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -79,10 +78,12 @@ public class EventDB {
     /**
      * Author: Erin-Marie
      * Gets an Event object instance for an eventID from the db
-     * @param eventID of the event you need
+     *
+     * @param eventID           of the event you need
+     * @param onSuccessListener
      * @return event object of the event
      */
-    public Event getEvent(String eventID){
+    public Event getEvent(String eventID, OnSuccessListener<Event> onSuccessListener){
         //See if the event exists in the db
         checkEventExists(eventID, new OnSuccessListener<DocumentSnapshot>() {
             @Override

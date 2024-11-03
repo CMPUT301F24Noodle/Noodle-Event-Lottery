@@ -2,36 +2,54 @@ package com.example.myapplication;
 
 import static org.junit.Assert.assertEquals;
 
+import android.content.Context;
+import android.content.Intent;
+import android.view.View;
+import android.widget.TextView;
+
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.ui.ViewEventActivity;
+import com.example.myapplication.ui.registeredevents.RegisteredEventArrayAdapter;
+import com.google.zxing.WriterException;
 
 import org.junit.Test;
+import org.junit.experimental.runners.Enclosed;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * tests for the Event class, and EventDBConnector
  */
+@RunWith(Enclosed.class)
 public class EventTests {
 
-    UserProfile organizer = new UserProfile();
+    static UserProfile organizer = new UserProfile();
     UserProfile entrant = new UserProfile();
-    Facility facility = new Facility("TestFacility", organizer, "your moms house");
+    static Facility facility = new Facility("TestFacility", organizer, "your moms house");
 
     /**
      * method makes an event object the test cases can use.
      * @throws ParseException if the string format of the date is wrong but it wont be because its hardcoded for these tests
      */
-    public Event makeTestEvent() throws ParseException {
+    public static Event makeTestEvent() throws ParseException, WriterException {
         Date dateEvent = new SimpleDateFormat("dd/MM/yyyy").parse("29/05/2002");
         Date dateClose = new SimpleDateFormat("dd/MM/yyyy").parse("30/05/2002");
         //event with default details, geolocation off, max participants is 10
         Event event = new Event(facility, organizer, "TestEvent", null, dateEvent, 1, dateClose, Boolean.FALSE);
         return event;
     }
+
 
 //    /**
 //     * this tests that the addEvents method does not add an event when the entrant max has been reached, but does if it has not been reached
