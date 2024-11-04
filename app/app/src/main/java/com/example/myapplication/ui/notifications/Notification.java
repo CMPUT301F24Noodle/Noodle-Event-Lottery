@@ -25,10 +25,9 @@ public class Notification {
 
     /**
      * Author: Erin-Marie
-     * empty constructor for firebase
+     * empty constructor for firebase toObject()
      */
     public Notification(){
-
     }
     /**
      * Author: Erin-Marie
@@ -83,9 +82,7 @@ public class Notification {
         return recipients;
     }
 
-    public void setRecipients(ArrayList<DocumentReference> recipients) {
-        this.recipients = recipients;
-    }
+    public void setRecipients(ArrayList<DocumentReference> recipients) {this.recipients = recipients;}
 
     public String getSender() {
         return sender;
@@ -98,9 +95,7 @@ public class Notification {
     public void setEventSender(Event event) {
         this.sender = event.getEventName();
     }
-
-
-
+    
     public Timestamp getSentTime() {
         return sentTime;
     }

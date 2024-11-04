@@ -24,17 +24,13 @@ import java.util.Date;
 /**
  * Event Class
  * Author: Erin-Marie
- * Purpose: Event object contains all information and methods for an event an
- * organizer creates
- * TODO: make method for creating a QR code
+ * Purpose: Event object contains all information and methods for an event an organizer creates
  * make methods for ending the contest and selecting winners
  * make getters and setters for the winnersList and loserList
  * make method for notifying winners and losers and sending their invitations
  * make method for making the list of confirmed attendants
  * make method for selecting a new winner if someone rejects an invitation
- * add db interaction through EventDB controller class for all methods
  * make method for organizer to send a notification with custom message to all
- * users of specific group
  */
 @IgnoreExtraProperties // Ignore extra properties from Firebase
 public class Event implements Serializable {
@@ -246,6 +242,7 @@ public class Event implements Serializable {
 //    public int addEntrant(UserProfile entrant) {
 //        // check that entrant is not already in the entrantList, and the event is not
 //        // full
+//        entrant
 ////        if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE) {
 //            if (!this.entrantsList.contains(entrant)) {
 //                this.entrantsList.add(entrant);
@@ -254,9 +251,6 @@ public class Event implements Serializable {
 //                return 1;
 //            }
 
-    /**
-     * this is just for testing temporarily
-     */
     public int addEntrant(DocumentReference entrant) {
         // check that entrant is not already in the entrantList, and the event is not
         // full
@@ -289,7 +283,6 @@ public class Event implements Serializable {
 
 
     // START OF QR CODE STUFF
-
 
     public Bitmap getQRCode() {
         return QRCode;

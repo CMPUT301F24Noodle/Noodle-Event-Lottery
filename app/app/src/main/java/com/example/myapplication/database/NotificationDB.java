@@ -20,7 +20,6 @@ import java.util.ArrayList;
 /**
  * Author: Erin-Marie
  * Class that handles database access for notification collection
- * TODO: make it so there is not duplicate notifications each time you open the fragmnet
  */
 public class NotificationDB {
 
@@ -65,6 +64,8 @@ public class NotificationDB {
         getQuery(getMyNotifs, new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                //empty the current list of notifs so there are not duplicates
+                myNotifs.clear();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     //add each notification to the arraylist
                     myNotifs.add(document.toObject(Notification.class));
