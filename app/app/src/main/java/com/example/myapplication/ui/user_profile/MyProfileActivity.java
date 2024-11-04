@@ -65,6 +65,9 @@ public class MyProfileActivity extends AppCompatActivity {
 
         Button deleteFacilityButton = findViewById(R.id.profile_delete_facility_button);
         Button saveInfoButton = findViewById(R.id.profile_save_info_button);
+
+        //Erin-Marie added this backButton so if it breaks anything let me know
+        Button backButton = findViewById(R.id.profile_back_button);
         Switch toggleFacilitySwitch = findViewById(R.id.profile_facility_toggle_switch);
 
         // BUTTON CONFIRMING A DELETION OF THE USER'S FACILITY
@@ -147,6 +150,13 @@ public class MyProfileActivity extends AppCompatActivity {
                 // TODO update the DB
             }
         });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                finish();
+            }
+        });
+
 
         // SWITCH TO TOGGLE FACILITY FIELDS DISPLAY
         toggleFacilitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

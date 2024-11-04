@@ -156,6 +156,14 @@
                 android:text="Save"
                 android:background="@drawable/mybutton"/>
             <Button
+                android:id="@+id/profile_back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/belanosima"
+                android:text="Back"
+                android:background="@drawable/mybutton"/>
+            <Button
                 android:id="@+id/profile_delete_facility_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

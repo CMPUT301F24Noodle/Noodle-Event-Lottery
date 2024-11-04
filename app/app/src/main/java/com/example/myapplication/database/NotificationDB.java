@@ -20,6 +20,7 @@ import java.util.ArrayList;
 /**
  * Author: Erin-Marie
  * Class that handles database access for notification collection
+ * QUESTION: should there be a reload function or something? currently updates only seen if user leaves the fragment and comes back
  */
 public class NotificationDB {
 
