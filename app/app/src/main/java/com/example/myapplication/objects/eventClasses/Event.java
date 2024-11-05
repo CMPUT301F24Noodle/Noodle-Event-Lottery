@@ -37,7 +37,7 @@ public class Event implements Serializable {
     // Other class objects connected to the event
     public Facility facility; // Facility where the event is held
     public UserProfile organizer; // User who organized the event
-
+    public DocumentReference organizerRef;
     // For the details of the event
     public String eventName;
     public String eventID;
@@ -76,6 +76,7 @@ public class Event implements Serializable {
                  Integer maxEntrants, Date lotteryCloses, Boolean geoLocation) throws WriterException {
         this.facility = facility;
         this.organizer = organizer;
+        this.organizerRef = organizer.getDocRef();
         this.eventName = eventName;
         this.eventPoster = eventPoster; // can be null
         this.eventDate = eventDate; // event date is converted to a date when the input is taken
@@ -108,6 +109,14 @@ public class Event implements Serializable {
         this.losersList = losersList;
     }
 
+
+    public DocumentReference getOrganizerRef() {
+        return organizerRef;
+    }
+
+    public void setOrganizerRef(DocumentReference organizerRef) {
+        this.organizerRef = organizerRef;
+    }
     public Boolean getGeoLocation() {
         return geoLocation;
     }
@@ -152,11 +161,6 @@ public class Event implements Serializable {
     @Nullable //Sam: added Nullable for testing purpose
     public UserProfile getOrganizer() {
 
-        try{
-            String test = eventDate.toString();
-        }catch (NullPointerException e) {
-            return null;
-        }
         return organizer;
     }
 

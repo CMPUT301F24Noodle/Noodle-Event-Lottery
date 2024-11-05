@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 
 
 import org.w3c.dom.Document;
@@ -50,6 +51,7 @@ public class EventDB {
 
 
     public ArrayList<Event> myEvents = new ArrayList<Event>();
+    public ArrayList<Event> myOrgEvents = new ArrayList<Event>();
 
 
     public EventDB(DBConnection connection) {
@@ -78,6 +80,14 @@ public class EventDB {
         this.myEvents = myEvents;
     }
 
+    public ArrayList<Event> getMyOrgEvents() {
+        return myOrgEvents;
+    }
+
+    public void setMyOrgEvents(ArrayList<Event> myEvents) {
+        this.myOrgEvents = myOrgEvents;
+    }
+
     /**
      * Author: Erin-Marie
      * Checks if the event exists in the database
@@ -85,7 +95,7 @@ public class EventDB {
      * @param listener onSuccess listener, returns null if the user does not already exist
      */
     public void checkEventExists(DocumentReference docRef, OnSuccessListener<DocumentSnapshot> listener) {
-       // DocumentReference docRef = getEventDocumentRef(eventID); // get the document reference for the current users document from the AllUsers Collection
+        // DocumentReference docRef = getEventDocumentRef(eventID); // get the document reference for the current users document from the AllUsers Collection
         docRef.get().addOnSuccessListener(snapshot -> {
             if (snapshot.exists()) {
                 Log.d(TAG, "Event Exists");
@@ -164,6 +174,12 @@ public class EventDB {
         return this.event;
     }
 
+    /**
+     * Author Erin-Marie
+     * sets EventDB objects myEvents array to be all of the events the user has entered
+     * @param user current user
+     * @return this.myEvents but the return value isnt actually used
+     */
     public ArrayList<Event> getUserEnteredEvents(UserProfile user){
         //query all notifs for the ones where the current user is a recipient, and order by time sent
 
@@ -185,6 +201,34 @@ public class EventDB {
         //Log.v(TAG, "size: " + myEvents.size());
         return this.myEvents;
 
+    }
+
+    /**
+     * Author Erin-Marie
+     * sets EventDB objects myOrgEvents array to be all of the events the user has organized
+     * @param user current user
+     * @return this.myEvents but the return value isnt actually used
+     */
+    public ArrayList<Event> getUserOrgEvents(UserProfile user){
+        //query all notifs for the ones where the current user is a recipient, and order by time sent
+
+        Query query = allEvents.whereArrayContains("organizerRef", user.getDocRef());
+        getQuery(query, new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                //empty the current list of notifs so there are not duplicates
+                ArrayList<Event> myEventsCol = new ArrayList<Event>();
+                myOrgEvents.clear();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    //add each event to the arraylist
+                    myOrgEvents.add(document.toObject(Event.class));
+                    Log.v(TAG, "size: " + myOrgEvents.size());
+                }
+
+            }
+        });
+        //Log.v(TAG, "size: " + myEvents.size());
+        return this.myOrgEvents;
     }
 
     /**
@@ -243,7 +287,7 @@ public class EventDB {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                            returnEventID(documentReference);
+                        returnEventID(documentReference);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
