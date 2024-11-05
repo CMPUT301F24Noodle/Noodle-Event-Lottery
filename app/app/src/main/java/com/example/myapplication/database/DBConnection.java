@@ -105,7 +105,6 @@ public class DBConnection {
         return strUuid;
     }
 
-    //QUESTION: I am not sure where some of these methods truly belong, if they should be within the UserDB class, or within the DBConnection class
     /**
      * Author: Erin-Marie
      * getUserDocument() retrieves a reference to the current users document of the AllUsers collection of the DB
@@ -131,7 +130,12 @@ public class DBConnection {
         return docRef;
     }
 
-
+    /**
+     * Author Erin-Marie
+     * gets the document snapshot from the db
+     * @param docRef of any document
+     * @param listener for handling task
+     */
     public void getDocumentFromReference(DocumentReference docRef, OnSuccessListener<DocumentSnapshot> listener){
         docRef.get().addOnSuccessListener(snapshot -> {
             if (snapshot.exists()) {

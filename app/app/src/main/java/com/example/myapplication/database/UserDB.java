@@ -6,19 +6,12 @@ import androidx.annotation.NonNull;
 
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.ui.notifications.Notification;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 
 /**
  * Author: Erin-Marie
@@ -38,8 +31,10 @@ public class UserDB {
     public String uuid;
 
 
-
-
+    /**
+     * Class constructor
+     * @param connection DBConnection from mainActivity
+     */
     public UserDB(DBConnection connection) {
         //Gets a reference to the current users document in the db
         this.storeConnection = connection;
@@ -48,63 +43,6 @@ public class UserDB {
         this.userDocumentReference = connection.getUserDocumentRef();
         this.db = connection.getDB();
 
-    }
-
-    public DBConnection getStoreConnection() {
-        return storeConnection;
-    }
-
-    public void setStoreConnection(DBConnection storeConnection) {
-        this.storeConnection = storeConnection;
-    }
-
-    public void setUserDocumentReference(DocumentReference userDocumentReference) {
-        this.userDocumentReference = userDocumentReference;
-    }
-
-    public FirebaseFirestore getDb() {
-        return db;
-    }
-
-    public void setDb(FirebaseFirestore db) {
-        this.db = db;
-    }
-
-    public CollectionReference getAllUsers() {
-        return allUsers;
-    }
-
-    public void setAllUsers(CollectionReference allUsers) {
-        this.allUsers = allUsers;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    /**
-     * Author: Erin-Marie
-     * Getter for currentUser
-     * @return Returns the UserProfile instance of the current user
-     */
-    public UserProfile getCurrentUser(){
-        return this.currentUser;
-    }
-
-    /**
-     * Author: Erin-Marie
-     * Getter for the DocumentReference of the current users document in AllUsers collection
-     * @return DocumentReference of the current users document in AllUsers collection
-     */
-    public DocumentReference getUserDocumentReference(){
-        this.userDocumentReference = this.storeConnection.getUserDocumentRef();
-        return this.userDocumentReference;
     }
 
     /**
@@ -161,15 +99,16 @@ public class UserDB {
     /**
      * Author: Erin-Marie
      * Call this after editing a user profile to have the db reflect the updates
-     * @param user
+     * @param user to be updated
      * IDK if this will actually work but in theory it does
-     * QUESTION: idk how this'll react to arrays
      */
     public void updateUserDocument(UserProfile user){
         this.userDocumentReference.set(user);
     }
 
-//Broken
+
+//TODO Broken
+    //US.02.03.01
     public void enterEvent(Event event){
 
         event.addEntrant(this.currentUser.getDocRef());
@@ -178,30 +117,62 @@ public class UserDB {
 
     }
 
-
+    //getters and setters
 
     /**
      * Author: Erin-Marie
-     * this function will get the documents from any query passed to it
-     * does not return, but will give the listener argument the task back if it is successful
-     * @param query Query object you want to execute
-     * @param listener OnCompleteListener from calling method, calling method needs a
+     * Getter for currentUser
+     * @return Returns the UserProfile instance of the current user
      */
-    public void getQuery(Query query, OnCompleteListener<QuerySnapshot> listener){
-        query.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            listener.onComplete(task);
-
-                        } else {
-                            Log.v(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
+    public UserProfile getCurrentUser(){
+        return this.currentUser;
     }
 
+    /**
+     * Author: Erin-Marie
+     * Getter for the DocumentReference of the current users document in AllUsers collection
+     * @return DocumentReference of the current users document in AllUsers collection
+     */
+    public DocumentReference getUserDocumentReference(){
+        this.userDocumentReference = this.storeConnection.getUserDocumentRef();
+        return this.userDocumentReference;
+    }
+
+    public DBConnection getStoreConnection() {
+        return storeConnection;
+    }
+
+    public void setStoreConnection(DBConnection storeConnection) {
+        this.storeConnection = storeConnection;
+    }
+
+    public void setUserDocumentReference(DocumentReference userDocumentReference) {
+        this.userDocumentReference = userDocumentReference;
+    }
+
+    public FirebaseFirestore getDb() {
+        return db;
+    }
+
+    public void setDb(FirebaseFirestore db) {
+        this.db = db;
+    }
+
+    public CollectionReference getAllUsers() {
+        return allUsers;
+    }
+
+    public void setAllUsers(CollectionReference allUsers) {
+        this.allUsers = allUsers;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
 
 }
