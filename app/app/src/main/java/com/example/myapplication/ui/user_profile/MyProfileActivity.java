@@ -17,6 +17,8 @@ import com.example.myapplication.objects.userProfileClasses.UserProfile;
 /**
  * Author: Xavier Salm
  * Class for the activity for users to view their profile, and manage their facility.
+ * Uses the activity_my_profile.xml and fragment_delete_facility.xml layout files
+ * USERSTORIES: US.01.02.01, US.01.02.02, US.02.01.03,
  *
  */
 
@@ -179,5 +181,6 @@ public class MyProfileActivity extends AppCompatActivity {
         });
 
     }
+    
 }
 
