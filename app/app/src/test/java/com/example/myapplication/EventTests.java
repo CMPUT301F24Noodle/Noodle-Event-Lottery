@@ -2,30 +2,16 @@ package com.example.myapplication;
 
 import static org.junit.Assert.assertEquals;
 
-import android.content.Context;
-import android.content.Intent;
-import android.view.View;
-import android.widget.TextView;
-
-import androidx.test.core.app.ActivityScenario;
-import androidx.test.core.app.ApplicationProvider;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.ui.ViewEventActivity;
-import com.example.myapplication.ui.registeredevents.RegisteredEventArrayAdapter;
 import com.google.zxing.WriterException;
 
-import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -36,7 +22,7 @@ public class EventTests {
 
     static UserProfile organizer = new UserProfile();
     UserProfile entrant = new UserProfile();
-    static Facility facility = new Facility("TestFacility", organizer, "your moms house");
+    static Facility facility = new Facility("TestFacility", "your moms house");
 
     /**
      * method makes an event object the test cases can use.

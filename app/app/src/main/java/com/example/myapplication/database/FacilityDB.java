@@ -1,6 +1,20 @@
 package com.example.myapplication.database;
 
+import static android.app.PendingIntent.getActivity;
+
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.example.myapplication.MainActivity;
+import com.example.myapplication.objects.eventClasses.Event;
+import com.example.myapplication.objects.facilityClasses.Facility;
+import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * Author Erin-Marie
@@ -14,15 +28,33 @@ public class FacilityDB {
     //For logcat
     private final static String TAG = "FacilityDB";
 
+    public DBConnection connection;
+    public CollectionReference allFacilities;
+    public FirebaseFirestore db;
+    public Event event = null;
+    public String uuid; //for when the current user adds an event
+
     //reference to the current users facility document in the AllUsers collection
     private final DocumentReference facilityDocument;
 
     public FacilityDB(DBConnection connection) {
         //Gets a reference to the current users facility document in the db
         this.facilityDocument = connection.getFacilityDocument();
+        this.connection = connection;
+        this.allFacilities = connection.getAllFacilitiesCollection();
+        this.db = connection.getDB();
+        this.uuid = connection.getUUID();
     }
 
-    public void getHostedEvents(){
-        this.facilityDocument.collection("HostedEvents");
+
+    public void addFacility(Facility facility){
+        this.db.collection("AllFacilities").document("Facility" + this.uuid).set(facility);
+        //UserProfile user = facility.getOwner();
+        //user.setFacility(facility);
+
+
     }
+
+
+
 }

@@ -35,41 +35,41 @@ import java.util.Date;
 @IgnoreExtraProperties // Ignore extra properties from Firebase
 public class Event implements Serializable {
     // Other class objects connected to the event
-    private Facility facility; // Facility where the event is held
-    private UserProfile organizer; // User who organized the event
+    public Facility facility; // Facility where the event is held
+    public UserProfile organizer; // User who organized the event
 
     // For the details of the event
-    private String eventName;
-    private String eventID;
-    private DocumentReference docRef;
-    private String eventPoster; // URL or base64 string for the event poster image
-    private Date eventDate; // date the actual event will occur
-    private String eventTime; // Sam: I added this variable, not sure what type it should be
-    private Integer maxEntrants; // -1 if organizer does not want to restrict capacity
-    private Boolean geoLocation; // False if organizer does not require entrants to have geoLocation on
+    public String eventName;
+    public String eventID;
+    public DocumentReference docRef;
+    public String eventPoster; // URL or base64 string for the event poster image
+    public Date eventDate; // date the actual event will occur
+    public String eventTime; // Sam: I added this variable, not sure what type it should be
+    public Integer maxEntrants; // -1 if organizer does not want to restrict capacity
+    public Boolean geoLocation; // False if organizer does not require entrants to have geoLocation on
 
     // QRCODE STUFF
     private Bitmap QRCode; // the bitmap of the QR code
     private String HashedString; // TODO for part 4, do stuff with hash
 
     // For status of the lottery
-    private Date lotteryCloses; // date winners will be selected and notified
-    private Boolean eventOver; // False until the event attendance list is finalized, or the eventDate has
+    public Date lotteryCloses; // date winners will be selected and notified
+    public Boolean eventOver; // False until the event attendance list is finalized, or the eventDate has
     // passed
-    private Boolean eventFull; // False if there is still room for entrants, or if maxAttendents == -1
-    private ArrayList<DocumentReference> entrantsList; // list of all entrants, by document reference
-    private ArrayList<DocumentReference> winnersList; // list of all users who won the lottery, may have max length equal to
+    public Boolean eventFull; // False if there is still room for entrants, or if maxAttendents == -1
+    public ArrayList<DocumentReference> entrantsList; // list of all entrants, by document reference
+    public ArrayList<DocumentReference> winnersList; // list of all users who won the lottery, may have max length equal to
     // maxAttendents, unless maxAttendents == -1
-    private ArrayList<DocumentReference> losersList; // list of all users who lost the lottery
+    public ArrayList<DocumentReference> losersList; // list of all users who lost the lottery
 
     // Editor: Sam
     // No-arg constructor for Firebase
     public Event() {
         // Initialize lists to avoid null references
-        this.entrantsList = new ArrayList<>();
-        this.winnersList = new ArrayList<>();
-        this.losersList = new ArrayList<>();
+
     }
+
+
 
     // Event Class Constructor
     public Event(Facility facility, UserProfile organizer, String eventName, String eventPoster, Date eventDate,
@@ -85,14 +85,51 @@ public class Event implements Serializable {
         this.geoLocation = geoLocation;
         this.eventFull = Boolean.FALSE; // event capacity cannot be 0, so it is always false at init
         this.entrantsList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
-        this.winnersList = new ArrayList<>(); // have to intialize so .size() wont return null
-        this.losersList = new ArrayList<>(); // have to intialize so .size() wont return null
+        this.winnersList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
+        this.losersList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
+        this.docRef = null;
 
         // TODO: Need to create QR code and do something with hash data
         if(this.eventID != null){
             this.QRCode = generateQRCode(eventID, 200, 200);
         }
 
+    }
+
+    public void setEntrantsList(ArrayList<DocumentReference> entrantsList) {
+        this.entrantsList = entrantsList;
+    }
+
+    public void setWinnersList(ArrayList<DocumentReference> winnersList) {
+        this.winnersList = winnersList;
+    }
+
+    public void setLosersList(ArrayList<DocumentReference> losersList) {
+        this.losersList = losersList;
+    }
+
+    public Boolean getGeoLocation() {
+        return geoLocation;
+    }
+
+    public void setGeoLocation(Boolean geoLocation) {
+        this.geoLocation = geoLocation;
+    }
+
+    public void setQRCode(Bitmap QRCode) {
+        this.QRCode = QRCode;
+    }
+
+    public void setEventFull(Boolean eventFull) {
+        this.eventFull = eventFull;
+    }
+
+    public String getHashedString() {
+        return HashedString;
+    }
+
+    public void setHashedString(String hashedString) {
+        HashedString = hashedString;
     }
 
     // Getters and Setters
@@ -114,6 +151,12 @@ public class Event implements Serializable {
 
     @Nullable //Sam: added Nullable for testing purpose
     public UserProfile getOrganizer() {
+
+        try{
+            String test = eventDate.toString();
+        }catch (NullPointerException e) {
+            return null;
+        }
         return organizer;
     }
 
@@ -139,6 +182,12 @@ public class Event implements Serializable {
 
     @Nullable //Sam: added Nullable for testing purpose
     public Date getEventDate() {
+        try{
+            String test = eventDate.toString();
+        }catch (NullPointerException e){
+            return null;
+        }
+
         return eventDate;
     }
 
@@ -195,6 +244,8 @@ public class Event implements Serializable {
     public String getEventID(){return this.eventID;}
 
     public void setEventID(String eventID ){this.eventID = eventID;}
+
+
     /**
      * returns count of how many users have entered the event lottery
      *

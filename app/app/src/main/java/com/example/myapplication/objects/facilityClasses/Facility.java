@@ -15,24 +15,28 @@ public class Facility implements Serializable {
     UserProfile owner; //UserProfile instance of the facility creator
     String facilityName; //Facility name
     String location; //Facility address
+    String ownerID;
     //QUESTION: do we need an array for the events being hosted at the facility? we don't need to be able to filter by facility to display events, so I don't think so?
 
+
+    public Facility(){}
     /**
      * Erin-Marie
      * Constructor for Facility Class
+     *
      * @param facilityName the name of the new facility
-     * @param owner the UserProfile instance that created the facility
-     * @param location the address of the facility
+     * @param location     the address of the facility
      */
-    public Facility(String facilityName, UserProfile owner, String location) {
+    public Facility(String facilityName, String location) {
         this.facilityName = facilityName;
-        this.owner = owner;
+        //MAYBE this.owner = owner;
+        //this.ownerID = "Facility" + owner.getUuid();
         this.location = location;
     }
 
-    public UserProfile getOwner() {
-        return owner;
-    }
+
+
+
 
     public String getLocation() {
         return location;

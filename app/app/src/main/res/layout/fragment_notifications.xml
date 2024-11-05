@@ -18,4 +18,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/testingbuttonforerin"
+        android:text="button1"/>
+
+    <Button
+        android:id="@+id/testingbuttonforerin2"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="button2"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

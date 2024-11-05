@@ -122,7 +122,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
                     if(user.getFacility() == null){
                         if(!facilityName.isEmpty() && !facilityLocation.isEmpty()){
-                            facility = new Facility(facilityName, user, facilityLocation);
+                            facility = new Facility(facilityName, facilityLocation);
                             user.setFacility(facility); // create a facility for the user!
 
                             // and set the text fields

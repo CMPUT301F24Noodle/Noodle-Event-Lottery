@@ -1,25 +1,34 @@
 package com.example.myapplication.ui.notifications;
 
+import android.graphics.Insets;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 
 import com.example.myapplication.MainActivity;
+import com.example.myapplication.R;
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
+import com.example.myapplication.database.FacilityDB;
 import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.databinding.FragmentNotificationsBinding;
+import com.example.myapplication.objects.eventClasses.Event;
+import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.zxing.WriterException;
 
+
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 
@@ -43,6 +52,8 @@ public class NotificationsFragment extends Fragment {
     public NotificationDB notifDB;
     public String uuid;
     public UserProfile user;
+    public Event event;
+    public FacilityDB facilityDB;
 
     public ArrayList<Notification> notificationsList;
     public NotificationArrayAdapter adapter;
@@ -71,6 +82,28 @@ public class NotificationsFragment extends Fragment {
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        Button button = root.findViewById(R.id.testingbuttonforerin);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    testing();
+                } catch (WriterException e) {
+                    throw new RuntimeException(e);
+                }
+
+                // now show the fragment
+            }
+        });
+        Button button2 = root.findViewById(R.id.testingbuttonforerin2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                testing2();
+                // now show the fragment
+            }
+        });
+
         ListView listView = binding.notificationsList;
 
         adapter = new NotificationArrayAdapter(requireContext(), notificationsList);
@@ -95,9 +128,32 @@ public class NotificationsFragment extends Fragment {
         assert main != null;
         connection = main.connection;
         user = main.user;
+        assert user != null;
         userDB = main.userDB;
+        assert userDB != null;
         eventDB = main.eventDB;
         uuid = main.uuid;
         notifDB = main.notifDB;
+        facilityDB = main.facilityDB;
+    }
+
+    public void testing() throws WriterException {
+
+        Facility facility = user.getFacility();
+        Event event = new Event(facility, user, "Party2", null, null, -1, null, Boolean.FALSE);
+        eventDB.addEvent(event);
+        this.event = event;
+
+
+
+    }
+
+    //BROKEN the event exists and gets updated with the user as a entrant, but the event docref is null in the users document on db
+    public void testing2(){
+        //BROKEN uncomment this and itll crash eventDB.updateEvent(this.event);
+        userDB.enterEvent(this.event);
+        eventDB.updateEvent(this.event);
+
+
     }
 }

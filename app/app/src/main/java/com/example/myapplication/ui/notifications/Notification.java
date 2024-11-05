@@ -103,4 +103,6 @@ public class Notification {
     public void setSentTime(Timestamp sentTime) {
         this.sentTime = sentTime;
     }
+
+
 }

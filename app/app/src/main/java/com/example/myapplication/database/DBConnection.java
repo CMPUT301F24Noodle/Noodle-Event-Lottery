@@ -16,6 +16,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
 
 import org.w3c.dom.Document;
@@ -129,6 +131,19 @@ public class DBConnection {
         return docRef;
     }
 
+
+    public void getDocumentFromReference(DocumentReference docRef, OnSuccessListener<DocumentSnapshot> listener){
+        docRef.get().addOnSuccessListener(snapshot -> {
+            if (snapshot.exists()) {
+                Log.d(TAG, "document exists");
+                listener.onSuccess(snapshot);
+            } else {
+                Log.d(TAG, "document does not exist");
+                listener.onSuccess(null);
+            }
+        });
+    }
+
     /**
      * returns the document reference for the event with the given eventID
      * @param eventID event id of interest
@@ -166,9 +181,18 @@ public class DBConnection {
 
     /**
      * Author: Erin-Marie
+     * getAllFacilitiesCollection() retrieves a reference to the AllFacilitiesCollection
+     * @return returns a DocumentReference
+     * TESTME
+     */
+    public CollectionReference getAllFacilitiesCollection(){
+        return this.db.collection("AllFacility");
+    }
+
+    /**
+     * Author: Erin-Marie
      * getAllUsersCollection() retrieves a reference to the AllUsersCollection
-     * @return returns a DocumentReference to the user associated with the current UUID
-     * The document contains the Facility information
+     * @return returns a DocumentReference
      * TESTME
      */
     public CollectionReference getAllUsersCollection(){
@@ -196,5 +220,27 @@ public class DBConnection {
      */
     public CollectionReference getAllNotificationsCollection(){
         return this.db.collection("AllNotifications");
+    }
+
+    /**
+     * Author: Erin-Marie
+     * this function will get the documents from any query passed to it
+     * does not return, but will give the listener argument the task back if it is successful
+     * @param query Query object you want to execute
+     * @param listener OnCompleteListener from calling method, calling method needs a
+     */
+    public void getQuery(Query query, OnCompleteListener<QuerySnapshot> listener){
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            listener.onComplete(task);
+
+                        } else {
+                            Log.v(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 }

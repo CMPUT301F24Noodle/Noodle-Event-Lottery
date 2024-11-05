@@ -2,12 +2,23 @@ package com.example.myapplication.database;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.ui.notifications.Notification;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 /**
  * Author: Erin-Marie
@@ -26,6 +37,9 @@ public class UserDB {
     public UserProfile currentUser;
     public String uuid;
 
+
+
+
     public UserDB(DBConnection connection) {
         //Gets a reference to the current users document in the db
         this.storeConnection = connection;
@@ -33,6 +47,7 @@ public class UserDB {
         this.uuid = connection.getUUID();
         this.userDocumentReference = connection.getUserDocumentRef();
         this.db = connection.getDB();
+
     }
 
     public DBConnection getStoreConnection() {
@@ -66,6 +81,8 @@ public class UserDB {
     public String getUuid() {
         return uuid;
     }
+
+
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
@@ -101,6 +118,8 @@ public class UserDB {
         UserProfile newUser = new UserProfile(this.uuid);
         this.db.collection("AllUsers").document("User" + uuid).set(newUser);
         this.userDocumentReference = this.db.collection("AllUsers").document("User" + uuid);
+        newUser.setDocRef(this.userDocumentReference);
+        updateUserDocument(newUser);
         this.currentUser = newUser;
         Log.v("DatabaseRead", "Successfully added New user to db, User:  " + newUser.getUuid());
     }
@@ -149,6 +168,17 @@ public class UserDB {
     public void updateUserDocument(UserProfile user){
         this.userDocumentReference.set(user);
     }
-    
+
+//Broken
+    public void enterEvent(Event event){
+
+        event.addEntrant(this.currentUser.getDocRef());
+        this.currentUser.enterEvent(event);
+        updateUserDocument(currentUser);
+
+    }
+
+
+
 }
 

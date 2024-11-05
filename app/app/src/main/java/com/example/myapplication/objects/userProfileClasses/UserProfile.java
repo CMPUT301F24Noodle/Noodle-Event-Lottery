@@ -4,7 +4,6 @@ import android.media.Image;
 
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.facilityClasses.Facility;
-import com.example.myapplication.ui.notifications.Notification;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.io.Serializable;
@@ -25,12 +24,13 @@ public class UserProfile implements Serializable {
     String address;
     Image profilePicture;
     Integer privileges; //0 is default, means they are just an entrant, 1 means they also have organizer privilege
+    DocumentReference docRef;
     ArrayList<DocumentReference> myEvents; //the users ENTERED events
     String uuid;
 
     //organizer privilege attributes
     ArrayList<DocumentReference> myOrgEvents; //the users ORGANIZED events
-    Facility myFacility ; //the users facility they created, can only have one
+    Facility facility; //the users facility they created, can only have one
 
 
 
@@ -42,8 +42,10 @@ public class UserProfile implements Serializable {
     Boolean allowNotifs = Boolean.TRUE; //False if they do not want to receive notifications, True if they do allow notifications
     Boolean geoLocationOn; //True if they allow geoLocation, False if not
 
+    public ArrayList<Event> myEnteredEvents;
 
     public UserProfile() {} //need for firebase
+
 
 
 
@@ -65,8 +67,7 @@ public class UserProfile implements Serializable {
         this.myEvents = new ArrayList<DocumentReference>();
         this.myOrgEvents = new ArrayList<DocumentReference>();
         this.myNotifications = new ArrayList<DocumentReference>();
-
-
+        this.myEnteredEvents = new ArrayList<Event>();
 
 
         //TODO: make a res file with a default profile picture to use until a user submits their own
@@ -89,8 +90,28 @@ public class UserProfile implements Serializable {
         this.myNotifications = myNotifications;
     }
 
-    public Facility getMyFacility() {
-        return myFacility;
+    public ArrayList<Event> getMyEnteredEvents() {
+        return myEnteredEvents;
+    }
+
+    public void setMyEnteredEvents(ArrayList<Event> myEnteredEvents) {
+        this.myEnteredEvents = myEnteredEvents;
+    }
+
+    public DocumentReference getDocRef() {
+        return docRef;
+    }
+
+    public void setDocRef(DocumentReference docRef) {
+        this.docRef = docRef;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
     }
 
     public Boolean getAdmin() {
@@ -192,7 +213,7 @@ public class UserProfile implements Serializable {
     }
 
     public Facility getFacility(){
-        return this.myFacility;
+        return this.facility;
     }
 
     /**
@@ -206,8 +227,8 @@ public class UserProfile implements Serializable {
      */
     public Integer setFacility(Facility facility){
         //Check that the user does not already have a facility
-        if (myFacility == null) {
-            this.myFacility = facility;
+        if (this.facility == null) {
+            this.facility = facility;
             //creating a facility gives the user Organizer privileges, increase privileges
             this.privileges = 1;
             return 0; //return successful
@@ -228,8 +249,8 @@ public class UserProfile implements Serializable {
      *         test that the user now only has entrant privileges
      */
     public void removeFacility(Facility facility){
-        if (myFacility == facility){
-            this.myFacility = null;
+        if (this.facility == facility){
+            this.facility = null;
             this.privileges = 0; //removing your facility means you are no longer an organizer
             //MAYBE: need to delete all events that they were hosting at this facility?
             //       deleting the facility from the db will be done by the calling method probably?
@@ -245,9 +266,18 @@ public class UserProfile implements Serializable {
      * TODO: need to update firebase
      * TESTME: test that the event is now in myEvents
      */
-    public void addEvent(Event event) {
+    public void enterEvent(Event event) {
         myEvents.add(event.getDocRef());
     }
+
+    /**
+     * Author: Erin-Marie
+     * adds an event to the users list of organized events
+     * @param event the event for the Event being made
+     * TODO: need to update firebase
+     * TESTME: test that the event is now in myEvents
+     */
+
 
     /**
      * Author: Erin-Marie
@@ -281,13 +311,10 @@ public class UserProfile implements Serializable {
      * TESTME: test that the event is now in myOrgEvents
      *         test that the method returns 1 if the event facility is not the users facility
      */
-    public Integer addOrgEvent(Event event) {
-        if (event.getFacility() != myFacility | myOrgEvents.contains(event.getDocRef())) {
-            return 1;
-        }else{
-            this.myOrgEvents.add(event.getDocRef());
-            return 0;
-        }
+    public void addOrgEvent(Event event) {
+        assert event != null;
+        myOrgEvents.add(event.getDocRef());
+
 
     }
 

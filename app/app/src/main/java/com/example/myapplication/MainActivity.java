@@ -2,16 +2,14 @@ package com.example.myapplication;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
+import com.example.myapplication.database.FacilityDB;
 import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.database.UserDB;
-import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.ui.notifications.Notification;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 
@@ -23,10 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.databinding.ActivityMainBinding;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public DBConnection connection;
     public UserDB userDB; // userDB instance for the current user
     public EventDB eventDB;
+    public FacilityDB facilityDB;
     public NotificationDB notifDB;
     public String uuid;
     public UserProfile user;
@@ -48,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         // will get the current Users Profile, initialize db connections
         setUpDB();
-        this.user = this.userDB.getCurrentUser();
+
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -102,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         this.userDB = new UserDB(this.connection); // the current users collection reference
         this.eventDB = new EventDB(this.connection);
         this.notifDB = new NotificationDB(this.connection);
+        this.facilityDB = new FacilityDB(this.connection);
         this.uuid = connection.getUUID(); // store the current users uuid
         // check if the user is already in the db
         this.userDB.checkUserExists(new OnSuccessListener<DocumentSnapshot>() {
@@ -113,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     // done through addUser() method in order to get the value returned from
                     // checkUserExists()
                     userDB.setCurrentProfile(snapshot);
+                    user = userDB.getCurrentUser();
                     //notifDB.getUserNotifications(); //this return value doesn't matter, this just needs to be called to intitiate their list of notifications
                     Log.v("SetUpDB", "Set profile for existing user");
 
@@ -121,12 +119,12 @@ public class MainActivity extends AppCompatActivity {
                     // done through addUser() method in order to get the value returned from
                     // checkUserExists()
                     userDB.addCurrentUser();
+                    user = userDB.getCurrentUser();
                     Log.v("SetUpDB", "Set profile for new user");
                 }
             }
         });
         // sets the currentUser attribute for MainActivity
-        this.user = this.userDB.getCurrentUser();
         //TESTME: omg this fucking worked it fetched the profile without creating a new one or overwriting it
 
 
