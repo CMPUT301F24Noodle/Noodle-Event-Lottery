@@ -123,7 +123,8 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/belanosima"
-            android:text="Generate QR" />
+            android:text="Generate QR"
+            android:background="@drawable/mybutton"/>
 
         <View
             android:layout_width="0dp"
@@ -135,7 +136,8 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/belanosima"
-            android:text="Manage Event"/>
+            android:text="Manage Event"
+            android:background="@drawable/mybutton"/>
 
     </LinearLayout>
 
@@ -146,14 +148,15 @@
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linearLayout2"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="10dp">
 
         <Button
             android:id="@+id/edit_event"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/belanosima"
-            android:text="Edit Event" />
+            android:text="Edit Event"
+            android:background="@drawable/mybutton"/>
 
         <View
             android:layout_width="0dp"
@@ -165,7 +168,8 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/belanosima"
-            android:text="Delete Event" />
+            android:text="Delete Event"
+            android:background="@drawable/mybutton"/>
 
     </LinearLayout>
 
