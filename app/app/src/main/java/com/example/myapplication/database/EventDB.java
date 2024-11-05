@@ -52,6 +52,9 @@ public class EventDB {
 
     public ArrayList<Event> myEvents = new ArrayList<Event>();
     public ArrayList<Event> myOrgEvents = new ArrayList<Event>();
+    public ArrayList<UserProfile> losersList = new ArrayList<UserProfile>();
+    public ArrayList<UserProfile> winnersList = new ArrayList<UserProfile>();
+
 
 
     public EventDB(DBConnection connection) {
@@ -230,6 +233,64 @@ public class EventDB {
         //Log.v(TAG, "size: " + myEvents.size());
         return this.myOrgEvents;
     }
+
+    /**
+     * Author Erin-Marie
+     * sets EventDB objects losersList array to be all of the losers of the event
+     * @param event that has been completed
+     * @return this.losersList but the return value isnt actually used
+     */
+    public ArrayList<UserProfile> getEventLosers(Event event){
+        //query all notifs for the ones where the current user is a recipient, and order by time sent
+        ArrayList<DocumentReference> losers = event.getLosersList();
+        Query query = db.collection("allUsers").whereArrayContainsAny("losersList", losers);
+        getQuery(query, new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                //empty the current list of notifs so there are not duplicates
+                ArrayList<Event> myEventsCol = new ArrayList<Event>();
+                losersList.clear();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    //add each event to the arraylist
+                    losersList.add(document.toObject(UserProfile.class));
+                    Log.v(TAG, "size: " + losersList.size());
+                }
+
+            }
+        });
+        //Log.v(TAG, "size: " + myEvents.size());
+        return this.losersList;
+    }
+
+    /**
+     * Author Erin-Marie
+     * sets EventDB objects losersList array to be all of the losers of the event
+     * @param event that has been completed
+     * @return this.losersList but the return value isnt actually used
+     */
+    public ArrayList<UserProfile> getEventWinners(Event event){
+        //query all notifs for the ones where the current user is a recipient, and order by time sent
+        ArrayList<DocumentReference> winners = event.getWinnersList();
+        Query query = db.collection("allUsers").whereArrayContainsAny("winnersList", winners);
+        getQuery(query, new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                //empty the current list of notifs so there are not duplicates
+                ArrayList<Event> myEventsCol = new ArrayList<Event>();
+                winnersList.clear();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    //add each event to the arraylist
+                    winnersList.add(document.toObject(UserProfile.class));
+                    Log.v(TAG, "size: " + winnersList.size());
+                }
+
+            }
+        });
+        //Log.v(TAG, "size: " + myEvents.size());
+        return this.winnersList;
+    }
+
+
 
     /**
      * Author: Erin-Marie

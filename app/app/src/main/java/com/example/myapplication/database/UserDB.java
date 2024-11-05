@@ -180,5 +180,29 @@ public class UserDB {
 
 
 
+    /**
+     * Author: Erin-Marie
+     * this function will get the documents from any query passed to it
+     * does not return, but will give the listener argument the task back if it is successful
+     * @param query Query object you want to execute
+     * @param listener OnCompleteListener from calling method, calling method needs a
+     */
+    public void getQuery(Query query, OnCompleteListener<QuerySnapshot> listener){
+        query.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            listener.onComplete(task);
+
+                        } else {
+                            Log.v(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+
 }
 
