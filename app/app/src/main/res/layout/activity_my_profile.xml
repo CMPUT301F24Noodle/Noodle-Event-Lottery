@@ -35,9 +35,7 @@
             android:fontFamily="@font/anybody_light"
             android:backgroundTint="@color/text_cyan"
             android:textColor="@color/text_cyan"
-            android:maxLength="50"
-
-            />
+            android:maxLength="50" />
 
         <EditText
             android:id="@+id/profile_user_email"
@@ -155,14 +153,7 @@
                 android:fontFamily="@font/belanosima"
                 android:text="Save"
                 android:background="@drawable/mybutton"/>
-            <Button
-                android:id="@+id/profile_back_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/belanosima"
-                android:text="Back"
-                android:background="@drawable/mybutton"/>
+
             <Button
                 android:id="@+id/profile_delete_facility_button"
                 android:layout_width="wrap_content"
@@ -175,6 +166,15 @@
                 android:background="@drawable/mybutton"/>
     </LinearLayout>
 
+        <Button
+            android:id="@+id/profile_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/belanosima"
+            android:text="Back"
+            android:background="@drawable/mybutton"/>
 
     </LinearLayout>
 

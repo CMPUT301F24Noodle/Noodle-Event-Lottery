@@ -125,7 +125,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/belanosima"
             android:text="Accept"
-            android:layout_marginLeft="20dp"/>
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/mybutton"/>
 
         <View
             android:layout_width="0dp"
@@ -138,7 +139,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/belanosima"
             android:text="Decline"
-            android:layout_marginRight="20dp"/>
+            android:layout_marginRight="20dp"
+            android:background="@drawable/mybutton"/>
 
     </LinearLayout>
 
