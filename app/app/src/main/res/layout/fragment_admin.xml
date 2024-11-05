@@ -73,6 +73,7 @@
             android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
             android:text="PICTURE"
             android:textColor="@color/text_cyan"
+            android:drawableTint="@color/text_cyan"
             android:textSize="12dp" />
 
         <CheckBox
@@ -84,6 +85,7 @@
             android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
             android:text="PROFILE"
             android:textColor="@color/text_cyan"
+            android:drawableTint="@color/text_cyan"
             android:textSize="12dp" />
 
         <CheckBox
@@ -95,15 +97,17 @@
             android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
             android:text="EVENT"
             android:textColor="@color/text_cyan"
+            android:drawableTint="@color/text_cyan"
             android:textSize="12dp" />
 
         <CheckBox
             android:id="@+id/nav_qr_code"
-            android:layout_width="92dp"
+            android:layout_width="97dp"
             android:layout_height="match_parent"
             android:button="@null"
             android:buttonTint="@color/text_cyan"
             android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+            android:drawableTint="@color/text_cyan"
             android:text="QR CODE"
             android:textColor="@color/text_cyan"
             android:textSize="12dp" />
@@ -163,7 +167,7 @@
         <TextView
             android:id="@+id/nav_npick"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text=" TO "
             android:textColor="@color/text_cyan"
             android:textSize="15dp"
