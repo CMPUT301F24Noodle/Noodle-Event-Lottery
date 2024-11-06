@@ -6,41 +6,226 @@
     android:layout_height="match_parent"
     android:background="@color/back_gray">
 
-    <ListView
-        android:id="@+id/manage_event_list"
+    <!--    Current Waiting List    -->
+    <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="60dp"
-        android:divider="@color/text_cyan"
-        android:dividerHeight="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/new_event_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteX="10dp">
 
         <TextView
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/anybody_light"
-            android:text="MANAGE"
-            android:textColor="@color/white"
-            android:textSize="30dp" />
+            android:id="@+id/nav_waiting"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/alexandria_semibold"
+            android:text="Current Waiting List: (2/3)"
+            android:textColor="@color/text_cyan"
+            android:textSize="25dp" />
+
+        <ListView
+            android:id="@+id/nav_waiting_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/text_cyan"
+            android:dividerHeight="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+    <!--    Delete this part after Project Part 3-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="User32"
+        android:textColor="@color/text_cyan"
+        android:textColorHint="@color/text_cyan"
+        android:textSize="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/aleo_medium"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Use44"
+        android:textColor="@color/text_cyan"
+        android:textColorHint="@color/text_cyan"
+        android:textSize="20dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/aleo_medium"/>
 
 
-    </androidx.appcompat.widget.Toolbar>
+
+    <!--      Selected People     -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp">
+
+        <TextView
+            android:id="@+id/nav_selected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="People Selected: (4/4)"
+            android:textColor="@color/text_cyan"
+            android:textSize="25dp"
+            android:fontFamily="@font/alexandria_semibold"/>
+
+            <ListView
+                android:id="@+id/selected_ppl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/text_cyan"
+                android:dividerHeight="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+    <!--    Delete this part after Project Part 3-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="ABC"
+        android:textColor="@color/text_cyan"
+        android:textColorHint="@color/text_cyan"
+        android:textSize="20dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/aleo_medium"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="EVEO"
+        android:textColor="@color/text_cyan"
+        android:textColorHint="@color/text_cyan"
+        android:textSize="20dp"
+        android:layout_marginTop="165dp"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/aleo_medium"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="rrrrr"
+        android:textColor="@color/text_cyan"
+        android:textColorHint="@color/text_cyan"
+        android:textSize="20dp"
+        android:layout_marginTop="185dp"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/aleo_medium"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="RERT"
+        android:textColor="@color/text_cyan"
+        android:textColorHint="@color/text_cyan"
+        android:textSize="20dp"
+        android:layout_marginTop="210dp"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/aleo_medium"/>
+
+
+    <!--      Cancelled People     -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="240dp">
+
+        <TextView
+            android:id="@+id/nav_cancelled"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="People Cancelled: 3"
+            android:textColor="@color/text_cyan"
+            android:textSize="25dp"
+            android:fontFamily="@font/alexandria_semibold"/>
+
+        <ListView
+            android:id="@+id/cancelled_ppl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/text_cyan"
+            android:dividerHeight="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+    <!--    Delete this part after Project Part 3-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="NEO"
+        android:textColor="@color/text_cyan"
+        android:textColorHint="@color/text_cyan"
+        android:textSize="20dp"
+        android:layout_marginTop="275dp"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/aleo_medium"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="DEO"
+        android:textColor="@color/text_cyan"
+        android:textColorHint="@color/text_cyan"
+        android:textSize="20dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/aleo_medium"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="RIO"
+        android:textColor="@color/text_cyan"
+        android:textColorHint="@color/text_cyan"
+        android:textSize="20dp"
+        android:layout_marginTop="325dp"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/aleo_medium"/>
+
+
+    <!--     Attending People     -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="355dp">
+
+        <TextView
+            android:id="@+id/nav_attending"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="People Attending: 1"
+            android:textColor="@color/text_cyan"
+            android:textSize="25dp"
+            android:fontFamily="@font/alexandria_semibold"/>
+
+        <ListView
+            android:id="@+id/attending_ppl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/text_cyan"
+            android:dividerHeight="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+    <!--    Delete this part after Project Part 3-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="RERT"
+        android:textColor="@color/text_cyan"
+        android:textColorHint="@color/text_cyan"
+        android:textSize="20dp"
+        android:layout_marginTop="390dp"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/aleo_medium"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/FAB_map"
@@ -55,7 +240,7 @@
         android:id="@+id/notify_button"
         android:layout_width="130dp"
         android:layout_height="50dp"
-        android:fontFamily="@font/anybody_light"
+        android:fontFamily="@font/belanosima"
         android:text="Notify"
         app:layout_constraintBottom_toTopOf="@+id/FAB_map"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -64,7 +249,7 @@
         android:id="@+id/replace_button"
         android:layout_width="130dp"
         android:layout_height="50dp"
-        android:fontFamily="@font/anybody_light"
+        android:fontFamily="@font/belanosima"
         android:text="Replace"
         app:layout_constraintBottom_toTopOf="@+id/notify_button"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -73,7 +258,7 @@
         android:id="@+id/draw_name_button"
         android:layout_width="130dp"
         android:layout_height="50dp"
-        android:fontFamily="@font/anybody_light"
+        android:fontFamily="@font/belanosima"
         android:text="Draw Names"
         app:layout_constraintBottom_toTopOf="@+id/replace_button"
         app:layout_constraintEnd_toEndOf="parent" />
