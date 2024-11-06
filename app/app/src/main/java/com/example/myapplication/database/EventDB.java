@@ -200,6 +200,7 @@ public class EventDB {
                     myEvents.add(document.toObject(Event.class));
                     Log.v(TAG, "size: " + myEvents.size());
                 }
+                Log.v(TAG, "On complete getUserEvnteredEvents finsihed");
             }
         });
         //Log.v(TAG, "size: " + myEvents.size());

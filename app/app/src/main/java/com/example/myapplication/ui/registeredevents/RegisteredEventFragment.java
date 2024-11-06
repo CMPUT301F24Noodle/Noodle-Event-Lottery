@@ -64,7 +64,7 @@ public class RegisteredEventFragment extends Fragment {
         getVarFromMain();
 
         // Erin-Marie: Initialize the event list and adapter from db
-
+        eventList = eventDB.getMyEvents();
         getEvents();
         eventList = eventDB.getMyEvents();
 

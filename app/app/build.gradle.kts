@@ -70,7 +70,7 @@ dependencies {
 
 
     // dependencies for Firebase Authentication and Cloud Firestore
-    implementation("com.google.firebase:firebase-bom:32.7.1")
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("com.google.firebase:firebase-firestore")
 
 
