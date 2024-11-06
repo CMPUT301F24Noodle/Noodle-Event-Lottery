@@ -6,193 +6,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.admin.AdminFragment">
 <!--    layout file for the admin fragment-->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/new_event_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-    <TextView
-        android:id="@+id/admin_frag_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:fontFamily="@font/anybody_light"
-        android:text="ADMIN FILTER "
-        android:textColor="@color/white"
-        android:textSize="30dp" />
-
-    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
+        android:layout_marginTop="200dp"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_event_toolbar">
-
-        <TextView
-            android:id="@+id/admin_filter_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TYPE:"
-            android:textColor="@color/text_cyan"
-            android:textSize="25dp"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="50dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_event_toolbar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        android:layout_height="match_parent">
 
-        <CheckBox
-            android:id="@+id/nav_picture"
-            android:layout_width="92dp"
-            android:layout_height="match_parent"
-            android:button="@null"
-            android:buttonTint="@color/text_cyan"
-            android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-            android:text="PICTURE"
-            android:textColor="@color/text_cyan"
-            android:drawableTint="@color/text_cyan"
-            android:textSize="12dp" />
-
-        <CheckBox
-            android:id="@+id/nav_profile"
-            android:layout_width="92dp"
-            android:layout_height="match_parent"
-            android:button="@null"
-            android:buttonTint="@color/text_cyan"
-            android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+        <Button
+            android:id="@+id/nav_admin_profile"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:fontFamily="@font/belanosima"
+            android:layout_gravity="center"
             android:text="PROFILE"
-            android:textColor="@color/text_cyan"
-            android:drawableTint="@color/text_cyan"
-            android:textSize="12dp" />
+            android:textStyle="bold"
+            android:background="@drawable/mybutton"/>
 
-        <CheckBox
-            android:id="@+id/nav_event"
-            android:layout_width="92dp"
-            android:layout_height="match_parent"
-            android:button="@null"
-            android:buttonTint="@color/text_cyan"
-            android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+        <Button
+            android:id="@+id/nav_admin_event"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:fontFamily="@font/belanosima"
+            android:layout_gravity="center"
             android:text="EVENT"
-            android:textColor="@color/text_cyan"
-            android:drawableTint="@color/text_cyan"
-            android:textSize="12dp" />
+            android:background="@drawable/mybutton"
+            android:layout_marginTop="30dp"/>
 
-        <CheckBox
-            android:id="@+id/nav_qr_code"
-            android:layout_width="97dp"
-            android:layout_height="match_parent"
-            android:button="@null"
-            android:buttonTint="@color/text_cyan"
-            android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
-            android:drawableTint="@color/text_cyan"
+        <Button
+            android:id="@+id/nav_admin_qr"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:fontFamily="@font/belanosima"
+            android:layout_gravity="center"
             android:text="QR CODE"
-            android:textColor="@color/text_cyan"
-            android:textSize="12dp" />
-    </LinearLayout>
+            android:textStyle="bold"
+            android:background="@drawable/mybutton"
+            android:layout_marginTop="30dp"/>
 
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-
-        <TextView
-            android:id="@+id/admin_filter_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TIME FRAME:"
-            android:textColor="@color/text_cyan"
-            android:textSize="25dp"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-        <NumberPicker
-            android:id="@+id/nav_time_day_start"
-            android:layout_width="47dp"
-            android:layout_height="66dp"
-            android:layout_weight="1"
-            android:theme="@style/AppTheme.Picker" />
-
-        <NumberPicker
-            android:id="@+id/nav_time_month_start"
-            android:layout_width="47dp"
-            android:layout_height="66dp"
-            android:layout_weight="1"
-            android:theme="@style/AppTheme.Picker" />
-
-        <NumberPicker
-            android:id="@+id/nav_time_year_start"
-            android:layout_width="44dp"
-            android:layout_height="66dp"
-            android:layout_weight="1"
-            android:theme="@style/AppTheme.Picker" />
-        <TextView
-            android:id="@+id/nav_npick"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=" TO "
-            android:textColor="@color/text_cyan"
-            android:textSize="15dp"
-            android:layout_marginTop="24dp"/>
-
-        <NumberPicker
-            android:id="@+id/nav_time_day_done"
-            android:layout_width="44dp"
-            android:layout_height="66dp"
-            android:layout_weight="1"
-            android:theme="@style/AppTheme.Picker" />
-
-        <NumberPicker
-            android:id="@+id/nav_time_month_done"
-            android:layout_width="45dp"
-            android:layout_height="66dp"
-            android:layout_weight="1"
-            android:theme="@style/AppTheme.Picker" />
-
-        <NumberPicker
-            android:id="@+id/nav_time_year_done"
-            android:layout_width="46dp"
-            android:layout_height="66dp"
-            android:layout_weight="1"
-            android:theme="@style/AppTheme.Picker" />
+        <Button
+            android:id="@+id/nav_admin_img"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:fontFamily="@font/belanosima"
+            android:layout_gravity="center"
+            android:text="IMAGE"
+            android:textStyle="bold"
+            android:background="@drawable/mybutton"
+            android:layout_marginTop="30dp"/>
 
     </LinearLayout>
 
