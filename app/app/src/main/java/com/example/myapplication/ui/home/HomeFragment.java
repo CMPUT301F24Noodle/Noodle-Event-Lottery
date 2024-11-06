@@ -35,63 +35,7 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-//        // Initialize Firebase Firestore
-//        db = FirebaseFirestore.getInstance();
-//        eventsRef = db.collection("Events");
-//
-//        // Initialize the listView
-//        ListView listView = binding.scannedEventList;
-//
-//        // Initialize the event list and adapter
-//        eventList = new ArrayList<>();
-//        adapter = new MyEventsListArrayAdapter(requireContext(), eventList);
-//        listView.setAdapter(adapter);
-//
-//        // load events from Firestore
-//        loadEventsFromFirestore();
-//
-//        return root;
-//    }
-//
-//    private void loadEventsFromFirestore() {
-//        eventsRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
-//            eventList.clear();
-//            eventList.addAll(queryDocumentSnapshots.toObjects(Event.class));
-//            adapter.notifyDataSetChanged();
-//        });
-//    }
-//
-//    /**
-//     * Author: Sam Lee
-//     * Add a new event to the list and Firestore
-//     *
-//     * @param event the event to add
-//     */
-//    private void addNewEvent(Event event) {
-//        // Add the event to the local list
-//        eventList.add(event);
-//        adapter.notifyDataSetChanged();
-//
-//        // Add the event to the Firestore collection
-//        eventsRef.document(event.getEventName()).set(event)
-//                .addOnSuccessListener(aVoid -> Log.d("Firestore", "DocumentSnapshot successfully written!"));
-//    }
-//
-//    /**
-//     * Author: Sam Lee
-//     * Delete an event from the list and Firestore
-//     *
-//     * @param event
-//     */
-//    private void deleteEvent(Event event) {
-//        // Remove the event from the local list
-//        eventList.remove(event);
-//        adapter.notifyDataSetChanged();
-//
-//        // Delete the event from the Firestore collection
-//        eventsRef.document(event.getEventName()).delete()
-//                .addOnSuccessListener(aVoid -> Log.d("Firestore", "DocumentSnapshot successfully deleted!"));
-//    }
+
 
     @Override
     public void onDestroyView() {

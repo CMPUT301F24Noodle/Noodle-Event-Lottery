@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alexandria_semibold"
+        android:textColor="@color/text_cyan"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/logtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/aleo_medium"
+        android:textColor="@color/text_cyan"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/event_poster"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:contentDescription="@string/poster"
+        android:scaleType="centerCrop"
+        android:src="@drawable/testposter"
+        android:background="@drawable/rounded_image"
+        android:clipToOutline="true"/>
+
+</LinearLayout>

@@ -37,6 +37,10 @@ public class FacilityDB {
     //reference to the current users facility document in the AllUsers collection
     private final DocumentReference facilityDocument;
 
+    /**
+     * Facility class constructor
+     * @param connection dbConnection from MainActivity
+     */
     public FacilityDB(DBConnection connection) {
         //Gets a reference to the current users facility document in the db
         this.facilityDocument = connection.getFacilityDocument();
@@ -47,6 +51,12 @@ public class FacilityDB {
     }
 
 
+    /**
+     * Author: Erin-Marie
+     * adds the given facility object to the db under AllFacilities
+     * TODO: see if it sets the facility as being the users
+     * @param facility new facility
+     */
     public void addFacility(Facility facility){
         this.db.collection("AllFacilities").document("Facility" + this.uuid).set(facility);
         //UserProfile user = facility.getOwner();

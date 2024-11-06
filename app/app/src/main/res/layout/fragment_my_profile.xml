@@ -35,9 +35,7 @@
             android:fontFamily="@font/anybody_light"
             android:backgroundTint="@color/text_cyan"
             android:textColor="@color/text_cyan"
-            android:maxLength="50"
-
-            />
+            android:maxLength="50" />
 
         <EditText
             android:id="@+id/profile_user_email"
@@ -111,6 +109,15 @@
         </LinearLayout>
 
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/facility_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/placeholderpfp"
+            android:contentDescription="@string/profile_picture"
+            android:visibility="gone"/>
+
         <EditText
             android:id="@+id/profile_facility_name"
             android:layout_width="wrap_content"
@@ -141,6 +148,8 @@
             android:textColor="@color/text_cyan"
             android:maxLength="50"/>
 
+
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -155,18 +164,28 @@
                 android:fontFamily="@font/belanosima"
                 android:text="Save"
                 android:background="@drawable/mybutton"/>
+
+            <Button
+                android:id="@+id/profile_delete_facility_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/belanosima"
+                android:text="Delete Facility"
+                android:visibility="gone"
+                android:background="@drawable/mybutton"/>
+    </LinearLayout>
+
         <Button
-            android:id="@+id/profile_delete_facility_button"
+            android:id="@+id/profile_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/belanosima"
-            android:text="Delete Facility"
-            android:visibility="gone"
+            android:text="Back"
             android:background="@drawable/mybutton"/>
-    </LinearLayout>
-
 
     </LinearLayout>
 

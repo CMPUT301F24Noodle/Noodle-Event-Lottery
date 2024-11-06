@@ -35,6 +35,10 @@ public class NotificationDB {
     public String uuid;
     public ArrayList<Notification> myNotifs = new ArrayList<Notification>();
 
+    /**
+     * Class constructor
+     * @param connection DBconnection from mainActivity
+     */
     public NotificationDB(DBConnection connection) {
         //Gets a reference to the current users document in the db
         this.storeConnection = connection;
@@ -46,8 +50,9 @@ public class NotificationDB {
     }
 
     /**
+     * Author: Erin-Marie
      * adds a notification to the db collection AllNotifications
-     * @param notif
+     * @param notif the notification instance to be added
      */
     public void addNotification(Notification notif){
         allNotifications.add(notif);
@@ -56,7 +61,7 @@ public class NotificationDB {
 
     /**
      * Author: Erin-Marie
-     * If not passed any parameters, will return the notifications for the current user
+     * Queries the db for all notifications where the current user is a recipient
      * @return an array list of all the notifications the user has
      */
     public ArrayList<Notification> getUserNotifications(){

@@ -7,6 +7,7 @@ import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.zxing.WriterException;
 
+import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
@@ -37,13 +38,13 @@ public class EventTests {
     }
 
 
-//    /**
-//     * this tests that the addEvents method does not add an event when the entrant max has been reached, but does if it has not been reached
-//     * and that addEvents is updating the eventFull attribute after an entrant is added, by calling setEventFull
-//     * @throws ParseException if the date string is the wrong format
-//     */
-//    @Test
-//    public void testAddEntrant() throws ParseException {
+    /**
+     * this tests that the addEvents method does not add an event when the entrant max has been reached, but does if it has not been reached
+     * and that addEvents is updating the eventFull attribute after an entrant is added, by calling setEventFull
+     * @throws ParseException if the date string is the wrong format
+     */
+    //@Test
+//    public void testAddEntrant() throws ParseException, WriterException {
 //        //Make a new event
 //        Event event = makeTestEvent();
 //
@@ -54,9 +55,9 @@ public class EventTests {
 //        //check that the eventFull attr is set to False
 //        assertEquals(event.getEventFull(), Boolean.FALSE);
 //        //add an entrant and ensure it is successful
-//        assertEquals(event.addEntrant(entrant), 1);
+//        assertEquals(event.addEntrant(entrant.getDocRef()), 1);
 //        //and check that they were added to the entrants list
-//        assertEquals(event.getEntrantsList().contains(entrant), Boolean.TRUE);
+//        //assertEquals(event.getEntrantsList().contains(entrant), Boolean.TRUE);
 //        //update entrantCount value
 //
 //        //Test that you cannot add an entrant if the max is reached
@@ -67,7 +68,7 @@ public class EventTests {
 //        assertEquals(event.getEventFull(), Boolean.TRUE);
 //        UserProfile newEntrant = new UserProfile();
 //        //now try to add a new entrant and ensure it fails
-//        assertEquals(event.addEntrant(newEntrant), 0);
+//        assertEquals(event.addEntrant(newEntrant.getDocRef()), 0);
 //        //and check that they were not added to the entrants list
 //        assertEquals(event.getEntrantsList().contains(newEntrant), Boolean.FALSE);
 //

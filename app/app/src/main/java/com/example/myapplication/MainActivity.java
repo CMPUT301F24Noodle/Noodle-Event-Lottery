@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                     // checkUserExists()
                     userDB.setCurrentProfile(snapshot);
                     user = userDB.getCurrentUser();
+                    eventDB.getUserEnteredEvents(user);
                     //notifDB.getUserNotifications(); //this return value doesn't matter, this just needs to be called to intitiate their list of notifications
                     Log.v("SetUpDB", "Set profile for existing user");
 
@@ -120,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
                     // checkUserExists()
                     userDB.addCurrentUser();
                     user = userDB.getCurrentUser();
+                    eventDB.getUserEnteredEvents(user);
+                    eventDB.getUserOrgEvents(user);
                     Log.v("SetUpDB", "Set profile for new user");
                 }
             }
