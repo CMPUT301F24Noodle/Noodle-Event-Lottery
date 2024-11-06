@@ -1,49 +1,63 @@
 package com.example.myapplication.ui.user_profile;
 
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.database.UserDB;
+import com.example.myapplication.databinding.FragmentMyProfileBinding;
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 
 
 /**
  * Author: Xavier Salm
- * Class for the activity for users to view their profile, and manage their facility.
+ * Class for the fragment for users to view/edit their profile, and create/manage their facilities.
+ * Uses the activity_my_profile.xml and fragment_delete_facility.xml layout files
+ * USERSTORIES: US.01.02.01, US.01.02.02, US.02.01.03,
  *
  */
 
-// generally noticed a lot of cases of storyboards not matching attributes, or missing attributes... those will have to be added in later
-public class MyProfileActivity extends AppCompatActivity {
+public class MyProfileFragment extends Fragment {
     UserProfile user;
+    UserDB userDB;
     Facility facility;
+
+    MainActivity main;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_profile); // Ensure this layout file exists
+    public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
 
-        // Intents should not be needed to pass info, because we can get the user info from the database
-        // might need intents to get the database
+        inflater.inflate(R.layout.fragment_my_profile, container, false);
+        //View view = inflater.inflate(R.layout.fragment_my_profile, container, false);
+        FragmentMyProfileBinding binding = FragmentMyProfileBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
+        // get the user and userDB
+        getUserUserDB();
 
-        user = new UserProfile(); // TODO Grab the user from the database using the device identifier
+        // start of text fields
+        TextView usernameText = view.findViewById(R.id.profile_user_full_name);
+        TextView emailText = view.findViewById(R.id.profile_user_email);
+        TextView phoneNumberText = view.findViewById(R.id.profile_user_contact_number);
+        TextView addressText = view.findViewById(R.id.profile_user_address);
 
-        TextView usernameText = findViewById(R.id.profile_user_full_name);
-        TextView emailText = findViewById(R.id.profile_user_email);
-        TextView phoneNumberText = findViewById(R.id.profile_user_contact_number);
-        TextView addressText = findViewById(R.id.profile_user_address);
-
-        TextView facilityNameText = findViewById(R.id.profile_facility_name);
-        TextView facilityLocationText = findViewById(R.id.profile_facility_location);
+        TextView facilityNameText = view.findViewById(R.id.profile_facility_name);
+        TextView facilityLocationText = view.findViewById(R.id.profile_facility_location);
 
 
         // display user info
@@ -63,21 +77,42 @@ public class MyProfileActivity extends AppCompatActivity {
 
         // set up buttons
 
-        Button deleteFacilityButton = findViewById(R.id.profile_delete_facility_button);
-        Button saveInfoButton = findViewById(R.id.profile_save_info_button);
+        Button deleteFacilityButton = view.findViewById(R.id.profile_delete_facility_button);
+        Button saveInfoButton = view.findViewById(R.id.profile_save_info_button);
 
         //Erin-Marie added this backButton so if it breaks anything let me know
-        Button backButton = findViewById(R.id.profile_back_button);
-        Switch toggleFacilitySwitch = findViewById(R.id.profile_facility_toggle_switch);
+        //Button backButton = findViewById(R.id.profile_back_button);
+
+        Switch toggleFacilitySwitch = view.findViewById(R.id.profile_facility_toggle_switch);
 
         // BUTTON CONFIRMING A DELETION OF THE USER'S FACILITY
         deleteFacilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(user.getFacility() != null){
-                    DeleteFacilityFragment deleteFacilityFragment = new DeleteFacilityFragment();
 
-                    deleteFacilityFragment.show(getSupportFragmentManager(), "deleteFacility"); // now show the fragment
+                // if they actually have a facility
+                if(user.getFacility() != null) {
+
+                    // create a dialogue box for them to confirm their choice
+                    new AlertDialog.Builder(requireContext()) //
+                            .setTitle("Delete Facility")
+                            .setMessage("Are you sure you would like to delete your facility?")
+                            .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // now that they have confirmed, remove the facility
+                                    user.removeFacility(facility);
+
+                                    // and update the db
+                                    userDB.updateUserDocument(user);
+
+                                    // set the facility fields to empty so the hint is displayed again
+                                    facilityNameText.setText("");
+                                    facilityLocationText.setText("");
+                                }
+                            })
+                            .setNegativeButton("Cancel", null) // closes the dialog on cancel
+                            .show();
                 }
             }
         });
@@ -86,7 +121,6 @@ public class MyProfileActivity extends AppCompatActivity {
         saveInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // Get the new values and set them in userProfile
                 String username = usernameText.getText().toString();
                 String email = emailText.getText().toString();
@@ -147,16 +181,10 @@ public class MyProfileActivity extends AppCompatActivity {
 
                 }
 
-                // TODO update the DB
+                // update the DB
+                userDB.updateUserDocument(user);
             }
         });
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v){
-                finish();
-            }
-        });
-
 
         // SWITCH TO TOGGLE FACILITY FIELDS DISPLAY
         toggleFacilitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -178,6 +206,21 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
+        return view;
     }
+
+    /**
+     * Author: Xavier Salm
+     * Gets the user and userDB object from main
+     */
+    public void getUserUserDB(){
+        main = (MainActivity) getActivity();
+        assert main != null;
+        user = main.user;
+        assert user != null;
+        userDB = main.userDB;
+        assert userDB != null;
+    }
+
 }
 

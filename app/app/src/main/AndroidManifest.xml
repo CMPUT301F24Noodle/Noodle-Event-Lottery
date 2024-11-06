@@ -26,9 +26,7 @@
 
         </activity>
 
-        <activity
-            android:name=".ui.user_profile.MyProfileActivity"
-            android:label="My Profile" />
+
 
 <!--        <activity-->
 <!--            android:name=".ui.notifications.NotificationsFragment"-->

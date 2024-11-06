@@ -25,11 +25,11 @@
         android:label="@string/menu_enteredevents"
         tools:layout="@layout/fragment_registered_events" />
 
-    <activity
+    <fragment
         android:id="@id/nav_profile"
-        android:name="com.example.myapplication.ui.user_profile.MyProfileActivity"
+        android:name="com.example.myapplication.ui.user_profile.MyProfileFragment"
         android:label="Your Profile"
-        tools:layout="@layout/activity_my_profile"/>
+        tools:layout="@layout/fragment_my_profile"/>
 
     <fragment
         android:id="@id/nav_notifications"
