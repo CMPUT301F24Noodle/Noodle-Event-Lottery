@@ -50,7 +50,7 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
         eventName.setText(event.getEventName());
         eventDate.setText(event.getEventDate() != null ? event.getEventDate().toString() : "No Date");
         eventTime.setText(event.getEventTime());
-        orgName.setText(event.getOrganizer() != null ? event.getEventDate().toString() : "No Org");
+        orgName.setText(event.getOrganizer() != null ? event.getOrganizer().getName().toString() : "No Org");
 
         return view;
     }
