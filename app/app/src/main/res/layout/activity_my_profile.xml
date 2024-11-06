@@ -109,6 +109,15 @@
         </LinearLayout>
 
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/facility_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/placeholderpfp"
+            android:contentDescription="@string/profile_picture"
+            android:visibility="gone"/>
+
         <EditText
             android:id="@+id/profile_facility_name"
             android:layout_width="wrap_content"
@@ -138,6 +147,8 @@
             android:visibility="gone"
             android:textColor="@color/text_cyan"
             android:maxLength="50"/>
+
+
 
     <LinearLayout
         android:layout_width="wrap_content"
