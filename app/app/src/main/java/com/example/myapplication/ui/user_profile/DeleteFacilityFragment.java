@@ -42,7 +42,7 @@ public class DeleteFacilityFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
                 .setView(view)
-                .setTitle("test for where alert dialogue builder appears, and if it uses font and such")
+                .setTitle("Are you sure you would like to delete this facility?")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Confirm", (dialog, which) -> {
                     user.removeFacility(facility);

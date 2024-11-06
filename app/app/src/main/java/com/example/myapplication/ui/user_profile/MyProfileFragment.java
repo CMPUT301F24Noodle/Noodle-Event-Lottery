@@ -1,6 +1,8 @@
 package com.example.myapplication.ui.user_profile;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.databinding.FragmentMyProfileBinding;
@@ -22,7 +25,7 @@ import com.example.myapplication.objects.userProfileClasses.UserProfile;
 
 /**
  * Author: Xavier Salm
- * Class for the activity for users to view their profile, and manage their facility.
+ * Class for the fragment for users to view/edit their profile, and create/manage their facilities.
  * Uses the activity_my_profile.xml and fragment_delete_facility.xml layout files
  * USERSTORIES: US.01.02.01, US.01.02.02, US.02.01.03,
  *
@@ -33,6 +36,9 @@ public class MyProfileFragment extends Fragment {
     UserDB userDB;
     Facility facility;
 
+    MainActivity main;
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
 
@@ -41,8 +47,8 @@ public class MyProfileFragment extends Fragment {
         FragmentMyProfileBinding binding = FragmentMyProfileBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        // get all variables
-        user = new UserProfile();
+        // get the user and userDB
+        getUserUserDB();
 
         // start of text fields
         TextView usernameText = view.findViewById(R.id.profile_user_full_name);
@@ -83,10 +89,30 @@ public class MyProfileFragment extends Fragment {
         deleteFacilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(user.getFacility() != null){
-                    DeleteFacilityFragment deleteFacilityFragment = new DeleteFacilityFragment();
 
-                    deleteFacilityFragment.show(getParentFragmentManager(), "deleteFacility"); // now show the fragment
+                // if they actually have a facility
+                if(user.getFacility() != null) {
+
+                    // create a dialogue box for them to confirm their choice
+                    new AlertDialog.Builder(requireContext()) //
+                            .setTitle("Delete Facility")
+                            .setMessage("Are you sure you would like to delete your facility?")
+                            .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // now that they have confirmed, remove the facility
+                                    user.removeFacility(facility);
+
+                                    // and update the db
+                                    userDB.updateUserDocument(user);
+
+                                    // set the facility fields to empty so the hint is displayed again
+                                    facilityNameText.setText("");
+                                    facilityLocationText.setText("");
+                                }
+                            })
+                            .setNegativeButton("Cancel", null) // closes the dialog on cancel
+                            .show();
                 }
             }
         });
@@ -155,16 +181,10 @@ public class MyProfileFragment extends Fragment {
 
                 }
 
-                // TODO update the DB
+                // update the DB
+                userDB.updateUserDocument(user);
             }
         });
-
-        //backButton.setOnClickListener(new View.OnClickListener() {
-        //    public void onClick(View v){
-           //     finish();
-         //   }
-       // });
-
 
         // SWITCH TO TOGGLE FACILITY FIELDS DISPLAY
         toggleFacilitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -189,6 +209,18 @@ public class MyProfileFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Author: Xavier Salm
+     * Gets the user and userDB object from main
+     */
+    public void getUserUserDB(){
+        main = (MainActivity) getActivity();
+        assert main != null;
+        user = main.user;
+        assert user != null;
+        userDB = main.userDB;
+        assert userDB != null;
+    }
 
 }
 
