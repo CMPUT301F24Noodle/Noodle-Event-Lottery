@@ -1,15 +1,21 @@
 package com.example.myapplication.ui.user_profile;
 
+
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
+import com.example.myapplication.database.UserDB;
+import com.example.myapplication.databinding.FragmentMyProfileBinding;
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 
@@ -22,30 +28,30 @@ import com.example.myapplication.objects.userProfileClasses.UserProfile;
  *
  */
 
-// generally noticed a lot of cases of storyboards not matching attributes, or missing attributes... those will have to be added in later
-public class MyProfileActivity extends AppCompatActivity {
+public class MyProfileFragment extends Fragment {
     UserProfile user;
+    UserDB userDB;
     Facility facility;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_profile); // Ensure this layout file exists
+    public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
 
-        // Intents should not be needed to pass info, because we can get the user info from the database
-        // might need intents to get the database
+        inflater.inflate(R.layout.fragment_my_profile, container, false);
+        //View view = inflater.inflate(R.layout.fragment_my_profile, container, false);
+        FragmentMyProfileBinding binding = FragmentMyProfileBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
+        // get all variables
+        user = new UserProfile();
 
-        user = new UserProfile(); // TODO Grab the user from the database using the device identifier
+        // start of text fields
+        TextView usernameText = view.findViewById(R.id.profile_user_full_name);
+        TextView emailText = view.findViewById(R.id.profile_user_email);
+        TextView phoneNumberText = view.findViewById(R.id.profile_user_contact_number);
+        TextView addressText = view.findViewById(R.id.profile_user_address);
 
-        TextView usernameText = findViewById(R.id.profile_user_full_name);
-        TextView emailText = findViewById(R.id.profile_user_email);
-        TextView phoneNumberText = findViewById(R.id.profile_user_contact_number);
-        TextView addressText = findViewById(R.id.profile_user_address);
-
-        TextView facilityNameText = findViewById(R.id.profile_facility_name);
-        TextView facilityLocationText = findViewById(R.id.profile_facility_location);
+        TextView facilityNameText = view.findViewById(R.id.profile_facility_name);
+        TextView facilityLocationText = view.findViewById(R.id.profile_facility_location);
 
 
         // display user info
@@ -65,12 +71,13 @@ public class MyProfileActivity extends AppCompatActivity {
 
         // set up buttons
 
-        Button deleteFacilityButton = findViewById(R.id.profile_delete_facility_button);
-        Button saveInfoButton = findViewById(R.id.profile_save_info_button);
+        Button deleteFacilityButton = view.findViewById(R.id.profile_delete_facility_button);
+        Button saveInfoButton = view.findViewById(R.id.profile_save_info_button);
 
         //Erin-Marie added this backButton so if it breaks anything let me know
-        Button backButton = findViewById(R.id.profile_back_button);
-        Switch toggleFacilitySwitch = findViewById(R.id.profile_facility_toggle_switch);
+        //Button backButton = findViewById(R.id.profile_back_button);
+
+        Switch toggleFacilitySwitch = view.findViewById(R.id.profile_facility_toggle_switch);
 
         // BUTTON CONFIRMING A DELETION OF THE USER'S FACILITY
         deleteFacilityButton.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +86,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 if(user.getFacility() != null){
                     DeleteFacilityFragment deleteFacilityFragment = new DeleteFacilityFragment();
 
-                    deleteFacilityFragment.show(getSupportFragmentManager(), "deleteFacility"); // now show the fragment
+                    deleteFacilityFragment.show(getParentFragmentManager(), "deleteFacility"); // now show the fragment
                 }
             }
         });
@@ -88,7 +95,6 @@ public class MyProfileActivity extends AppCompatActivity {
         saveInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // Get the new values and set them in userProfile
                 String username = usernameText.getText().toString();
                 String email = emailText.getText().toString();
@@ -153,11 +159,11 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v){
-                finish();
-            }
-        });
+        //backButton.setOnClickListener(new View.OnClickListener() {
+        //    public void onClick(View v){
+           //     finish();
+         //   }
+       // });
 
 
         // SWITCH TO TOGGLE FACILITY FIELDS DISPLAY
@@ -180,7 +186,9 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
+        return view;
     }
-    
+
+
 }
 
