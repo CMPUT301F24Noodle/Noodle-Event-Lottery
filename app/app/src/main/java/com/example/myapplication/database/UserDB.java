@@ -107,12 +107,9 @@ public class UserDB {
     }
 
 
-//TODO Broken
     //US.02.03.01
     public void enterEvent(Event event){
 
-        event.addEntrant(this.currentUser.getDocRef());
-        this.currentUser.enterEvent(event);
         updateUserDocument(currentUser);
 
     }

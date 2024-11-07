@@ -95,10 +95,12 @@ public class MainActivity extends AppCompatActivity {
         // Add the user to the db, added by Erin-Marie, if it breaks everything its my
         // fault
         this.connection = new DBConnection(this); // connection to the base db
-        this.userDB = new UserDB(this.connection); // the current users collection reference
-        this.eventDB = new EventDB(this.connection);
-        this.notifDB = new NotificationDB(this.connection);
-        this.facilityDB = new FacilityDB(this.connection);
+        this.userDB = connection.getUserDB(); // the current users collection reference
+        this.eventDB = connection.getEventDB();
+        //THESE will be removed
+        this.notifDB = connection.getNotifDB();
+        this.facilityDB = connection.getFacilityDB();
+
         this.uuid = connection.getUUID(); // store the current users uuid
         // check if the user is already in the db
         this.userDB.checkUserExists(new OnSuccessListener<DocumentSnapshot>() {
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                     user = userDB.getCurrentUser();
                     eventDB.getUserEnteredEvents(user);
                     connection.setUser(user);
-                    //notifDB.getUserNotifications(); //this return value doesn't matter, this just needs to be called to intitiate their list of notifications
+                    notifDB.getUserNotifications(); //this return value doesn't matter, this just needs to be called to intitiate their list of notifications
                     Log.v("SetUpDB", "Set profile for existing user");
 
                 } else { // User is not already in the database
@@ -132,14 +134,6 @@ public class MainActivity extends AppCompatActivity {
         // sets the currentUser attribute for MainActivity
         //TESTME: omg this fucking worked it fetched the profile without creating a new one or overwriting it
 
-
-
     }
 
-    public void testUpdate(){
-        //if this line is not here, the app will crash
-        this.user = this.userDB.getCurrentUser();
-        this.userDB.updateUserDocument(this.user);
-        //Task<Void> update = this.userDB.getUserDocument().set(user);
-    }
 }

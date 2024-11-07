@@ -33,7 +33,7 @@ public class EventTests {
         Date dateEvent = new SimpleDateFormat("dd/MM/yyyy").parse("29/05/2002");
         Date dateClose = new SimpleDateFormat("dd/MM/yyyy").parse("30/05/2002");
         //event with default details, geolocation off, max participants is 10
-        Event event = new Event(facility, organizer, "TestEvent", null, dateEvent, 1, dateClose, Boolean.FALSE);
+        Event event = new Event(facility, organizer, "TestEvent", null,  dateEvent, null, null ,1,  1, dateClose, Boolean.FALSE);
         return event;
     }
 

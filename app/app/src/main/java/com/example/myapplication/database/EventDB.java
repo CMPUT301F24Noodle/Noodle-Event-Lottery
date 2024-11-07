@@ -22,7 +22,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
-
+import java.security.cert.TrustAnchor;
 import java.util.ArrayList;
 
 /**
@@ -44,6 +44,7 @@ public class EventDB {
     public ArrayList<Event> myOrgEvents = new ArrayList<Event>();
     public ArrayList<UserProfile> losersList = new ArrayList<UserProfile>();
     public ArrayList<UserProfile> winnersList = new ArrayList<UserProfile>();
+    public ArrayList<UserProfile> entrantsList = new ArrayList<UserProfile>();
 
 
     /**
@@ -81,6 +82,18 @@ public class EventDB {
 
     public Event getEvent(){
         return this.event;
+    }
+
+    public ArrayList<UserProfile> getLosersList() {
+        return losersList;
+    }
+
+    public ArrayList<UserProfile> getWinnersList() {
+        return winnersList;
+    }
+
+    public ArrayList<UserProfile> getEntrantsList() {
+        return entrantsList;
     }
 
     /**
@@ -188,7 +201,7 @@ public class EventDB {
      */
     public ArrayList<Event> getUserEnteredEvents(UserProfile user){
         //query all events for the ones where the current user is an entrant
-        Query query = allEvents.whereArrayContains("entrantsList", user.getDocRef());
+        Query query = allEvents.whereArrayContains("entrantsList", user.getDocRef()).orderBy("eventDate", Query.Direction.DESCENDING);
         getQuery(query, new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -216,7 +229,7 @@ public class EventDB {
      */
     public ArrayList<Event> getUserOrgEvents(UserProfile user){
         //query all events for the ones where the current user is the organizer
-        Query query = allEvents.whereArrayContains("organizerRef", user.getDocRef());
+        Query query = allEvents.whereArrayContains("organizerRef", user.getDocRef()).orderBy("eventDate", Query.Direction.DESCENDING);
         getQuery(query, new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -238,9 +251,9 @@ public class EventDB {
      * Author Erin-Marie
      * sets EventDB objects losersList array to be all of the losers of the event
      * @param event that has been completed
-     * @return this.losersList but the return value isnt actually used
+     * no actual return, but will set this.losersList to contain all of the UserProfiles of the entrants that did not win the lottery
      */
-    public ArrayList<UserProfile> getEventLosers(Event event){
+    public void getEventLosers(Event event){
         //query for all losers documents of the users in the events losersList
         ArrayList<DocumentReference> losers = event.getLosersList();
         Query query = db.collection("allUsers").whereArrayContainsAny("losersList", losers);
@@ -259,7 +272,34 @@ public class EventDB {
             }
         });
         //Log.v(TAG, "size: " + myEvents.size());
-        return this.losersList;
+    }
+
+    /**
+     * Author Erin-Marie
+     * sets EventDB objects entrants array to be all of the entrants of the event
+     * @param event that has been created
+     * no actual return, but will set this.entrantsList to contain all of the UserProfiles of the entrants that did not win the lottery
+     */
+    public void getEventEntrants(Event event){
+        //query for all losers documents of the users in the events losersList
+        ArrayList<DocumentReference> entrants = event.getEntrantsList();
+        Query query = db.collection("allUsers").whereArrayContainsAny("entrantsList", entrants);
+        getQuery(query, new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                //empty the current list of losers so there are not duplicates
+                ArrayList<Event> myEventsCol = new ArrayList<Event>();
+                entrantsList.clear();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    //add each user to the arraylist
+                    entrantsList.add(document.toObject(UserProfile.class));
+                    //Log.v(TAG, "size: " + entrantsList.size());
+                }
+                Log.v(TAG, "Entrants list read from database");
+
+            }
+
+        });
     }
 
     /**
@@ -371,6 +411,28 @@ public class EventDB {
         String eventID = event.getEventID();
 
         this.db.collection("AllEvents").document(eventID).set(event);
+
+    }
+
+    /**
+     * Author: Erin-Marie
+     * Adds the entrant to the entrantsList of the event, and updates the Event in the DB
+     * @param event the event being entered
+     * @return Boolean of the success of entering the event
+     *         returns False if they could not be added becuase the waiting list is full
+     *         returns True if they were added to the waiting list
+     * assumed the entrant is the current user
+     */
+    public Boolean addEntrant(Event event){
+        DocumentReference entrant = connection.getUserDocumentRef();
+        Integer added = event.addEntrant(entrant);
+        if (added == 0){
+            Log.v(TAG, "Waiting list is full, user could not be added");
+            return Boolean.FALSE;
+        } else {
+            updateEvent(event);
+            return Boolean.TRUE;
+        }
 
     }
 }

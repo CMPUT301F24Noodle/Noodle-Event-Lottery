@@ -43,7 +43,7 @@ public class RegisteredEventArrayTest {
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date dateEvent = dateFormat.parse("29/05/2002");
         Date dateClose = dateFormat.parse("30/05/2002");
-        return new Event(facility, organizer, "TestEvent", null, dateEvent, 1, dateClose, Boolean.FALSE);
+        return new Event(facility, organizer, "TestEvent", null, dateEvent, null, null, 1, 1, dateClose, Boolean.FALSE);
     }
 
     @Test
