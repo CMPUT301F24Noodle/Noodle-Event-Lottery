@@ -93,6 +93,7 @@ public class NotificationsFragmentTest {
 
     //BROKEN async task to get user profile is not executing before the notification is created
     // try adding an onSuccessListener in before(), then make the notification inside of onSuccess()
+    // add a method that will remove the test user from the db afterwards
 
     //TODO write a test that shows the user has no notifications, then creates a notification, then displays that notification
 

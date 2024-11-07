@@ -20,11 +20,13 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
         style="@style/MyNavigationViewStyle"
         app:itemTextColor="@color/bonus_yellow"
         app:itemIconTint="@color/bonus_yellow"
         app:menu="@menu/activity_main_drawer">
+<!--        app:headerLayout="@layout/nav_header_main"-->
+<!--        no header, may add back in for part 4-->
+
 
         <LinearLayout
             android:layout_width="match_parent"
