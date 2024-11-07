@@ -2,21 +2,19 @@ package com.example.myapplication.database;
 
 import android.content.Context;
 
-import com.google.firebase.FirebaseApp;
-
 import java.util.UUID;
 
 /**
  * Author: Erin-Marie
  * just makes a database connection for testing that does not require context that contains the UUID
  */
-public class DBConnectionMock extends DBConnection{
+public class MockDBConnection extends DBConnection{
 
     /**
      * make an instance of DBconnection that doesn't need context, can enter the UUID manually for now
      *
      */
-    public DBConnectionMock() {
+    public MockDBConnection() {
         super(null);
     }
 
@@ -27,7 +25,6 @@ public class DBConnectionMock extends DBConnection{
      * @param context: the context of the application
      */
     @Override protected String genUUID(Context context) {
-
         String uuid = "test" + UUID.randomUUID().toString();
         return uuid;
     }

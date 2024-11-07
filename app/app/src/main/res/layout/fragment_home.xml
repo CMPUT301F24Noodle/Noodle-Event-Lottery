@@ -7,27 +7,42 @@
     android:background="@color/back_gray"
     tools:context=".ui.home.HomeFragment">
 
-    <ListView
-        android:id="@+id/scanned_event_list"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:divider="@color/text_cyan"
-        android:dividerHeight="2dp"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Welcome to the Noodle Lottery!"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/text_cyan"
+        android:textSize="48sp"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/qr_button"
-        android:layout_width="75dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="28dp"
-        app:srcCompat="@drawable/ic_qr_scanner"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"/>
+    <!--    <ListView-->
+<!--        android:id="@+id/scanned_event_list"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:divider="@color/text_cyan"-->
+<!--        android:dividerHeight="2dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/qr_button"-->
+<!--        android:layout_width="75dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom|end"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:maxImageSize="28dp"-->
+<!--        app:srcCompat="@drawable/ic_qr_scanner"-->
+<!--        android:layout_marginRight="20dp"-->
+<!--        android:layout_marginBottom="20dp"/>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

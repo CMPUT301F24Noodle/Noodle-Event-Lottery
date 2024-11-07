@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         // TODONE: add UserProfile to the nav drawer so it can be selected and we can view the UserProfile fragment
         //MAYBE: to add nav_home activity back into the menu, uncomment the MAYBE below, as well as both MAYBE in mobile_navigation.XML and in activity_drawer_main.XML
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                /*MAYBE R.id.nav_home,*/ R.id.nav_profile, R.id.nav_myevents, R.id.nav_registered, R.id.nav_notifications)
+                R.id.nav_home, R.id.nav_profile, R.id.nav_myevents, R.id.nav_registered, R.id.nav_notifications)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     userDB.setCurrentProfile(snapshot);
                     user = userDB.getCurrentUser();
                     eventDB.getUserEnteredEvents(user);
+                    connection.setUser(user);
                     //notifDB.getUserNotifications(); //this return value doesn't matter, this just needs to be called to intitiate their list of notifications
                     Log.v("SetUpDB", "Set profile for existing user");
 
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     user = userDB.getCurrentUser();
                     eventDB.getUserEnteredEvents(user);
                     eventDB.getUserOrgEvents(user);
+                    connection.setUser(user);
                     Log.v("SetUpDB", "Set profile for new user");
                 }
             }

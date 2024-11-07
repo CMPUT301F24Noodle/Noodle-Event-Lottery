@@ -4,14 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.admin.AdminFragment">
+    tools:context=".ui.admin.AdminFragment"
+    android:id="@+id/admin">
 <!--    layout file for the admin fragment-->
 
     <LinearLayout
         android:layout_marginTop="200dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/admin_layout">
 
         <Button
             android:id="@+id/nav_admin_profile"

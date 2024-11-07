@@ -22,10 +22,7 @@ import android.content.Intent;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private FirebaseFirestore db;
-    private CollectionReference eventsRef;
-    private ArrayList<Event> eventList;
-    private MyEventsListArrayAdapter adapter;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -34,6 +31,8 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
         return root;
     }
+
+
 
 
 
