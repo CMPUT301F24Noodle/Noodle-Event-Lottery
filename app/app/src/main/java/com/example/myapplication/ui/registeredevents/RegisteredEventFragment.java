@@ -64,7 +64,7 @@ public class RegisteredEventFragment extends Fragment {
         getVarFromMain();
 
         // Erin-Marie: Initialize the event list and adapter from db
-        eventList = eventDB.getMyEvents();
+        //eventList = eventDB.getMyEvents();
         getEvents();
         eventList = eventDB.getMyEvents();
 
@@ -119,13 +119,10 @@ public class RegisteredEventFragment extends Fragment {
         main = (MainActivity) getActivity();
         assert main != null;
         connection = main.connection;
-        user = main.user;
-        assert user != null;
-        userDB = main.userDB;
-        assert userDB != null;
-        eventDB = main.eventDB;
-        uuid = main.uuid;
-        notifDB = main.notifDB;
-        facilityDB = main.facilityDB;
+
+        notifDB = connection.getNotifDB();
+        user = connection.getUser();
+        eventDB = connection.getEventDB();
+        userDB = connection.getUserDB();
     }
 }
