@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class UserProfile implements Serializable {
 
     String name;
-    String lastName; // TODO THIS IS COMPLETELY USELESS AND SHOULD BE REMOVED
     String email;
     String phoneNumber;
     String address;
@@ -56,9 +55,8 @@ public class UserProfile implements Serializable {
      */
     public UserProfile(String uuid) {
 
-        this.name = "None";
-        this.lastName = "None";
-        this.email = "None";
+        this.name = "Name";
+        this.email = "Email";
         this.privileges = 0; //defaults to entrant privileges
         this.allowNotifs = Boolean.TRUE; //defaults to allow notifications
         this.geoLocationOn = Boolean.FALSE; //defaults to false, need to ask user for permission first
@@ -132,14 +130,6 @@ public class UserProfile implements Serializable {
         this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getEmail() {
         return email;

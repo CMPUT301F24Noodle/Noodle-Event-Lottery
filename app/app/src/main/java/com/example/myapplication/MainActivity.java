@@ -139,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
     public void testUpdate(){
         //if this line is not here, the app will crash
         this.user = this.userDB.getCurrentUser();
-        this.user.setLastName("testpleasework");
         this.userDB.updateUserDocument(this.user);
         //Task<Void> update = this.userDB.getUserDocument().set(user);
     }
