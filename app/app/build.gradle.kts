@@ -60,7 +60,13 @@ dependencies {
 
     // Android test dependencies
     androidTestImplementation ("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation ("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.test:rules:1.0.2")
+    androidTestImplementation("androidx.test:runner:1.6.1")
+    androidTestImplementation("androidx.test:rules:1.6.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.6.1")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.2.0")
+    androidTestImplementation ("androidx.test:core:1.4.0")
     testImplementation ("junit:junit:4.13.2")
     testImplementation ("androidx.test:core:1.4.0")
     testImplementation ("androidx.test.ext:junit:1.1.3")
