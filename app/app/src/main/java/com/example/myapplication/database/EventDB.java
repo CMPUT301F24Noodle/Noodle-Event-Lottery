@@ -44,6 +44,7 @@ public class EventDB {
     public ArrayList<Event> myOrgEvents = new ArrayList<Event>();
     public ArrayList<UserProfile> losersList = new ArrayList<UserProfile>();
     public ArrayList<UserProfile> winnersList = new ArrayList<UserProfile>();
+    public ArrayList<UserProfile> entrantsList = new ArrayList<UserProfile>();
 
 
     /**
@@ -81,6 +82,18 @@ public class EventDB {
 
     public Event getEvent(){
         return this.event;
+    }
+
+    public ArrayList<UserProfile> getLosersList() {
+        return losersList;
+    }
+
+    public ArrayList<UserProfile> getWinnersList() {
+        return winnersList;
+    }
+
+    public ArrayList<UserProfile> getEntrantsList() {
+        return entrantsList;
     }
 
     /**
@@ -238,9 +251,9 @@ public class EventDB {
      * Author Erin-Marie
      * sets EventDB objects losersList array to be all of the losers of the event
      * @param event that has been completed
-     * @return this.losersList but the return value isnt actually used
+     * no actual return, but will set this.losersList to contain all of the UserProfiles of the entrants that did not win the lottery
      */
-    public ArrayList<UserProfile> getEventLosers(Event event){
+    public void getEventLosers(Event event){
         //query for all losers documents of the users in the events losersList
         ArrayList<DocumentReference> losers = event.getLosersList();
         Query query = db.collection("allUsers").whereArrayContainsAny("losersList", losers);
@@ -259,7 +272,34 @@ public class EventDB {
             }
         });
         //Log.v(TAG, "size: " + myEvents.size());
-        return this.losersList;
+    }
+
+    /**
+     * Author Erin-Marie
+     * sets EventDB objects entrants array to be all of the entrants of the event
+     * @param event that has been created
+     * no actual return, but will set this.entrantsList to contain all of the UserProfiles of the entrants that did not win the lottery
+     */
+    public void getEventEntrants(Event event){
+        //query for all losers documents of the users in the events losersList
+        ArrayList<DocumentReference> entrants = event.getEntrantsList();
+        Query query = db.collection("allUsers").whereArrayContainsAny("entrantsList", entrants);
+        getQuery(query, new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                //empty the current list of losers so there are not duplicates
+                ArrayList<Event> myEventsCol = new ArrayList<Event>();
+                entrantsList.clear();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    //add each user to the arraylist
+                    entrantsList.add(document.toObject(UserProfile.class));
+                    //Log.v(TAG, "size: " + entrantsList.size());
+                }
+                Log.v(TAG, "Entrants list read from database");
+
+            }
+
+        });
     }
 
     /**
