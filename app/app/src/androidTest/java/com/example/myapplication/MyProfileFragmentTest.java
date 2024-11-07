@@ -60,14 +60,19 @@ public class MyProfileFragmentTest {
 
     }
 
-    // TODO DO TESTS NEED JAVADOCS?
     // Tests if you can actually navigate to MyProfile
+    /**
+     * Tests the ability to navigate to MyProfileFragment
+     */
     @Test
     public void NavigateToMyProfileTest() {
         onView(withId(R.id.profile_facility_section_text)).check(matches(isDisplayed()));
     }
 
-    // Test if the user's details are correctly displayed
+
+    /**
+     * Tests if the user's details are correctly displayed
+     */
     @Test
     public void DisplayUserInfoTest(){
 
@@ -76,7 +81,9 @@ public class MyProfileFragmentTest {
         onView(withId(R.id.profile_user_email)).check(matches(withText("Email")));
     }
 
-    // Test if the save button works
+    /**
+     * Tests the functionality of the save button. When clicked, most blank fields are reset to what they were before (they are not saved)
+     */
     @Test
     public void SaveUserInfoButtonTest(){
 
@@ -92,7 +99,9 @@ public class MyProfileFragmentTest {
         onView(withId(R.id.profile_user_contact_number)).check(matches(withText("123456789")));
     }
 
-    // test the facility visibility toggle
+    /**
+     * Tests that facility text fields are hidden while the toggle is off, and visible while the toggle is on
+     */
     @Test
     public void FacilityVisibilityToggleTest(){
         // check that you can't see facility stuff
@@ -114,8 +123,12 @@ public class MyProfileFragmentTest {
         onView(withId(R.id.profile_facility_name)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
     }
 
+    /**
+     * Tests the creation of facilities, which are only created for new users if both facility text fields are filled out
+     *
+     */
     @Test
-    public void saveFacilityInfoTest(){
+    public void createFacilityTest() {
 
         // make facility stuff visible
         onView(withId(R.id.profile_facility_toggle_switch)).perform(click());
@@ -142,8 +155,31 @@ public class MyProfileFragmentTest {
         onView(withId(R.id.profile_facility_location)).check(matches(withText("location")));
 
 
+    }
 
+    /**
+     * Tests if the delete facility button clears the facility fields
+     */
+    @Test
+    public void DeleteFacilityButtonTest(){
+        // make facility stuff visible
+        onView(withId(R.id.profile_facility_toggle_switch)).perform(click());
+        onView(withText("Continue")).perform(click());
 
+        // type into both fields
+        onView(withId(R.id.profile_facility_name)).perform(ViewActions.typeText("name"));
+        onView(withId(R.id.profile_facility_location)).perform(ViewActions.typeText("location"));
+
+        // save the facility
+        onView(withId(R.id.profile_save_info_button)).perform(click());
+
+        // delete facility
+        onView(withId(R.id.profile_delete_facility_button)).perform(click());
+        onView(withText("DELETE")).perform(click());
+
+        // both fields should be empty
+        onView(withId(R.id.profile_facility_name)).check(matches(withText("")));
+        onView(withId(R.id.profile_facility_location)).check(matches(withText("")));
 
     }
 }
