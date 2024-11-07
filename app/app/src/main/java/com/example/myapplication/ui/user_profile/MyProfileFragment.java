@@ -51,7 +51,7 @@ public class MyProfileFragment extends Fragment {
         getUserUserDB();
 
         // start of text fields
-        TextView usernameText = view.findViewById(R.id.profile_user_full_name);
+        TextView usernameText = view.findViewById(R.id.profile_user_name);
         TextView emailText = view.findViewById(R.id.profile_user_email);
         TextView phoneNumberText = view.findViewById(R.id.profile_user_contact_number);
         TextView addressText = view.findViewById(R.id.profile_user_address);

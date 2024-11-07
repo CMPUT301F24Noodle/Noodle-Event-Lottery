@@ -25,7 +25,7 @@
             android:contentDescription="@string/profile_picture" />
 
         <EditText
-            android:id="@+id/profile_user_full_name"
+            android:id="@+id/profile_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

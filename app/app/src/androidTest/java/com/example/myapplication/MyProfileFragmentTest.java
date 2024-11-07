@@ -41,6 +41,8 @@ public class MyProfileFragmentTest {
     public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<MainActivity>(MainActivity.class);
 
 
+    // TODO DO TESTS NEED JAVADOCS?
+    // Tests if you can actually navigate to MyProfile
     @Test
     public void NavigateToMyProfileTest() {
 
@@ -56,6 +58,18 @@ public class MyProfileFragmentTest {
         onView(withId(R.id.nav_profile)).perform(click());
 
         onView(withId(R.id.profile_facility_section_text)).check(matches(isDisplayed()));
+    }
+
+    // Test if the user's details are correctly displayed
+    @Test
+    public void DisplayUserInfoTest(){
+        // navigate to my profile
+        onView(withContentDescription("Open navigation drawer")).perform(click());
+        onView(withId(R.id.nav_profile)).perform(click());
+        onView(withId(R.id.profile_facility_section_text)).check(matches(isDisplayed()));
+
+        // check if text matches
+
     }
 
 }
