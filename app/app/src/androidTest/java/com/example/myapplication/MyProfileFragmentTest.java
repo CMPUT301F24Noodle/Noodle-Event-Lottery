@@ -84,6 +84,7 @@ public class MyProfileFragmentTest {
 
     /**
      * Tests the functionality of the save button. When clicked, most blank fields are reset to what they were before (they are not saved)
+     * Tests user stories: US.01.02.01, US.01.02.02
      */
     @Test
     public void SaveUserInfoButtonTest(){
@@ -126,7 +127,7 @@ public class MyProfileFragmentTest {
 
     /**
      * Tests the creation of facilities, which are only created for new users if both facility text fields are filled out
-     *
+     * Tests User Story: US.02.01.03
      */
     @Test
     public void createFacilityTest() {
@@ -160,6 +161,7 @@ public class MyProfileFragmentTest {
 
     /**
      * Tests if the delete facility button clears the facility fields
+     * Tests User Story: US.02.01.03
      */
     @Test
     public void DeleteFacilityButtonTest(){
