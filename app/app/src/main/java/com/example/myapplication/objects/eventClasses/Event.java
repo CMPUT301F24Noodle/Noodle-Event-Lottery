@@ -42,6 +42,7 @@ public class Event implements Serializable {
     public String eventName;
     public String eventID;
     public DocumentReference docRef;
+    private String eventLocation;
     public String eventPoster; // URL or base64 string for the event poster image
     public Date eventDate; // date the actual event will occur
     public String eventTime; // Sam: I added this variable, not sure what type it should be
@@ -260,6 +261,13 @@ public class Event implements Serializable {
 
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
+    }
+    public String getEventLocation() {
+        return eventLocation;
+    }
+
+    public void setEventLocation(String eventLocation) {
+        this.eventLocation = eventLocation;
     }
 
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -13,37 +14,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
+
+        <!-- Set AddEventsActivity as the launcher activity -->
+        <activity
+            android:name=".ui.myevents.AddEventsActivity"
+            android:exported="true"
+            android:label="Add Event"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- MainActivity is no longer the launcher but still part of the app -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.MyApplication.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
-
-
-
-<!--        <activity-->
-<!--            android:name=".ui.notifications.NotificationsFragment"-->
-<!--            android:label="My Notifications" />-->
-        <activity
-            android:name="com.example.myapplication.ui.ViewEventActivity"
-            android:exported="true"
-            android:label="View Event">
-            <intent-filter>
-                <action android:name="com.example.myapplication.ACTION_VIEW_EVENT" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.MyApplication.NoActionBar" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-
 </manifest>
