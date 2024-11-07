@@ -134,14 +134,6 @@ public class MainActivity extends AppCompatActivity {
         // sets the currentUser attribute for MainActivity
         //TESTME: omg this fucking worked it fetched the profile without creating a new one or overwriting it
 
-
-
     }
 
-    public void testUpdate(){
-        //if this line is not here, the app will crash
-        this.user = this.userDB.getCurrentUser();
-        this.userDB.updateUserDocument(this.user);
-        //Task<Void> update = this.userDB.getUserDocument().set(user);
-    }
 }
