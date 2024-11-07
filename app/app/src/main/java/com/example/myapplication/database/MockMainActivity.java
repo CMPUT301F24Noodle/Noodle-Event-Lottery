@@ -7,6 +7,7 @@ import com.example.myapplication.MainActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+ // BROKEN this doesnt work
 public class MockMainActivity extends MainActivity {
 
     @Override

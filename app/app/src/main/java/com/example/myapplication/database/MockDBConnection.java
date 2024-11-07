@@ -7,6 +7,7 @@ import java.util.UUID;
 /**
  * Author: Erin-Marie
  * just makes a database connection for testing that does not require context that contains the UUID
+ * BROKEN this doesnt work
  */
 public class MockDBConnection extends DBConnection{
 
