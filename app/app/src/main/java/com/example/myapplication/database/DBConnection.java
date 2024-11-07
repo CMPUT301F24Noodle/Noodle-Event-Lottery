@@ -47,6 +47,7 @@ public class DBConnection {
 
     private FirebaseFirestore db; //firebase instance
     private String uuid; //Store the users ID
+    private UserProfile user;
     private static final String TAG = "DBConnection"; //Database ID
 
     /**
@@ -78,7 +79,15 @@ public class DBConnection {
         return this.uuid;
     }
 
+    /**
+     * Sets the user attr with the current users profile
+     * @param user current user
+     */
+    public void setUser(UserProfile user){
+        this.user = user;
+    }
 
+    public UserProfile getUser(){ return this.user; }
     /**
      * Author: Erin-Marie
      * Method to get the users unique UUID, or generate one if they do not have one
@@ -147,6 +156,8 @@ public class DBConnection {
             }
         });
     }
+
+
 
     /**
      * returns the document reference for the event with the given eventID
