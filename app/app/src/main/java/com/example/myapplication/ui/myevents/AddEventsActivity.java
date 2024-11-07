@@ -19,12 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
 import java.util.Date;
@@ -40,7 +40,7 @@ public class AddEventsActivity extends AppCompatActivity {
     private ImageView posterImageView;
     private Uri selectedImageUri;
 
-    private FirebaseFirestore db;
+    private DBConnection connection;
     private EventDB eventDB;
     private UserProfile currentUserProfile;
 
@@ -49,13 +49,21 @@ public class AddEventsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.org_create_new_event);
 
-        db = FirebaseFirestore.getInstance();
-        DBConnection connection = new DBConnection(this);
-        eventDB = new EventDB(connection);
+        // Retrieve DBConnection and EventDB from MainActivity
+        initializeDatabaseConnections();
 
         initializeViews();
         initializeCurrentUser();
         setButtonListeners();
+    }
+
+    private void initializeDatabaseConnections() {
+        MainActivity main = (MainActivity) getActivity();
+        assert main != null;
+
+        // Retrieve existing DBConnection and EventDB instances from MainActivity
+        this.connection = main.connection;
+        this.eventDB = connection.getEventDB();
     }
 
     private void initializeViews() {
