@@ -34,7 +34,7 @@ public class ViewEventActivityTest {
 
     public static Event makeTestEvent() throws ParseException, WriterException {
         UserProfile organizer = new UserProfile();
-        Facility facility = new Facility("TestFacility", organizer, "your moms house");
+        Facility facility = new Facility("TestFacility", "your moms house");
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date dateEvent = dateFormat.parse("29/05/2002");
