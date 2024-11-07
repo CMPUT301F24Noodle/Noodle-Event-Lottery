@@ -159,12 +159,18 @@ public class MyProfileFragment extends Fragment {
 
                     if(user.getFacility() == null){
                         if(!facilityName.isEmpty() && !facilityLocation.isEmpty()){
+
                             facility = new Facility(facilityName, facilityLocation);
                             user.setFacility(facility); // create a facility for the user!
 
                             // and set the text fields
                             facility.setFacilityName(facilityName);
                             facility.setLocation(facilityLocation);
+                        }
+                        else{
+                            // if the save was unsuccessful, reset both fields
+                            facilityNameText.setText("");
+                            facilityLocationText.setText("");
                         }
                     }
 
