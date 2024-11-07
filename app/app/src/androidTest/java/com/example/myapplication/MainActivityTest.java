@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.test.InstrumentationRegistry;
+import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 
@@ -67,86 +68,84 @@ public class MainActivityTest {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
 
         // Click the Notifications menu item
-        onView(withText("Notifications"))
-                .perform(click());
+        onView(withText("Notifications")).perform(click());
 
         // Verify that we have really clicked on the icon by checking the TextView content, and ensuring it matches the desired layout
         onView(withId(R.id.frag_notifications)).check(matches(isDisplayed()));
-        // Verify that no other view is displayed
-//        onView(withId(R.id.created_event_list)).check(matches(not(isDisplayed())));
-//        onView(withId(R.id.my_organized_events)).check(matches(not(isDisplayed())));
-//        onView(withId(R.id.my_profile)).check(matches(not(isDisplayed())));
-//        onView(withId(R.id.admin)).check(matches(not(isDisplayed())));
     }
 
-//    /**
-//     * Author: Erin-Marie
-//     * Test for navigating to the My Entered Events Fragment
-//     */
-//    @Test
-//    public void testOpenMyEnteredEvents() {
-//        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-//
-//        // Click the Entered Events menu item
-//        onView(withText("My Entered Events"))
-//                .perform(click());
-//
-//        // Verify that we have really clicked on the icon by checking the TextView content, and ensuring it matches the desired layout
-//        onView(withId(R.id.created_event_list))
-//                .check(matches(isDisplayed()));
-//    }
-//
-//
-//    /**
-//     * Author: Erin-Marie
-//     * Test for navigating to the My Organized Events Fragment
-//     */
-//    @Test
-//    public void testOpenMyOrgEvents() {
-//        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-//
-//        // Click the Organized Events menu item
-//        onView(withText("My Organized Events"))
-//                .perform(click());
-//
-//        // Verify that we have really clicked on the icon by checking the TextView content, and ensuring it matches the desired layout
-//        onView(withId(R.id.my_organized_events))
-//                .check(matches(isDisplayed()));
-//    }
-//
-//    /**
-//     * Author: Erin-Marie
-//     * Test for navigating to the My Profile Fragment
-//     */
-//    @Test
-//    public void testOpenMyProfile() {
-//        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-//
-//        // Click the Profile menu item
-//        onView(withText("Your Profile"))
-//                .perform(click());
-//
-//        // Verify that we have really clicked on the icon by checking the TextView content, and ensuring it matches the desired layout
-//        onView(withId(R.id.my_profile))
-//                .check(matches(isDisplayed()));
-//    }
-//
-//    /**
-//     * Author: Erin-Marie
-//     * Test for navigating to the Admin Fragment
-//     */
-//    @Test
-//    public void testOpenAdmin() {
-//        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-//
-//        // Click the Admin menu item
-//        onView(withText("App Management"))
-//                .perform(click());
-//
-//        // Verify that we have really clicked on the icon by checking the TextView content, and ensuring it matches the desired layout
-//        onView(withId(R.id.admin))
-//                .check(matches(isDisplayed()));
-//    }
+    /**
+     * Author: Erin-Marie
+     * Test for navigating to the My Entered Events Fragment
+     */
+    @Test
+    public void testOpenMyEnteredEvents() {
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+
+        // Click the Entered Events menu item
+        onView(withText("My Entered Events"))
+                .perform(click());
+
+        // Verify that we have really clicked on the icon by checking the TextView content, and ensuring it matches the desired layout
+        onView(withId(R.id.my_entered_events))
+                .check(matches(isDisplayed()));
+    }
+
+
+    /**
+     * Author: Erin-Marie
+     * Test for navigating to the My Organized Events Fragment
+     */
+    @Test
+    public void testOpenMyOrgEvents() {
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+
+        // Click the Organized Events menu item
+        onView(withText("My Organized Events"))
+                .perform(click());
+
+        // Verify that we have really clicked on the icon by checking the TextView content, and ensuring it matches the desired layout
+        onView(withId(R.id.my_organized_events))
+                .check(matches(isDisplayed()));
+    }
+
+    /**
+     * Author: Erin-Marie
+     * Test for navigating to the My Profile Fragment
+     */
+    @Test
+    public void testOpenMyProfile() {
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+
+        // Click the Profile menu item
+        onView(withText("Your Profile"))
+                .perform(click());
+
+        // Verify that we have really clicked on the icon by checking the TextView content, and ensuring it matches the desired layout
+
+            onView(withId(R.id.my_profile))
+                    .check(matches(isDisplayed()));
+
+    }
+
+    /**
+     * Author: Erin-Marie
+     * Test for navigating to the Admin Fragment
+     * Test cannot be run until Admin fragment is implemented in Project part 4
+     */
+    //@Test
+    public void testOpenAdmin() {
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+
+        // Click the Admin menu item
+        onView(withText("App Management"))
+                .perform(click());
+
+        // Verify that we have really clicked on the icon by checking the TextView content, and ensuring it matches the desired layout
+        onView(withId(R.id.admin)).check(matches(isDisplayed()));
+
+
+    }
 
 
 
