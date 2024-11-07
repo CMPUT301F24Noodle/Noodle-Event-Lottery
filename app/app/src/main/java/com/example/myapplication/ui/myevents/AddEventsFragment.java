@@ -83,6 +83,8 @@ public class AddEventsFragment extends Fragment {
         saveButton = view.findViewById(R.id.save_button);
         currentStatusTextView = view.findViewById(R.id.current_status);
         removeActionTextView = view.findViewById(R.id.remove_action);
+
+        // Initialize posterImageView
         //posterImageView = view.findViewById(R.id.poster_image_view);
     }
 
