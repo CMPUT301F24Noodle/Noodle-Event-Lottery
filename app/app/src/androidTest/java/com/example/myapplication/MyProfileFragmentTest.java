@@ -41,6 +41,7 @@ import android.provider.Settings;
 @LargeTest
 public class MyProfileFragmentTest {
     @Rule
+
     public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<MainActivity>(MainActivity.class);
 
     // run this before every test to save repeating code
