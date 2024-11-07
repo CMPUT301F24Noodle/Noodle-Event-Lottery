@@ -413,4 +413,21 @@ public class EventDB {
         this.db.collection("AllEvents").document(eventID).set(event);
 
     }
+
+    /**
+     * Author: Erin-Marie
+     * Adds the entrant to the entrantsList of the event, and updates the Event in the DB
+     * @param event the event being entered
+     * assumed the entrant is the current user
+     */
+    public void addEntrant(Event event){
+        DocumentReference entrant = connection.getUserDocumentRef();
+        Integer added = event.addEntrant(entrant);
+        if (added == 0){
+            Log.v(TAG, "Waiting list is full, user could not be added");
+        } else {
+            updateEvent(event);
+        }
+
+    }
 }
