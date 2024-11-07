@@ -8,18 +8,17 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentMyeventsBinding;
-import com.example.myapplication.databinding.FragmentRegisteredEventsBinding;
 import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.ui.registeredevents.RegisteredEventArrayAdapter;
-import com.example.myapplication.ui.registeredevents.RegisteredEventViewModel;
+import com.example.myapplication.ui.myevents.AddEventsFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-//Erin-Marie: I am just adding this for testing, it is not actually functional, i just needed it so that i can write the MainActivity navigate test
-//Nischay can replace this
 public class MyEventsFragment extends Fragment {
 
     private FragmentMyeventsBinding binding;
@@ -35,17 +34,28 @@ public class MyEventsFragment extends Fragment {
         View root = binding.getRoot();
 
         // Initialize the listView
-
-        eventList = new ArrayList<Event>();
-
+        eventList = new ArrayList<>();
         ListView listView = binding.createdEventList;
 
         adapter = new OrganizedEventArrayAdapter(requireContext(), eventList);
         listView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
 
+        // Set up the FloatingActionButton click listener
+        FloatingActionButton fab = binding.createEventButton;
+        fab.setOnClickListener(v -> openAddEventsFragment());
 
         return root;
+    }
+
+    private void openAddEventsFragment() {
+        // Create a new instance of AddEventsFragment
+        AddEventsFragment addEventsFragment = new AddEventsFragment();
+
+        // Begin the Fragment transaction
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.nav_host_fragment_content_main, addEventsFragment); // Ensure this ID matches your main container ID
+        transaction.addToBackStack(null); // Adds the transaction to the back stack
+        transaction.commit();
     }
 
     @Override

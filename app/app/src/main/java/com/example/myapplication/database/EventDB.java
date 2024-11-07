@@ -1,14 +1,12 @@
 package com.example.myapplication.database;
 
 
-import android.provider.CalendarContract;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.ui.notifications.Notification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -340,8 +338,10 @@ public class EventDB {
      * stored as a custom object, which requires the public empty constructor in the UserProfile class
      * Sets the currentUser and userDocument Reference attributes of the UserDB instance
      * Reference: <a href="https://firebase.google.com/docs/firestore/manage-data/add-data?_gl=1">...</a>*189tp3e*_up*MQ..*_ga*MTI4NzA3MTQ3MC4xNzI5NzI3MjA0*_ga_CW55HF8NVT*MTcyOTcyNzIwNC4xLjAuMTcyOTcyNzIwNC4wLjAuMA..
+     *
+     * @return
      */
-    public void addEvent(Event event){
+    public boolean addEvent(Event event){
         this.event = event;
         this.db.collection("AllEvents").add(event)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -359,6 +359,7 @@ public class EventDB {
                     }
                 });
         //return this.eventID;
+        return false;
     }
 
 

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/back_gray">
 
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -15,7 +14,6 @@
         android:textColor="@color/text_cyan"
         android:layout_marginTop="70dp"
         tools:context=".MainActivity">
-
 
         <EditText
             android:id="@+id/event_name_edit"
@@ -30,7 +28,6 @@
             android:backgroundTint="@color/text_cyan"
             android:textColor="@color/text_cyan"/>
 
-
         <EditText
             android:id="@+id/event_location_edit"
             android:layout_width="wrap_content"
@@ -44,9 +41,7 @@
             android:backgroundTint="@color/text_cyan"
             android:textColor="@color/text_cyan"/>
 
-
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,7 +50,6 @@
         android:layout_marginTop="160dp"
         tools:context=".MainActivity"
         android:textColor="@color/text_cyan">
-
 
         <!--    Date    -->
         <EditText
@@ -74,7 +68,6 @@
             android:layout_marginLeft="16dp"
             android:textColor="@color/text_cyan"/>
 
-
         <EditText
             android:id="@+id/date_picker_MM"
             android:layout_width="wrap_content"
@@ -89,7 +82,6 @@
             android:textColorHint="@color/text_cyan"
             android:backgroundTint="@color/text_cyan"
             android:textColor="@color/text_cyan"/>
-
 
         <EditText
             android:id="@+id/date_picker_YY"
@@ -106,12 +98,10 @@
             android:backgroundTint="@color/text_cyan"
             android:textColor="@color/text_cyan"/>
 
-
         <Space
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
-
 
         <!--    Time    -->
         <EditText
@@ -129,7 +119,6 @@
             android:backgroundTint="@color/text_cyan"
             android:textColor="@color/text_cyan"/>
 
-
         <TextView
             android:id="@+id/colon"
             android:layout_width="wrap_content"
@@ -140,7 +129,6 @@
             android:text=":"
             android:textColor="@color/text_cyan"
             android:textSize="26dp" />
-
 
         <EditText
             android:id="@+id/time_picker_mm"
@@ -158,9 +146,7 @@
             android:layout_marginRight="16dp"
             android:textColor="@color/text_cyan"/>
 
-
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -170,7 +156,6 @@
         tools:context=".MainActivity"
         android:textColor="@color/text_cyan"
         android:backgroundTint="@color/text_cyan">
-
 
         <EditText
             android:id="@+id/textbox_detail"
@@ -183,7 +168,6 @@
             android:textColorHint="@color/text_cyan"
             android:background="@drawable/detail_border_textbox"
             android:textColor="@color/text_cyan"/>
-
 
         <EditText
             android:id="@+id/contact_num"
@@ -198,7 +182,6 @@
             android:textColorHint="@color/text_cyan"
             android:textColor="@color/text_cyan"/>
 
-
         <EditText
             android:id="@+id/max_participants"
             android:layout_width="wrap_content"
@@ -211,7 +194,6 @@
             android:textColorHint="@color/text_cyan"
             android:backgroundTint="@color/text_cyan"
             android:textColor="@color/text_cyan"/>
-
 
         <EditText
             android:id="@+id/waiting_list_limit"
@@ -226,14 +208,12 @@
             android:backgroundTint="@color/text_cyan"
             android:textColor="@color/text_cyan"/>
 
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center"
             android:layout_marginTop="10dp">
-
 
             <TextView
                 android:layout_height="wrap_content"
@@ -246,7 +226,6 @@
                 android:text="@string/require_geolocation"
                 android:textColor="@color/text_cyan"/>
 
-
             <Switch
                 android:id="@+id/geolocation_toggle"
                 android:layout_width="wrap_content"
@@ -256,7 +235,6 @@
                 android:trackTint="@color/accent_pink"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
         </LinearLayout>
-
 
         <Button
             android:id="@+id/add_poster_button"
@@ -268,18 +246,6 @@
             android:text="Add Poster"
             android:background="@drawable/mybutton"/>
 
-
-
-
-        <ImageView
-            android:id="@+id/poster_image_view"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:contentDescription="Event Poster" />
-
-
         <TextView
             android:id="@+id/current_status"
             android:layout_width="wrap_content"
@@ -290,7 +256,6 @@
             android:textColor="@color/text_cyan"
             android:layout_marginTop="5dp"
             android:textStyle="bold" />
-
 
         <TextView
             android:id="@+id/remove_action"
@@ -304,7 +269,6 @@
             android:text="REMOVE"
             android:textColor="@color/text_cyan" />
 
-
         <Button
             android:id="@+id/save_button"
             android:layout_width="wrap_content"
@@ -314,7 +278,6 @@
             android:background="@drawable/mybutton"
             android:fontFamily="@font/belanosima"
             android:text="Save" />
-
 
     </LinearLayout>
 
