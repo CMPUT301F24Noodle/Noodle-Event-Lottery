@@ -44,10 +44,12 @@ public class Event implements Serializable {
     public DocumentReference docRef;
     public String eventPoster; // URL or base64 string for the event poster image
     public Date eventDate; // date the actual event will occur
+    public String contact; //this is a phone number
     public String eventTime; // Sam: I added this variable, not sure what type it should be
     public Integer maxEntrants; // -1 if organizer does not want to restrict capacity
+    public Integer maxParticipants;
     public Boolean geoLocation; // False if organizer does not require entrants to have geoLocation on
-
+    public String eventDetails;
     // QRCODE STUFF
     private Bitmap QRCode; // the bitmap of the QR code
     private String HashedString; // TODO for part 4, do stuff with hash
@@ -66,7 +68,9 @@ public class Event implements Serializable {
     // No-arg constructor for Firebase
     public Event() {
         // Initialize lists to avoid null references
-
+        this.entrantsList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
+        this.winnersList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
+        this.losersList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
     }
 
     /**
@@ -81,8 +85,8 @@ public class Event implements Serializable {
      * @param geoLocation whether they want geoLocation to be required
      * @throws WriterException this is for the QR code generation
      */
-    public Event(Facility facility, UserProfile organizer, String eventName, String eventPoster, Date eventDate,
-                 Integer maxEntrants, Date lotteryCloses, Boolean geoLocation) throws WriterException {
+    public Event(Facility facility, UserProfile organizer, String eventName, String eventPoster, Date eventDate, String eventDetails, String contact,
+                 Integer maxEntrants, Integer maxParticipants, Date lotteryCloses, Boolean geoLocation) throws WriterException {
         this.facility = facility;
         this.organizer = organizer;
         this.organizerRef = organizer.getDocRef();
@@ -90,7 +94,10 @@ public class Event implements Serializable {
         this.eventPoster = eventPoster; // can be null
         this.eventDate = eventDate; // event date is converted to a date when the input is taken
         this.eventTime = eventTime;
+        this.eventDetails = eventDetails;
+        this.contact = contact;
         this.maxEntrants = maxEntrants;
+        this.maxParticipants = maxParticipants;
         this.lotteryCloses = lotteryCloses;
         this.geoLocation = geoLocation;
         this.eventFull = Boolean.FALSE; // event capacity cannot be 0, so it is always false at init
@@ -396,6 +403,27 @@ public class Event implements Serializable {
         return this.entrantsList.size();
     }
 
+    public String getContact() {
+        return contact;
+    }
 
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
 
+    public String getEventDetails() {
+        return eventDetails;
+    }
+
+    public void setEventDetails(String eventDetails) {
+        this.eventDetails = eventDetails;
+    }
+
+    public Integer getMaxParticipants() {
+        return maxParticipants;
+    }
+
+    public void setMaxParticipants(Integer maxParticipants) {
+        this.maxParticipants = maxParticipants;
+    }
 }

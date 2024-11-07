@@ -71,8 +71,9 @@ public class NotificationsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        //get all the db stuff from mainActivity
+        //get all the db connection from MainActivtiy
         getVarFromMain();
+
 
         //populate the users notification list
         //notifDB.myNotifs = new ArrayList<Notification>();
@@ -82,27 +83,27 @@ public class NotificationsFragment extends Fragment {
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        Button button = root.findViewById(R.id.testingbuttonforerin);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    testing();
-                } catch (WriterException e) {
-                    throw new RuntimeException(e);
-                }
-
-                // now show the fragment
-            }
-        });
-        Button button2 = root.findViewById(R.id.testingbuttonforerin2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                testing2();
-                // now show the fragment
-            }
-        });
+//        Button button = root.findViewById(R.id.testingbuttonforerin);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                try {
+//                    testing();
+//                } catch (WriterException e) {
+//                    throw new RuntimeException(e);
+//                }
+//
+//                // now show the fragment
+//            }
+//        });
+//        Button button2 = root.findViewById(R.id.testingbuttonforerin2);
+//        button2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                testing2();
+//                // now show the fragment
+//            }
+//        });
 
         ListView listView = binding.notificationsList;
 
@@ -127,38 +128,36 @@ public class NotificationsFragment extends Fragment {
         main = (MainActivity) getActivity();
         assert main != null;
         connection = main.connection;
-        user = main.user;
-        assert user != null;
-        userDB = main.userDB;
-        assert userDB != null;
-        eventDB = main.eventDB;
-        uuid = main.uuid;
-        notifDB = main.notifDB;
-        facilityDB = main.facilityDB;
-    }
 
-    public void testing() throws WriterException {
-
-        Facility facility = user.getFacility();
-        Event event = new Event(facility, user, "Party1", null, null, -1, null, Boolean.FALSE);
-        Event event2 = new Event(facility, user, "Party2", null, null, -1, null, Boolean.FALSE);
-        Event event3 = new Event(facility, user, "Party3", null, null, -1, null, Boolean.FALSE);
-        //eventDB.addEvent(event);
-        eventDB.addEvent(event2);
-        //eventDB.addEvent(event3);
-
-        this.event = event2;
-
-
+        notifDB = connection.getNotifDB();
+        user = connection.getUser();
+        eventDB = connection.getEventDB();
+        userDB = connection.getUserDB();
 
     }
 
-    //BROKEN the event exists and gets updated with the user as a entrant, but the event docref is null in the users document on db
-    public void testing2(){
-        //BROKEN uncomment this and itll crash eventDB.updateEvent(this.event);
-        userDB.enterEvent(this.event);
-        eventDB.updateEvent(this.event);
+//    public void testing() throws WriterException {
+//
+//        Facility facility = user.getFacility();
+//        //Event event = new Event(facility, user, "Party1", null, null, -1, null, Boolean.FALSE);
+//        //Event event2 = new Event(facility, user, "Party2", null, null, -1, null, Boolean.FALSE);
+//        //Event event3 = new Event(facility, user, "Party3", null, null, -1, null, Boolean.FALSE);
+//        //eventDB.addEvent(event);
+//        eventDB.addEvent(event2);
+//        //eventDB.addEvent(event3);
+//
+//        this.event = event2;
+//
+//
+//
+//    }
 
-
-    }
+//    //BROKEN the event exists and gets updated with the user as a entrant, but the event docref is null in the users document on db
+//    public void testing2(){
+//        //BROKEN uncomment this and itll crash eventDB.updateEvent(this.event);
+//        userDB.enterEvent(this.event);
+//        eventDB.updateEvent(this.event);
+//
+//
+//    }
 }
