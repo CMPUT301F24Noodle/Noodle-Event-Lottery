@@ -4,17 +4,12 @@ import android.content.Context;
 
 
 import com.example.myapplication.database.DBConnection;
-import com.example.myapplication.database.DBConnectionMock;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 
 
 
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
