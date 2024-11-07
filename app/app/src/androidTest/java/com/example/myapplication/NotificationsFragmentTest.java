@@ -20,6 +20,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.test.InstrumentationRegistry;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
@@ -37,10 +39,21 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.myapplication.database.DBConnection;
+import com.example.myapplication.database.MockDBConnection;
+import com.example.myapplication.database.NotificationDB;
+import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.ui.notifications.Notification;
+import com.example.myapplication.ui.notifications.NotificationsFragment;
+import com.google.firebase.firestore.DocumentReference;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.w3c.dom.Document;
+
+import java.util.ArrayList;
 
 
 /**
@@ -59,47 +72,34 @@ public class NotificationsFragmentTest {
 
     //private final Activity testActivity = new Activity();
     private final Intent testIntent = new Intent();
-//
-//    @Before
-//    public void setup(){
-//       // ActivityScenario<MainActivity> activityScenario = activityRule.getScenario();
-//
-//    }
 
-//    @Before
-//    public void intent(){
-//        Intent intent = new Intent();
-//        activityRule.launch();
-//    }
 
-//    @Test
-//    public void NotificationScreenDisplayed() throws InterruptedException {
-//        //testActivity.recreate();
-//
-//
-//        onView(withId(R.id.nav_notifications)).perform(click());
-//        onView(withId(R.id.notifications_list)).check(matches(isDisplayed()));
-//    }
+    @Before public void before() {
+        MockDBConnection connection = new MockDBConnection();
+        NotificationDB notifDB = new NotificationDB(connection);
 
-    /**
-     * Author: Erin-Marie
-     * Test for navigating to the Notifications Fragment
-     */
-    @Test
-    public void testOpenNotifications() {
-        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+        //get the testUsers document reference and user instance
+        DocumentReference testUserRef = connection.getUserDocumentRef();
+        UserProfile sender = connection.getUser();
 
-        // Click the Notifications menu item
-        onView(withText("Notifications"))
-                .perform(click());
+        //set the testUser as being a recipient
+        ArrayList<DocumentReference> recipients = new ArrayList<DocumentReference>();
+        recipients.add(testUserRef);
 
-        // Verify that we have really clicked on the icon by checking the TextView content, and ensuring it matches the desired layout
-        onView(withId(R.id.frag_notifications))
-                .check(matches(isDisplayed()));
+        //create a new notification, the testUser will be the sender, and recieve it as well
+        Notification notification = new Notification("Test notification","This is the testing message", recipients, sender);
+
     }
 
+    //BROKEN async task to get user profile is not executing before the notification is created
+    // try adding an onSuccessListener in before(), then make the notification inside of onSuccess()
 
+    //TODO write a test that shows the user has no notifications, then creates a notification, then displays that notification
 
+   // @Test
+    public void fakeTest(){
+        Log.v("test", "this is fake");
+    }
 
 
 

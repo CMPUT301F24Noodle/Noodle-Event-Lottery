@@ -39,6 +39,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.myapplication.objects.userProfileClasses.UserProfile;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -146,6 +148,8 @@ public class MainActivityTest {
 
 
     }
+
+
 
 
 
