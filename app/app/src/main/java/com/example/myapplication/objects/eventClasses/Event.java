@@ -46,7 +46,10 @@ public class Event implements Serializable {
     public Date eventDate; // date the actual event will occur
     public String eventTime; // Sam: I added this variable, not sure what type it should be
     public Integer maxEntrants; // -1 if organizer does not want to restrict capacity
-    public Boolean geoLocation; // False if organizer does not require entrants to have geoLocation on
+    public Boolean geoLocation;
+
+    private String eventDetails;
+    private String contactNumber;// False if organizer does not require entrants to have geoLocation on
 
     // QRCODE STUFF
     private Bitmap QRCode; // the bitmap of the QR code
@@ -243,6 +246,23 @@ public class Event implements Serializable {
         this.losersList = losersList;
     }
 
+    public String getEventDetails() {
+        return eventDetails;
+    }
+
+    public void setEventDetails(String eventDetails) {
+        this.eventDetails = eventDetails;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+
 
     public DocumentReference getOrganizerRef() {
         return organizerRef;
@@ -279,6 +299,8 @@ public class Event implements Serializable {
     public Facility getFacility() {
         return facility;
     }
+
+
 
     public void setFacility(Facility facility) {
         this.facility = facility;
@@ -332,6 +354,7 @@ public class Event implements Serializable {
     public String getEventTime() {
         return eventTime;
     }
+
 
     public void setEventTime(String eventTime) {
         this.eventTime = eventTime;
