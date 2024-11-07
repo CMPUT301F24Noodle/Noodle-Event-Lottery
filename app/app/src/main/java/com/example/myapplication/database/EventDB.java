@@ -22,7 +22,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
-
+import java.security.cert.TrustAnchor;
 import java.util.ArrayList;
 
 /**
@@ -418,15 +418,20 @@ public class EventDB {
      * Author: Erin-Marie
      * Adds the entrant to the entrantsList of the event, and updates the Event in the DB
      * @param event the event being entered
+     * @return Boolean of the success of entering the event
+     *         returns False if they could not be added becuase the waiting list is full
+     *         returns True if they were added to the waiting list
      * assumed the entrant is the current user
      */
-    public void addEntrant(Event event){
+    public Boolean addEntrant(Event event){
         DocumentReference entrant = connection.getUserDocumentRef();
         Integer added = event.addEntrant(entrant);
         if (added == 0){
             Log.v(TAG, "Waiting list is full, user could not be added");
+            return Boolean.FALSE;
         } else {
             updateEvent(event);
+            return Boolean.TRUE;
         }
 
     }
