@@ -201,7 +201,7 @@ public class EventDB {
      */
     public ArrayList<Event> getUserEnteredEvents(UserProfile user){
         //query all events for the ones where the current user is an entrant
-        Query query = allEvents.whereArrayContains("entrantsList", user.getDocRef());
+        Query query = allEvents.whereArrayContains("entrantsList", user.getDocRef()).orderBy("eventDate", Query.Direction.DESCENDING);
         getQuery(query, new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -229,7 +229,7 @@ public class EventDB {
      */
     public ArrayList<Event> getUserOrgEvents(UserProfile user){
         //query all events for the ones where the current user is the organizer
-        Query query = allEvents.whereArrayContains("organizerRef", user.getDocRef());
+        Query query = allEvents.whereArrayContains("organizerRef", user.getDocRef()).orderBy("eventDate", Query.Direction.DESCENDING);
         getQuery(query, new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

@@ -39,12 +39,23 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.myapplication.database.MockDBConnection;
+import com.example.myapplication.database.MockMainActivity;
+import com.example.myapplication.objects.eventClasses.Event;
+import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.google.zxing.WriterException;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 
 /**
@@ -57,8 +68,7 @@ public class MainActivityTest {
 
     //The Espresso Rule
     @Rule
-    public ActivityScenarioRule<MainActivity> activityRule = new ActivityScenarioRule<>(MainActivity.class);
-
+    public ActivityScenarioRule<MockMainActivity> activityRule = new ActivityScenarioRule<>(MockMainActivity.class);
 
 
     /**
@@ -148,6 +158,8 @@ public class MainActivityTest {
 
 
     }
+
+
 
 
 
