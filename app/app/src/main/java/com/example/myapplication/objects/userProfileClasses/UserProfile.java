@@ -55,8 +55,8 @@ public class UserProfile implements Serializable {
      */
     public UserProfile(String uuid) {
 
-        this.name = "None";
-        this.email = "None";
+        this.name = "Name";
+        this.email = "Email";
         this.privileges = 0; //defaults to entrant privileges
         this.allowNotifs = Boolean.TRUE; //defaults to allow notifications
         this.geoLocationOn = Boolean.FALSE; //defaults to false, need to ask user for permission first
