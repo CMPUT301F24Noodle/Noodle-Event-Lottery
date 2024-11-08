@@ -13,7 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
-
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -21,10 +20,17 @@
             android:theme="@style/Theme.MyApplication.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
+
+
+        <!--        <activity-->
+        <!--            android:name=".ui.notifications.NotificationsFragment"-->
+        <!--            android:label="My Notifications" />-->
         <activity
             android:name="com.example.myapplication.ui.ViewEventActivity"
             android:exported="true"
@@ -34,12 +40,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <!-- Add EditEventActivity here -->
-        <activity
-            android:name=".ui.myevents.EditEventActivity"
-            android:exported="true"
-            android:label="Edit Event" />
 
         <meta-data
             android:name="preloaded_fonts"
