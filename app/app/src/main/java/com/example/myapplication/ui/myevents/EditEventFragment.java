@@ -231,4 +231,6 @@ public class EditEventFragment extends Fragment {
             Toast.makeText(getContext(), "Error: Event ID is missing.", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }

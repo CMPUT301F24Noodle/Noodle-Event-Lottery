@@ -297,7 +297,7 @@ public class EventDB implements Serializable {
      */
     public ArrayList<Event> getUserOrgEvents(UserProfile user){
         //query all events for the ones where the current user is the organizer
-        Query query = allEvents.whereArrayContains("organizerRef", user.getDocRef()).orderBy("eventDate", Query.Direction.DESCENDING);
+        Query query = allEvents.whereEqualTo("organizerRef", user.getDocRef()).orderBy("eventDate", Query.Direction.DESCENDING);
         getQuery(query, new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
