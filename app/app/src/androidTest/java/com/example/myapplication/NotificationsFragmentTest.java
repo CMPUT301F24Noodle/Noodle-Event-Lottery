@@ -127,6 +127,12 @@ public class NotificationsFragmentTest {
         onView(withContentDescription("Open navigation drawer")).perform(click());
         onView(withId(R.id.nav_notifications)).perform(click());
 
+
+        NotificationDB notifDB = connection.getNotifDB();
+        ArrayList<Notification> newNotificationList = notifDB.getUserNotifications();
+
+        Thread.sleep(5000);
+
         // and check if the notification is there!
         onView(withText("Test notification")).check(matches(isDisplayed()));
 

@@ -77,12 +77,15 @@ public class NotificationsFragment extends Fragment {
 
         //populate the users notification list
         //notifDB.myNotifs = new ArrayList<Notification>();
+
+
         notificationsList = notifDB.getUserNotifications();
+
 
         //set up the view binding
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        
+
 
         ListView listView = binding.notificationsList;
 
@@ -99,6 +102,8 @@ public class NotificationsFragment extends Fragment {
         binding = null;
     }
 
+
+
     /**
      * Author: Erin-Marie
      * Gets some of the variables from MainActivity that we will need
@@ -114,6 +119,8 @@ public class NotificationsFragment extends Fragment {
         userDB = connection.getUserDB();
 
     }
+    
+
 
 //    public void testing() throws WriterException {
 //
