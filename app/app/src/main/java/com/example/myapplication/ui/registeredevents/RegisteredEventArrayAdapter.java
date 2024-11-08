@@ -23,6 +23,7 @@ import java.util.ArrayList;
 /**
  * Author: Sam Lee
  * Adapter for displaying a list of registered events.
+ * This adapter is used to populate a ListView with event details.
  */
 public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
     private ArrayList<Event> events;
@@ -31,7 +32,8 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
     private EventDB eventDB;
     private DocumentReference currUser;
 
-    public RegisteredEventArrayAdapter(@NonNull Context context, @NonNull ArrayList<Event> events, @NonNull UserDB userDB, @NonNull EventDB eventDB) {
+    public RegisteredEventArrayAdapter(@NonNull Context context, @NonNull ArrayList<Event> events,
+            @NonNull UserDB userDB, @NonNull EventDB eventDB) {
         super(context, 0, events);
         this.events = events;
         this.context = context;
@@ -61,7 +63,7 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
         eventName.setText(event.getEventName());
         eventDate.setText(event.getEventDate() != null ? event.getEventDate().toString() : "No Date");
         eventTime.setText(event.getEventTime() != null ? event.getEventTime() : "No Time");
-        orgName.setText(event.getOrganizer() != null ? event.getOrganizer().getName() : "No Org");
+        orgName.setText(event.getOrganizer() != null ? event.getOrganizer().getFacility().getFacilityName() : "No Org");
 
         // Set OnClickListener for the item
         view.setOnClickListener(v -> {
@@ -78,7 +80,7 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
     /**
      * Authot: Sam Lee
      * Show a dialog to accept or decline the invitation.
-     * 
+     *
      * @param event
      */
     private void showAcceptDeclineDialog(Event event) {
@@ -97,10 +99,10 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
     /**
      * Author: Sam Lee
      * Accept the invitation to the event.
-     * 
+     *[US 01.05.02] As an entrant I want to be able to accept the invitation to register/sign up when chosen to participate in an event
      * @param event
      */
-    public void acceptInvitation(Event event) {
+    private void acceptInvitation(Event event) {
         event.getAcceptedList().add(currUser);
         event.getWinnersList().remove(currUser);
         event.getEntrantsList().remove(currUser);
@@ -111,13 +113,12 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
     /**
      * Author: Sam Lee
      * Decline the invitation to the event.
-     * 
+     *[US 01.05.03] As an entrant I want to be able to decline an invitation when chosen to participate in an event
      * @param event
      */
-    public void declineInvitation(Event event) {
+    private void declineInvitation(Event event) {
         event.getDeclinedList().add(currUser);
         event.getEntrantsList().remove(currUser);
-        event.getWinnersList().remove(currUser);
         eventDB.updateEvent(event);
         Toast.makeText(context, "You have declined the invitation.", Toast.LENGTH_SHORT).show();
     }

@@ -29,6 +29,10 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/**
+ * Author: Sam Lee
+ * Tests for the ViewEventActivity
+ */
 @RunWith(AndroidJUnit4.class)
 public class ViewEventActivityTest {
 
@@ -42,6 +46,13 @@ public class ViewEventActivityTest {
         return new Event(facility, organizer, "TestEvent", null, dateEvent, null, null, 1, 1, dateClose, Boolean.FALSE);
     }
 
+    /**
+     * Author: Sam Lee
+     * Tests that the event name is displayed correctly in the ViewEventActivity
+     * 
+     * @throws ParseException
+     * @throws WriterException
+     */
     @Test
     public void testViewEventActivityDisplaysEventName() throws ParseException, WriterException {
         // Create a test event
@@ -59,4 +70,3 @@ public class ViewEventActivityTest {
         }
     }
 }
-

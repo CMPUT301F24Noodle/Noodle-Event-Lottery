@@ -1,22 +1,18 @@
 package com.example.myapplication.ui.notifications;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.myapplication.R;
-import com.example.myapplication.ui.registeredevents.RegisteredEvent;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Author: Erin-Marie
