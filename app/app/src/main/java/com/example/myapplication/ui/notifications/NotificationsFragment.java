@@ -82,28 +82,7 @@ public class NotificationsFragment extends Fragment {
         //set up the view binding
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-//        Button button = root.findViewById(R.id.testingbuttonforerin);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                try {
-//                    testing();
-//                } catch (WriterException e) {
-//                    throw new RuntimeException(e);
-//                }
-//
-//                // now show the fragment
-//            }
-//        });
-//        Button button2 = root.findViewById(R.id.testingbuttonforerin2);
-//        button2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                testing2();
-//                // now show the fragment
-//            }
-//        });
+        
 
         ListView listView = binding.notificationsList;
 

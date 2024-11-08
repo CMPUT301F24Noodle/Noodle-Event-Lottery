@@ -98,7 +98,43 @@ public class NotificationsFragmentTest {
         // wait 10 whole seconds for the query to finish
         Thread.sleep(5000);
 
-        int currentCount = notificationList.size();
+        int oldCount = notificationList.size();
+
+        // send a notification
+        SendFakeNotification();
+
+        // now see if the user has +1 notification
+        ArrayList<Notification> newNotificationList = notifDB.getUserNotifications();
+
+        // wait 10 whole seconds for the query to finish
+        Thread.sleep(5000);
+
+
+        int newCount = newNotificationList.size();
+
+        assertEquals(newCount, (oldCount + 1));
+    }
+
+    @Test
+    public void SeeNotificationsTest() throws InterruptedException {
+
+        // send the user a notification
+        SendFakeNotification();
+
+        Thread.sleep(5000);
+
+        // Now open notifications
+        onView(withContentDescription("Open navigation drawer")).perform(click());
+        onView(withId(R.id.nav_notifications)).perform(click());
+
+        // and check if the notification is there!
+        onView(withText("Test notification")).check(matches(isDisplayed()));
+
+
+    }
+
+    public void SendFakeNotification(){
+        NotificationDB notifDB = connection.getNotifDB();
 
         // create a dummy sender user
         UserProfile sender = new UserProfile("-1");
@@ -113,51 +149,7 @@ public class NotificationsFragmentTest {
 
         // now add that notification to the DB
         notifDB.addNotification(notification);
-
-        // now see if the user has +1 notification
-        ArrayList<Notification> newNotificationList = notifDB.getUserNotifications();
-
-        // wait 10 whole seconds for the query to finish
-        Thread.sleep(5000);
-
-        int newCount = notificationList.size();
-
-        assertEquals(newCount, (currentCount + 1));
     }
-
-    @Test
-    public void SeeNotificationsTest() throws InterruptedException {
-
-        // get notif db
-        NotificationDB notifDB = connection.getNotifDB();
-
-        // create a dummy sender user
-        UserProfile sender = new UserProfile("-1");
-        sender.setName("Test Sender");
-
-        // create the test notification
-        ArrayList<DocumentReference> recipients = new ArrayList<DocumentReference>();
-        DocumentReference testUserRef = connection.getUserDocumentRef();
-        recipients.add(testUserRef);
-        Notification notification = new Notification("BIG Test notification", "This is the testing message", recipients, sender);
-
-        // now add that notification to the DB
-        notifDB.addNotification(notification);
-
-        Thread.sleep(5000);
-
-        // Now open notifications
-        onView(withContentDescription("Open navigation drawer")).perform(click());
-        onView(withId(R.id.nav_notifications)).perform(click());
-
-        // and check if the notification is there!
-        onView(withText("BIG Test notification")).check(matches(isDisplayed()));
-
-
-
-
-    }
-
 
 }
 
