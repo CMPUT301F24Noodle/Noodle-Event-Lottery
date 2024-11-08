@@ -13,7 +13,6 @@
 
         package com.example.myapplication.ui.myevents;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,14 +33,15 @@ import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.google.zxing.WriterException;
 
 public class EditEventFragment extends Fragment {
 
     private EditText eventNameEditText, eventLocationEditText, eventDateTimeEditText, eventDetailsEditText, eventWaitingListEditText;
-    private Button editButton, saveButton, QRButton;
+    private TextView eventStatusTextView;
+    private Button editButton, saveButton, manageEventButton;
     private DBConnection connection;
     private EventDB eventDB;
+    private Event event;
     private UserProfile currentUserProfile;
     private String eventId; // Stores event ID
 
@@ -55,11 +56,12 @@ public class EditEventFragment extends Fragment {
         eventDateTimeEditText = view.findViewById(R.id.event_date_time);
         eventDetailsEditText = view.findViewById(R.id.event_details);
         eventWaitingListEditText = view.findViewById(R.id.event_waiting_list);
+        eventStatusTextView = view.findViewById((R.id.event_status));
 
         // Initialize Buttons
         editButton = view.findViewById(R.id.edit_event);
         saveButton = view.findViewById(R.id.save_button);
-        QRButton = view.findViewById(R.id.generate_qr);
+        manageEventButton = view.findViewById(R.id.manage_event);
 
         // Retrieve instances from MainActivity
         MainActivity main = (MainActivity) getActivity();
@@ -73,11 +75,13 @@ public class EditEventFragment extends Fragment {
         Bundle args = getArguments();
         if (args != null) {
             eventId = args.getString("event_id");
+            event = (Event) args.getSerializable("event");
             String eventName = args.getString("event_name");
             String eventLocation = args.getString("event_location");
             String eventDateTime = args.getString("event_date_time");
             String eventDetails = args.getString("event_details");
             String eventWaitingList = args.getString("event_waiting_list");
+            String eventStatus = args.getString("event_status");
 
             // Populate fields with data from the Bundle
             eventNameEditText.setText(eventName != null ? eventName : "");
@@ -85,6 +89,7 @@ public class EditEventFragment extends Fragment {
             eventDateTimeEditText.setText(eventDateTime != null ? eventDateTime : "");
             eventDetailsEditText.setText(eventDetails != null ? eventDetails : "");
             eventWaitingListEditText.setText(eventWaitingList != null ? eventWaitingList : "");
+            eventStatusTextView.setText(eventStatus != null ? eventStatus: "");
 
             // Log the data for debugging
             Log.d("EditEventFragment", "Event ID: " + eventId);
@@ -109,33 +114,9 @@ public class EditEventFragment extends Fragment {
             setFieldsEditable(false);
         });
 
-        QRButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // first, get the QR code
-                if(eventId != null){
-                    // if there is an event id
-                    Event QRGenerator = new Event();
-                    Bitmap QRCode = null;
-
-                    // get the QR code
-                    try {
-                        QRCode = QRGenerator.generateQRCode(eventId, 300, 300);
-                    } catch (WriterException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    // ensure that the QR code didn't mess up and throw a RuntimeException
-                    if(QRCode == null){
-                        Toast.makeText(getContext(), "There was an error generating the QR code", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-                else{
-                    // the event doesn't have an event ID
-                    Toast.makeText(getContext(), "Please wait while event is fully saved to database", Toast.LENGTH_SHORT).show();
-                }
-            }
+        manageEventButton.setOnClickListener(v -> {
+            Bundle manageArgs = new Bundle();
+            manageArgs.putSerializable("event", event);
         });
 
         return view;

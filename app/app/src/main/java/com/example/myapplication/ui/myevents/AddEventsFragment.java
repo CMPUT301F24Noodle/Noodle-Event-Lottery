@@ -198,6 +198,8 @@ public class AddEventsFragment extends Fragment {
         event.setOrganizer(currentUserProfile);
         event.setOrganizerRef(currentUserProfile.getDocRef());
 
+        event.eventOver = Boolean.FALSE;
+
         try {
             eventDB.addEvent(event);
             Toast.makeText(getContext(), "Event saved successfully!", Toast.LENGTH_SHORT).show();
@@ -218,11 +220,18 @@ public class AddEventsFragment extends Fragment {
 
             // Create arguments to pass to EditEventFragment
             Bundle args = new Bundle();
+            args.putSerializable("event", event);
             args.putString("event_id", event.getEventID());
             args.putString("event_name", eventName);
             args.putString("event_location", eventLocation);
             args.putString("event_date_time", formattedDate);
             args.putString("event_details", event.getEventDetails());
+            if (event.getEventOver() == Boolean.FALSE){
+                args.putString("event_status", "Event Lottery Open");
+            } else {
+                args.putString("event_status", "Event Lottery Closed");
+            }
+
             if (event.getMaxEntrants() == -1){
                 args.putString("event_waiting_list", event.getWaitingListSize() + " entrants");
             } else {
