@@ -34,6 +34,7 @@ import com.example.myapplication.databinding.FragmentMyeventsBinding;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.example.myapplication.database.EventDB;
+import com.example.myapplication.ui.notifications.NotificationArrayAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -45,7 +46,9 @@ public class MyEventsFragment extends Fragment {
 
     private FragmentMyeventsBinding binding;
     private ArrayList<Event> eventList;
-    private ArrayAdapter<String> adapter;
+
+
+    private OrganizedEventArrayAdapter eventAdapter;
 
     private EventDB eventDB;
     private UserProfile currentUserProfile;
@@ -71,18 +74,13 @@ public class MyEventsFragment extends Fragment {
         eventList = new ArrayList<>();
         eventList = eventDB.getUserOrgEvents(currentUserProfile);
 
-        //This is just until we can get an array adapter made
-        ArrayList<String> eventStrings = new ArrayList<>();
-        for (int i = 0 ; i<eventList.size(); i++){
-            eventStrings.add(eventList.get(i).getEventName());
-        }
 
         ListView listView = binding.createdEventList;
-        adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, eventStrings);
-        listView.setAdapter(adapter);
 
-        // Fetch all events and log event names
-        //fetchAllEvents();
+        eventAdapter = new OrganizedEventArrayAdapter(requireContext(), eventList);
+        listView.setAdapter(eventAdapter);
+        eventAdapter.notifyDataSetChanged();
+
 
         // Set up the FloatingActionButton click listener
         // Set OnClickListener for the FAB

@@ -1,4 +1,8 @@
-
+/**
+ * Author: Xavier Salm
+ *
+ * This fragment displays the QR code for the event, and allows the user to return after
+ */
 package com.example.myapplication.ui.myevents;
 
 import android.app.Dialog;
@@ -33,8 +37,8 @@ public class DisplayQRCodeFragment extends DialogFragment {
 
 
         ImageView qrImageView = view.findViewById(R.id.full_QR_image);
-        if (QRCode != null) {
-            qrImageView.setImageBitmap(QRCode);
+        if (QRCode != null) { // something is wrong if you cant do this
+            qrImageView.setImageBitmap(QRCode); // set the QR code
         }
 
         Button backButton = view.findViewById(R.id.QR_back_button);
