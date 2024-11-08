@@ -86,6 +86,7 @@ public class EditEventFragment extends Fragment {
             String eventWaitingList = args.getString("event_waiting_list");
             String eventStatus = args.getString("event_status");
 
+
             // Populate fields with data from the Bundle
             eventNameEditText.setText(eventName != null ? eventName : "");
             eventLocationEditText.setText(eventLocation != null ? eventLocation : "");
@@ -126,14 +127,15 @@ public class EditEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // first, get the QR code
-                if(eventId != null){
+                String ID = event.getEventID();
+                if(ID != null){
                     // if there is an event id
                     Event QRGenerator = new Event();
                     Bitmap QRCode = null;
 
                     // get the QR code
                     try {
-                        QRCode = QRGenerator.generateQRCode(eventId, 300, 300);
+                        QRCode = QRGenerator.generateQRCode(ID, 300, 300);
 
                     } catch (WriterException e) {
                         throw new RuntimeException(e);
