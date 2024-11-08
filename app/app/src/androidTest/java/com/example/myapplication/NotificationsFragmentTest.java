@@ -119,13 +119,17 @@ public class NotificationsFragmentTest {
 
     // this is more of a unit test than a UI test
     @Test
-    public void ReceiveNotificationTest() {
+    public void ReceiveNotificationTest() throws InterruptedException {
         // get some stuff
         String name = user.getName();
 
         // first get the number of notifications the user currently has
         NotificationDB notifDB = connection.getNotifDB();
         ArrayList<Notification> notificationList = notifDB.getUserNotifications();
+
+        // wait 10 whole seconds for the query to finish
+        Thread.sleep(20000);
+
         int currentCount = notificationList.size();
 
         // create a dummy sender user
@@ -144,6 +148,10 @@ public class NotificationsFragmentTest {
 
         // now see if the user has +1 notification
         ArrayList<Notification> newNotificationList = notifDB.getUserNotifications();
+
+        // wait 10 whole seconds for the query to finish
+        Thread.sleep(20000);
+
         int newCount = notificationList.size();
 
         assertEquals(newCount, (currentCount + 1));
