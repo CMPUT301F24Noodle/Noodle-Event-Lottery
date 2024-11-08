@@ -45,8 +45,8 @@ public class Event implements Serializable {
     private String eventLocation;
     public String eventPoster; // URL or base64 string for the event poster image
     public Date eventDate; // date the actual event will occur
-    public String eventTime;
     public String contact; //this is a phone number
+    public String eventTime;
     public Integer maxEntrants; // -1 if organizer does not want to restrict capacity
     public Integer maxParticipants;
     public Boolean geoLocation; // False if organizer does not require entrants to have geoLocation on
