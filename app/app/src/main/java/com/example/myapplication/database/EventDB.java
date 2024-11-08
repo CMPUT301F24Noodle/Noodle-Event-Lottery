@@ -100,6 +100,7 @@ public class EventDB implements Serializable {
     /**
      * Author: Erin-Marie
      * This is a method that manually ends an event lottery
+     * ends the event, draws winners, sends notifications to the entrants
      * @param event
      * TODO: make automated once the event lottery close date passes
      */

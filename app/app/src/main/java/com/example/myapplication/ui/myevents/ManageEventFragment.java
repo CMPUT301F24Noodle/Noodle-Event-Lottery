@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -93,14 +94,23 @@ public class ManageEventFragment extends Fragment {
 
         eventDB.getEventWinners(event);
 
-        if (event.getEventOver() == Boolean.TRUE){
+        //If the event is over then show the winners list
+
             ArrayList<UserProfile> winners = eventDB.getWinnersList();
             //TODO add accepted lsit and declined lsit
             EntrantArrayAdapter selectedAdapter= new EntrantArrayAdapter(getContext(), winners);
-            selectedListView.setAdapter(waitAdapter);
-        }
+            selectedListView.setAdapter(selectedAdapter);
 
 
+
+
+        //TODO add accepted lsit and declined lsit
+
+
+
+        /**
+         * When the organizer presses the send message button, they will get an alert dialog to write a custom message that all entrants will recieve as a notification
+         */
         sendMessageButton.setOnClickListener( new View.OnClickListener() {
 
             @Override
@@ -144,6 +154,37 @@ public class ManageEventFragment extends Fragment {
         }
         );
 
+        /**
+         * for when the endLottery button is pressed
+         */
+        endLotteryButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                eventDB.endEvent(event);
+                CharSequence text = "Event lottery ended, notifications have been sent to entrants.";
+                Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+                waitAdapter.notifyDataSetChanged();
+                selectedAdapter.notifyDataSetChanged();
+
+            }
+        });
+
+        replaceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CharSequence text = "This feature is not available yet, sorry";
+                Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        viewMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CharSequence text = "This feature is not available yet, sorry";
+                Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         return view;
