@@ -36,26 +36,26 @@
     </LinearLayout>
 
     <!--    Delete this part after Project Part 3-->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="User32"
-        android:textColor="@color/text_cyan"
-        android:textColorHint="@color/text_cyan"
-        android:textSize="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="20dp"
-        android:fontFamily="@font/aleo_medium"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Use44"
-        android:textColor="@color/text_cyan"
-        android:textColorHint="@color/text_cyan"
-        android:textSize="20dp"
-        android:layout_marginTop="65dp"
-        android:layout_marginLeft="20dp"
-        android:fontFamily="@font/aleo_medium"/>
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="User32"-->
+<!--        android:textColor="@color/text_cyan"-->
+<!--        android:textColorHint="@color/text_cyan"-->
+<!--        android:textSize="20dp"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:fontFamily="@font/aleo_medium"/>-->
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="Use44"-->
+<!--        android:textColor="@color/text_cyan"-->
+<!--        android:textColorHint="@color/text_cyan"-->
+<!--        android:textSize="20dp"-->
+<!--        android:layout_marginTop="65dp"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:fontFamily="@font/aleo_medium"/>-->
 
 
 
@@ -70,7 +70,7 @@
             android:id="@+id/nav_selected"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="People Selected: (4/4)"
+            android:text="People Selected: "
             android:textColor="@color/text_cyan"
             android:textSize="25dp"
             android:fontFamily="@font/alexandria_semibold"/>
@@ -87,46 +87,46 @@
     </LinearLayout>
 
     <!--    Delete this part after Project Part 3-->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="ABC"
-        android:textColor="@color/text_cyan"
-        android:textColorHint="@color/text_cyan"
-        android:textSize="20dp"
-        android:layout_marginTop="140dp"
-        android:layout_marginLeft="20dp"
-        android:fontFamily="@font/aleo_medium"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="EVEO"
-        android:textColor="@color/text_cyan"
-        android:textColorHint="@color/text_cyan"
-        android:textSize="20dp"
-        android:layout_marginTop="165dp"
-        android:layout_marginLeft="20dp"
-        android:fontFamily="@font/aleo_medium"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="rrrrr"
-        android:textColor="@color/text_cyan"
-        android:textColorHint="@color/text_cyan"
-        android:textSize="20dp"
-        android:layout_marginTop="185dp"
-        android:layout_marginLeft="20dp"
-        android:fontFamily="@font/aleo_medium"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="RERT"
-        android:textColor="@color/text_cyan"
-        android:textColorHint="@color/text_cyan"
-        android:textSize="20dp"
-        android:layout_marginTop="210dp"
-        android:layout_marginLeft="20dp"
-        android:fontFamily="@font/aleo_medium"/>
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="ABC"-->
+<!--        android:textColor="@color/text_cyan"-->
+<!--        android:textColorHint="@color/text_cyan"-->
+<!--        android:textSize="20dp"-->
+<!--        android:layout_marginTop="140dp"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:fontFamily="@font/aleo_medium"/>-->
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="EVEO"-->
+<!--        android:textColor="@color/text_cyan"-->
+<!--        android:textColorHint="@color/text_cyan"-->
+<!--        android:textSize="20dp"-->
+<!--        android:layout_marginTop="165dp"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:fontFamily="@font/aleo_medium"/>-->
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="rrrrr"-->
+<!--        android:textColor="@color/text_cyan"-->
+<!--        android:textColorHint="@color/text_cyan"-->
+<!--        android:textSize="20dp"-->
+<!--        android:layout_marginTop="185dp"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:fontFamily="@font/aleo_medium"/>-->
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="RERT"-->
+<!--        android:textColor="@color/text_cyan"-->
+<!--        android:textColorHint="@color/text_cyan"-->
+<!--        android:textSize="20dp"-->
+<!--        android:layout_marginTop="210dp"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:fontFamily="@font/aleo_medium"/>-->
 
 
     <!--      Cancelled People     -->
@@ -140,7 +140,7 @@
             android:id="@+id/nav_cancelled"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="People Cancelled: 3"
+            android:text="People Cancelled:"
             android:textColor="@color/text_cyan"
             android:textSize="25dp"
             android:fontFamily="@font/alexandria_semibold"/>
@@ -157,36 +157,36 @@
     </LinearLayout>
 
     <!--    Delete this part after Project Part 3-->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="NEO"
-        android:textColor="@color/text_cyan"
-        android:textColorHint="@color/text_cyan"
-        android:textSize="20dp"
-        android:layout_marginTop="275dp"
-        android:layout_marginLeft="20dp"
-        android:fontFamily="@font/aleo_medium"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="DEO"
-        android:textColor="@color/text_cyan"
-        android:textColorHint="@color/text_cyan"
-        android:textSize="20dp"
-        android:layout_marginTop="300dp"
-        android:layout_marginLeft="20dp"
-        android:fontFamily="@font/aleo_medium"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="RIO"
-        android:textColor="@color/text_cyan"
-        android:textColorHint="@color/text_cyan"
-        android:textSize="20dp"
-        android:layout_marginTop="325dp"
-        android:layout_marginLeft="20dp"
-        android:fontFamily="@font/aleo_medium"/>
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="NEO"-->
+<!--        android:textColor="@color/text_cyan"-->
+<!--        android:textColorHint="@color/text_cyan"-->
+<!--        android:textSize="20dp"-->
+<!--        android:layout_marginTop="275dp"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:fontFamily="@font/aleo_medium"/>-->
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="DEO"-->
+<!--        android:textColor="@color/text_cyan"-->
+<!--        android:textColorHint="@color/text_cyan"-->
+<!--        android:textSize="20dp"-->
+<!--        android:layout_marginTop="300dp"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:fontFamily="@font/aleo_medium"/>-->
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="RIO"-->
+<!--        android:textColor="@color/text_cyan"-->
+<!--        android:textColorHint="@color/text_cyan"-->
+<!--        android:textSize="20dp"-->
+<!--        android:layout_marginTop="325dp"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:fontFamily="@font/aleo_medium"/>-->
 
 
     <!--     Attending People     -->
@@ -200,7 +200,7 @@
             android:id="@+id/nav_attending"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="People Attending: 1"
+            android:text="People Attending:"
             android:textColor="@color/text_cyan"
             android:textSize="25dp"
             android:fontFamily="@font/alexandria_semibold"/>
@@ -217,16 +217,16 @@
     </LinearLayout>
 
     <!--    Delete this part after Project Part 3-->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="RERT"
-        android:textColor="@color/text_cyan"
-        android:textColorHint="@color/text_cyan"
-        android:textSize="20dp"
-        android:layout_marginTop="390dp"
-        android:layout_marginLeft="20dp"
-        android:fontFamily="@font/aleo_medium"/>
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="RERT"-->
+<!--        android:textColor="@color/text_cyan"-->
+<!--        android:textColorHint="@color/text_cyan"-->
+<!--        android:textSize="20dp"-->
+<!--        android:layout_marginTop="390dp"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:fontFamily="@font/aleo_medium"/>-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/FAB_map"
@@ -251,7 +251,7 @@
         android:layout_width="130dp"
         android:layout_height="50dp"
         android:fontFamily="@font/belanosima"
-        android:text="Replace"
+        android:text="Replace Cancelled Entrants"
         app:layout_constraintBottom_toTopOf="@+id/notify_button"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -260,7 +260,7 @@
         android:layout_width="130dp"
         android:layout_height="50dp"
         android:fontFamily="@font/belanosima"
-        android:text="Draw Names"
+        android:text="End Lottery"
         app:layout_constraintBottom_toTopOf="@+id/replace_button"
         app:layout_constraintEnd_toEndOf="parent" />
 
