@@ -43,13 +43,14 @@ import com.example.myapplication.objects.userProfileClasses.UserProfile;
 /**
  * Author: Xavier Salm
  * Test class for all UI elements in MyProfileFragment
+ * Run at your own risk! This test will override the info (user details, facility and facility details) of the user associated with the device that runs this test
  */
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class MyProfileFragmentTest {
     @Rule
-    public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<MainActivity>(MainActivity.class);
+    public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<>(MainActivity.class);
 
     UserProfile user;
     DBConnection connection;
