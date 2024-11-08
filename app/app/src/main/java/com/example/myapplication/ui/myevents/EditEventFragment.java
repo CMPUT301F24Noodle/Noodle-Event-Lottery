@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,7 @@ import com.example.myapplication.objects.userProfileClasses.UserProfile;
 public class EditEventFragment extends Fragment {
 
     private EditText eventNameEditText, eventLocationEditText, eventDateTimeEditText, eventDetailsEditText, eventWaitingListEditText;
+    private TextView eventStatusTextView;
     private Button editButton, saveButton;
     private DBConnection connection;
     private EventDB eventDB;
@@ -53,6 +55,7 @@ public class EditEventFragment extends Fragment {
         eventDateTimeEditText = view.findViewById(R.id.event_date_time);
         eventDetailsEditText = view.findViewById(R.id.event_details);
         eventWaitingListEditText = view.findViewById(R.id.event_waiting_list);
+        eventStatusTextView = view.findViewById((R.id.event_status));
 
         // Initialize Buttons
         editButton = view.findViewById(R.id.edit_event);
@@ -75,6 +78,7 @@ public class EditEventFragment extends Fragment {
             String eventDateTime = args.getString("event_date_time");
             String eventDetails = args.getString("event_details");
             String eventWaitingList = args.getString("event_waiting_list");
+            String eventStatus = args.getString("event_status");
 
             // Populate fields with data from the Bundle
             eventNameEditText.setText(eventName != null ? eventName : "");
@@ -82,6 +86,7 @@ public class EditEventFragment extends Fragment {
             eventDateTimeEditText.setText(eventDateTime != null ? eventDateTime : "");
             eventDetailsEditText.setText(eventDetails != null ? eventDetails : "");
             eventWaitingListEditText.setText(eventWaitingList != null ? eventWaitingList : "");
+            eventStatusTextView.setText(eventStatus != null ? eventStatus: "");
 
             // Log the data for debugging
             Log.d("EditEventFragment", "Event ID: " + eventId);
