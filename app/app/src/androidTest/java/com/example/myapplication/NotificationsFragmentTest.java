@@ -97,6 +97,7 @@ public class NotificationsFragmentTest {
     }
     */
 
+    // get some stuff from main to use in here
     @Before
     public void xavierBefore() {
         activityRule.getScenario().onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
