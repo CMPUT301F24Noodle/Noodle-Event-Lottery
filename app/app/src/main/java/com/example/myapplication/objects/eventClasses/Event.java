@@ -14,7 +14,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
-
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Document;
 
@@ -25,12 +24,13 @@ import java.util.Date;
 /**
  * Event Class
  * Author: Erin-Marie
- * Purpose: Event object contains all information and methods for an event an organizer creates
+ * Purpose: Event object contains all information and methods for an event an
+ * organizer creates
  * TODO make methods for ending the contest and selecting winners
- *  make method for notifying winners and losers and sending their invitations
- *  make method for making the list of confirmed attendants
- *  make method for selecting a new winner if someone rejects an invitation
- *  make method for organizer to send a notification with custom message to all
+ * make method for notifying winners and losers and sending their invitations
+ * make method for making the list of confirmed attendants
+ * make method for selecting a new winner if someone rejects an invitation
+ * make method for organizer to send a notification with custom message to all
  */
 @IgnoreExtraProperties // Ignore extra properties from Firebase
 public class Event implements Serializable {
@@ -45,7 +45,7 @@ public class Event implements Serializable {
     public DocumentReference docRef;
     public String eventPoster; // URL or base64 string for the event poster image
     public Date eventDate; // date the actual event will occur
-    public String contact; //this is a phone number
+    public String contact; // this is a phone number
     public String eventTime; // Sam: I added this variable, not sure what type it should be
     public Integer maxEntrants; // -1 if organizer does not want to restrict capacity
     public Integer maxParticipants;
@@ -63,11 +63,11 @@ public class Event implements Serializable {
     public Boolean eventFull; // False if there is still room for entrants, or if maxEntrants == -1
 
     public ArrayList<DocumentReference> entrantsList; // list of all entrants, by document reference
-    public ArrayList<DocumentReference> winnersList; // list of all users who won the lottery, may have max length equal to
+    public ArrayList<DocumentReference> winnersList; // list of all users who won the lottery, may have max length equal
+                                                     // to
     public ArrayList<DocumentReference> losersList; // list of all users who lost the lottery
-    public ArrayList<DocumentReference> acceptedList; //list of all users who have accepted their invitation
-    public ArrayList<DocumentReference> declinedList; //list of all users who have accepted their invitation
-
+    public ArrayList<DocumentReference> acceptedList; // list of all users who have accepted their invitation
+    public ArrayList<DocumentReference> declinedList; // list of all users who have accepted their invitation
 
     // Editor: Sam
     // No-arg constructor for Firebase
@@ -82,18 +82,21 @@ public class Event implements Serializable {
 
     /**
      * Class constructor
-     * @param facility the facility the event is hosted at, cannot be null
-     * @param organizer the user profile of the event creator, cannot be null
-     * @param eventName the name of the event
-     * @param eventPoster the poster for the event
-     * @param eventDate the data the event occurs
-     * @param maxEntrants the max number of entrants they are allowing
+     * 
+     * @param facility      the facility the event is hosted at, cannot be null
+     * @param organizer     the user profile of the event creator, cannot be null
+     * @param eventName     the name of the event
+     * @param eventPoster   the poster for the event
+     * @param eventDate     the data the event occurs
+     * @param maxEntrants   the max number of entrants they are allowing
      * @param lotteryCloses the day the lottery closes
-     * @param geoLocation whether they want geoLocation to be required
+     * @param geoLocation   whether they want geoLocation to be required
      * @throws WriterException this is for the QR code generation
      */
-    public Event(Facility facility, UserProfile organizer, String eventName, String eventPoster, Date eventDate, String eventDetails, String contact,
-                 Integer maxEntrants, Integer maxParticipants, Date lotteryCloses, Boolean geoLocation) throws WriterException {
+    public Event(Facility facility, UserProfile organizer, String eventName, String eventPoster, Date eventDate,
+            String eventDetails, String contact,
+            Integer maxEntrants, Integer maxParticipants, Date lotteryCloses, Boolean geoLocation)
+            throws WriterException {
         this.facility = facility;
         this.organizer = organizer;
         this.organizerRef = organizer.getDocRef();
@@ -116,7 +119,7 @@ public class Event implements Serializable {
         this.docRef = null;
 
         // TODO: Need to create QR code and do something with hash data
-        if(this.eventID != null){
+        if (this.eventID != null) {
             this.QRCode = generateQRCode(eventID, 200, 200);
         }
 
@@ -141,15 +144,15 @@ public class Event implements Serializable {
     /**
      * Author: Erin-Marie
      * Checks whether a user has accepted their invitation for an event yet
+     * 
      * @param event the event being checked
-     * @param user the user of interest
-     * @return False if the user has not accepted their invitiation, or True if they have
+     * @param user  the user of interest
+     * @return False if the user has not accepted their invitiation, or True if they
+     *         have
      */
-    public Boolean hasAccepted(Event event, DocumentReference user){
-        if (event.getWinnersList().contains(user))
-        {
-            if (event.getAcceptedList().contains(user))
-            {
+    public Boolean hasAccepted(Event event, DocumentReference user) {
+        if (event.getWinnersList().contains(user)) {
+            if (event.getAcceptedList().contains(user)) {
                 Log.v("Event", "User has accepted their invitiation");
                 return Boolean.TRUE;
 
@@ -182,9 +185,11 @@ public class Event implements Serializable {
     public int addEntrant(DocumentReference entrant) {
         // check that entrant is not already in the entrantList, and the event is not
         // full
-        //entrant
-        //        if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE) {
-        if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE && this.eventOver == Boolean.FALSE){
+        // entrant
+        // if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE)
+        // {
+        if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE
+                && this.eventOver == Boolean.FALSE) {
             this.entrantsList.add(entrant);
             // entrant.addEvent(this); //add the event to the entrants list of events
             setEventFull(); // update whether the event is full
@@ -193,24 +198,24 @@ public class Event implements Serializable {
         return 0;
     }
 
-//    /**
-//     * testing version of above function
-//     * @param entrant
-//     * @return
-//     */
-//    public int addEntrant(DocumentReference entrant) {
-//        // check that entrant is not already in the entrantList, and the event is not
-//        // full
-//        if (!this.entrantsList.contains(entrant)) {
-//            this.entrantsList.add(entrant);
-//            //add the event to the entrants list of events
-//            //setEventFull(); // update whether the event is full
-//            return 1;
-//        }
-//
-//        // return 0 if user is not added to the list
-//        return 0;
-//    }
+    // /**
+    // * testing version of above function
+    // * @param entrant
+    // * @return
+    // */
+    // public int addEntrant(DocumentReference entrant) {
+    // // check that entrant is not already in the entrantList, and the event is not
+    // // full
+    // if (!this.entrantsList.contains(entrant)) {
+    // this.entrantsList.add(entrant);
+    // //add the event to the entrants list of events
+    // //setEventFull(); // update whether the event is full
+    // return 1;
+    // }
+    //
+    // // return 0 if user is not added to the list
+    // return 0;
+    // }
 
     /**
      * Author: Erin-Marie
@@ -224,10 +229,10 @@ public class Event implements Serializable {
      */
     public void removeEntrant(DocumentReference entrant) {
         this.entrantsList.remove(entrant);
-        //entrant.leaveEvent(this.getEventID()); // remove the event from the entrants list of events
+        // entrant.leaveEvent(this.getEventID()); // remove the event from the entrants
+        // list of events
         setEventFull(); // update whether the event is full
     }
-
 
     // START OF QR CODE STUFF
     /**
@@ -244,24 +249,30 @@ public class Event implements Serializable {
     public Bitmap generateQRCode(String QRText, int width, int height) throws WriterException {
         QRCodeWriter writer = new QRCodeWriter(); // create the thing that will encode the string
 
-        BitMatrix bitMatrix = writer.encode(QRText, BarcodeFormat.QR_CODE, width, height); // create a matrix of bits, where the bit in each cell determines if that pixel should be black or white
+        BitMatrix bitMatrix = writer.encode(QRText, BarcodeFormat.QR_CODE, width, height); // create a matrix of bits,
+                                                                                           // where the bit in each cell
+                                                                                           // determines if that pixel
+                                                                                           // should be black or white
 
-        // TODO unit test that makes sure that width and height are equal to width and height of the matrix
+        // TODO unit test that makes sure that width and height are equal to width and
+        // height of the matrix
 
         // creates an empty QR code with the dimensions of bitMatrix
-        // the Bitmap.Config.RGB_565 is used because the QR code just needs to be black and white, and doesn't need a lot of colors
+        // the Bitmap.Config.RGB_565 is used because the QR code just needs to be black
+        // and white, and doesn't need a lot of colors
         // basically, RGB_565 determines what colors can be assigned to which pixels
         Bitmap QRCode = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 
-        // now fill out the bitmap to match the assignments of bitMatrix by going through each pixel
+        // now fill out the bitmap to match the assignments of bitMatrix by going
+        // through each pixel
         for (int row = 0; row < width; row++) {
             for (int col = 0; col < height; col++) {
-                // for each pixel, set the pixel to white if its true in the bitmatrix, otherwise set it to white
+                // for each pixel, set the pixel to white if its true in the bitmatrix,
+                // otherwise set it to white
                 int color;
-                if (bitMatrix.get(row, col)){
+                if (bitMatrix.get(row, col)) {
                     color = Color.WHITE;
-                }
-                else{
+                } else {
                     color = Color.BLACK;
                 }
                 QRCode.setPixel(row, col, color); // actually set the color for that pixel
@@ -271,9 +282,7 @@ public class Event implements Serializable {
         return QRCode;
     }
 
-
-
-    //getters and setters
+    // getters and setters
 
     public void setEntrantsList(ArrayList<DocumentReference> entrantsList) {
         this.entrantsList = entrantsList;
@@ -286,6 +295,7 @@ public class Event implements Serializable {
     public void setLosersList(ArrayList<DocumentReference> losersList) {
         this.losersList = losersList;
     }
+
 
     public String getEventLocation() {
         return eventLocation;
@@ -305,6 +315,7 @@ public class Event implements Serializable {
     public void setOrganizerRef(DocumentReference organizerRef) {
         this.organizerRef = organizerRef;
     }
+
     public Boolean getGeoLocation() {
         return geoLocation;
     }
@@ -346,15 +357,15 @@ public class Event implements Serializable {
         this.facility = facility;
     }
 
-    public void setDocRef(DocumentReference docRef){
+    public void setDocRef(DocumentReference docRef) {
         this.docRef = docRef;
     }
 
-    public DocumentReference getDocRef(){
+    public DocumentReference getDocRef() {
         return this.docRef;
     }
 
-    @Nullable //Sam: added Nullable for testing purpose
+    @Nullable // Sam: added Nullable for testing purpose
     public UserProfile getOrganizer() {
 
         return organizer;
@@ -380,11 +391,11 @@ public class Event implements Serializable {
         this.eventPoster = eventPoster;
     }
 
-    @Nullable //Sam: added Nullable for testing purpose
+    @Nullable // Sam: added Nullable for testing purpose
     public Date getEventDate() {
-        try{
+        try {
             String test = eventDate.toString();
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return null;
         }
 
@@ -441,15 +452,17 @@ public class Event implements Serializable {
         return this.losersList;
     }
 
-    public String getEventID(){return this.eventID;}
+    public String getEventID() {
+        return this.eventID;
+    }
 
-    public void setEventID(String eventID ){this.eventID = eventID;}
-
+    public void setEventID(String eventID) {
+        this.eventID = eventID;
+    }
 
     public Boolean getEventFull() {
         return this.eventFull;
     }
-
 
     /**
      * @return returns count of how many users have entered the event lottery
@@ -497,6 +510,5 @@ public class Event implements Serializable {
     public ArrayList<DocumentReference> getDeclinedList() {
         return declinedList;
     }
-
 
 }
