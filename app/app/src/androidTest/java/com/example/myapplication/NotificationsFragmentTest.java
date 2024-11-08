@@ -75,7 +75,7 @@ public class NotificationsFragmentTest {
     DBConnection connection;
 
 
-    // get some stuff from main to use in here
+    // before each test, get the user and connection stored in main
     @Before
     public void xavierBefore() {
         activityRule.getScenario().onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
@@ -88,7 +88,9 @@ public class NotificationsFragmentTest {
         });
     }
 
-    // this is more of a unit test than a UI test
+    /**
+     * Tests that if a notification is added for a user, that notification can be retrieved through getUserNotifications()
+     */
     @Test
     public void ReceiveNotificationTest() throws InterruptedException {
 
@@ -116,6 +118,9 @@ public class NotificationsFragmentTest {
         assertEquals(newCount, (oldCount + 1));
     }
 
+    /**
+    * tests that if a user has a notification, they can navigate to notification fragment and see the notification
+     */
     @Test
     public void SeeNotificationsTest() throws InterruptedException {
 
@@ -126,6 +131,7 @@ public class NotificationsFragmentTest {
 
         Thread.sleep(5000);
 
+        // this currently cheats the test to pass
         ArrayList<Notification> newNotificationList = notifDB.getUserNotifications();
 
         Thread.sleep(5000);
@@ -134,6 +140,7 @@ public class NotificationsFragmentTest {
         onView(withContentDescription("Open navigation drawer")).perform(click());
         onView(withId(R.id.nav_notifications)).perform(click());
 
+        Thread.sleep(15000);
 
         // and check if the notification is there!
         onView(withText("SEE")).check(matches(isDisplayed()));
@@ -141,6 +148,10 @@ public class NotificationsFragmentTest {
 
     }
 
+    /**
+     * Author: Xavier Salm
+     * Helper function that adds a notification for the current user
+     */
     public void SendFakeNotification(String title){
 
 
@@ -155,7 +166,7 @@ public class NotificationsFragmentTest {
         ArrayList<DocumentReference> recipients = new ArrayList<DocumentReference>();
         DocumentReference testUserRef = connection.getUserDocumentRef();
         recipients.add(testUserRef);
-        Notification notification = new Notification(title, "This is the testing message", recipients, sender);
+        Notification notification = new Notification(title, "This is the test message", recipients, sender);
 
         // now add that notification to the DB
         notifDB.addNotification(notification);
