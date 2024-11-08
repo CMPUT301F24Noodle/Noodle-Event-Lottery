@@ -61,27 +61,24 @@ public class MyEventsFragment extends Fragment {
         binding = FragmentMyeventsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        View view = inflater.inflate(R.layout.fragment_myevents, container, false);
+        getMyEvents();
+
+        //View view = inflater.inflate(R.layout.fragment_myevents, container, false);
 
 
-        // Retrieve instances from MainActivity
-        MainActivity main = (MainActivity) getActivity();
-        assert main != null;
+        ListView listView = binding.createdEventList;
+        FloatingActionButton createEventButton = binding.createEventButton;
 
-        this.eventDB = main.eventDB;
-        this.currentUserProfile = main.user;
 
         // Initialize the ListView with a simple adapter
-        eventList = new ArrayList<>();
-        eventList = eventDB.getUserOrgEvents(currentUserProfile);
-
-
-        ListView listView = view.findViewById(R.id.created_event_list);
-        FloatingActionButton createEventButton = view.findViewById(R.id.create_event_button);
+        eventList = eventDB.getMyOrgEvents();
+        Log.v("events", "size: " + eventList.size());
 
         eventAdapter = new OrganizedEventArrayAdapter(requireContext(), eventList);
         listView.setAdapter(eventAdapter);
         eventAdapter.notifyDataSetChanged();
+
+
 
 
         // Set up the FloatingActionButton click listener
@@ -99,6 +96,16 @@ public class MyEventsFragment extends Fragment {
 
 
         return root;
+    }
+
+    public void getMyEvents(){
+        // Retrieve instances from MainActivity
+        MainActivity main = (MainActivity) getActivity();
+        assert main != null;
+
+        this.eventDB = main.eventDB;
+        this.currentUserProfile = main.user;
+        eventDB.getUserOrgEvents(currentUserProfile);
     }
 
 

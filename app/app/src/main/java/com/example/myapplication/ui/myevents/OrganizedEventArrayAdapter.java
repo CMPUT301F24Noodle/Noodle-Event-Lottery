@@ -37,8 +37,9 @@ public class OrganizedEventArrayAdapter extends ArrayAdapter<Event> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = super.getView(position, convertView, parent);
+        //View view = super.getView(position, convertView, parent);
         Event event = getItem(position);
+       // View view = View.findViewById(R.id.created_event_list);
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
@@ -58,7 +59,7 @@ public class OrganizedEventArrayAdapter extends ArrayAdapter<Event> {
 
         EventDB eventDB = new DBConnection(getContext()).getEventDB();
         // Set OnClickListener for the item
-        view.setOnClickListener(v -> {
+        convertView.setOnClickListener(v -> {
             Bundle manageArgs = new Bundle();
             manageArgs.putSerializable("eventDB", eventDB);
             openManageEventFragment(manageArgs);

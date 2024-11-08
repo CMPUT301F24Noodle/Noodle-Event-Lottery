@@ -303,12 +303,13 @@ public class EventDB implements Serializable {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 //empty the current list of notifs so there are not duplicates
                 ArrayList<Event> myEventsCol = new ArrayList<Event>();
-                myOrgEvents.clear();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     //add each event to the arraylist
-                    myOrgEvents.add(document.toObject(Event.class));
-                    Log.v(TAG, "size: " + myOrgEvents.size());
+                    myEventsCol.add(document.toObject(Event.class));
+                    Log.v(TAG, "size: " + myEventsCol.size());
                 }
+                myOrgEvents = myEventsCol;
+                Log.v(TAG, "size: " + myOrgEvents.size());
             }
         });
         //Log.v(TAG, "size: " + myEvents.size());
