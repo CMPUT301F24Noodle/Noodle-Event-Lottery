@@ -10,6 +10,7 @@ import static androidx.test.espresso.intent.Intents.getIntents;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -77,25 +78,6 @@ public class NotificationsFragmentTest {
     UserProfile user;
     DBConnection connection;
 
-    /*
-    @Before
-    public void before() {
-        MockDBConnection connection = new MockDBConnection();
-        NotificationDB notifDB = new NotificationDB(connection);
-
-        //get the testUsers document reference and user instance
-        DocumentReference testUserRef = connection.getUserDocumentRef();
-        UserProfile sender = connection.getUser();
-
-        //set the testUser as being a recipient
-        ArrayList<DocumentReference> recipients = new ArrayList<DocumentReference>();
-        recipients.add(testUserRef);
-
-        //create a new notification, the testUser will be the sender, and recieve it as well
-        Notification notification = new Notification("Test notification", "This is the testing message", recipients, sender);
-
-    }
-    */
 
     // get some stuff from main to use in here
     @Before
@@ -110,26 +92,16 @@ public class NotificationsFragmentTest {
         });
     }
 
-    //BROKEN async task to get user profile is not executing before the notification is created
-    // try adding an onSuccessListener in before(), then make the notification inside of onSuccess()
-    // add a method that will remove the test user from the db afterwards
-
-    //TODO write a test that shows the user has no notifications, then creates a notification, then displays that notification
-
-    //XAVIER HERE: instead of checking that there are no notifications, instead check that they dont have the notification, the notification gets sent, and now they do!
-
     // this is more of a unit test than a UI test
     @Test
     public void ReceiveNotificationTest() throws InterruptedException {
-        // get some stuff
-        String name = user.getName();
 
         // first get the number of notifications the user currently has
         NotificationDB notifDB = connection.getNotifDB();
         ArrayList<Notification> notificationList = notifDB.getUserNotifications();
 
         // wait 10 whole seconds for the query to finish
-        Thread.sleep(20000);
+        Thread.sleep(5000);
 
         int currentCount = notificationList.size();
 
@@ -151,11 +123,43 @@ public class NotificationsFragmentTest {
         ArrayList<Notification> newNotificationList = notifDB.getUserNotifications();
 
         // wait 10 whole seconds for the query to finish
-        Thread.sleep(20000);
+        Thread.sleep(5000);
 
         int newCount = notificationList.size();
 
         assertEquals(newCount, (currentCount + 1));
+    }
+
+    @Test
+    public void SeeNotificationsTest() throws InterruptedException {
+
+        // get notif db
+        NotificationDB notifDB = connection.getNotifDB();
+
+        // create a dummy sender user
+        UserProfile sender = new UserProfile("-1");
+        sender.setName("Test Sender");
+
+        // create the test notification
+        ArrayList<DocumentReference> recipients = new ArrayList<DocumentReference>();
+        DocumentReference testUserRef = connection.getUserDocumentRef();
+        recipients.add(testUserRef);
+        Notification notification = new Notification("BIG Test notification", "This is the testing message", recipients, sender);
+
+        // now add that notification to the DB
+        notifDB.addNotification(notification);
+
+        Thread.sleep(5000);
+
+        // Now open notifications
+        onView(withContentDescription("Open navigation drawer")).perform(click());
+        onView(withId(R.id.nav_notifications)).perform(click());
+
+        // and check if the notification is there!
+        onView(withText("BIG Test notification")).check(matches(isDisplayed()));
+
+
+
 
     }
 
