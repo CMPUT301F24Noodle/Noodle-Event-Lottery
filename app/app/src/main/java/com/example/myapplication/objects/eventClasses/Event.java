@@ -2,6 +2,7 @@ package com.example.myapplication.objects.eventClasses;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
 
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
@@ -62,6 +63,8 @@ public class Event implements Serializable {
     public ArrayList<DocumentReference> entrantsList; // list of all entrants, by document reference
     public ArrayList<DocumentReference> winnersList; // list of all users who won the lottery, may have max length equal to
     public ArrayList<DocumentReference> losersList; // list of all users who lost the lottery
+    public ArrayList<DocumentReference> acceptedList; //list of all users who have accepted their invitation
+    public ArrayList<DocumentReference> declinedList; //list of all users who have accepted their invitation
 
 
     // Editor: Sam
@@ -71,6 +74,8 @@ public class Event implements Serializable {
         this.entrantsList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
         this.winnersList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
         this.losersList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
+        this.acceptedList = new ArrayList<DocumentReference>();
+        this.declinedList = new ArrayList<DocumentReference>();
     }
 
     /**
@@ -104,6 +109,8 @@ public class Event implements Serializable {
         this.entrantsList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
         this.winnersList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
         this.losersList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
+        this.acceptedList = new ArrayList<DocumentReference>();
+        this.declinedList = new ArrayList<DocumentReference>();
         this.docRef = null;
 
         // TODO: Need to create QR code and do something with hash data
@@ -127,6 +134,32 @@ public class Event implements Serializable {
         } else {
             this.eventFull = Boolean.TRUE;
         }
+    }
+
+    /**
+     * Author: Erin-Marie
+     * Checks whether a user has accepted their invitation for an event yet
+     * @param event the event being checked
+     * @param user the user of interest
+     * @return False if the user has not accepted their invitiation, or True if they have
+     */
+    public Boolean hasAccepted(Event event, DocumentReference user){
+        if (event.getWinnersList().contains(user))
+        {
+            if (event.getAcceptedList().contains(user))
+            {
+                Log.v("Event", "User has accepted their invitiation");
+                return Boolean.TRUE;
+
+            } else {
+                Log.v("Event", "User has not accepted their invitiation");
+                return Boolean.FALSE;
+            }
+        } else {
+            Log.v("Event", "user was not selected for the event");
+            return Boolean.FALSE;
+        }
+
     }
 
     /**
@@ -428,4 +461,22 @@ public class Event implements Serializable {
     public void setMaxParticipants(Integer maxParticipants) {
         this.maxParticipants = maxParticipants;
     }
+
+    public void setAcceptedList(ArrayList<DocumentReference> acceptedList) {
+        this.acceptedList = acceptedList;
+    }
+
+    public void setDeclinedList(ArrayList<DocumentReference> declinedList) {
+        this.declinedList = declinedList;
+    }
+
+    public ArrayList<DocumentReference> getAcceptedList() {
+        return acceptedList;
+    }
+
+    public ArrayList<DocumentReference> getDeclinedList() {
+        return declinedList;
+    }
+
+
 }
