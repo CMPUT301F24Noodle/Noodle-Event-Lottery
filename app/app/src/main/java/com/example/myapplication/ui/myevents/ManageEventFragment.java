@@ -33,7 +33,9 @@ import java.util.ArrayList;
 
 /**
  * Author Erin-marie
- * Fragment to end an event manually, or view the entrants
+ * Fragment to end an event manually, and view the entrants and selected attendees
+ * TODO: add functionality to the map button and the replace cancelled button
+ * TODO: add lists for the people who cancelled and the people who have accepted their invitation
  */
 public class ManageEventFragment extends Fragment {
 
@@ -97,14 +99,13 @@ public class ManageEventFragment extends Fragment {
         //If the event is over then show the winners list
 
             ArrayList<UserProfile> winners = eventDB.getWinnersList();
-            //TODO add accepted lsit and declined lsit
+
             EntrantArrayAdapter selectedAdapter= new EntrantArrayAdapter(getContext(), winners);
             selectedListView.setAdapter(selectedAdapter);
 
+        //TODO add accepted list and declined list
 
 
-
-        //TODO add accepted lsit and declined lsit
 
 
 
@@ -154,9 +155,7 @@ public class ManageEventFragment extends Fragment {
         }
         );
 
-        /**
-         * for when the endLottery button is pressed
-         */
+        //onCLick for when the endLottery button is selected
         endLotteryButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -170,6 +169,9 @@ public class ManageEventFragment extends Fragment {
             }
         });
 
+
+
+       // TODO: make these actually work
         replaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
