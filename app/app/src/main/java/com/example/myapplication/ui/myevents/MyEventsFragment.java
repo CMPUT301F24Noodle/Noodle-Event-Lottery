@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
@@ -84,8 +85,18 @@ public class MyEventsFragment extends Fragment {
         //fetchAllEvents();
 
         // Set up the FloatingActionButton click listener
-        FloatingActionButton fab = binding.createEventButton;
-        fab.setOnClickListener(v -> openAddEventsFragment());
+        // Set OnClickListener for the FAB
+        binding.createEventButton.setOnClickListener(v -> {
+            if (currentUserProfile.getPrivileges() != 1){
+                CharSequence text = "You need organizer privileges to create an event. Please add a facility to your profile.";
+                Toast.makeText(this.getContext(), text, Toast.LENGTH_SHORT).show();
+            } else {
+                // Navigate to create event fragment
+                openAddEventsFragment();
+            }
+
+        });
+
 
         return root;
     }
