@@ -10,6 +10,7 @@ import static androidx.test.espresso.intent.Intents.getIntents;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -57,7 +58,7 @@ import java.util.ArrayList;
 
 
 /**
- * Author: Erin-Marie
+ * Author: Xavier Salm
  * Tests for the notifications fragment
  */
 @RunWith(AndroidJUnit4.class)
@@ -68,41 +69,101 @@ public class NotificationsFragmentTest {
     //The Espresso Rule
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule = new ActivityScenarioRule<>(MainActivity.class);
-    //public IntentsRule intentsTestRule = new IntentsRule();
 
-    //private final Activity testActivity = new Activity();
-    private final Intent testIntent = new Intent();
+    // here are some variables gotten from main
+    UserProfile user;
+    DBConnection connection;
 
 
-    @Before public void before() {
-        MockDBConnection connection = new MockDBConnection();
-        NotificationDB notifDB = new NotificationDB(connection);
+    // get some stuff from main to use in here
+    @Before
+    public void xavierBefore() {
+        activityRule.getScenario().onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
+            @Override
+            public void perform(MainActivity activity) {
+                // call a few methods in MainActivity
+                user = activity.getUser();
+                connection = activity.getConnection();
+            }
+        });
+    }
 
-        //get the testUsers document reference and user instance
-        DocumentReference testUserRef = connection.getUserDocumentRef();
-        UserProfile sender = connection.getUser();
+    // this is more of a unit test than a UI test
+    @Test
+    public void ReceiveNotificationTest() throws InterruptedException {
 
-        //set the testUser as being a recipient
+        // first get the number of notifications the user currently has
+        NotificationDB notifDB = connection.getNotifDB();
+        ArrayList<Notification> notificationList = notifDB.getUserNotifications();
+
+        // wait 10 whole seconds for the query to finish
+        Thread.sleep(5000);
+
+        int oldCount = notificationList.size();
+
+        // send a notification
+        SendFakeNotification("RECEIVE");
+
+        // now see if the user has +1 notification
+        ArrayList<Notification> newNotificationList = notifDB.getUserNotifications();
+
+        // wait 10 whole seconds for the query to finish
+        Thread.sleep(5000);
+
+
+        int newCount = newNotificationList.size();
+
+        assertEquals(newCount, (oldCount + 1));
+    }
+
+    @Test
+    public void SeeNotificationsTest() throws InterruptedException {
+
+        NotificationDB notifDB = connection.getNotifDB();
+
+        // send the user a notification
+        SendFakeNotification("SEE");
+
+        Thread.sleep(5000);
+
+        ArrayList<Notification> newNotificationList = notifDB.getUserNotifications();
+
+        Thread.sleep(5000);
+
+        // Now open notifications
+        onView(withContentDescription("Open navigation drawer")).perform(click());
+        onView(withId(R.id.nav_notifications)).perform(click());
+
+
+        // and check if the notification is there!
+        onView(withText("SEE")).check(matches(isDisplayed()));
+
+
+    }
+
+    public void SendFakeNotification(String title){
+
+
+        NotificationDB notifDB = connection.getNotifDB();
+
+        // create a dummy sender user
+        UserProfile sender = new UserProfile("-1");
+        sender.setName("Test Sender");
+
+
+        // create the test notification
         ArrayList<DocumentReference> recipients = new ArrayList<DocumentReference>();
+        DocumentReference testUserRef = connection.getUserDocumentRef();
         recipients.add(testUserRef);
+        Notification notification = new Notification(title, "This is the testing message", recipients, sender);
 
-        //create a new notification, the testUser will be the sender, and recieve it as well
-        Notification notification = new Notification("Test notification","This is the testing message", recipients, sender);
-
+        // now add that notification to the DB
+        notifDB.addNotification(notification);
     }
-
-    //BROKEN async task to get user profile is not executing before the notification is created
-    // try adding an onSuccessListener in before(), then make the notification inside of onSuccess()
-    // add a method that will remove the test user from the db afterwards
-
-    //TODO write a test that shows the user has no notifications, then creates a notification, then displays that notification
-
-   // @Test
-    public void fakeTest(){
-        Log.v("test", "this is fake");
-    }
-
-
-
 
 }
+
+
+
+
+

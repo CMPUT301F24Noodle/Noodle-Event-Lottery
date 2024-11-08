@@ -136,4 +136,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // a method used for testing
+    public UserProfile getUser(){
+        return user;
+    }
+
+    public DBConnection getConnection(){
+        return connection;
+    }
+
 }
