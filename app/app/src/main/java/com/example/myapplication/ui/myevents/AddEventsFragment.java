@@ -138,6 +138,7 @@ public class AddEventsFragment extends Fragment {
         String eventName = eventNameEditText.getText().toString().trim();
         String eventLocation = eventLocationEditText.getText().toString().trim();
         String maxParticipants = maxParticipantsEditText.getText().toString().trim();
+        String maxEntrants = waitingListLimitEditText.getText().toString().trim();
 
         if (eventName.isEmpty() || eventLocation.isEmpty() || maxParticipants.isEmpty()) {
             Toast.makeText(getContext(), "Please fill in all required fields", Toast.LENGTH_SHORT).show();
@@ -147,7 +148,10 @@ public class AddEventsFragment extends Fragment {
         Event event = new Event();
         event.setEventName(eventName);
         event.setEventDetails(eventDetailsEditText.getText().toString().trim());
-        event.setMaxEntrants(Integer.parseInt(maxParticipants));
+
+        event.setMaxParticipants(Integer.parseInt(maxParticipants));
+        event.setMaxEntrants(Integer.parseInt(maxEntrants));
+
         event.setEventDate(new Date());
         event.setContact(contactNumberEditText.getText().toString().trim());
 
