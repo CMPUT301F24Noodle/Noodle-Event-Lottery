@@ -24,8 +24,8 @@
         app:itemTextColor="@color/bonus_yellow"
         app:itemIconTint="@color/bonus_yellow"
         app:menu="@menu/activity_main_drawer">
-<!--        app:headerLayout="@layout/nav_header_main"-->
-<!--        no header, may add back in for part 4-->
+        <!--        app:headerLayout="@layout/nav_header_main"-->
+        <!--        no header, may add back in for part 4-->
 
 
         <LinearLayout

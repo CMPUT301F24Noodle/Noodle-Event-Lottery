@@ -28,9 +28,9 @@
 
 
 
-<!--        <activity-->
-<!--            android:name=".ui.notifications.NotificationsFragment"-->
-<!--            android:label="My Notifications" />-->
+        <!--        <activity-->
+        <!--            android:name=".ui.notifications.NotificationsFragment"-->
+        <!--            android:label="My Notifications" />-->
         <activity
             android:name="com.example.myapplication.ui.ViewEventActivity"
             android:exported="true"
