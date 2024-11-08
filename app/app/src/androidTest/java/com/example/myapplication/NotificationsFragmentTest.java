@@ -77,6 +77,7 @@ public class NotificationsFragmentTest {
     UserProfile user;
     DBConnection connection;
 
+    /*
     @Before
     public void before() {
         MockDBConnection connection = new MockDBConnection();
@@ -94,17 +95,18 @@ public class NotificationsFragmentTest {
         Notification notification = new Notification("Test notification", "This is the testing message", recipients, sender);
 
     }
+    */
 
     @Before
     public void xavierBefore() {
         activityRule.getScenario().onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
             @Override
             public void perform(MainActivity activity) {
-                // You can now call methods on the MainActivity instance
+                // call a few methods in MainActivity
                 user = activity.getUser();
                 connection = activity.getConnection();
             }
-        });  // Closing parenthesis for onActivity()
+        });
     }
 
     //BROKEN async task to get user profile is not executing before the notification is created
@@ -118,6 +120,9 @@ public class NotificationsFragmentTest {
     // this is more of a unit test than a UI test
     @Test
     public void ReceiveNotificationTest() {
+        // get some stuff
+        String name = user.getName();
+
         // first get the number of notifications the user currently has
         NotificationDB notifDB = connection.getNotifDB();
         ArrayList<Notification> notificationList = notifDB.getUserNotifications();
