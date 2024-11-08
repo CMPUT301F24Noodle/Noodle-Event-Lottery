@@ -46,15 +46,11 @@ public class Event implements Serializable {
     public String eventPoster; // URL or base64 string for the event poster image
     public Date eventDate; // date the actual event will occur
     public String eventTime;
-    public String contact;// Sam: I added this variable, not sure what type it should be
+    public String contact; //this is a phone number
     public Integer maxEntrants; // -1 if organizer does not want to restrict capacity
-    public Boolean geoLocation;
-
-  // False if organizer does not require entrants to have geoLocation on
+    public Integer maxParticipants;
+    public Boolean geoLocation; // False if organizer does not require entrants to have geoLocation on
     public String eventDetails;
-
-    public String contactNumber;// False if organizer does not require entrants to have geoLocation on
-
     // QRCODE STUFF
     private Bitmap QRCode; // the bitmap of the QR code
     private String HashedString; // TODO for part 4, do stuff with hash
@@ -259,11 +255,11 @@ public class Event implements Serializable {
     }
 
     public String getContactNumber() {
-        return contactNumber;
+        return contact;
     }
 
     public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
+        this.contact = contactNumber;
     }
     public String getEventLocation() {
         return eventLocation;
