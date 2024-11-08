@@ -144,19 +144,19 @@ public class Event implements Serializable {
      *         if capacity is not maxed, should return 1 and check that the entrant
      *         is now in the entrantsList
      */
-        public int addEntrant(DocumentReference entrant) {
-            // check that entrant is not already in the entrantList, and the event is not
-            // full
-            //entrant
-    //        if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE) {
-            if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE){
-                this.entrantsList.add(entrant);
-                // entrant.addEvent(this); //add the event to the entrants list of events
-                //setEventFull(); // update whether the event is full
-                return 1;
-            }
-            return 0;
+    public int addEntrant(DocumentReference entrant) {
+        // check that entrant is not already in the entrantList, and the event is not
+        // full
+        //entrant
+        //        if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE) {
+        if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE && this.eventOver == Boolean.FALSE){
+            this.entrantsList.add(entrant);
+            // entrant.addEvent(this); //add the event to the entrants list of events
+            setEventFull(); // update whether the event is full
+            return 1;
         }
+        return 0;
+    }
 
 //    /**
 //     * testing version of above function

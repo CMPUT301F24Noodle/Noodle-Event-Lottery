@@ -1,7 +1,6 @@
 package com.example.myapplication.database;
 
 
-import android.provider.CalendarContract;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -22,8 +21,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
-import java.security.cert.TrustAnchor;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Author: Erin-Marie
@@ -95,6 +95,72 @@ public class EventDB {
     public ArrayList<UserProfile> getEntrantsList() {
         return entrantsList;
     }
+
+    /**
+     * Author: Erin-Marie
+     * This is a method that manually ends an event lottery
+     * @param event
+     * TODO: make automated once the event lottery close date passes
+     */
+    public void endEvent(Event event){
+        //Mark the event as being over
+        event.setEventOver(Boolean.TRUE);
+        //gets the events entrant list
+        ArrayList<DocumentReference> entrantsList = event.getEntrantsList();
+        //get the max participants for the event
+        Integer participants = event.getMaxParticipants();
+
+        //If there are actually enough entrants to fill the event
+        if (participants < entrantsList.size()){
+            getRandomWinners(entrantsList, participants, event);
+
+        } else {
+            //all the entrants are winners
+            event.setWinnersList(entrantsList);
+        }
+
+        //update the event data in the db
+        updateEvent(event);
+
+        //send out the notifications to the entrants
+        sendMessageToLosers(event);
+        sendMessageToWinners(event);
+
+    }
+
+    /**
+     * Author: Erin-Marie
+     * @param entrants the entrants of the event
+     * @param participants the number of users to be chosen to participate in the event
+     * @param event the event to be attended
+     */
+    public void getRandomWinners(ArrayList<DocumentReference> entrants, int participants, Event event)
+    {
+        //Initialize random
+        Random rand = new Random();
+
+        //temporary list of winners
+        ArrayList<DocumentReference> eventWinnersList = event.getWinnersList();
+
+        for (int i = 0; i < participants; i++) {
+            //use random indexes to chose winners
+            int randomEntrantIndex = rand.nextInt(entrants.size());
+
+            // add the winner to the winner list
+            eventWinnersList.add(entrants.get(randomEntrantIndex));
+
+            //remove the entrant from the entrants list
+            entrants.remove(randomEntrantIndex);
+        }
+        //set the winners list
+        event.setWinnersList(eventWinnersList);
+
+        //The remaining users in entrants are the losers
+        event.setLosersList(entrants);
+
+
+    }
+
 
     /**
      * Author: Erin-Marie
@@ -435,4 +501,26 @@ public class EventDB {
         }
 
     }
+
+    /**
+     * Author Erin-Marie
+     * Method to send the notifications to all losers when the event ends
+     * @param event  the event that has ended
+     */
+    public void sendMessageToLosers(Event event){
+        Notification forLosers = new Notification("You were not selected to participate in this event.", event.getLosersList(), event);
+        connection.getNotifDB().addNotification(forLosers);
+    }
+
+    /**
+     * Author Erim-Marie
+     * Method to send the notifications to all winners when the event ends
+     * @param event the event that has ended
+     */
+    public void sendMessageToWinners(Event event){
+        Notification forWinners = new Notification("You were selected to participate in this event! Check the event listing to see your invitation.", event.getWinnersList(), event);
+        connection.getNotifDB().addNotification(forWinners);
+    }
+
+
 }
