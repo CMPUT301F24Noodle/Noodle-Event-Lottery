@@ -43,7 +43,7 @@ import java.util.ArrayList;
 public class MyEventsFragment extends Fragment {
 
     private FragmentMyeventsBinding binding;
-    private ArrayList<String> eventNamesList;
+    private ArrayList<Event> eventList;
     private ArrayAdapter<String> adapter;
 
     private EventDB eventDB;
@@ -57,7 +57,7 @@ public class MyEventsFragment extends Fragment {
         View root = binding.getRoot();
 
         // Initialize Firestore
-        db = FirebaseFirestore.getInstance();
+        //db = FirebaseFirestore.getInstance();
 
         // Retrieve instances from MainActivity
         MainActivity main = (MainActivity) getActivity();
@@ -67,13 +67,21 @@ public class MyEventsFragment extends Fragment {
         this.currentUserProfile = main.user;
 
         // Initialize the ListView with a simple adapter
-        eventNamesList = new ArrayList<>();
+        eventList = new ArrayList<>();
+        eventList = eventDB.getUserOrgEvents(currentUserProfile);
+
+        //This is just until we can get an array adapter made
+        ArrayList<String> eventStrings = new ArrayList<>();
+        for (int i = 0 ; i<eventList.size(); i++){
+            eventStrings.add(eventList.get(i).getEventName());
+        }
+
         ListView listView = binding.createdEventList;
-        adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, eventNamesList);
+        adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, eventStrings);
         listView.setAdapter(adapter);
 
         // Fetch all events and log event names
-        fetchAllEvents();
+        //fetchAllEvents();
 
         // Set up the FloatingActionButton click listener
         FloatingActionButton fab = binding.createEventButton;
@@ -85,30 +93,30 @@ public class MyEventsFragment extends Fragment {
     /**
      * Fetches all events from the "AllEvents" Firestore collection and adds their names to the ListView.
      */
-    private void fetchAllEvents() {
-        db.collection("AllEvents")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                            for (DocumentSnapshot document : querySnapshot) {
-                                Event event = document.toObject(Event.class);
-                                if (event != null && event.getEventName() != null) {
-                                    eventNamesList.add(event.getEventName()); // Add event name to the list
-                                    Log.v("MyEventsFragment", "Event Name: " + event.getEventName()); // Log the event name
-                                }
-                            }
-                            adapter.notifyDataSetChanged(); // Update the ListView after all events are added
-                        } else {
-                            Log.d("MyEventsFragment", "No events found in AllEvents collection.");
-                        }
-                    } else {
-                        Log.e("MyEventsFragment", "Error fetching events: ", task.getException());
-                        Toast.makeText(getContext(), "Error fetching events.", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
+//    private void fetchAllEvents() {
+//        db.collection("AllEvents")
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        QuerySnapshot querySnapshot = task.getResult();
+//                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
+//                            for (DocumentSnapshot document : querySnapshot) {
+//                                Event event = document.toObject(Event.class);
+//                                if (event != null && event.getEventName() != null) {
+//                                    eventNamesList.add(event.getEventName()); // Add event name to the list
+//                                    Log.v("MyEventsFragment", "Event Name: " + event.getEventName()); // Log the event name
+//                                }
+//                            }
+//                            adapter.notifyDataSetChanged(); // Update the ListView after all events are added
+//                        } else {
+//                            Log.d("MyEventsFragment", "No events found in AllEvents collection.");
+//                        }
+//                    } else {
+//                        Log.e("MyEventsFragment", "Error fetching events: ", task.getException());
+//                        Toast.makeText(getContext(), "Error fetching events.", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//    }
 
     /**
      * Opens the AddEventsFragment, allowing the user to add a new event.
