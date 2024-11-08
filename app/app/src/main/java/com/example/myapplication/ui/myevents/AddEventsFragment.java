@@ -220,6 +220,7 @@ public class AddEventsFragment extends Fragment {
 
             // Create arguments to pass to EditEventFragment
             Bundle args = new Bundle();
+            args.putSerializable("event", event);
             args.putString("event_id", event.getEventID());
             args.putString("event_name", eventName);
             args.putString("event_location", eventLocation);

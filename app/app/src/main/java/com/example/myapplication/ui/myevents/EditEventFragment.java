@@ -38,9 +38,10 @@ public class EditEventFragment extends Fragment {
 
     private EditText eventNameEditText, eventLocationEditText, eventDateTimeEditText, eventDetailsEditText, eventWaitingListEditText;
     private TextView eventStatusTextView;
-    private Button editButton, saveButton;
+    private Button editButton, saveButton, manageEventButton;
     private DBConnection connection;
     private EventDB eventDB;
+    private Event event;
     private UserProfile currentUserProfile;
     private String eventId; // Stores event ID
 
@@ -60,6 +61,7 @@ public class EditEventFragment extends Fragment {
         // Initialize Buttons
         editButton = view.findViewById(R.id.edit_event);
         saveButton = view.findViewById(R.id.save_button);
+        manageEventButton = view.findViewById(R.id.manage_event);
 
         // Retrieve instances from MainActivity
         MainActivity main = (MainActivity) getActivity();
@@ -73,6 +75,7 @@ public class EditEventFragment extends Fragment {
         Bundle args = getArguments();
         if (args != null) {
             eventId = args.getString("event_id");
+            event = (Event) args.getSerializable("event");
             String eventName = args.getString("event_name");
             String eventLocation = args.getString("event_location");
             String eventDateTime = args.getString("event_date_time");
@@ -109,6 +112,11 @@ public class EditEventFragment extends Fragment {
         saveButton.setOnClickListener(v -> {
             saveUpdatedEventData();
             setFieldsEditable(false);
+        });
+
+        manageEventButton.setOnClickListener(v -> {
+            Bundle manageArgs = new Bundle();
+            manageArgs.putSerializable("event", event);
         });
 
         return view;
