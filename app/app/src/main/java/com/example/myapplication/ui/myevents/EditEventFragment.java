@@ -80,8 +80,9 @@ public class EditEventFragment extends Fragment {
         // Retrieve data from arguments
         Bundle args = getArguments();
         if (args != null) {
-            eventId = args.getString("event_id");
+            //eventId = args.getString("event_id");
             event = (Event) args.getSerializable("event");
+            eventId = event.getEventID();
             String eventName = args.getString("event_name");
             String eventLocation = args.getString("event_location");
             String eventDateTime = args.getString("event_date_time");

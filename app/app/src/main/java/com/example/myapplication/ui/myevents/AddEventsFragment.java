@@ -222,12 +222,13 @@ public class AddEventsFragment extends Fragment {
 
             // Create arguments to pass to EditEventFragment
             Bundle args = new Bundle();
-            args.putSerializable("event", event);
-            args.putString("event_id", event.getEventID());
+            Event newEvent = eventDB.getEvent();
+            args.putSerializable("event", newEvent);
+            //args.putString("event_id", newEvent.getEventID());
             args.putString("event_name", eventName);
             args.putString("event_location", eventLocation);
             args.putString("event_date_time", formattedDate);
-            args.putString("event_details", event.getEventDetails());
+            args.putString("event_details", newEvent.getEventDetails());
             if (event.getEventOver() == Boolean.FALSE){
                 args.putString("event_status", "Event Lottery Open");
             } else {
