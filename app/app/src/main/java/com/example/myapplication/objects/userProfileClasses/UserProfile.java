@@ -260,14 +260,6 @@ public class UserProfile implements Serializable {
         myEvents.add(event.getDocRef());
     }
 
-    /**
-     * Author: Erin-Marie
-     * adds an event to the users list of organized events
-     * @param event the event for the Event being made
-     * TODO: need to update firebase
-     * TESTME: test that the event is now in myEvents
-     */
-
 
     /**
      * Author: Erin-Marie
@@ -296,15 +288,12 @@ public class UserProfile implements Serializable {
      * adds an event to the users list of organized events
      * checks that the event is hosted at the users facility, and is not already in their list of events, if not, returns 1
      * @param event the Event being created
-     * @return 1 if the user cannot create the event
-     * @return 2 if the user successfully created the event
      * TESTME: test that the event is now in myOrgEvents
      *         test that the method returns 1 if the event facility is not the users facility
      */
     public void addOrgEvent(Event event) {
         assert event != null;
         myOrgEvents.add(event.getDocRef());
-
 
     }
 

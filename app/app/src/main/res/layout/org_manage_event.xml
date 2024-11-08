@@ -241,7 +241,7 @@
         android:layout_width="130dp"
         android:layout_height="50dp"
         android:fontFamily="@font/belanosima"
-        android:text="Notify"
+        android:text="Send message"
         app:layout_constraintBottom_toTopOf="@+id/FAB_map"
         app:layout_constraintEnd_toEndOf="parent" />
 
