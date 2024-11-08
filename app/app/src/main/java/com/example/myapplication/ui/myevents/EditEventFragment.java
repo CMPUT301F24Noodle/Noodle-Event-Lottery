@@ -13,6 +13,7 @@
 
         package com.example.myapplication.ui.myevents;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,11 +33,12 @@ import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.google.zxing.WriterException;
 
 public class EditEventFragment extends Fragment {
 
     private EditText eventNameEditText, eventLocationEditText, eventDateTimeEditText, eventDetailsEditText, eventWaitingListEditText;
-    private Button editButton, saveButton;
+    private Button editButton, saveButton, QRButton;
     private DBConnection connection;
     private EventDB eventDB;
     private UserProfile currentUserProfile;
@@ -57,6 +59,7 @@ public class EditEventFragment extends Fragment {
         // Initialize Buttons
         editButton = view.findViewById(R.id.edit_event);
         saveButton = view.findViewById(R.id.save_button);
+        QRButton = view.findViewById(R.id.generate_qr);
 
         // Retrieve instances from MainActivity
         MainActivity main = (MainActivity) getActivity();
@@ -104,6 +107,35 @@ public class EditEventFragment extends Fragment {
         saveButton.setOnClickListener(v -> {
             saveUpdatedEventData();
             setFieldsEditable(false);
+        });
+
+        QRButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // first, get the QR code
+                if(eventId != null){
+                    // if there is an event id
+                    Event QRGenerator = new Event();
+                    Bitmap QRCode = null;
+
+                    // get the QR code
+                    try {
+                        QRCode = QRGenerator.generateQRCode(eventId, 300, 300);
+                    } catch (WriterException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    // ensure that the QR code didn't mess up and throw a RuntimeException
+                    if(QRCode == null){
+                        Toast.makeText(getContext(), "There was an error generating the QR code", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                else{
+                    // the event doesn't have an event ID
+                    Toast.makeText(getContext(), "Please wait while event is fully saved to database", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
 
         return view;
