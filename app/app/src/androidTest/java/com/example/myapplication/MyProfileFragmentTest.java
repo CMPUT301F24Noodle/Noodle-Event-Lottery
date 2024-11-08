@@ -24,34 +24,63 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+
 import androidx.test.platform.app.InstrumentationRegistry;
 import android.provider.Settings;
+
+import com.example.myapplication.database.DBConnection;
+import com.example.myapplication.database.UserDB;
+import com.example.myapplication.objects.facilityClasses.Facility;
+import com.example.myapplication.objects.userProfileClasses.UserProfile;
 
 /**
  * Author: Xavier Salm
  * Test class for all UI elements in MyProfileFragment
+ * Run at your own risk! This test will override the info (user details, facility and facility details) of the user associated with the device that runs this test
  */
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class MyProfileFragmentTest {
     @Rule
+    public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<>(MainActivity.class);
 
-    public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<MainActivity>(MainActivity.class);
+    UserProfile user;
+    DBConnection connection;
 
     // run this before every test to save repeating code
     @Before
-    public void NavigateToMyProfileSetUp(){
+    public void NavigateToMyProfileSetUp() throws InterruptedException {
+
+        scenario.getScenario().onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
+            @Override
+            public void perform(MainActivity activity) {
+                // call a few methods in MainActivity
+                user = activity.getUser();
+                connection = activity.getConnection();
+            }
+        });
+
+        // Then clean the user so that they have the qualities of a default user
+        user.setName("Name");
+        user.setAddress("Email");
+        user.setPhoneNumber(null);
+        if(user.getFacility() != null){
+            Facility facility = user.getFacility();
+            user.removeFacility(facility);
+        }
+
+        UserDB userDB = connection.getUserDB();
+        userDB.updateUserDocument(user);
+
         // Start by clicking on the side menu bar
-        // so the actual hamburger icon is not defined in xml, it is defined at the start of main_activity
-        // this means it can't be accessed using an ID
-        // however, the automatic process of setting up the hamburger icon gives it the content description of "Open navigation drawer"
-        // so this is how you click it!!
         onView(withContentDescription("Open navigation drawer")).perform(click());
 
         // Now go to MyProfile
@@ -60,6 +89,8 @@ public class MyProfileFragmentTest {
 
 
     }
+
+
 
     // Tests if you can actually navigate to MyProfile
     /**
@@ -84,6 +115,7 @@ public class MyProfileFragmentTest {
 
     /**
      * Tests the functionality of the save button. When clicked, most blank fields are reset to what they were before (they are not saved)
+     * Tests user stories: US.01.02.01, US.01.02.02
      */
     @Test
     public void SaveUserInfoButtonTest(){
@@ -126,7 +158,7 @@ public class MyProfileFragmentTest {
 
     /**
      * Tests the creation of facilities, which are only created for new users if both facility text fields are filled out
-     *
+     * Tests User Story: US.02.01.03
      */
     @Test
     public void createFacilityTest() {
@@ -160,6 +192,7 @@ public class MyProfileFragmentTest {
 
     /**
      * Tests if the delete facility button clears the facility fields
+     * Tests User Story: US.02.01.03
      */
     @Test
     public void DeleteFacilityButtonTest(){
