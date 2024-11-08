@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
@@ -58,15 +59,14 @@ public class AddEventsFragment extends Fragment {
 
         // Retrieve instances from MainActivity
         MainActivity main = (MainActivity) getActivity();
-        assert main != null;
-
-        // Set up DBConnection and EventDB from MainActivity
-        this.connection = main.connection;
-        this.eventDB = main.eventDB;
-        this.currentUserProfile = main.user; // Ensure this is initialized in MainActivity
+        if (main != null) {
+            this.connection = main.connection;
+            this.eventDB = main.eventDB;
+            this.currentUserProfile = main.user;
+        }
 
         initializeViews(view);
-        setButtonListeners(view);
+        setButtonListeners();
 
         return view;
     }
@@ -90,7 +90,7 @@ public class AddEventsFragment extends Fragment {
         //posterImageView = view.findViewById(R.id.poster_image_view);
     }
 
-    private void setButtonListeners(View view) {
+    private void setButtonListeners() {
         addPosterButton.setOnClickListener(v -> {
             if (checkAndRequestPermissions()) {
                 openImagePicker();
@@ -98,10 +98,12 @@ public class AddEventsFragment extends Fragment {
         });
 
         removeActionTextView.setOnClickListener(v -> {
-            posterImageView.setImageResource(0);
-            selectedImageUri = null;
-            currentStatusTextView.setText("Current: None");
-            Toast.makeText(getContext(), "Poster Removed", Toast.LENGTH_SHORT).show();
+            if (posterImageView != null) {
+                posterImageView.setImageResource(0);
+                selectedImageUri = null;
+                currentStatusTextView.setText("Current: None");
+                Toast.makeText(getContext(), "Poster Removed", Toast.LENGTH_SHORT).show();
+            }
         });
 
         saveButton.setOnClickListener(v -> saveEventDetails());
@@ -131,37 +133,39 @@ public class AddEventsFragment extends Fragment {
         event.setOrganizer(currentUserProfile);
 
         eventDB.addEvent(event);
-        if (event.getEventID() != null) { // Assuming a non-null ID indicates success
+        if (event.getEventID() != null) {
             Toast.makeText(getContext(), "Event saved successfully!", Toast.LENGTH_SHORT).show();
+            clearFields();
 
-            clearFields(); // Clear fields after saving
-
-            // Prepare date formatting
+            // Prepare date formatting for passing to EditEventFragment
 
         } else {
             Toast.makeText(getContext(), "Failed to save event. Please try again.", Toast.LENGTH_SHORT).show();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
             String formattedDate = dateFormat.format(event.getEventDate());
 
-            // Logging to confirm the data
-            Log.d("AddEventFragment", "Event Name: " + eventName);
-            Log.d("AddEventFragment", "Event Location: " + eventLocation);
-            Log.d("AddEventFragment", "Event Date: " + formattedDate);
-            Log.d("AddEventFragment", "Event Details: " + event.getEventDetails());
-            Log.d("AddEventFragment", "Event Waiting List: 33/45"); // Placeholder for waiting list count
+            // Create arguments to pass to EditEventFragment
+            Bundle args = new Bundle();
+            args.putString("event_id", event.getEventID());
+            args.putString("event_name", eventName);
+            args.putString("event_location", eventLocation);
+            args.putString("event_date_time", formattedDate);
+            args.putString("event_details", event.getEventDetails());
+            args.putString("event_waiting_list", "33/45");
 
-            // Start EditEventActivity with event details
-            Intent intent = new Intent(getContext(), EditEventActivity.class);
-            intent.putExtra("event_id", event.getEventID());
-            intent.putExtra("event_name", eventName);
-            intent.putExtra("event_location", eventLocation);
-            intent.putExtra("event_date_time", formattedDate); // Pass formatted date
-            intent.putExtra("event_details", event.getEventDetails());
-            intent.putExtra("event_waiting_list", "33/45"); // Example for waiting list count
-            startActivity(intent);
+            // Create an instance of EditEventFragment
+            EditEventFragment editEventFragment = new EditEventFragment();
+            editEventFragment.setArguments(args); // Set the arguments
 
+            // Begin FragmentTransaction to replace current fragment
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.nav_host_fragment_content_main, editEventFragment) // Replace with your container ID
+                    .addToBackStack(null) // Add to back stack so user can navigate back
+                    .commit();
         }
     }
+
+
 
     private void clearFields() {
         eventNameEditText.setText("");
@@ -174,7 +178,9 @@ public class AddEventsFragment extends Fragment {
         maxParticipantsEditText.setText("");
         waitingListLimitEditText.setText("");
         currentStatusTextView.setText("Current: None");
-        posterImageView.setImageResource(0);
+        if (posterImageView != null) {
+            posterImageView.setImageResource(0);
+        }
     }
 
     private void openImagePicker() {
@@ -203,8 +209,10 @@ public class AddEventsFragment extends Fragment {
     private void displaySelectedImage(Uri imageUri) {
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageUri);
-            posterImageView.setImageBitmap(bitmap);
-            currentStatusTextView.setText("Current: Poster Added");
+            if (posterImageView != null) {
+                posterImageView.setImageBitmap(bitmap);
+                currentStatusTextView.setText("Current: Poster Added");
+            }
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(getContext(), "Error loading image", Toast.LENGTH_SHORT).show();
