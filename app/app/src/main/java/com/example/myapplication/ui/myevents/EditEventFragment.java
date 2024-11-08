@@ -1,4 +1,17 @@
-package com.example.myapplication.ui.myevents;
+/**
+ * Author: Nishchay Ranjan
+ *
+ * This fragment allows users to edit event details that are stored in Firebase.
+ * - The fragment receives event details through a Bundle and displays them in editable text fields.
+ * - Users can modify the event details, which are then updated in Firebase when saved.
+ *
+ * Important Components:
+ * - onCreateView: Initializes UI elements, retrieves event data from arguments, and displays them.
+ * - setFieldsEditable: Controls the editability of text fields.
+ * - saveUpdatedEventData: Saves modified event data back to Firebase using the provided event ID.
+ */
+
+        package com.example.myapplication.ui.myevents;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -27,7 +40,7 @@ public class EditEventFragment extends Fragment {
     private DBConnection connection;
     private EventDB eventDB;
     private UserProfile currentUserProfile;
-    private String eventId; // Store event ID here
+    private String eventId; // Stores event ID
 
     @Nullable
     @Override
@@ -96,7 +109,10 @@ public class EditEventFragment extends Fragment {
         return view;
     }
 
-    // Method to toggle fields editable or non-editable
+    /**
+     * Sets the editability of the text fields and toggles button visibility.
+     * @param editable Whether fields should be editable
+     */
     private void setFieldsEditable(boolean editable) {
         eventNameEditText.setEnabled(editable);
         eventLocationEditText.setEnabled(editable);
@@ -108,7 +124,9 @@ public class EditEventFragment extends Fragment {
         editButton.setVisibility(editable ? View.GONE : View.VISIBLE);
     }
 
-    // Save updated data to Firebase or perform other actions as needed
+    /**
+     * Saves updated event data back to Firebase.
+     */
     private void saveUpdatedEventData() {
         String updatedEventName = eventNameEditText.getText().toString().trim();
         String updatedEventLocation = eventLocationEditText.getText().toString().trim();
@@ -123,7 +141,6 @@ public class EditEventFragment extends Fragment {
         Log.d("EditEventFragment", "Updated Event Details: " + updatedEventDetails);
         Log.d("EditEventFragment", "Updated Event Waiting List: " + updatedEventWaitingList);
 
-        // If EventDB updateEvent method is properly set up to use the event ID, call it here
         if (eventId != null) {
             Event updatedEvent = new Event();
             updatedEvent.setEventID(eventId);

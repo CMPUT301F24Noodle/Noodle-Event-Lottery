@@ -1,3 +1,19 @@
+/**
+ * Author: Nishchay Ranjan
+ *
+ * This class represents the AddEventsFragment, where users can create a new event by providing details such as event name, location, date, and other relevant information.
+ * - Users can add or remove a poster image for the event.
+ * - Event details are saved in the database upon form submission.
+ * - If the event is successfully created, the fragment navigates to the EditEventFragment for further modifications.
+ *
+ * Important Components:
+ * - initializeViews: Sets up the UI elements and retrieves instances of DBConnection, EventDB, and UserProfile.
+ * - setButtonListeners: Defines actions for the "Add Poster," "Remove Poster," and "Save" buttons.
+ * - saveEventDetails: Gathers data from the input fields, creates an Event object, and attempts to save it to the database.
+ * - clearFields: Clears the input fields after successful event creation.
+ * - checkAndRequestPermissions: Checks or requests permission for accessing external storage.
+ * - displaySelectedImage: Displays the selected poster image in the ImageView.
+ */
 package com.example.myapplication.ui.myevents;
 
 import android.Manifest;
@@ -71,6 +87,10 @@ public class AddEventsFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Initializes views for event details input fields and buttons.
+     * @param view the fragment view containing UI elements
+     */
     private void initializeViews(View view) {
         eventNameEditText = view.findViewById(R.id.event_name_edit);
         eventLocationEditText = view.findViewById(R.id.event_location_edit);
@@ -86,10 +106,11 @@ public class AddEventsFragment extends Fragment {
         saveButton = view.findViewById(R.id.save_button);
         currentStatusTextView = view.findViewById(R.id.current_status);
         removeActionTextView = view.findViewById(R.id.remove_action);
-
-        //posterImageView = view.findViewById(R.id.poster_image_view);
     }
 
+    /**
+     * Sets button click listeners for adding/removing poster and saving event details.
+     */
     private void setButtonListeners() {
         addPosterButton.setOnClickListener(v -> {
             if (checkAndRequestPermissions()) {
@@ -109,6 +130,10 @@ public class AddEventsFragment extends Fragment {
         saveButton.setOnClickListener(v -> saveEventDetails());
     }
 
+    /**
+     * Validates and gathers input data, creates an Event object, and saves it to Firebase.
+     * Navigates to EditEventFragment if the save is successful.
+     */
     private void saveEventDetails() {
         String eventName = eventNameEditText.getText().toString().trim();
         String eventLocation = eventLocationEditText.getText().toString().trim();
@@ -153,20 +178,19 @@ public class AddEventsFragment extends Fragment {
             args.putString("event_details", event.getEventDetails());
             args.putString("event_waiting_list", "33/45");
 
-            // Create an instance of EditEventFragment
             EditEventFragment editEventFragment = new EditEventFragment();
-            editEventFragment.setArguments(args); // Set the arguments
+            editEventFragment.setArguments(args);
 
-            // Begin FragmentTransaction to replace current fragment
             requireActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.nav_host_fragment_content_main, editEventFragment) // Replace with your container ID
-                    .addToBackStack(null) // Add to back stack so user can navigate back
+                    .replace(R.id.nav_host_fragment_content_main, editEventFragment)
+                    .addToBackStack(null)
                     .commit();
         }
     }
 
-
-
+    /**
+     * Clears all input fields after a successful event creation.
+     */
     private void clearFields() {
         eventNameEditText.setText("");
         eventLocationEditText.setText("");
@@ -183,11 +207,18 @@ public class AddEventsFragment extends Fragment {
         }
     }
 
+    /**
+     * Opens the image picker to select an event poster.
+     */
     private void openImagePicker() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
+    /**
+     * Checks if the storage permission is granted; requests it if not.
+     * @return true if permission is granted, false otherwise.
+     */
     private boolean checkAndRequestPermissions() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
@@ -206,6 +237,10 @@ public class AddEventsFragment extends Fragment {
         }
     }
 
+    /**
+     * Displays the selected image in the ImageView and updates status text.
+     * @param imageUri the URI of the selected image.
+     */
     private void displaySelectedImage(Uri imageUri) {
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageUri);

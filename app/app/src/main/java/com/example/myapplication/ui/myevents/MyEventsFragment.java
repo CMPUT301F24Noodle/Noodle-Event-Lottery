@@ -1,3 +1,16 @@
+/**
+ * Author: Nishchay Ranjan
+ *
+ * This fragment displays a list of events from the Firestore collection "AllEvents" and provides an option to add new events.
+ * - Retrieves event names from Firestore and displays them in a ListView.
+ * - Allows navigation to an AddEventsFragment for adding new events.
+ *
+ * Important Components:
+ * - onCreateView: Initializes UI elements, sets up Firestore, and fetches events.
+ * - fetchAllEvents: Fetches and displays all events from Firestore.
+ * - openAddEventsFragment: Navigates to the AddEventsFragment to add a new event.
+ */
+
 package com.example.myapplication.ui.myevents;
 
 import android.os.Bundle;
@@ -69,7 +82,9 @@ public class MyEventsFragment extends Fragment {
         return root;
     }
 
-    // Fetch all events from the AllEvents collection and log them
+    /**
+     * Fetches all events from the "AllEvents" Firestore collection and adds their names to the ListView.
+     */
     private void fetchAllEvents() {
         db.collection("AllEvents")
                 .get()
@@ -95,6 +110,9 @@ public class MyEventsFragment extends Fragment {
                 });
     }
 
+    /**
+     * Opens the AddEventsFragment, allowing the user to add a new event.
+     */
     private void openAddEventsFragment() {
         // Create a new instance of AddEventsFragment
         AddEventsFragment addEventsFragment = new AddEventsFragment();
