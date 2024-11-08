@@ -73,7 +73,7 @@ public class AddEventsActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.save_button);
         currentStatusTextView = findViewById(R.id.current_status);
         removeActionTextView = findViewById(R.id.remove_action);
-        posterImageView = findViewById(R.id.poster_image_view);
+        //BROKEN posterImageView = findViewById(R.id.poster_image_view);
     }
 
     private void initializeCurrentUser() {
