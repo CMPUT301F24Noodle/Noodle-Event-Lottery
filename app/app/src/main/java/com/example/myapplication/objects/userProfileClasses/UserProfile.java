@@ -11,7 +11,8 @@ import java.util.ArrayList;
 
 /**
  * Author: Erin-Marie
- * Class for a user object, stores any profile data they choose to add, and has method to get their UUID
+ * Class for a user object, stores any profile data they choose to add, and has
+ * method to get their UUID
  * TODONE: connect UserProfile to db, to get the users db, and their collection
  * TODO: need to initialize the array attributes
  */
@@ -22,44 +23,45 @@ public class UserProfile implements Serializable {
     String phoneNumber;
     String address;
     Image profilePicture;
-    Integer privileges; //0 is default, means they are just an entrant, 1 means they also have organizer privilege
+    Integer privileges; // 0 is default, means they are just an entrant, 1 means they also have
+                        // organizer privilege
     DocumentReference docRef;
-    ArrayList<DocumentReference> myEvents; //the users ENTERED events
+    ArrayList<DocumentReference> myEvents; // the users ENTERED events
     String uuid;
 
-    //organizer privilege attributes
-    ArrayList<DocumentReference> myOrgEvents; //the users ORGANIZED events
-    Facility facility; //the users facility they created, can only have one
-
-
+    // organizer privilege attributes
+    ArrayList<DocumentReference> myOrgEvents; // the users ORGANIZED events
+    Facility facility; // the users facility they created, can only have one
 
     ArrayList<DocumentReference> myNotifications;
 
-    Boolean isAdmin; //true if the user has admin privileges
+    Boolean isAdmin; // true if the user has admin privileges
 
-    //QUESTION: should these be within sharedPreferences, not stored within the UserProfile itself?
-    Boolean allowNotifs = Boolean.TRUE; //False if they do not want to receive notifications, True if they do allow notifications
-    Boolean geoLocationOn; //True if they allow geoLocation, False if not
+    // QUESTION: should these be within sharedPreferences, not stored within the
+    // UserProfile itself?
+    Boolean allowNotifs = Boolean.TRUE; // False if they do not want to receive notifications, True if they do allow
+                                        // notifications
+    Boolean geoLocationOn; // True if they allow geoLocation, False if not
 
     public ArrayList<Event> myEnteredEvents;
 
-    public UserProfile() {} //need for firebase
-
-
-
+    public UserProfile() {
+    } // need for firebase
 
     /**
      * Author: Erin-Marie
-     * UserProfile is initially created with ony default values, since the user is not required to enter their profile information
-     * If the user wants to edit anything, it will be done through the getter and setter methods called from the ProfileActivity
+     * UserProfile is initially created with ony default values, since the user is
+     * not required to enter their profile information
+     * If the user wants to edit anything, it will be done through the getter and
+     * setter methods called from the ProfileActivity
      */
     public UserProfile(String uuid) {
 
         this.name = "Name";
         this.email = "Email";
-        this.privileges = 0; //defaults to entrant privileges
-        this.allowNotifs = Boolean.TRUE; //defaults to allow notifications
-        this.geoLocationOn = Boolean.FALSE; //defaults to false, need to ask user for permission first
+        this.privileges = 0; // defaults to entrant privileges
+        this.allowNotifs = Boolean.TRUE; // defaults to allow notifications
+        this.geoLocationOn = Boolean.FALSE; // defaults to false, need to ask user for permission first
         this.isAdmin = Boolean.FALSE;
         this.uuid = uuid;
         this.myEvents = new ArrayList<DocumentReference>();
@@ -67,11 +69,10 @@ public class UserProfile implements Serializable {
         this.myNotifications = new ArrayList<DocumentReference>();
         this.myEnteredEvents = new ArrayList<Event>();
 
-
-        //TODO: make a res file with a default profile picture to use until a user submits their own
-        //this.profilePicture =
+        // TODO: make a res file with a default profile picture to use until a user
+        // submits their own
+        // this.profilePicture =
     }
-
 
     public void setMyEvents(ArrayList<DocumentReference> myEvents) {
         this.myEvents = myEvents;
@@ -80,6 +81,7 @@ public class UserProfile implements Serializable {
     public void setMyOrgEvents(ArrayList<DocumentReference> myOrgEvents) {
         this.myOrgEvents = myOrgEvents;
     }
+
     public ArrayList<DocumentReference> getMyNotifications() {
         return myNotifications;
     }
@@ -116,25 +118,23 @@ public class UserProfile implements Serializable {
         return isAdmin;
     }
 
-    public String getUuid(){
+    public String getUuid() {
         return uuid;
     }
 
-    //QUESTION: do we put input validation here or within the EditUserProfile fragment that will call these setters?
+    // QUESTION: do we put input validation here or within the EditUserProfile
+    // fragment that will call these setters?
     public String getName() {
         return name;
     }
-
 
     public void setName(String name) {
         this.name = name;
     }
 
-
     public String getEmail() {
         return email;
     }
-
 
     public void setEmail(String email) {
         this.email = email;
@@ -144,7 +144,6 @@ public class UserProfile implements Serializable {
         return phoneNumber;
     }
 
-
     public void setPhoneNumber(String number) {
         this.phoneNumber = number;
     }
@@ -153,13 +152,13 @@ public class UserProfile implements Serializable {
         return address;
     }
 
-
-    public void setAddress(String address) { this.address = address; }
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public Image getProfilePicture() {
         return profilePicture;
     }
-
 
     public void setProfilePicture(Image profilePicture) {
         this.profilePicture = profilePicture;
@@ -168,7 +167,6 @@ public class UserProfile implements Serializable {
     public Integer getPrivileges() {
         return privileges;
     }
-
 
     public void setPrivileges(Integer privileges) {
         this.privileges = privileges;
@@ -186,23 +184,23 @@ public class UserProfile implements Serializable {
         return allowNotifs;
     }
 
-
     public void setAllowNotifs(Boolean allowNotifs) {
         this.allowNotifs = allowNotifs;
     }
 
-    //MAYBE: if geoLocation is stored within sharedPreferences this will need to be more complex
+    // MAYBE: if geoLocation is stored within sharedPreferences this will need to be
+    // more complex
     public Boolean getGeoLocationOn() {
         return geoLocationOn;
     }
 
-
-    //MAYBE: if geoLocation is stored within sharedPreferences this will need to be more complex
+    // MAYBE: if geoLocation is stored within sharedPreferences this will need to be
+    // more complex
     public void setGeoLocationOn(Boolean geoLocationOn) {
         this.geoLocationOn = geoLocationOn;
     }
 
-    public Facility getFacility(){
+    public Facility getFacility() {
         return this.facility;
     }
 
@@ -210,21 +208,24 @@ public class UserProfile implements Serializable {
      * Author: Erin-Marie
      * connects a facility instance to the user who created it
      * grants the user organizer privileges
+     * 
      * @param facility Facility the user owns
-     * @return 0 if the facility is successfully attached to the user, or 1 if not (user already has a facility)
-     * TESTME: test that the facility has been set
-     *         test that if the user already has a facility, that the facility is not being overwritten
+     * @return 0 if the facility is successfully attached to the user, or 1 if not
+     *         (user already has a facility)
+     *         TESTME: test that the facility has been set
+     *         test that if the user already has a facility, that the facility is
+     *         not being overwritten
      */
-    public Integer setFacility(Facility facility){
-        //Check that the user does not already have a facility
+    public Integer setFacility(Facility facility) {
+        // Check that the user does not already have a facility
         if (this.facility == null) {
             this.facility = facility;
-            //creating a facility gives the user Organizer privileges, increase privileges
+            // creating a facility gives the user Organizer privileges, increase privileges
             this.privileges = 1;
-            return 0; //return successful
+            return 0; // return successful
 
         } else {
-            return 1; //could not add facility, user already owns a facility
+            return 1; // could not add facility, user already owns a facility
         }
     }
 
@@ -233,63 +234,74 @@ public class UserProfile implements Serializable {
      * checks that the facility is the users facility
      * removes the facility from the owners profile
      * demotes the users privileges to just entrant (0)
+     * 
      * @param facility facility that is being deleted
-     * TODO: update the users profile in firebase db
-     * TESTME: test that the facility has been removed from the users profile
-     *         test that the user now only has entrant privileges
+     *                 TODO: update the users profile in firebase db
+     *                 TESTME: test that the facility has been removed from the
+     *                 users profile
+     *                 test that the user now only has entrant privileges
      */
-    public void removeFacility(Facility facility){
-        if (this.facility == facility){
+    public void removeFacility(Facility facility) {
+        if (this.facility == facility) {
             this.facility = null;
-            this.privileges = 0; //removing your facility means you are no longer an organizer
-            //MAYBE: need to delete all events that they were hosting at this facility?
-            //       deleting the facility from the db will be done by the calling method probably?
+            this.privileges = 0; // removing your facility means you are no longer an organizer
+            // MAYBE: need to delete all events that they were hosting at this facility?
+            // deleting the facility from the db will be done by the calling method
+            // probably?
         }
     }
 
     /**
      * Author: Erin-Marie
      * adds an event to the users list of entered events
-     * assumes that the entrant has already been approved to enter the event ie the addEntrant method of the event class has already been executed
+     * assumes that the entrant has already been approved to enter the event ie the
+     * addEntrant method of the event class has already been executed
      * called by the addEntrant() method of the Event class
+     * 
      * @param event the doc reference for the Event being entered
-     * TODO: need to update firebase
-     * TESTME: test that the event is now in myEvents
+     *              TODO: need to update firebase
+     *              TESTME: test that the event is now in myEvents
      */
     public void enterEvent(Event event) {
         myEvents.add(event.getDocRef());
     }
 
-
     /**
      * Author: Erin-Marie
      * removes an event to the users list of entered events
-     * assumes that the entrant has already been removed from the events list of entrants
+     * assumes that the entrant has already been removed from the events list of
+     * entrants
      * called by the removeEntrant() method of the Event class
+     * 
      * @param event the Event being left
-     * TESTME: test that the event is no longer in myEvents
+     *              TESTME: test that the event is no longer in myEvents
      */
-    public void leaveEvent(Event event){
+    public void leaveEvent(Event event) {
         this.myEvents.remove(event.getDocRef());
     }
 
     /**
      * Author: Erin-Marie
-     * Returns false if the entrant is not entered in the events lottery, returns true if they are
+     * Returns false if the entrant is not entered in the events lottery, returns
+     * true if they are
+     * 
      * @param event the event being checked if the user is entered in
-     * TESTME: test that the event is returning correct bool
+     *              TESTME: test that the event is returning correct bool
      */
-    public Boolean checkIsEntrant(Event event){
+    public Boolean checkIsEntrant(Event event) {
         return this.myEvents.contains(event.getDocRef());
     }
 
     /**
      * Author: Erin-Marie
      * adds an event to the users list of organized events
-     * checks that the event is hosted at the users facility, and is not already in their list of events, if not, returns 1
+     * checks that the event is hosted at the users facility, and is not already in
+     * their list of events, if not, returns 1
+     * 
      * @param event the Event being created
-     * TESTME: test that the event is now in myOrgEvents
-     *         test that the method returns 1 if the event facility is not the users facility
+     *              TESTME: test that the event is now in myOrgEvents
+     *              test that the method returns 1 if the event facility is not the
+     *              users facility
      */
     public void addOrgEvent(Event event) {
         assert event != null;
@@ -297,10 +309,8 @@ public class UserProfile implements Serializable {
 
     }
 
-    public void clearNotifs(){
+    public void clearNotifs() {
         myNotifications = new ArrayList<DocumentReference>();
     }
 
-
 }
-
