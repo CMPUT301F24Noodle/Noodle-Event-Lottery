@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -78,6 +79,16 @@ public class MyEventsFragment extends Fragment {
         listView.setAdapter(eventAdapter);
         eventAdapter.notifyDataSetChanged();
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Bundle manageArgs = new Bundle();
+                manageArgs.putSerializable("event", eventList.get(i));
+                manageArgs.putSerializable("eventDB", eventDB);
+                openManageEventFragment(manageArgs);
+            }
+        });
+
 
 
 
@@ -124,10 +135,10 @@ public class MyEventsFragment extends Fragment {
         transaction.commit();
     }
 
-    /**
-     * Fetches all events from the "AllEvents" Firestore collection and adds their names to the ListView.
-     */
-//    private void fetchAllEvents() {
+//    /**
+//     * Fetches all events from the "AllEvents" Firestore collection and adds their names to the ListView.
+//     */
+////    private void fetchAllEvents() {
 //        db.collection("AllEvents")
 //                .get()
 //                .addOnCompleteListener(task -> {

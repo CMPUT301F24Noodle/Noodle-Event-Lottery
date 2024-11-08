@@ -57,13 +57,7 @@ public class OrganizedEventArrayAdapter extends ArrayAdapter<Event> {
         }
 
 
-        EventDB eventDB = new DBConnection(getContext()).getEventDB();
-        // Set OnClickListener for the item
-        convertView.setOnClickListener(v -> {
-            Bundle manageArgs = new Bundle();
-            manageArgs.putSerializable("eventDB", eventDB);
-            openManageEventFragment(manageArgs);
-        });
+
 
         return convertView;
     }
