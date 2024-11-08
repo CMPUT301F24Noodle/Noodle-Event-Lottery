@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alexandria_semibold"
+        android:textSize="24sp"
+        android:textColor="@color/text_cyan"
+        android:text="@string/qr_view_text">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/full_QR_image"
+        android:layout_width="300dp"
+        android:layout_height="300dp" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/belanosima"
+            android:background="@drawable/mybutton"/>
+
+    </LinearLayout>
+
+</LinearLayout>

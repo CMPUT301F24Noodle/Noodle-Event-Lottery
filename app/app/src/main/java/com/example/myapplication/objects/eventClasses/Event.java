@@ -51,6 +51,8 @@ public class Event implements Serializable {
     public Integer maxParticipants;
     public Boolean geoLocation; // False if organizer does not require entrants to have geoLocation on
     public String eventDetails;
+    private String eventLocation;
+    private int waitingListSize;
     // QRCODE STUFF
     private Bitmap QRCode; // the bitmap of the QR code
     private String HashedString; // TODO for part 4, do stuff with hash
@@ -294,6 +296,18 @@ public class Event implements Serializable {
         this.losersList = losersList;
     }
 
+
+    public String getEventLocation() {
+        return eventLocation;
+    }
+
+    public void setEventLocation(String eventLocation) {
+        this.eventLocation = eventLocation;
+    }
+
+
+
+
     public DocumentReference getOrganizerRef() {
         return organizerRef;
     }
@@ -304,6 +318,14 @@ public class Event implements Serializable {
 
     public Boolean getGeoLocation() {
         return geoLocation;
+    }
+
+    public int getWaitingListSize() {
+        return waitingListSize;
+    }
+
+    public void setWaitingListSize(int waitingListSize) {
+        this.waitingListSize = waitingListSize;
     }
 
     public void setGeoLocation(Boolean geoLocation) {

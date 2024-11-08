@@ -21,6 +21,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
@@ -29,7 +30,7 @@ import java.util.Random;
  * Author: Erin-Marie
  * class that does all database operations for UserProfile objects
  */
-public class EventDB {
+public class EventDB implements Serializable {
     //For logcat
     private final static String TAG = "EventDB";
 
@@ -99,6 +100,7 @@ public class EventDB {
     /**
      * Author: Erin-Marie
      * This is a method that manually ends an event lottery
+     * ends the event, draws winners, sends notifications to the entrants
      * @param event
      * TODO: make automated once the event lottery close date passes
      */
@@ -322,6 +324,10 @@ public class EventDB {
     public void getEventLosers(Event event){
         //query for all losers documents of the users in the events losersList
         ArrayList<DocumentReference> losers = event.getLosersList();
+        if (losers.size() == 0){
+            Log.v(TAG, "event has no losers to retrieve from db");
+            return;
+        }
         Query query = db.collection("allUsers").whereArrayContainsAny("losersList", losers);
         getQuery(query, new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -349,6 +355,10 @@ public class EventDB {
     public void getEventEntrants(Event event){
         //query for all losers documents of the users in the events losersList
         ArrayList<DocumentReference> entrants = event.getEntrantsList();
+        if (entrants.size() == 0){
+            Log.v(TAG, "event has no entrants to retrieve from db");
+            return;
+        }
         Query query = db.collection("allUsers").whereArrayContainsAny("entrantsList", entrants);
         getQuery(query, new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -374,9 +384,13 @@ public class EventDB {
      * @param event that has been completed
      * @return this.losersList but the return value isnt actually used
      */
-    public ArrayList<UserProfile> getEventWinners(Event event){
+    public void getEventWinners(Event event){
         //query for all the winners' documents of the users in the events winnersList
         ArrayList<DocumentReference> winners = event.getWinnersList();
+        if (winners.size() == 0){
+            Log.v(TAG, "event has no winners to retrieve from db");
+            return;
+        }
         Query query = db.collection("allUsers").whereArrayContainsAny("winnersList", winners);
         getQuery(query, new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -393,7 +407,7 @@ public class EventDB {
             }
         });
         //Log.v(TAG, "size: " + myEvents.size());
-        return this.winnersList;
+
     }
 
 

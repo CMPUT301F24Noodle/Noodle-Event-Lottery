@@ -33,4 +33,5 @@
     <string name="loc_confirm">This event requires you to share your location with the organizer. Are you sure?</string>
     <string name="register_for_lottery">Register For Lottery</string>
     <string name="canceled">Scan canceled</string>
+    <string name="qr_view_text">Event QR Code:</string>
 </resources>

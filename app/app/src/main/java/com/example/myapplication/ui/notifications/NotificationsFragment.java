@@ -61,11 +61,11 @@ public class NotificationsFragment extends Fragment {
     /**
      * Author: Erin-Marie
      * On create view for the notification fragment
-     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment,
-     * @param container If non-null, this is the parent view that the fragment's UI should be attached to.
-     *                  The fragment should not add the view itself, but this can be used to generate the LayoutParams of the view.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
      *
+     * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment,
+     * @param container          If non-null, this is the parent view that the fragment's UI should be attached to.
+     *                           The fragment should not add the view itself, but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here.
      * @return view to be displayed
      */
     @Override
@@ -103,12 +103,11 @@ public class NotificationsFragment extends Fragment {
     }
 
 
-
     /**
      * Author: Erin-Marie
      * Gets some of the variables from MainActivity that we will need
      */
-    public void getVarFromMain(){
+    public void getVarFromMain() {
         main = (MainActivity) getActivity();
         assert main != null;
         connection = main.connection;
@@ -120,30 +119,4 @@ public class NotificationsFragment extends Fragment {
 
     }
 
-
-
-//    public void testing() throws WriterException {
-//
-//        Facility facility = user.getFacility();
-//        //Event event = new Event(facility, user, "Party1", null, null, -1, null, Boolean.FALSE);
-//        //Event event2 = new Event(facility, user, "Party2", null, null, -1, null, Boolean.FALSE);
-//        //Event event3 = new Event(facility, user, "Party3", null, null, -1, null, Boolean.FALSE);
-//        //eventDB.addEvent(event);
-//        eventDB.addEvent(event2);
-//        //eventDB.addEvent(event3);
-//
-//        this.event = event2;
-//
-//
-//
-//    }
-
-//    //BROKEN the event exists and gets updated with the user as a entrant, but the event docref is null in the users document on db
-//    public void testing2(){
-//        //BROKEN uncomment this and itll crash eventDB.updateEvent(this.event);
-//        userDB.enterEvent(this.event);
-//        eventDB.updateEvent(this.event);
-//
-//
-//    }
 }
