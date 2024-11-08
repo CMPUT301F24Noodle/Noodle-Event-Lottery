@@ -180,6 +180,7 @@ public class AddEventsFragment extends Fragment {
 
 
         event.setEventDate(new Date());
+
         event.setContact(contactNumberEditText.getText().toString().trim());
 
         event.setFacility(currentUserProfile.getFacility());
@@ -195,16 +196,23 @@ public class AddEventsFragment extends Fragment {
         }
 
         event.setOrganizer(currentUserProfile);
+        event.setOrganizerRef(currentUserProfile.getDocRef());
 
-        eventDB.addEvent(event);
-        if (event.getEventID() != null) {
+        try {
+            eventDB.addEvent(event);
             Toast.makeText(getContext(), "Event saved successfully!", Toast.LENGTH_SHORT).show();
             clearFields();
 
+        } catch (Exception e) {
+            CharSequence sorry = "Event details could not be saved, please try again.";
+            Toast.makeText(getContext(), sorry, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+
             // Prepare date formatting for passing to EditEventFragment
 
-        } else {
-            Toast.makeText(getContext(), "Failed to save event. Please try again.", Toast.LENGTH_SHORT).show();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
             String formattedDate = dateFormat.format(event.getEventDate());
 
@@ -215,7 +223,12 @@ public class AddEventsFragment extends Fragment {
             args.putString("event_location", eventLocation);
             args.putString("event_date_time", formattedDate);
             args.putString("event_details", event.getEventDetails());
-            args.putString("event_waiting_list", "33/45");
+            if (event.getMaxEntrants() == -1){
+                args.putString("event_waiting_list", event.getWaitingListSize() + " entrants");
+            } else {
+                args.putString("event_waiting_list", event.getWaitingListSize() + " / " + event.getMaxEntrants());
+            }
+
 
             EditEventFragment editEventFragment = new EditEventFragment();
             editEventFragment.setArguments(args);
@@ -224,7 +237,7 @@ public class AddEventsFragment extends Fragment {
                     .replace(R.id.nav_host_fragment_content_main, editEventFragment)
                     .addToBackStack(null)
                     .commit();
-        }
+
     }
 
     /**
