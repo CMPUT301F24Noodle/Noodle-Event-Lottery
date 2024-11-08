@@ -28,10 +28,8 @@ public class DisplayQRCodeFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        inflater.inflate(R.layout.qr_view, container, false);
+        View view = inflater.inflate(R.layout.qr_view, container, false);
 
-        FragmentMyProfileBinding binding = FragmentMyProfileBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
 
         ImageView qrImageView = view.findViewById(R.id.full_QR_image);
         if (QRCode != null) {

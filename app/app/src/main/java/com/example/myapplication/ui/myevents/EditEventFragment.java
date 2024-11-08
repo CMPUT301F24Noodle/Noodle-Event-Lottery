@@ -126,16 +126,14 @@ public class EditEventFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // first, get the QR code
-                //if(eventId != null){
-                if(true){
+                if(eventId != null){
                     // if there is an event id
                     Event QRGenerator = new Event();
                     Bitmap QRCode = null;
 
                     // get the QR code
                     try {
-                        //QRCode = QRGenerator.generateQRCode(eventId, 300, 300);
-                        QRCode = QRGenerator.generateQRCode("haha", 300, 300);
+                        QRCode = QRGenerator.generateQRCode(eventId, 300, 300);
 
                     } catch (WriterException e) {
                         throw new RuntimeException(e);
@@ -146,11 +144,13 @@ public class EditEventFragment extends Fragment {
                         Toast.makeText(getContext(), "There was an error generating the QR code", Toast.LENGTH_SHORT).show();
                     }
 
-                    DisplayQRCodeFragment QRFragment = new DisplayQRCodeFragment();
-                    QRFragment.setQRCode(QRCode);
+                    else {
+                        DisplayQRCodeFragment QRFragment = new DisplayQRCodeFragment();
+                        QRFragment.setQRCode(QRCode);
 
-                    // Navigate to the fragment
-                    QRFragment.show(getParentFragmentManager(), "QrPopupFragment");
+                        // Navigate to the fragment
+                        QRFragment.show(getParentFragmentManager(), "QrPopupFragment");
+                    }
 
                 }
                 else{
