@@ -141,13 +141,13 @@ public class AddEventsFragment extends Fragment {
     private void saveEventDetails() {
         String eventName = eventNameEditText.getText().toString().trim();
         String eventLocation = eventLocationEditText.getText().toString().trim();
-        String maxParticipants = maxParticipantsEditText.getText().toString().trim();
+        Integer maxParticipants = null;
         String maxEntrants = waitingListLimitEditText.getText().toString().trim();
         String eventDetails = eventDetailsEditText.getText().toString().trim();
 
 
 
-        if (eventName.isEmpty() || eventLocation.isEmpty() || maxParticipants.isEmpty()) {
+        if (eventName.isEmpty() || eventLocation.isEmpty()) {
             Toast.makeText(getContext(), "Please fill in all required fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -161,8 +161,23 @@ public class AddEventsFragment extends Fragment {
             event.setEventDetails(eventDetails);
         }
 
-        event.setMaxParticipants(Integer.parseInt(maxParticipants));
-        event.setMaxEntrants(Integer.parseInt(maxEntrants));
+        try {
+            maxParticipants = Integer.parseInt(maxParticipantsEditText.getText().toString());
+            event.setMaxParticipants(maxParticipants);
+        } catch (NumberFormatException e) {
+            CharSequence text = "Your event must a maximum number of participants";
+            Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+            return; //force them to go back and add one
+        }
+
+        try {
+            Integer maxWait = Integer.parseInt(waitingListLimitEditText.getText().toString());
+            event.setMaxEntrants(maxWait);
+        } catch (NumberFormatException a) {
+            Integer maxWait = -1;
+            event.setMaxEntrants(maxWait);
+        }
+
 
         event.setEventDate(new Date());
         event.setContact(contactNumberEditText.getText().toString().trim());
