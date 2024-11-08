@@ -24,6 +24,9 @@ import com.journeyapps.barcodescanner.ScanOptions;
 /**
  * Author: Sam Lee
  * Fragment for scanning QR codes.
+ * This fragment contains functionality for scanning QR codes and handling the
+ * scanned data.
+ * [US 01.06.02] As an entrant I want to be able to be sign up for an event by scanning the QR code
  */
 public class QRFragment extends Fragment {
 
@@ -70,7 +73,8 @@ public class QRFragment extends Fragment {
 
     /**
      * Author: Sam Lee
-     *  Fetches event details from the database and navigates to the event page.
+     * Fetches event details from the database and navigates to the event page.
+     * 
      * @param eventID
      */
     private void fetchEventDetails(String eventID) {
