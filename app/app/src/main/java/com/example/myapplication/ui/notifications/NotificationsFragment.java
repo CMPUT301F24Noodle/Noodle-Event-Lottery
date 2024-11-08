@@ -119,7 +119,7 @@ public class NotificationsFragment extends Fragment {
         userDB = connection.getUserDB();
 
     }
-    
+
 
 
 //    public void testing() throws WriterException {

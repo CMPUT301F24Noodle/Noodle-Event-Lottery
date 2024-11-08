@@ -74,6 +74,7 @@ public class NotificationsFragmentTest {
     UserProfile user;
     DBConnection connection;
 
+
     // get some stuff from main to use in here
     @Before
     public void xavierBefore() {
@@ -101,7 +102,7 @@ public class NotificationsFragmentTest {
         int oldCount = notificationList.size();
 
         // send a notification
-        SendFakeNotification();
+        SendFakeNotification("RECEIVE");
 
         // now see if the user has +1 notification
         ArrayList<Notification> newNotificationList = notifDB.getUserNotifications();
@@ -118,8 +119,14 @@ public class NotificationsFragmentTest {
     @Test
     public void SeeNotificationsTest() throws InterruptedException {
 
+        NotificationDB notifDB = connection.getNotifDB();
+
         // send the user a notification
-        SendFakeNotification();
+        SendFakeNotification("SEE");
+
+        Thread.sleep(5000);
+
+        ArrayList<Notification> newNotificationList = notifDB.getUserNotifications();
 
         Thread.sleep(5000);
 
@@ -128,18 +135,15 @@ public class NotificationsFragmentTest {
         onView(withId(R.id.nav_notifications)).perform(click());
 
 
-        NotificationDB notifDB = connection.getNotifDB();
-        ArrayList<Notification> newNotificationList = notifDB.getUserNotifications();
-
-        Thread.sleep(5000);
-
         // and check if the notification is there!
-        onView(withText("Test notification")).check(matches(isDisplayed()));
+        onView(withText("SEE")).check(matches(isDisplayed()));
 
 
     }
 
-    public void SendFakeNotification(){
+    public void SendFakeNotification(String title){
+
+
         NotificationDB notifDB = connection.getNotifDB();
 
         // create a dummy sender user
@@ -151,7 +155,7 @@ public class NotificationsFragmentTest {
         ArrayList<DocumentReference> recipients = new ArrayList<DocumentReference>();
         DocumentReference testUserRef = connection.getUserDocumentRef();
         recipients.add(testUserRef);
-        Notification notification = new Notification("Test notification", "This is the testing message", recipients, sender);
+        Notification notification = new Notification(title, "This is the testing message", recipients, sender);
 
         // now add that notification to the DB
         notifDB.addNotification(notification);
