@@ -1,11 +1,14 @@
 package com.example.myapplication.ui.myevents;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.Manifest;
-import android.content.pm.PackageManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +32,9 @@ import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class AddEventsFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -84,7 +87,6 @@ public class AddEventsFragment extends Fragment {
         currentStatusTextView = view.findViewById(R.id.current_status);
         removeActionTextView = view.findViewById(R.id.remove_action);
 
-        // Initialize posterImageView
         //posterImageView = view.findViewById(R.id.poster_image_view);
     }
 
@@ -131,11 +133,34 @@ public class AddEventsFragment extends Fragment {
         eventDB.addEvent(event);
         if (event.getEventID() != null) { // Assuming a non-null ID indicates success
             Toast.makeText(getContext(), "Event saved successfully!", Toast.LENGTH_SHORT).show();
-            clearFields();
+
+            clearFields(); // Clear fields after saving
+
+            // Prepare date formatting
+
         } else {
             Toast.makeText(getContext(), "Failed to save event. Please try again.", Toast.LENGTH_SHORT).show();
-        }
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+            String formattedDate = dateFormat.format(event.getEventDate());
 
+            // Logging to confirm the data
+            Log.d("AddEventFragment", "Event Name: " + eventName);
+            Log.d("AddEventFragment", "Event Location: " + eventLocation);
+            Log.d("AddEventFragment", "Event Date: " + formattedDate);
+            Log.d("AddEventFragment", "Event Details: " + event.getEventDetails());
+            Log.d("AddEventFragment", "Event Waiting List: 33/45"); // Placeholder for waiting list count
+
+            // Start EditEventActivity with event details
+            Intent intent = new Intent(getContext(), EditEventActivity.class);
+            intent.putExtra("event_id", event.getEventID());
+            intent.putExtra("event_name", eventName);
+            intent.putExtra("event_location", eventLocation);
+            intent.putExtra("event_date_time", formattedDate); // Pass formatted date
+            intent.putExtra("event_details", event.getEventDetails());
+            intent.putExtra("event_waiting_list", "33/45"); // Example for waiting list count
+            startActivity(intent);
+
+        }
     }
 
     private void clearFields() {
