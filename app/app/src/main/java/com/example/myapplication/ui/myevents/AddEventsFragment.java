@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +63,7 @@ public class AddEventsFragment extends Fragment {
     private Button addPosterButton, saveButton;
     private TextView currentStatusTextView, removeActionTextView;
     private ImageView posterImageView;
+    private Switch geoLocationSwitch;
     private Uri selectedImageUri;
 
     private DBConnection connection;
@@ -106,6 +108,8 @@ public class AddEventsFragment extends Fragment {
         saveButton = view.findViewById(R.id.save_button);
         currentStatusTextView = view.findViewById(R.id.current_status);
         removeActionTextView = view.findViewById(R.id.remove_action);
+
+        geoLocationSwitch = view.findViewById(R.id.geolocation_toggle);
     }
 
     /**
@@ -139,6 +143,9 @@ public class AddEventsFragment extends Fragment {
         String eventLocation = eventLocationEditText.getText().toString().trim();
         String maxParticipants = maxParticipantsEditText.getText().toString().trim();
         String maxEntrants = waitingListLimitEditText.getText().toString().trim();
+        String eventDetails = eventDetailsEditText.getText().toString().trim();
+
+
 
         if (eventName.isEmpty() || eventLocation.isEmpty() || maxParticipants.isEmpty()) {
             Toast.makeText(getContext(), "Please fill in all required fields", Toast.LENGTH_SHORT).show();
@@ -146,14 +153,27 @@ public class AddEventsFragment extends Fragment {
         }
 
         Event event = new Event();
+
+        //Set all the event data
         event.setEventName(eventName);
-        event.setEventDetails(eventDetailsEditText.getText().toString().trim());
+
+        if (!eventDetails.isEmpty()) {
+            event.setEventDetails(eventDetails);
+        }
 
         event.setMaxParticipants(Integer.parseInt(maxParticipants));
         event.setMaxEntrants(Integer.parseInt(maxEntrants));
 
         event.setEventDate(new Date());
         event.setContact(contactNumberEditText.getText().toString().trim());
+
+        event.setFacility(currentUserProfile.getFacility());
+
+        if (geoLocationSwitch.isChecked()) {
+            event.setGeoLocation(Boolean.TRUE);
+        } else {
+            event.setGeoLocation(Boolean.FALSE);
+        }
 
         if (selectedImageUri != null) {
             event.setEventPoster(selectedImageUri.toString());
