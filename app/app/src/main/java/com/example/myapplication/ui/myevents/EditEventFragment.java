@@ -82,7 +82,7 @@ public class EditEventFragment extends Fragment {
         if (args != null) {
             //eventId = args.getString("event_id");
             event = (Event) args.getSerializable("event");
-            eventId = event.getEventID();
+            //eventId = eventDB.getEvent().getEventID();
             String eventName = args.getString("event_name");
             String eventLocation = args.getString("event_location");
             String eventDateTime = args.getString("event_date_time");
@@ -218,15 +218,14 @@ public class EditEventFragment extends Fragment {
         Log.d("EditEventFragment", "Updated Event Details: " + updatedEventDetails);
         Log.d("EditEventFragment", "Updated Event Waiting List: " + updatedEventWaitingList);
 
-        if (eventId != null) {
-            Event updatedEvent = new Event();
-            updatedEvent.setEventID(eventId);
-            updatedEvent.setEventName(updatedEventName);
-            updatedEvent.setEventLocation(updatedEventLocation);
-            updatedEvent.setEventDetails(updatedEventDetails);
+
+        if (event != null){
+            event.setEventName(updatedEventName);
+            event.setEventLocation(updatedEventLocation);
+            event.setEventDetails(updatedEventDetails);
             // Additional setters as necessary, e.g., eventDate and waiting list values
 
-            eventDB.updateEvent(updatedEvent); // Assuming this updates based on event ID
+            eventDB.updateEvent(event); // Assuming this updates based on event ID
             Toast.makeText(getContext(), "Event updated successfully!", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(), "Error: Event ID is missing.", Toast.LENGTH_SHORT).show();
