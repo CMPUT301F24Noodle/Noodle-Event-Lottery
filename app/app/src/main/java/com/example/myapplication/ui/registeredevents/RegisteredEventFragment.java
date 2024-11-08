@@ -35,7 +35,6 @@ import java.util.List;
  * Author: Sam Lee
  * Fragment for displaying a list of registered events and
  * FAB to navigate to the QR scanner.
- * TODO: doesnt load the users events until you open and close the fragment once
  */
 public class RegisteredEventFragment extends Fragment {
 
@@ -56,22 +55,19 @@ public class RegisteredEventFragment extends Fragment {
     public FacilityDB facilityDB;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+            ViewGroup container, Bundle savedInstanceState) {
         RegisteredEventViewModel registeredEventViewModel = new ViewModelProvider(this)
                 .get(RegisteredEventViewModel.class);
-
 
         getVarFromMain();
 
         // Erin-Marie: Initialize the event list and adapter from db
-        //eventList = eventDB.getMyEvents();
+        // eventList = eventDB.getMyEvents();
         getEvents();
         eventList = eventDB.getMyEvents();
 
         binding = FragmentRegisteredEventsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-
 
         // Set OnClickListener for the FAB
         binding.qrButton.setOnClickListener(v -> {
@@ -79,14 +75,12 @@ public class RegisteredEventFragment extends Fragment {
             Navigation.findNavController(v).navigate(R.id.nav_qr_fragment);
         });
 
-
         // Initialize the listView
         ListView listView = binding.registeredEventList;
 
-        adapter = new RegisteredEventArrayAdapter(requireContext(), eventList);
+        adapter = new RegisteredEventArrayAdapter(requireContext(), eventList, userDB, eventDB);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
 
         return root;
     }
@@ -103,19 +97,19 @@ public class RegisteredEventFragment extends Fragment {
 
     /**
      * Author Erin-Marie
-     * get the users events by calling the eventDB method that will query all events the user is an entrant in
+     * get the users events by calling the eventDB method that will query all events
+     * the user is an entrant in
      */
-    public void getEvents(){
+    public void getEvents() {
         eventDB.getUserEnteredEvents(user);
 
     }
-
 
     /**
      * Author: Erin-Marie
      * Gets some of the variables from MainActivity that we will need
      */
-    public void getVarFromMain(){
+    public void getVarFromMain() {
         main = (MainActivity) getActivity();
         assert main != null;
         connection = main.connection;
