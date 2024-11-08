@@ -58,7 +58,7 @@ import java.util.ArrayList;
 
 
 /**
- * Author: Erin-Marie
+ * Author: Xavier Salm
  * Tests for the notifications fragment
  */
 @RunWith(AndroidJUnit4.class)
@@ -69,15 +69,10 @@ public class NotificationsFragmentTest {
     //The Espresso Rule
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule = new ActivityScenarioRule<>(MainActivity.class);
-    //public IntentsRule intentsTestRule = new IntentsRule();
-
-    //private final Activity testActivity = new Activity();
-    private final Intent testIntent = new Intent();
 
     // here are some variables gotten from main
     UserProfile user;
     DBConnection connection;
-
 
     // get some stuff from main to use in here
     @Before
