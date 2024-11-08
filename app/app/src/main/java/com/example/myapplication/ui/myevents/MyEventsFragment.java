@@ -133,6 +133,9 @@ public class MyEventsFragment extends Fragment {
     private void openAddEventsFragment() {
         // Create a new instance of AddEventsFragment
         AddEventsFragment addEventsFragment = new AddEventsFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("eventDB", eventDB);
+        addEventsFragment.setArguments(args);
 
         // Begin the Fragment transaction
         FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();

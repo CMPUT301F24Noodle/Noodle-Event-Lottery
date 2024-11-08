@@ -27,6 +27,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
@@ -35,6 +36,8 @@ import com.example.myapplication.database.EventDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.zxing.WriterException;
+
+import java.io.Serializable;
 
 public class EditEventFragment extends Fragment {
 
@@ -121,6 +124,8 @@ public class EditEventFragment extends Fragment {
         manageEventButton.setOnClickListener(v -> {
             Bundle manageArgs = new Bundle();
             manageArgs.putSerializable("event", event);
+            manageArgs.putSerializable("eventDB", eventDB);
+            openManageEventFragment(manageArgs);
         });
 
         QRButton.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +168,21 @@ public class EditEventFragment extends Fragment {
         });
 
         return view;
+    }
+
+    /**
+     * Opens the AddEventsFragment, allowing the user to add a new event.
+     */
+    private void openManageEventFragment(Bundle manageArgs) {
+        // Create a new instance of AddEventsFragment
+        ManageEventFragment addManageEventFragment = new ManageEventFragment();
+        addManageEventFragment.setArguments(manageArgs);
+
+        // Begin the Fragment transaction
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.nav_host_fragment_content_main, addManageEventFragment); // Ensure this ID matches your main container ID
+        transaction.addToBackStack(null); // Adds the transaction to the back stack
+        transaction.commit();
     }
 
     /**

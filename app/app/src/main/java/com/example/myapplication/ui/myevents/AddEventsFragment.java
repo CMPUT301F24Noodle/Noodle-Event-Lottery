@@ -79,9 +79,11 @@ public class AddEventsFragment extends Fragment {
         MainActivity main = (MainActivity) getActivity();
         if (main != null) {
             this.connection = main.connection;
-            this.eventDB = main.eventDB;
             this.currentUserProfile = main.user;
         }
+        Bundle args = getArguments();
+        assert args != null;
+        eventDB = (EventDB) args.get("eventDB");
 
         initializeViews(view);
         setButtonListeners();

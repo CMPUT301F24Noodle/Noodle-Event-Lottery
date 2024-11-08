@@ -74,7 +74,6 @@ dependencies {
     testImplementation ("androidx.test:rules:1.4.0")
 
 
-
     // dependencies for Firebase Authentication and Cloud Firestore
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("com.google.firebase:firebase-firestore")
@@ -84,9 +83,10 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.2.0")
 
     //for Mockito
-    testImplementation("junit:junit:4.12")
-    testImplementation("org.mockito:mockito-core:2.19.0")
-    
+    androidTestImplementation("junit:junit:4.12")
+    androidTestImplementation("org.mockito:mockito-core:5.6.0")
+    testImplementation("org.mockito:mockito-android:5.6.0")
+    androidTestImplementation("org.mockito:mockito-android:5.6.0")
     implementation ("de.hdodenhof:circleimageview:3.1.0") //For Circular Profile Picture
 
     implementation("com.journeyapps:zxing-android-embedded:4.3.0") {isTransitive=false}
