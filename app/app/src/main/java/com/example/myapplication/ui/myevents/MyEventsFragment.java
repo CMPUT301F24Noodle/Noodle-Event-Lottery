@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -60,8 +61,8 @@ public class MyEventsFragment extends Fragment {
         binding = FragmentMyeventsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Initialize Firestore
-        //db = FirebaseFirestore.getInstance();
+        View view = inflater.inflate(R.layout.fragment_myevents, container, false);
+
 
         // Retrieve instances from MainActivity
         MainActivity main = (MainActivity) getActivity();
@@ -75,7 +76,8 @@ public class MyEventsFragment extends Fragment {
         eventList = eventDB.getUserOrgEvents(currentUserProfile);
 
 
-        ListView listView = binding.createdEventList;
+        ListView listView = view.findViewById(R.id.created_event_list);
+        FloatingActionButton createEventButton = view.findViewById(R.id.create_event_button);
 
         eventAdapter = new OrganizedEventArrayAdapter(requireContext(), eventList);
         listView.setAdapter(eventAdapter);
@@ -97,6 +99,22 @@ public class MyEventsFragment extends Fragment {
 
 
         return root;
+    }
+
+
+    /**
+     * Opens the AddEventsFragment, allowing the user to add a new event.
+     */
+    private void openManageEventFragment(Bundle manageArgs) {
+        // Create a new instance of AddEventsFragment
+        ManageEventFragment addManageEventFragment = new ManageEventFragment();
+        addManageEventFragment.setArguments(manageArgs);
+
+        // Begin the Fragment transaction
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.nav_host_fragment_content_main, addManageEventFragment); // Ensure this ID matches your main container ID
+        transaction.addToBackStack(null); // Adds the transaction to the back stack
+        transaction.commit();
     }
 
     /**

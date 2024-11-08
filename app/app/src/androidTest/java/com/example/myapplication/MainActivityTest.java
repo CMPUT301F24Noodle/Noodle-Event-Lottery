@@ -68,7 +68,7 @@ public class MainActivityTest {
 
     //The Espresso Rule
     @Rule
-    public ActivityScenarioRule<MockMainActivity> activityRule = new ActivityScenarioRule<>(MockMainActivity.class);
+    public ActivityScenarioRule<MainActivity> activityRule = new ActivityScenarioRule<>(MainActivity.class);
 
 
     /**

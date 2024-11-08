@@ -20,7 +20,7 @@ import com.example.myapplication.database.EventDB;
 /**
  * Author: Sam Lee
  * Activity for viewing an event scanned from QR code.
- *
+ *[US 01.06.01] As an entrant I want to view event details within the app by scanning the promotional QR code
  */
 public class ViewEventActivity extends AppCompatActivity {
 
@@ -48,6 +48,7 @@ public class ViewEventActivity extends AppCompatActivity {
     /**
      * Author: Sam Lee
      * Add userRef to event's entrants list and update database.
+     * [US 01.01.01] As an entrant, I want to join the waiting list for a specific event
      */
     private void saveEvent() {
         // Add user to event's entrants list

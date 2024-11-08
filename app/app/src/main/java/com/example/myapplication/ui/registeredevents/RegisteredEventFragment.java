@@ -33,8 +33,10 @@ import java.util.List;
 
 /**
  * Author: Sam Lee
- * Fragment for displaying a list of registered events and
- * FAB to navigate to the QR scanner.
+ * Fragment for displaying a list of registered events.
+ * This fragment contains a ListView that displays events the user is registered
+ * for.
+ * 
  */
 public class RegisteredEventFragment extends Fragment {
 
