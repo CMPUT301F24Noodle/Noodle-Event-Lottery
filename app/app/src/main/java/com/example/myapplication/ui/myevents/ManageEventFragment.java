@@ -36,6 +36,7 @@ import java.util.ArrayList;
  * Fragment to end an event manually, and view the entrants and selected attendees
  * TODO: add functionality to the map button and the replace cancelled button
  * TODO: add lists for the people who cancelled and the people who have accepted their invitation
+ * TODO: write tests
  */
 public class ManageEventFragment extends Fragment {
 
