@@ -45,12 +45,15 @@ public class Event implements Serializable {
     private String eventLocation;
     public String eventPoster; // URL or base64 string for the event poster image
     public Date eventDate; // date the actual event will occur
-    public String eventTime; // Sam: I added this variable, not sure what type it should be
+    public String eventTime;
+    public String contact;// Sam: I added this variable, not sure what type it should be
     public Integer maxEntrants; // -1 if organizer does not want to restrict capacity
     public Boolean geoLocation;
 
-    private String eventDetails;
-    private String contactNumber;// False if organizer does not require entrants to have geoLocation on
+  // False if organizer does not require entrants to have geoLocation on
+    public String eventDetails;
+
+    public String contactNumber;// False if organizer does not require entrants to have geoLocation on
 
     // QRCODE STUFF
     private Bitmap QRCode; // the bitmap of the QR code
