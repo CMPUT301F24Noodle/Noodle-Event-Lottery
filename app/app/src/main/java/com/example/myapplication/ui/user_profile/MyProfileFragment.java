@@ -43,7 +43,7 @@ public class MyProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
 
         inflater.inflate(R.layout.fragment_my_profile, container, false);
-        //View view = inflater.inflate(R.layout.fragment_my_profile, container, false);
+
         FragmentMyProfileBinding binding = FragmentMyProfileBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
@@ -79,9 +79,6 @@ public class MyProfileFragment extends Fragment {
 
         Button deleteFacilityButton = view.findViewById(R.id.profile_delete_facility_button);
         Button saveInfoButton = view.findViewById(R.id.profile_save_info_button);
-
-        //Erin-Marie added this backButton so if it breaks anything let me know
-        //Button backButton = findViewById(R.id.profile_back_button);
 
         Switch toggleFacilitySwitch = view.findViewById(R.id.profile_facility_toggle_switch);
 

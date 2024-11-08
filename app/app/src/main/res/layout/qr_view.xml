@@ -16,7 +16,7 @@
     </TextView>
 
     <ImageView
-        android:id="@+id/full_profile_image"
+        android:id="@+id/full_QR_image"
         android:layout_width="300dp"
         android:layout_height="300dp" />
 
