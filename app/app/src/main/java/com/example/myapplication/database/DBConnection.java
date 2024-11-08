@@ -47,8 +47,14 @@ public class DBConnection {
 
     private FirebaseFirestore db; //firebase instance
     private String uuid; //Store the users ID
-    private UserProfile user;
+    public UserProfile user;
     private static final String TAG = "DBConnection"; //Database ID
+    public UserDB userDB;
+    public NotificationDB notifDB;
+    public EventDB eventDB;
+    public FacilityDB facilityDB;
+
+
 
     /**
      * Constructor method for class.
@@ -59,7 +65,28 @@ public class DBConnection {
         FirebaseApp.initializeApp(context);
         this.db = FirebaseFirestore.getInstance();
         this.uuid = genUUID(context); //get UUID the first time
+        userDB = new UserDB(this);
+        eventDB = new EventDB(this);
+        facilityDB = new FacilityDB(this);
+        notifDB = new NotificationDB(this);
+
         Log.v(TAG, "UUID: " + uuid); //for debugging purpose, keeps track of UUID value in logcat
+    }
+
+    public UserDB getUserDB() {
+        return userDB;
+    }
+
+    public NotificationDB getNotifDB() {
+        return notifDB;
+    }
+
+    public EventDB getEventDB() {
+        return eventDB;
+    }
+
+    public FacilityDB getFacilityDB() {
+        return facilityDB;
     }
 
 

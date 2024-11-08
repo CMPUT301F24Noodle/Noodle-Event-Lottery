@@ -20,8 +20,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
-
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Author: Erin-Marie
@@ -42,6 +43,7 @@ public class EventDB {
     public ArrayList<Event> myOrgEvents = new ArrayList<Event>();
     public ArrayList<UserProfile> losersList = new ArrayList<UserProfile>();
     public ArrayList<UserProfile> winnersList = new ArrayList<UserProfile>();
+    public ArrayList<UserProfile> entrantsList = new ArrayList<UserProfile>();
 
 
     /**
@@ -80,6 +82,84 @@ public class EventDB {
     public Event getEvent(){
         return this.event;
     }
+
+    public ArrayList<UserProfile> getLosersList() {
+        return losersList;
+    }
+
+    public ArrayList<UserProfile> getWinnersList() {
+        return winnersList;
+    }
+
+    public ArrayList<UserProfile> getEntrantsList() {
+        return entrantsList;
+    }
+
+    /**
+     * Author: Erin-Marie
+     * This is a method that manually ends an event lottery
+     * @param event
+     * TODO: make automated once the event lottery close date passes
+     */
+    public void endEvent(Event event){
+        //Mark the event as being over
+        event.setEventOver(Boolean.TRUE);
+        //gets the events entrant list
+        ArrayList<DocumentReference> entrantsList = event.getEntrantsList();
+        //get the max participants for the event
+        Integer participants = event.getMaxParticipants();
+
+        //If there are actually enough entrants to fill the event
+        if (participants < entrantsList.size()){
+            getRandomWinners(entrantsList, participants, event);
+
+        } else {
+            //all the entrants are winners
+            event.setWinnersList(entrantsList);
+        }
+
+        //update the event data in the db
+        updateEvent(event);
+
+        //send out the notifications to the entrants
+        sendMessageToLosers(event);
+        sendMessageToWinners(event);
+
+    }
+
+    /**
+     * Author: Erin-Marie
+     * @param entrants the entrants of the event
+     * @param participants the number of users to be chosen to participate in the event
+     * @param event the event to be attended
+     */
+    public void getRandomWinners(ArrayList<DocumentReference> entrants, int participants, Event event)
+    {
+        //Initialize random
+        Random rand = new Random();
+
+        //temporary list of winners
+        ArrayList<DocumentReference> eventWinnersList = event.getWinnersList();
+
+        for (int i = 0; i < participants; i++) {
+            //use random indexes to chose winners
+            int randomEntrantIndex = rand.nextInt(entrants.size());
+
+            // add the winner to the winner list
+            eventWinnersList.add(entrants.get(randomEntrantIndex));
+
+            //remove the entrant from the entrants list
+            entrants.remove(randomEntrantIndex);
+        }
+        //set the winners list
+        event.setWinnersList(eventWinnersList);
+
+        //The remaining users in entrants are the losers
+        event.setLosersList(entrants);
+
+
+    }
+
 
     /**
      * Author: Erin-Marie
@@ -186,7 +266,7 @@ public class EventDB {
      */
     public ArrayList<Event> getUserEnteredEvents(UserProfile user){
         //query all events for the ones where the current user is an entrant
-        Query query = allEvents.whereArrayContains("entrantsList", user.getDocRef());
+        Query query = allEvents.whereArrayContains("entrantsList", user.getDocRef()).orderBy("eventDate", Query.Direction.DESCENDING);
         getQuery(query, new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -214,7 +294,7 @@ public class EventDB {
      */
     public ArrayList<Event> getUserOrgEvents(UserProfile user){
         //query all events for the ones where the current user is the organizer
-        Query query = allEvents.whereArrayContains("organizerRef", user.getDocRef());
+        Query query = allEvents.whereArrayContains("organizerRef", user.getDocRef()).orderBy("eventDate", Query.Direction.DESCENDING);
         getQuery(query, new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -236,9 +316,9 @@ public class EventDB {
      * Author Erin-Marie
      * sets EventDB objects losersList array to be all of the losers of the event
      * @param event that has been completed
-     * @return this.losersList but the return value isnt actually used
+     * no actual return, but will set this.losersList to contain all of the UserProfiles of the entrants that did not win the lottery
      */
-    public ArrayList<UserProfile> getEventLosers(Event event){
+    public void getEventLosers(Event event){
         //query for all losers documents of the users in the events losersList
         ArrayList<DocumentReference> losers = event.getLosersList();
         Query query = db.collection("allUsers").whereArrayContainsAny("losersList", losers);
@@ -257,7 +337,34 @@ public class EventDB {
             }
         });
         //Log.v(TAG, "size: " + myEvents.size());
-        return this.losersList;
+    }
+
+    /**
+     * Author Erin-Marie
+     * sets EventDB objects entrants array to be all of the entrants of the event
+     * @param event that has been created
+     * no actual return, but will set this.entrantsList to contain all of the UserProfiles of the entrants that did not win the lottery
+     */
+    public void getEventEntrants(Event event){
+        //query for all losers documents of the users in the events losersList
+        ArrayList<DocumentReference> entrants = event.getEntrantsList();
+        Query query = db.collection("allUsers").whereArrayContainsAny("entrantsList", entrants);
+        getQuery(query, new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                //empty the current list of losers so there are not duplicates
+                ArrayList<Event> myEventsCol = new ArrayList<Event>();
+                entrantsList.clear();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    //add each user to the arraylist
+                    entrantsList.add(document.toObject(UserProfile.class));
+                    //Log.v(TAG, "size: " + entrantsList.size());
+                }
+                Log.v(TAG, "Entrants list read from database");
+
+            }
+
+        });
     }
 
     /**
@@ -374,4 +481,48 @@ public class EventDB {
         this.db.collection("AllEvents").document(eventID).set(event);
 
     }
+
+    /**
+     * Author: Erin-Marie
+     * Adds the entrant to the entrantsList of the event, and updates the Event in the DB
+     * @param event the event being entered
+     * @return Boolean of the success of entering the event
+     *         returns False if they could not be added becuase the waiting list is full
+     *         returns True if they were added to the waiting list
+     * assumed the entrant is the current user
+     */
+    public Boolean addEntrant(Event event){
+        DocumentReference entrant = connection.getUserDocumentRef();
+        Integer added = event.addEntrant(entrant);
+        if (added == 0){
+            Log.v(TAG, "Waiting list is full, user could not be added");
+            return Boolean.FALSE;
+        } else {
+            updateEvent(event);
+            return Boolean.TRUE;
+        }
+
+    }
+
+    /**
+     * Author Erin-Marie
+     * Method to send the notifications to all losers when the event ends
+     * @param event  the event that has ended
+     */
+    public void sendMessageToLosers(Event event){
+        Notification forLosers = new Notification("You were not selected to participate in this event.", event.getLosersList(), event);
+        connection.getNotifDB().addNotification(forLosers);
+    }
+
+    /**
+     * Author Erim-Marie
+     * Method to send the notifications to all winners when the event ends
+     * @param event the event that has ended
+     */
+    public void sendMessageToWinners(Event event){
+        Notification forWinners = new Notification("You were selected to participate in this event! Check the event listing to see your invitation.", event.getWinnersList(), event);
+        connection.getNotifDB().addNotification(forWinners);
+    }
+
+
 }

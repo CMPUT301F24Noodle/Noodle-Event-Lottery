@@ -25,7 +25,7 @@
             android:contentDescription="@string/profile_picture" />
 
         <EditText
-            android:id="@+id/profile_user_full_name"
+            android:id="@+id/profile_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -97,7 +97,9 @@
                 android:fontFamily="@font/aleo_medium"
                 android:textSize="18dp"
                 android:text="@string/for_organizers"
-                android:textColor="@color/text_cyan"/>
+                android:textColor="@color/text_cyan"
+                android:id="@+id/profile_facility_section_text"
+                />
 
             <Switch
                 android:id="@+id/profile_facility_toggle_switch"

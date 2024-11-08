@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class UserProfile implements Serializable {
 
     String name;
-    String lastName; // TODO THIS IS COMPLETELY USELESS AND SHOULD BE REMOVED
     String email;
     String phoneNumber;
     String address;
@@ -56,9 +55,8 @@ public class UserProfile implements Serializable {
      */
     public UserProfile(String uuid) {
 
-        this.name = "None";
-        this.lastName = "None";
-        this.email = "None";
+        this.name = "Name";
+        this.email = "Email";
         this.privileges = 0; //defaults to entrant privileges
         this.allowNotifs = Boolean.TRUE; //defaults to allow notifications
         this.geoLocationOn = Boolean.FALSE; //defaults to false, need to ask user for permission first
@@ -132,14 +130,6 @@ public class UserProfile implements Serializable {
         this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getEmail() {
         return email;
@@ -270,14 +260,6 @@ public class UserProfile implements Serializable {
         myEvents.add(event.getDocRef());
     }
 
-    /**
-     * Author: Erin-Marie
-     * adds an event to the users list of organized events
-     * @param event the event for the Event being made
-     * TODO: need to update firebase
-     * TESTME: test that the event is now in myEvents
-     */
-
 
     /**
      * Author: Erin-Marie
@@ -306,15 +288,12 @@ public class UserProfile implements Serializable {
      * adds an event to the users list of organized events
      * checks that the event is hosted at the users facility, and is not already in their list of events, if not, returns 1
      * @param event the Event being created
-     * @return 1 if the user cannot create the event
-     * @return 2 if the user successfully created the event
      * TESTME: test that the event is now in myOrgEvents
      *         test that the method returns 1 if the event facility is not the users facility
      */
     public void addOrgEvent(Event event) {
         assert event != null;
         myOrgEvents.add(event.getDocRef());
-
 
     }
 

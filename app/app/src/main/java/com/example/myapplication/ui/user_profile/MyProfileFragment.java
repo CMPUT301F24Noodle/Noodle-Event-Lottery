@@ -51,7 +51,7 @@ public class MyProfileFragment extends Fragment {
         getUserUserDB();
 
         // start of text fields
-        TextView usernameText = view.findViewById(R.id.profile_user_full_name);
+        TextView usernameText = view.findViewById(R.id.profile_user_name);
         TextView emailText = view.findViewById(R.id.profile_user_email);
         TextView phoneNumberText = view.findViewById(R.id.profile_user_contact_number);
         TextView addressText = view.findViewById(R.id.profile_user_address);
@@ -138,6 +138,9 @@ public class MyProfileFragment extends Fragment {
                 if (!number.isEmpty()){
                     user.setPhoneNumber(number);
                 }
+                else{
+                    user.setPhoneNumber(""); // users can optionally share their phone number, and leaving the phone number field clear allows users to unshare their phone number
+                }
 
                 if (!address.isEmpty()){
                     user.setAddress(address);
@@ -156,12 +159,18 @@ public class MyProfileFragment extends Fragment {
 
                     if(user.getFacility() == null){
                         if(!facilityName.isEmpty() && !facilityLocation.isEmpty()){
+
                             facility = new Facility(facilityName, facilityLocation);
                             user.setFacility(facility); // create a facility for the user!
 
                             // and set the text fields
                             facility.setFacilityName(facilityName);
                             facility.setLocation(facilityLocation);
+                        }
+                        else{
+                            // if the save was unsuccessful, reset both fields
+                            facilityNameText.setText("");
+                            facilityLocationText.setText("");
                         }
                     }
 
@@ -196,7 +205,15 @@ public class MyProfileFragment extends Fragment {
                     facilityLocationText.setVisibility(View.VISIBLE);
                     deleteFacilityButton.setVisibility(View.VISIBLE);
 
-                    // if the user doesn't have a facility, create one for them
+                    if(user.getFacility() == null){
+                        new AlertDialog.Builder(requireContext()) //
+                                .setTitle("Become an Organizer")
+                                .setMessage("Become an organizer and create events by entering in the name and location of your facility!")
+                                .setNegativeButton("Continue", null) // closes the dialog on cancel
+                                .show();
+                    }
+
+
                 } else {
                     // if toggled off, make all facility fields and buttons invisible
                     facilityNameText.setVisibility(View.GONE);
