@@ -41,6 +41,12 @@ import com.google.zxing.WriterException;
 
 import java.io.Serializable;
 
+/**
+ * Authors: Erin-Marie, Nishchay
+ * Fragment that appears when the user wants to edit an events details
+ * TODO: make the event poster appear if the organizer submitted one
+ */
+
 public class EditEventFragment extends Fragment {
 
     private EditText eventNameEditText, eventLocationEditText, eventDateTimeEditText, eventDetailsEditText, eventWaitingListEditText;
@@ -184,7 +190,9 @@ public class EditEventFragment extends Fragment {
     }
 
     /**
-     * Opens the AddEventsFragment, allowing the user to add a new event.
+     * Author: Erin-Marie
+     * Opens the AddEventsFragment when the user selects the Manage Event button
+     * @param manageArgs which is a bundle of arguments to be passed to the new fragment
      */
     private void openManageEventFragment(Bundle manageArgs) {
         // Create a new instance of AddEventsFragment
@@ -199,8 +207,9 @@ public class EditEventFragment extends Fragment {
     }
 
     /**
-     * Sets the editability of the text fields and toggles button visibility.
-     * @param editable Whether fields should be editable
+     * Author: Nishchay
+     * Sets the edit ability of the text fields and toggles button visibility.
+     * @param editable Boolean of whether the event should be in a editable state
      */
     private void setFieldsEditable(boolean editable) {
         eventNameEditText.setEnabled(editable);
@@ -214,6 +223,8 @@ public class EditEventFragment extends Fragment {
     }
 
     /**
+     * Author: Nishchay
+     * Edited: Erin-Marie
      * Saves updated event data back to Firebase.
      */
     private void saveUpdatedEventData() {

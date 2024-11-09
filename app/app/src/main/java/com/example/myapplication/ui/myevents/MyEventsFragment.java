@@ -46,12 +46,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * Author: Nishchay, Erin-Marie
+ * Class responsible for the My Organized Events page and its interaction
+ * Also responsible for opening child fragments
+ */
+
 public class MyEventsFragment extends Fragment {
 
     private FragmentMyeventsBinding binding;
     private ArrayList<Event> eventList;
-
-
     private OrganizedEventArrayAdapter eventAdapter;
 
     private EventDB eventDB;
@@ -85,10 +89,6 @@ public class MyEventsFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Bundle manageArgs = new Bundle();
-//                manageArgs.putSerializable("event", eventList.get(i));
-//                manageArgs.putSerializable("eventDB", eventDB);
-//                openManageEventFragment(manageArgs);
 
                 openEditEventFragment(eventList.get(i));
             }
@@ -114,6 +114,10 @@ public class MyEventsFragment extends Fragment {
         return root;
     }
 
+    /**
+     * Author: Erin-Marie
+     * method to initiate the query to get the users organized events from the db
+     */
     public void getMyEvents(){
         // Retrieve instances from MainActivity
         MainActivity main = (MainActivity) getActivity();
@@ -126,7 +130,12 @@ public class MyEventsFragment extends Fragment {
 
 
     /**
-     * Opens the AddEventsFragment, allowing the user to add a new event.
+     * @deprecated
+     * Selecting an event should call openEditEventFragment()
+     * Author: Erin-Marie
+     * Method called when the user selects an event from their Oranized event list view
+     * Constructs a bundle of arguments to send to the new fragment
+     * @param manageArgs a bundle of args to be sent to the new fragment
      */
     private void openManageEventFragment(Bundle manageArgs) {
         // Create a new instance of AddEventsFragment
@@ -140,6 +149,13 @@ public class MyEventsFragment extends Fragment {
         transaction.commit();
     }
 
+    /**
+     * Author: Nishchay
+     * Edited: Erin-Marie
+     * Method called when the user selects an event from their Oranized event list view
+     * Constructs a bundle of arguments to send to the new fragment
+     * @param event the event selected from the listview
+     */
     private void openEditEventFragment(Event event){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         String formattedDate = dateFormat.format(event.getEventDate());
@@ -176,7 +192,10 @@ public class MyEventsFragment extends Fragment {
     }
 
     /**
-     * Opens the AddEventsFragment, allowing the user to add a new event.
+     * Author: Nishchay
+     * Edited: Erin-Marie
+     * Method called when the user selects the add event button of the MyEventsFragment
+     * Constructs a bundle of arguments to send to the new fragment
      */
     private void openAddEventsFragment() {
         // Create a new instance of AddEventsFragment
