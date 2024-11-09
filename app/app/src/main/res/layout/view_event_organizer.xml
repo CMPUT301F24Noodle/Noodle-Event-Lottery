@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp">
+
+    android:background="@color/back_gray">
 
     <!-- Event Name -->
     <EditText
@@ -27,16 +27,16 @@
     <ImageView
         android:id="@+id/event_poster"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:contentDescription="@string/poster"
         android:scaleType="centerCrop"
-        android:src="@drawable/testposter"
         app:layout_constraintTop_toBottomOf="@id/event_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/rounded_image"
         android:clipToOutline="true"/>
+<!--        android:src="@drawable/testposter"-->
 
     <!-- Event Date & Time -->
     <EditText
@@ -115,7 +115,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/event_status"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        >
 
         <Button
             android:id="@+id/generate_qr"
@@ -123,7 +124,9 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/belanosima"
             android:text="Generate QR"
-            android:background="@drawable/mybutton"/>
+            android:background="@drawable/mybutton"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"/>
 
         <View
             android:layout_width="0dp"
@@ -136,7 +139,9 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/belanosima"
             android:text="Manage Event"
-            android:background="@drawable/mybutton"/>
+            android:background="@drawable/mybutton"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -145,7 +150,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/linearLayout2"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        >
 
         <Button
             android:id="@+id/edit_event"
@@ -153,7 +159,9 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/belanosima"
             android:text="Edit Event"
-            android:background="@drawable/mybutton"/>
+            android:background="@drawable/mybutton"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"/>
 
         <View
             android:layout_width="0dp"
@@ -166,7 +174,9 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/belanosima"
             android:text="Save Changes"
-            android:background="@drawable/mybutton"/>
+            android:background="@drawable/mybutton"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

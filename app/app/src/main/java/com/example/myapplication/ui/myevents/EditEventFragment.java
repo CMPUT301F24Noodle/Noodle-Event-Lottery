@@ -14,6 +14,7 @@
         package com.example.myapplication.ui.myevents;
 
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ public class EditEventFragment extends Fragment {
 
     private EditText eventNameEditText, eventLocationEditText, eventDateTimeEditText, eventDetailsEditText, eventWaitingListEditText;
     private TextView eventStatusTextView;
+    private ImageView eventPosterView;
     private Button editButton, saveButton, manageEventButton, QRButton;
     private DBConnection connection;
     private EventDB eventDB;
@@ -57,6 +60,7 @@ public class EditEventFragment extends Fragment {
 
         // Initialize EditText fields
         eventNameEditText = view.findViewById(R.id.event_name);
+        eventPosterView = view.findViewById(R.id.event_poster);
         eventLocationEditText = view.findViewById(R.id.event_location);
         eventDateTimeEditText = view.findViewById(R.id.event_date_time);
         eventDetailsEditText = view.findViewById(R.id.event_details);
@@ -84,7 +88,8 @@ public class EditEventFragment extends Fragment {
             event = (Event) args.getSerializable("event");
             //eventId = eventDB.getEvent().getEventID();
             String eventName = args.getString("event_name");
-            String eventLocation = args.getString("event_location");
+            //String eventLocation = args.getString("event_location");
+            String eventLocation = event.getFacility().getFacilityName();
             String eventDateTime = args.getString("event_date_time");
             String eventDetails = args.getString("event_details");
             String eventWaitingList = args.getString("event_waiting_list");
@@ -93,11 +98,18 @@ public class EditEventFragment extends Fragment {
 
             // Populate fields with data from the Bundle
             eventNameEditText.setText(eventName != null ? eventName : "");
-            eventLocationEditText.setText(eventLocation != null ? eventLocation : "");
-            eventDateTimeEditText.setText(eventDateTime != null ? eventDateTime : "");
+            eventLocationEditText.setText(eventLocation != null ? "Location: " + eventLocation : "Location:");
+            eventDateTimeEditText.setText(eventDateTime != null ? "Event Date: " + eventDateTime : "Event Date");
             eventDetailsEditText.setText(eventDetails != null ? eventDetails : "");
-            eventWaitingListEditText.setText(eventWaitingList != null ? eventWaitingList : "");
-            eventStatusTextView.setText(eventStatus != null ? eventStatus: "");
+            eventWaitingListEditText.setText("Capacity: " + eventWaitingList);
+            eventStatusTextView.setText("Status: " + eventStatus);
+
+
+
+            //TODO make the event poster show up
+            // // eventPosterView.setImageResource(null);
+            //eventWaitingListEditText.setText(eventWaitingList != null ? eventWaitingList : "");
+            //eventStatusTextView.setText(eventStatus != null ? eventStatus: "");
 
             // Log the data for debugging
             Log.d("EditEventFragment", "Event ID: " + eventId);
@@ -105,7 +117,7 @@ public class EditEventFragment extends Fragment {
             Log.d("EditEventFragment", "Event Location: " + eventLocation);
             Log.d("EditEventFragment", "Event Date & Time: " + eventDateTime);
             Log.d("EditEventFragment", "Event Details: " + eventDetails);
-            Log.d("EditEventFragment", "Event Waiting List: " + eventWaitingList);
+            //Log.d("EditEventFragment", "Event Waiting List: " + eventWaitingList);
         } else {
             Toast.makeText(getContext(), "No event data provided", Toast.LENGTH_SHORT).show();
         }
@@ -192,7 +204,7 @@ public class EditEventFragment extends Fragment {
      */
     private void setFieldsEditable(boolean editable) {
         eventNameEditText.setEnabled(editable);
-        eventLocationEditText.setEnabled(editable);
+        //eventLocationEditText.setEnabled(editable);
         eventDateTimeEditText.setEnabled(editable);
         eventDetailsEditText.setEnabled(editable);
         eventWaitingListEditText.setEnabled(editable);
@@ -206,14 +218,14 @@ public class EditEventFragment extends Fragment {
      */
     private void saveUpdatedEventData() {
         String updatedEventName = eventNameEditText.getText().toString().trim();
-        String updatedEventLocation = eventLocationEditText.getText().toString().trim();
+        //String updatedEventLocation = eventLocationEditText.getText().toString().trim();
         String updatedEventDateTime = eventDateTimeEditText.getText().toString().trim();
         String updatedEventDetails = eventDetailsEditText.getText().toString().trim();
         String updatedEventWaitingList = eventWaitingListEditText.getText().toString().trim();
 
         // Log the updated data for debugging
         Log.d("EditEventFragment", "Updated Event Name: " + updatedEventName);
-        Log.d("EditEventFragment", "Updated Event Location: " + updatedEventLocation);
+        //Log.d("EditEventFragment", "Updated Event Location: " + updatedEventLocation);
         Log.d("EditEventFragment", "Updated Event Date & Time: " + updatedEventDateTime);
         Log.d("EditEventFragment", "Updated Event Details: " + updatedEventDetails);
         Log.d("EditEventFragment", "Updated Event Waiting List: " + updatedEventWaitingList);
@@ -221,7 +233,7 @@ public class EditEventFragment extends Fragment {
 
         if (event != null){
             event.setEventName(updatedEventName);
-            event.setEventLocation(updatedEventLocation);
+            //event.setEventLocation(updatedEventLocation);
             event.setEventDetails(updatedEventDetails);
             // Additional setters as necessary, e.g., eventDate and waiting list values
 

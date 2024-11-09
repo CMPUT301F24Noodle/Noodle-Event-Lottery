@@ -42,7 +42,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MyEventsFragment extends Fragment {
 
@@ -59,10 +61,11 @@ public class MyEventsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        getMyEvents();
+
         binding = FragmentMyeventsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        getMyEvents();
 
         //View view = inflater.inflate(R.layout.fragment_myevents, container, false);
 
@@ -82,10 +85,12 @@ public class MyEventsFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Bundle manageArgs = new Bundle();
-                manageArgs.putSerializable("event", eventList.get(i));
-                manageArgs.putSerializable("eventDB", eventDB);
-                openManageEventFragment(manageArgs);
+//                Bundle manageArgs = new Bundle();
+//                manageArgs.putSerializable("event", eventList.get(i));
+//                manageArgs.putSerializable("eventDB", eventDB);
+//                openManageEventFragment(manageArgs);
+
+                openEditEventFragment(eventList.get(i));
             }
         });
 
@@ -135,33 +140,40 @@ public class MyEventsFragment extends Fragment {
         transaction.commit();
     }
 
-//    /**
-//     * Fetches all events from the "AllEvents" Firestore collection and adds their names to the ListView.
-//     */
-////    private void fetchAllEvents() {
-//        db.collection("AllEvents")
-//                .get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        QuerySnapshot querySnapshot = task.getResult();
-//                        if (querySnapshot != null && !querySnapshot.isEmpty()) {
-//                            for (DocumentSnapshot document : querySnapshot) {
-//                                Event event = document.toObject(Event.class);
-//                                if (event != null && event.getEventName() != null) {
-//                                    eventNamesList.add(event.getEventName()); // Add event name to the list
-//                                    Log.v("MyEventsFragment", "Event Name: " + event.getEventName()); // Log the event name
-//                                }
-//                            }
-//                            adapter.notifyDataSetChanged(); // Update the ListView after all events are added
-//                        } else {
-//                            Log.d("MyEventsFragment", "No events found in AllEvents collection.");
-//                        }
-//                    } else {
-//                        Log.e("MyEventsFragment", "Error fetching events: ", task.getException());
-//                        Toast.makeText(getContext(), "Error fetching events.", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//    }
+    private void openEditEventFragment(Event event){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        String formattedDate = dateFormat.format(event.getEventDate());
+
+        // Create arguments to pass to EditEventFragment
+        Bundle args = new Bundle();
+        args.putSerializable("event", event);
+        //args.putString("event_id", newEvent.getEventID());
+        args.putString("event_name", event.getEventName());
+//        args.putString("event_location",  location);
+        args.putString("event_date_time", formattedDate);
+        args.putString("event_details", event.getEventDetails());
+        if (event.getEventOver() == Boolean.FALSE){
+            args.putString("event_status", "Event Lottery Open");
+        } else {
+            args.putString("event_status", "Event Lottery Closed");
+        }
+
+        if (event.getMaxEntrants() == -1){
+            args.putString("event_waiting_list", event.getWaitingListSize() + " entrants");
+        } else {
+            args.putString("event_waiting_list", event.getWaitingListSize() + " / " + event.getMaxEntrants());
+        }
+
+
+        EditEventFragment editEventFragment = new EditEventFragment();
+        editEventFragment.setArguments(args);
+
+        requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment_content_main, editEventFragment)
+                .addToBackStack(null)
+                .commit();
+
+    }
 
     /**
      * Opens the AddEventsFragment, allowing the user to add a new event.
