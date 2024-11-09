@@ -58,6 +58,9 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+    //this is so the javadoc runs
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
+
     // Android test dependencies
     androidTestImplementation ("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test:rules:1.0.2")
