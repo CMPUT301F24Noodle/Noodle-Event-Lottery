@@ -352,6 +352,12 @@ public class UserProfile implements Serializable {
         charPaint.setColor(Color.BLACK); // TODO this color can be changed for UI
         charPaint.setTextSize(100); // TODO this size can be changed for UI
 
+        // need to adjust height and width because the canvas uses pixels while height and width are integers
+        // TODO make the text centered
+        // in theory dividing by 2 should(?) at least make it appear on the screen
+        int adjustedWidth = width/2;
+        int adjustedHeight = height/2;
+
         // paint the string onto the canvas!
         canvas.drawText(firstChar, width, height, charPaint);
 

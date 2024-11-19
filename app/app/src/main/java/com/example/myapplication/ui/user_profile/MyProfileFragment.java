@@ -3,6 +3,7 @@ package com.example.myapplication.ui.user_profile;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,8 @@ import com.example.myapplication.database.UserDB;
 import com.example.myapplication.databinding.FragmentMyProfileBinding;
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -65,6 +68,11 @@ public class MyProfileFragment extends Fragment {
         emailText.setText(user.getEmail());
         phoneNumberText.setText(user.getPhoneNumber());
         addressText.setText(user.getAddress());
+
+        // display the generated image:
+        CircleImageView profilePictureView = view.findViewById(R.id.profile_image);
+        Bitmap generatedPic = user.generateProfilePicture();
+        profilePictureView.setImageBitmap(generatedPic);
 
         // if they have a facility, set their facility info
         if(user.getFacility() != null){
