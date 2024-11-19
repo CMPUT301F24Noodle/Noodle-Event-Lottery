@@ -1,5 +1,9 @@
 package com.example.myapplication.objects.userProfileClasses;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.media.Image;
 
 import com.example.myapplication.objects.eventClasses.Event;
@@ -311,6 +315,47 @@ public class UserProfile implements Serializable {
 
     public void clearNotifs() {
         myNotifications = new ArrayList<DocumentReference>();
+    }
+
+    /**
+     * Author: Xavier Salm
+     * generates a profile picture based on the first character of this users username
+     * so a user with the username "steve" would have a profile picture that is just 's'
+     *
+     * @return profilePic: the newly generated profile picture
+     */
+    public Bitmap generateProfilePicture(){
+        // get the character for the picture
+        String firstChar = Character.toString(getName().charAt(0));
+
+        // set the dimensions of the picture
+        // TODO: what should the dimensions be?
+        int width = 200;
+        int height = 200;
+
+        // TODO: could change the config so that the profile picture has color
+        // create the bitmap that will become the new profile picture
+        Bitmap profilePic = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+
+        // get a canvas to draw on the bitmap
+        Canvas canvas = new Canvas(profilePic);
+
+        // create the paint for the background
+        Paint backgroundPaint = new Paint();
+        backgroundPaint.setColor(Color.WHITE); // TODO this color can be changed for UI
+
+        // set the entire bitmap to a background color (because its not allowed to be transparent)
+        canvas.drawRect(0, 0, width, height, backgroundPaint);
+
+        // now that the canvas is painted, we can actually draw on it
+        Paint charPaint = new Paint();
+        charPaint.setColor(Color.BLACK); // TODO this color can be changed for UI
+        charPaint.setTextSize(100); // TODO this size can be changed for UI
+
+        // paint the string onto the canvas!
+        canvas.drawText(firstChar, width, height, charPaint);
+
+        return profilePic;
     }
 
 }
