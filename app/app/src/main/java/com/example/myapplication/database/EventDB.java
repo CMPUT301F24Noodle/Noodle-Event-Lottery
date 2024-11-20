@@ -403,6 +403,7 @@ public class EventDB implements Serializable {
                     //add each user to the arraylist
                     winnersList.add(document.toObject(UserProfile.class));
                     Log.v(TAG, "size: " + winnersList.size());
+
                 }
 
             }
