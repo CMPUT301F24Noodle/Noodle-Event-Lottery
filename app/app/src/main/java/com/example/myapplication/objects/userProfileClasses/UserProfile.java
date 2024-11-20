@@ -330,8 +330,8 @@ public class UserProfile implements Serializable {
 
         // set the dimensions of the picture
         // TODO: what should the dimensions be?
-        int width = 200;
-        int height = 200;
+        int width = 100;
+        int height = 100;
 
         // TODO: could change the config so that the profile picture has color
         // create the bitmap that will become the new profile picture
@@ -350,16 +350,16 @@ public class UserProfile implements Serializable {
         // now that the canvas is painted, we can actually draw on it
         Paint charPaint = new Paint();
         charPaint.setColor(Color.BLACK); // TODO this color can be changed for UI
-        charPaint.setTextSize(100); // TODO this size can be changed for UI
+        charPaint.setTextSize(50); // TODO this size can be changed for UI
 
         // need to adjust height and width because the canvas uses pixels while height and width are integers
         // TODO make the text centered
-        // in theory dividing by 2 should(?) at least make it appear on the screen
-        int adjustedWidth = width/2;
-        int adjustedHeight = height/2;
+        float textWidth = charPaint.measureText(firstChar);
+        float adjustedWidth = (width - textWidth) / 2; // Center horizontally
+        float adjustedHeight = (height - (charPaint.descent() + charPaint.ascent())) / 2;
 
         // paint the string onto the canvas!
-        canvas.drawText(firstChar, width, height, charPaint);
+        canvas.drawText(firstChar, adjustedWidth, adjustedHeight, charPaint);
 
         return profilePic;
     }
