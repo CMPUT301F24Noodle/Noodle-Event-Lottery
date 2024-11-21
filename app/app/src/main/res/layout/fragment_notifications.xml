@@ -9,6 +9,12 @@
     android:id="@+id/frag_notifications"
     tools:context=".ui.notifications.NotificationsFragment">
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/test_button"
+        tools:ignore="MissingConstraints" />
+
     <ListView
         android:id="@+id/notifications_list"
         android:layout_width="match_parent"

@@ -1,5 +1,12 @@
 package com.example.myapplication;
 
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -9,10 +16,12 @@ import com.example.myapplication.database.EventDB;
 import com.example.myapplication.database.FacilityDB;
 import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.database.UserDB;
+import com.example.myapplication.objects.notificationClasses.Notification;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.core.app.NotificationCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -21,7 +30,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.databinding.ActivityMainBinding;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,10 +49,16 @@ public class MainActivity extends AppCompatActivity {
     public NotificationDB notifDB;
     public String uuid;
     public UserProfile user;
+    public NotificationManager notificationManager;
+    private final String CHANNEL_ID = "NoodleNotifs";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Create the users NotificationChannel
+        setUpNotifChannel();
 
         // will get the current Users Profile, initialize db connections
         setUpDB();
@@ -48,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-
 
         setSupportActionBar(binding.appBarMain.toolbar);
 
@@ -130,11 +146,78 @@ public class MainActivity extends AppCompatActivity {
                     connection.setUser(user);
                     Log.v("SetUpDB", "Set profile for new user");
                 }
+                //testCreateNotif();
+
             }
         });
         // sets the currentUser attribute for MainActivity
         //TESTME: omg this fucking worked it fetched the profile without creating a new one or overwriting it
 
+    }
+
+    /**
+     * TODO remove this
+     * Author: Erin-Marie
+     * This is a method that is only for testing purposes as I figure out how to set up notifications
+     * it just creates a test notification and sends it to the running device
+     * It is called within setUpDB() so it is called everytime the app opens.
+     */
+    public void testCreateNotif(){
+        ArrayList<DocumentReference> recipients = new ArrayList<DocumentReference>();
+        recipients.add(user.getDocRef());
+
+        Notification notif = new Notification("test notification", "test message", recipients, user);
+
+        Log.v(TAG, "notif created");
+        displayNotification(notif);
+    }
+    /**
+     * Author: Erin-Marie
+     * This method initiates the users notification channel and the notificationManager
+     */
+    public void setUpNotifChannel(){
+        // Create the users NotificationChannel
+        CharSequence name = "My Notifications";
+        String description = "Notifications channel";
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+        channel.setDescription(description);
+        channel.enableVibration(true);
+        channel.setVibrationPattern(new long[]{1000, 2000});
+
+        // Register the channel with the system
+        notificationManager.createNotificationChannel(channel);
+    }
+
+    /**
+     * Author: Erin-Marie
+     * This method displays/sends a notification as a device notification
+     * Reference: <a href="https://developer.android.com/develop/ui/views/notifications/build-notification">...</a>
+     * TODO does it check that the user has allowed notifications?
+     * @param notification the notification instance to be displayed
+     */
+    public void displayNotification(Notification notification){
+        //The pending intent makes it so that when the user selects the notification, it launches the app
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        //Build the notification
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,CHANNEL_ID)
+                //set the small icon to be the app logo
+                .setSmallIcon(R.mipmap.app_logo)
+                //Title will be either "Noodle Lottery Result from <Event Name>" or "<Message title> from <Sender name>"
+                .setContentTitle(notification.getTitle() + " from " + notification.getSender())
+                .setContentText(notification.getMessage())
+                //So when the message is long you have to tap the notification to expand it
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(notification.getMessage()))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setChannelId(CHANNEL_ID)
+                //set the app action
+                .setContentIntent(pendingIntent);
+
+        this.notificationManager.notify(123, builder.build());
+        Log.v(TAG, "notification sent");
     }
 
     // a method used for testing

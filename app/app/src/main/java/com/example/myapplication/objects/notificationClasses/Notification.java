@@ -2,10 +2,15 @@ package com.example.myapplication.objects.notificationClasses;
 
 import static java.time.Instant.now;
 
+import androidx.core.app.NotificationCompat;
+
+import com.example.myapplication.R;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
+
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 
@@ -19,6 +24,8 @@ public class Notification {
     String sender;
     ArrayList<DocumentReference> recipients;
     Timestamp sentTime;
+
+    DocumentReference docRef;
 
 
     /**
@@ -60,6 +67,8 @@ public class Notification {
         this.sentTime = new Timestamp(now());
     }
 
+
+
     public String getTitle() {
         return title;
     }
@@ -100,6 +109,14 @@ public class Notification {
 
     public void setSentTime(Timestamp sentTime) {
         this.sentTime = sentTime;
+    }
+
+    public void setDocRef(DocumentReference docRef){
+        this.docRef = docRef;
+    }
+
+    public DocumentReference getDocRef(){
+        return this.docRef;
     }
 
 
