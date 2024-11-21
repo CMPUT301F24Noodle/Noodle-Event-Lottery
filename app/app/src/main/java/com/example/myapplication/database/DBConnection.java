@@ -30,7 +30,6 @@ import java.util.UUID;
  * an Instance of this class is a Connection to the Noodle-Event-Lottery firestore database.
  * To access any collection of the database, use the respective <object>DB class (UserDB, EventDB, FacilityDB)
  * Reference: <a href="https://firebase.google.com/docs/android/setup#:~:text=Open%20the%20Firebase%20Assistant%3A%20Tools,your%20Android%20project%20with%20Firebase">...</a>.
- * QUESTION: Does the user need to authenticate with firebase, or do we just yoink their data for them?
  */
 public class DBConnection {
 

@@ -38,6 +38,7 @@ public class FacilityDB {
     private final DocumentReference facilityDocument;
 
     /**
+     * Author: Erin-Marie
      * Facility class constructor
      * @param connection dbConnection from MainActivity
      */
@@ -54,11 +55,30 @@ public class FacilityDB {
     /**
      * Author: Erin-Marie
      * adds the given facility object to the db under AllFacilities
-     * TODO: see if it sets the facility as being the users
+     * can also be called to update a facilities information
      * @param facility new facility
      */
     public void addFacility(Facility facility){
         this.db.collection("AllFacilities").document("Facility" + this.uuid).set(facility);
+
+    }
+
+    /**
+     * Author: Erin-Marie
+     * Method to be called when a user wants to delete their facility, or an Admin chooses to delete a facility
+     * Deletes a users facility, revokes their organizer privilege, removes the facility from the database, removes all events associated with the facility from the database
+     * @param facility
+     * TODO: write the method
+     */
+    public void deleteFacility(Facility facility){
+        //remove it from the users facility attribute
+
+        //set the user to not having organizer privileges
+
+        //remove it from the AllFacilities collection
+
+        //Remove all events that have this facility
+            //QUESTION do we send a notif to people associated with the event saying it has been removed, or do we set it to say This Event No Longer Exists?
 
     }
 
