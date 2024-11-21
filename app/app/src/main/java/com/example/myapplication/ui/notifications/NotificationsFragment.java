@@ -37,6 +37,8 @@ import java.util.ArrayList;
  * QUESTION: what notifications need to be device notifications each time the app is launched?
  *  is there a way to mark which ones have already been seen?
  *  should notifications populate while navigating the app as well?
+ * TODO: make it so the user can toggle notifications within the app
+ *  you'll need to use the toggle from the nav menu
  */
 public class NotificationsFragment extends Fragment {
 

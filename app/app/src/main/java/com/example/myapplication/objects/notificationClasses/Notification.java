@@ -35,6 +35,7 @@ public class Notification {
      */
     public Notification(){
     }
+
     /**
      * Author: Erin-Marie
      * Notification Constructor for a message from an event ending
