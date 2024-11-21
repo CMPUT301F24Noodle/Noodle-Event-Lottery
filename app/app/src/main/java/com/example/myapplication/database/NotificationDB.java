@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.ui.notifications.Notification;
+import com.example.myapplication.objects.notificationClasses.Notification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;

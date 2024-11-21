@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 
 import com.example.myapplication.R;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.ui.notifications.Notification;
 
 import java.util.ArrayList;
 

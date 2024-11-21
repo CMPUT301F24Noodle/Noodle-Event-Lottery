@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.myapplication.R;
+import com.example.myapplication.objects.notificationClasses.Notification;
 
 import java.util.ArrayList;
 

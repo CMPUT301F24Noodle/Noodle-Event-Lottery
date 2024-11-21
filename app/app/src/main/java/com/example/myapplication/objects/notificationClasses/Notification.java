@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.notifications;
+package com.example.myapplication.objects.notificationClasses;
 
 import static java.time.Instant.now;
 
@@ -7,9 +7,7 @@ import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Author: Erin-Marie

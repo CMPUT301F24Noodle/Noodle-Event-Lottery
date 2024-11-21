@@ -1,12 +1,9 @@
 package com.example.myapplication.ui.notifications;
 
-import android.graphics.Insets;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -14,7 +11,6 @@ import androidx.fragment.app.Fragment;
 
 
 import com.example.myapplication.MainActivity;
-import com.example.myapplication.R;
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
 import com.example.myapplication.database.FacilityDB;
@@ -22,13 +18,9 @@ import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.databinding.FragmentNotificationsBinding;
 import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.facilityClasses.Facility;
+import com.example.myapplication.objects.notificationClasses.Notification;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.zxing.WriterException;
 
-
-import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 
