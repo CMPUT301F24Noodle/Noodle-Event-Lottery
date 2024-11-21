@@ -1,6 +1,7 @@
 package com.example.myapplication.objects.facilityClasses;
 
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.io.Serializable;
 
@@ -26,17 +27,13 @@ public class Facility implements Serializable {
      *
      * @param facilityName the name of the new facility
      * @param location     the address of the facility
+     * @param owner
      */
-    public Facility(String facilityName, String location) {
+    public Facility(String facilityName, String location, UserProfile owner) {
         this.facilityName = facilityName;
-        //MAYBE this.owner = owner;
-        //this.ownerID = "Facility" + owner.getUuid();
+        this.ownerID = owner.getUuid();
         this.location = location;
     }
-
-
-
-
 
     public String getLocation() {
         return location;

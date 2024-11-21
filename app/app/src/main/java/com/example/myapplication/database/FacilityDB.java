@@ -59,11 +59,9 @@ public class FacilityDB {
      */
     public void addFacility(Facility facility){
         this.db.collection("AllFacilities").document("Facility" + this.uuid).set(facility);
-        //UserProfile user = facility.getOwner();
-        //user.setFacility(facility);
-
 
     }
+
 
 
 

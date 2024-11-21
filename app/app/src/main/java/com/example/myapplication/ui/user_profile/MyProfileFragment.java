@@ -11,12 +11,14 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.database.FacilityDB;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.databinding.FragmentMyProfileBinding;
 import com.example.myapplication.objects.facilityClasses.Facility;
@@ -35,7 +37,7 @@ public class MyProfileFragment extends Fragment {
     UserProfile user;
     UserDB userDB;
     Facility facility;
-
+    FacilityDB facilityDB;
     MainActivity main;
 
 
@@ -157,18 +159,22 @@ public class MyProfileFragment extends Fragment {
                     if(user.getFacility() == null){
                         if(!facilityName.isEmpty() && !facilityLocation.isEmpty()){
 
-                            facility = new Facility(facilityName, facilityLocation);
+                            facility = new Facility(facilityName, facilityLocation, user);
                             user.setFacility(facility); // create a facility for the user!
 
                             // and set the text fields
                             facility.setFacilityName(facilityName);
                             facility.setLocation(facilityLocation);
+
+                            //add facility to db
+                            facilityDB.addFacility(facility);
                         }
                         else{
                             // if the save was unsuccessful, reset both fields
                             facilityNameText.setText("");
                             facilityLocationText.setText("");
                         }
+
                     }
 
                     else{
@@ -183,12 +189,21 @@ public class MyProfileFragment extends Fragment {
                         // actually set the next fields
                         facilityNameText.setText(facility.getFacilityName());
                         facilityLocationText.setText(facility.getLocation());
+
+                        user.setFacility(facility);
+                        facilityDB.addFacility(facility);
                     }
 
                 }
 
                 // update the DB
+
                 userDB.updateUserDocument(user);
+
+                //Display toast
+                CharSequence toastText = "Save Successful";
+                Toast saveComplete = Toast.makeText(getContext(), toastText, Toast.LENGTH_SHORT );
+                saveComplete.show();
             }
         });
 
@@ -230,10 +245,11 @@ public class MyProfileFragment extends Fragment {
     public void getUserUserDB(){
         main = (MainActivity) getActivity();
         assert main != null;
-        user = main.user;
-        assert user != null;
+        this.user = main.user;
+        assert this.user != null;
         userDB = main.userDB;
         assert userDB != null;
+        facilityDB = main.facilityDB;
     }
 
 }
