@@ -13,6 +13,7 @@ import com.google.firebase.firestore.DocumentReference;
 import org.w3c.dom.Document;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Author: Erin-Marie
@@ -63,6 +64,12 @@ public class Notification {
         this.title = title;
         this.message = message;
         this.recipients = recipients;
+        //If the user who sent the message does not have a Name set in their UserProfile, display "<Title> from Event Organizer" instead
+        if (senderUser.getName().equals("Name")){
+            this.sender = "Event Organizer";
+        }else {
+            this.sender = senderUser.getName();
+        }
         this.sender = senderUser.getName();
         this.sentTime = new Timestamp(now());
     }
