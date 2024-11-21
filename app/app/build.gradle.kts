@@ -62,8 +62,12 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    //this is so the javadoc runs
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
+    //Things i tried to fix the JavaDoc error:
+//    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20")
+//    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20")
+//    implementation(libs.jetbrains.kotlin.stdlib.jdk7)
+//    implementation(libs.kotlin.stdlib.jdk8)
+//    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
 
     // Android test dependencies
     androidTestImplementation ("androidx.test.ext:junit:1.1.3")
