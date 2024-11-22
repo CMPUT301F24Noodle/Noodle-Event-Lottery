@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -175,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         notifDB.addNotification(notif);
 
         Log.v(TAG, "notif created");
-        displayNotification(notif);
+
     }
 
     /**
@@ -209,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Notification> newNotifications = notifDB.getMyNewNotifs();
         //assert !newNotifications.isEmpty();
         for (int i = 0; i < newNotifications.size(); i++) {
-            displayNotification(newNotifications.get(i));
+            displayNotification(newNotifications.get(i), i); //pass i to serve as the unique notification id (unique for this array)
         }
     }
 
@@ -218,9 +217,11 @@ public class MainActivity extends AppCompatActivity {
      * This method displays/sends a notification as a device notification
      * Reference: <a href="https://developer.android.com/develop/ui/views/notifications/build-notification">...</a>
      * TODO does it check that the user has allowed notifications?
+     *
      * @param notification the notification instance to be displayed
+     * @param id the index of the nortification from myNewNotifications
      */
-    public void displayNotification(Notification notification){
+    public void displayNotification(Notification notification, int id){
         //The pending intent makes it so that when the user selects the notification, it launches the app
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
@@ -240,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
                 //set the app action
                 .setContentIntent(pendingIntent);
 
-        this.notificationManager.notify(123, builder.build());
+        this.notificationManager.notify(id, builder.build());
         Log.v(TAG, "notification sent");
     }
 
