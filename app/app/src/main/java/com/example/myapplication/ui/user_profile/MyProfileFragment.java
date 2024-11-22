@@ -135,6 +135,13 @@ public class MyProfileFragment extends Fragment {
                 // verify input
                 if(!username.isEmpty()){
                     user.setName(username);
+                    // only generate a new PP for the user if they don't have one uploaded
+                    if(!user.getHasProfilePic()){
+                        Bitmap newProfilePic = user.generateProfilePicture();
+                        profilePictureView.setImageBitmap(newProfilePic);
+                    }
+
+
                 }
                 if(!email.isEmpty()){
                     user.setEmail(email);
@@ -243,6 +250,8 @@ public class MyProfileFragment extends Fragment {
         userDB = main.userDB;
         assert userDB != null;
     }
+
+
 
 }
 

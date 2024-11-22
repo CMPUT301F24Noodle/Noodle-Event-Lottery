@@ -47,7 +47,11 @@ public class UserProfile implements Serializable {
                                         // notifications
     Boolean geoLocationOn; // True if they allow geoLocation, False if not
 
+    String profilePicDownloadURL; // Based on some research, something like this is probably needed to get uploaded pictures from firebase
+    Boolean hasProfilePic; // false if user has no profile pic and needs a generated one
+
     public ArrayList<Event> myEnteredEvents;
+
 
     public UserProfile() {
     } // need for firebase
@@ -72,6 +76,7 @@ public class UserProfile implements Serializable {
         this.myOrgEvents = new ArrayList<DocumentReference>();
         this.myNotifications = new ArrayList<DocumentReference>();
         this.myEnteredEvents = new ArrayList<Event>();
+        this.hasProfilePic = Boolean.FALSE;
 
         // TODO: make a res file with a default profile picture to use until a user
         // submits their own
@@ -167,6 +172,14 @@ public class UserProfile implements Serializable {
     public void setProfilePicture(Image profilePicture) {
         this.profilePicture = profilePicture;
     }
+
+    public String getProfilePicDownloadURL() {return profilePicDownloadURL;}
+
+    public void setProfilePicDownloadURL(String url) {this.profilePicDownloadURL = url;}
+
+    public Boolean getHasProfilePic(){return hasProfilePic;}
+
+    public void setHasProfilePic(Boolean newHasProfilePic){ this.hasProfilePic = newHasProfilePic;}
 
     public Integer getPrivileges() {
         return privileges;
@@ -334,6 +347,7 @@ public class UserProfile implements Serializable {
         int height = 100;
 
         // TODO: could change the config so that the profile picture has color
+        // TODO important note, the colors you can use might be limited by the choice of bitmap.config (theres a chance you can only use like 16 different colors, idk)
         // create the bitmap that will become the new profile picture
         Bitmap profilePic = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
 
@@ -342,7 +356,7 @@ public class UserProfile implements Serializable {
 
         // create the paint for the background
         Paint backgroundPaint = new Paint();
-        backgroundPaint.setColor(Color.WHITE); // TODO this color can be changed for UI
+        backgroundPaint.setColor(Color.WHITE); // TODO this color can be changed for
 
         // set the entire bitmap to a background color (because its not allowed to be transparent)
         canvas.drawRect(0, 0, width, height, backgroundPaint);
@@ -352,10 +366,12 @@ public class UserProfile implements Serializable {
         charPaint.setColor(Color.BLACK); // TODO this color can be changed for UI
         charPaint.setTextSize(50); // TODO this size can be changed for UI
 
-        // need to adjust height and width because the canvas uses pixels while height and width are integers
-        // TODO make the text centered
+        // get the width of the text
         float textWidth = charPaint.measureText(firstChar);
-        float adjustedWidth = (width - textWidth) / 2; // Center horizontally
+
+        // adjust the width and height by first accounting for the width and height of printed text
+        // and then divide by 2 so that it is centered
+        float adjustedWidth = (width - textWidth) / 2;
         float adjustedHeight = (height - (charPaint.descent() + charPaint.ascent())) / 2;
 
         // paint the string onto the canvas!
