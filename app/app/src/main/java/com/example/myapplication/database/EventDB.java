@@ -22,6 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.io.Serializable;
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -411,7 +412,16 @@ public class EventDB implements Serializable {
 
     }
 
-
+    /**
+     * Author: Erin-Marie
+     * Method to remove an event from the DB
+     * Because of the database design, this will also cause all users associated with the event to no longer see the event
+     * TODO: maybe make it send a notification to all entrants letting them know the event has been cancelled
+     * @param event the event to be deleted
+     */
+    public void deleteEvent(Event event){
+        (event.getDocRef()).delete();
+    }
 
     /**
      * Author: Erin-Marie

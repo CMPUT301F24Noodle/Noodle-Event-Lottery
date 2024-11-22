@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setChannelId(CHANNEL_ID)
-                //set the app action
+                //set the app action+
                 .setContentIntent(pendingIntent);
 
         this.notificationManager.notify(id, builder.build());
