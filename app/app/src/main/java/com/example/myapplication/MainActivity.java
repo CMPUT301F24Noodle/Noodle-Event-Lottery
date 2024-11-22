@@ -35,6 +35,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * Author: Erin-Marie
+ * Main Activity of the app
+ * Controls the app navigation
+ * Initializes all user data, including profile, event lists, and notifications
+ */
 public class MainActivity extends AppCompatActivity {
 
     //for logcat
@@ -57,12 +63,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Create the users NotificationChannel
-        setUpNotifChannel();
-
         // will get the current Users Profile, initialize db connections
         setUpDB();
 
+        // Create the users NotificationChannel
+        setUpNotifChannel();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -125,20 +130,20 @@ public class MainActivity extends AppCompatActivity {
                 if (snapshot != null) { // user is already in the database
                     // fetch their profile data, make it a userprofile object, and store it as
                     // currentUser
-                    // done through addUser() method in order to get the value returned from
-                    // checkUserExists()
+                    // done through addUser() method in order to get the value returned from checkUserExists()
                     userDB.setCurrentProfile(snapshot);
                     user = userDB.getCurrentUser();
-                    eventDB.getUserEnteredEvents(user);
-                    eventDB.getUserOrgEvents(user);
+                    eventDB.getUserEnteredEvents(user); //initiate their list of entered events
+                    eventDB.getUserOrgEvents(user); //initiate their list of organized events
                     connection.setUser(user);
-                    notifDB.getUserNotifications(); //this return value doesn't matter, this just needs to be called to intitiate their list of notifications
+                    notifDB.getUserNotifications(); //intitiate their list of all notifications
+                    notifDB.getUserNewNotifications(); //get the list of users unseen notifications
+
                     Log.v("SetUpDB", "Set profile for existing user");
 
                 } else { // User is not already in the database
                     // create a new profile objet, and store it in the db
-                    // done through addUser() method in order to get the value returned from
-                    // checkUserExists()
+                    // done through addUser() method in order to get the value returned from checkUserExists()
                     userDB.addCurrentUser();
                     user = userDB.getCurrentUser();
                     eventDB.getUserEnteredEvents(user);
@@ -147,11 +152,11 @@ public class MainActivity extends AppCompatActivity {
                     Log.v("SetUpDB", "Set profile for new user");
                 }
                 //testCreateNotif();
-
+                createNewNotifications(); //populate the new notificatons to the device notifications
             }
         });
         // sets the currentUser attribute for MainActivity
-        //TESTME: omg this fucking worked it fetched the profile without creating a new one or overwriting it
+
 
     }
 
@@ -166,11 +171,13 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<DocumentReference> recipients = new ArrayList<DocumentReference>();
         recipients.add(user.getDocRef());
 
-        Notification notif = new Notification("test notification", "test message", recipients, user);
+        Notification notif = new Notification("test notification2", "test message", recipients, user);
+        notifDB.addNotification(notif);
 
         Log.v(TAG, "notif created");
         displayNotification(notif);
     }
+
     /**
      * Author: Erin-Marie
      * This method initiates the users notification channel and the notificationManager
@@ -187,6 +194,23 @@ public class MainActivity extends AppCompatActivity {
 
         // Register the channel with the system
         notificationManager.createNotificationChannel(channel);
+
+        //get the users new notifications and send them to system
+        //createNewNotifications();
+    }
+
+    /**
+     * Author: Erin-Marie
+     * method loops through the users list of new notifications and sends them to the device
+     * This method is called after the users notifications has been read from the db
+     */
+    public void createNewNotifications(){
+        //make all their new notifications populate
+        ArrayList<Notification> newNotifications = notifDB.getMyNewNotifs();
+        //assert !newNotifications.isEmpty();
+        for (int i = 0; i < newNotifications.size(); i++) {
+            displayNotification(newNotifications.get(i));
+        }
     }
 
     /**
