@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -136,6 +137,11 @@ public class MyProfileFragment extends Fragment {
                 if(!username.isEmpty()){
                     user.setName(username);
                     // only generate a new PP for the user if they don't have one uploaded
+                    if(user.getHasProfilePic() == null){ // if somehow, the user didn't have this set (because they were created before this attribute was added, assume they don't have one)
+                        user.setHasProfilePic(false);
+                        // TODO THIS IS JUST HERE SO YOU KNOW WHEN THIS HAPPENS
+                        Toast.makeText(main, "Reset profile pic status to no uploaded profile picture", Toast.LENGTH_LONG).show();
+                    }
                     if(!user.getHasProfilePic()){
                         Bitmap newProfilePic = user.generateProfilePicture();
                         profilePictureView.setImageBitmap(newProfilePic);
