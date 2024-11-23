@@ -511,4 +511,11 @@ public class Event implements Serializable {
         return declinedList;
     }
 
+    public double getLatitude() {
+        return 53.0;
+    }
+
+    public double getLongitude() {
+        return -113.0;
+    }
 }
