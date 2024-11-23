@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+>
+
+    <!-- Participant's Name -->
+    <TextView
+        android:id="@+id/participant_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Participant Name"
+        android:textColor="@color/text_cyan"
+        android:textSize="18sp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:fontFamily="@font/aleo_medium" />
+
+    <TextView
+        android:id="@+id/remove_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="REMOVE"
+        android:textColor="@color/text_cyan"
+        android:textSize="16sp"
+        android:fontFamily="@font/belanosima"
+        android:padding="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:textStyle="italic"
+        android:contentDescription="Remove participant from list" />
+</LinearLayout>
