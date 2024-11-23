@@ -255,6 +255,15 @@ public class MyProfileFragment extends Fragment {
             }
         });
 
+        // SET UP PROFILE PICTURE AS A BUTTON FOR MANAGING PROFILE PICTURE
+        profilePictureView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(main, "Clicked!", Toast.LENGTH_LONG).show();
+
+            }
+        });
+
         return view;
     }
 
