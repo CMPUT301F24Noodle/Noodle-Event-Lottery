@@ -7,262 +7,192 @@
     android:id="@+id/manage_event"
     android:background="@color/back_gray">
 
-    <!--    Current Waiting List    -->
+    <!-- Current Waiting List -->
     <LinearLayout
-        android:id="@+id/linearLayout4"
+        android:id="@+id/linearLayout_waiting"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        tools:layout_editor_absoluteX="10dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:id="@+id/nav_waiting"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/alexandria_semibold"
             android:text="Current Waiting List: (2/3)"
             android:textColor="@color/text_cyan"
-            android:textSize="25dp" />
+            android:textSize="25dp"
+            android:padding="10dp" />
 
         <ListView
             android:id="@+id/nav_waiting_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:divider="@color/text_cyan"
-            android:dividerHeight="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:dividerHeight="2dp" />
     </LinearLayout>
 
-    <!--    Delete this part after Project Part 3-->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:text="User32"-->
-<!--        android:textColor="@color/text_cyan"-->
-<!--        android:textColorHint="@color/text_cyan"-->
-<!--        android:textSize="20dp"-->
-<!--        android:layout_marginTop="40dp"-->
-<!--        android:layout_marginLeft="20dp"-->
-<!--        android:fontFamily="@font/aleo_medium"/>-->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:text="Use44"-->
-<!--        android:textColor="@color/text_cyan"-->
-<!--        android:textColorHint="@color/text_cyan"-->
-<!--        android:textSize="20dp"-->
-<!--        android:layout_marginTop="65dp"-->
-<!--        android:layout_marginLeft="20dp"-->
-<!--        android:fontFamily="@font/aleo_medium"/>-->
-
-
-
-    <!--      Selected People     -->
-    <LinearLayout
-        android:orientation="horizontal"
+    <!-- Divider Line -->
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="100dp">
+        android:layout_height="2dp"
+        android:background="@color/text_cyan"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout_waiting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Selected People -->
+    <LinearLayout
+        android:id="@+id/linearLayout_selected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_waiting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:id="@+id/nav_selected"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="People Selected: "
+            android:layout_height="wrap_content"
+            android:text="People Selected:"
             android:textColor="@color/text_cyan"
             android:textSize="25dp"
-            android:fontFamily="@font/alexandria_semibold"/>
+            android:padding="10dp"
+            android:fontFamily="@font/alexandria_semibold" />
 
-            <ListView
-                android:id="@+id/selected_ppl"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@color/text_cyan"
-                android:dividerHeight="2dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <ListView
+            android:id="@+id/selected_ppl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/text_cyan"
+            android:dividerHeight="2dp" />
     </LinearLayout>
 
-    <!--    Delete this part after Project Part 3-->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:text="ABC"-->
-<!--        android:textColor="@color/text_cyan"-->
-<!--        android:textColorHint="@color/text_cyan"-->
-<!--        android:textSize="20dp"-->
-<!--        android:layout_marginTop="140dp"-->
-<!--        android:layout_marginLeft="20dp"-->
-<!--        android:fontFamily="@font/aleo_medium"/>-->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:text="EVEO"-->
-<!--        android:textColor="@color/text_cyan"-->
-<!--        android:textColorHint="@color/text_cyan"-->
-<!--        android:textSize="20dp"-->
-<!--        android:layout_marginTop="165dp"-->
-<!--        android:layout_marginLeft="20dp"-->
-<!--        android:fontFamily="@font/aleo_medium"/>-->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:text="rrrrr"-->
-<!--        android:textColor="@color/text_cyan"-->
-<!--        android:textColorHint="@color/text_cyan"-->
-<!--        android:textSize="20dp"-->
-<!--        android:layout_marginTop="185dp"-->
-<!--        android:layout_marginLeft="20dp"-->
-<!--        android:fontFamily="@font/aleo_medium"/>-->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:text="RERT"-->
-<!--        android:textColor="@color/text_cyan"-->
-<!--        android:textColorHint="@color/text_cyan"-->
-<!--        android:textSize="20dp"-->
-<!--        android:layout_marginTop="210dp"-->
-<!--        android:layout_marginLeft="20dp"-->
-<!--        android:fontFamily="@font/aleo_medium"/>-->
-
-
-    <!--      Cancelled People     -->
-    <LinearLayout
-        android:orientation="horizontal"
+    <!-- Divider Line -->
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="240dp">
+        android:layout_height="2dp"
+        android:background="@color/text_cyan"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout_selected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Cancelled People -->
+    <LinearLayout
+        android:id="@+id/linearLayout_cancelled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_selected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:id="@+id/nav_cancelled"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="People Cancelled:"
             android:textColor="@color/text_cyan"
             android:textSize="25dp"
-            android:fontFamily="@font/alexandria_semibold"/>
+            android:padding="10dp"
+            android:fontFamily="@font/alexandria_semibold" />
 
         <ListView
             android:id="@+id/cancelled_ppl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:divider="@color/text_cyan"
-            android:dividerHeight="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:dividerHeight="2dp" />
     </LinearLayout>
 
-    <!--    Delete this part after Project Part 3-->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:text="NEO"-->
-<!--        android:textColor="@color/text_cyan"-->
-<!--        android:textColorHint="@color/text_cyan"-->
-<!--        android:textSize="20dp"-->
-<!--        android:layout_marginTop="275dp"-->
-<!--        android:layout_marginLeft="20dp"-->
-<!--        android:fontFamily="@font/aleo_medium"/>-->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:text="DEO"-->
-<!--        android:textColor="@color/text_cyan"-->
-<!--        android:textColorHint="@color/text_cyan"-->
-<!--        android:textSize="20dp"-->
-<!--        android:layout_marginTop="300dp"-->
-<!--        android:layout_marginLeft="20dp"-->
-<!--        android:fontFamily="@font/aleo_medium"/>-->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:text="RIO"-->
-<!--        android:textColor="@color/text_cyan"-->
-<!--        android:textColorHint="@color/text_cyan"-->
-<!--        android:textSize="20dp"-->
-<!--        android:layout_marginTop="325dp"-->
-<!--        android:layout_marginLeft="20dp"-->
-<!--        android:fontFamily="@font/aleo_medium"/>-->
-
-
-    <!--     Attending People     -->
-    <LinearLayout
-        android:orientation="horizontal"
+    <!-- Divider Line -->
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="355dp">
+        android:layout_height="2dp"
+        android:background="@color/text_cyan"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout_cancelled"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Attending People -->
+    <LinearLayout
+        android:id="@+id/linearLayout_attending"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_cancelled"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:id="@+id/nav_attending"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="People Attending:"
             android:textColor="@color/text_cyan"
             android:textSize="25dp"
-            android:fontFamily="@font/alexandria_semibold"/>
+            android:padding="10dp"
+            android:fontFamily="@font/alexandria_semibold" />
 
         <ListView
             android:id="@+id/attending_ppl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:divider="@color/text_cyan"
-            android:dividerHeight="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:dividerHeight="2dp" />
     </LinearLayout>
 
-    <!--    Delete this part after Project Part 3-->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:text="RERT"-->
-<!--        android:textColor="@color/text_cyan"-->
-<!--        android:textColorHint="@color/text_cyan"-->
-<!--        android:textSize="20dp"-->
-<!--        android:layout_marginTop="390dp"-->
-<!--        android:layout_marginLeft="20dp"-->
-<!--        android:fontFamily="@font/aleo_medium"/>-->
-
+    <!-- Floating Action Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/FAB_map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_dialog_map" />
 
+    <!-- Buttons -->
     <Button
         android:id="@+id/notify_button"
         android:layout_width="130dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:fontFamily="@font/belanosima"
-        android:text="Send message"
-        app:layout_constraintBottom_toTopOf="@+id/FAB_map"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:text="Send Message"
+        app:layout_constraintBottom_toTopOf="@id/FAB_map"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/mybutton"/>
 
     <Button
         android:id="@+id/replace_button"
         android:layout_width="130dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:fontFamily="@font/belanosima"
-        android:text="Replace Cancelled Entrants"
-        app:layout_constraintBottom_toTopOf="@+id/notify_button"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:text="Replace Cancelled"
+        app:layout_constraintBottom_toTopOf="@id/notify_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/mybutton"/>
 
     <Button
         android:id="@+id/draw_name_button"
         android:layout_width="130dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:fontFamily="@font/belanosima"
         android:text="End Lottery"
-        app:layout_constraintBottom_toTopOf="@+id/replace_button"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
+        app:layout_constraintBottom_toTopOf="@id/replace_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/mybutton"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
