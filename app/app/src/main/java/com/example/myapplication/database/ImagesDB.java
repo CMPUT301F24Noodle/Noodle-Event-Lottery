@@ -1,6 +1,7 @@
 package com.example.myapplication.database;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.widget.ImageView;
 
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
@@ -9,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.File;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,12 +52,15 @@ public class ImagesDB {
      * uploads a file and stores it in firebase storage
      * @param file the file to be stored in firebase storage
      */
-    public URI uploadFile(File file){
+    public URI uploadFile(File file) throws URISyntaxException {
         // get the file path + file uri from the file
         // then get a firebase file reference
         // then upload the file to that reference
 
         // return the firebase URI of the gotten thing
+        URI dummy;
+        dummy = new URI(""); //TODO THIS ADDED THE URISYNTAXEXCEPTION MAYBE TAKE THAT OUT?
+        return dummy;
     }
 
     /**
@@ -87,7 +92,9 @@ public class ImagesDB {
      * @param bitmap the bitmap that should be converted
      */
     public File bitmapToJPEG(Bitmap bitmap){
-
+        // returns the files
+        File dummyFile = new File(""); // TODO THIS IS JUST PLACEHOLDER SO THE APP CAN RUN
+        return dummyFile;
     }
 
 
