@@ -27,6 +27,7 @@ public class UserProfile implements Serializable {
     String phoneNumber;
     String address;
     Image profilePicture;
+    Bitmap testmap;
     Integer privileges; // 0 is default, means they are just an entrant, 1 means they also have
                         // organizer privilege
     DocumentReference docRef;
@@ -52,6 +53,8 @@ public class UserProfile implements Serializable {
 
     public ArrayList<Event> myEnteredEvents;
 
+    // TEST
+    public void setTestmap(Bitmap test){this.testmap = test;}
 
     public UserProfile() {
     } // need for firebase
@@ -64,7 +67,7 @@ public class UserProfile implements Serializable {
      * setter methods called from the ProfileActivity
      */
     public UserProfile(String uuid) {
-        
+
         this.privileges = 0; // defaults to entrant privileges
         this.allowNotifs = Boolean.TRUE; // defaults to allow notifications
         this.geoLocationOn = Boolean.FALSE; // defaults to false, need to ask user for permission first

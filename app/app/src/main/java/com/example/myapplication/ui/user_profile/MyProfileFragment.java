@@ -259,8 +259,7 @@ public class MyProfileFragment extends Fragment {
         profilePictureView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(main, "Clicked!", Toast.LENGTH_LONG).show();
-
+                Toast.makeText(main, "Currently no implementation this :)", Toast.LENGTH_LONG).show();
             }
         });
 
