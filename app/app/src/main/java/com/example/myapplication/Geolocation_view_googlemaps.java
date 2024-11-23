@@ -43,9 +43,20 @@ public class Geolocation_view_googlemaps extends FragmentActivity implements OnM
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // get latitude and longitude through getIntent
+        double latitude = getIntent().getDoubleExtra("latitude", 53.0); // default if not passed
+        double longitude = getIntent().getDoubleExtra("longitude", -113.0); // default if not passed
+
+        // LatLng object for the event location
+        LatLng eventLocation = new LatLng(latitude, longitude);
+
+        // default zoom level
+        float zoomLevel = 10.0f;
+
+        // marker for the event location
+        mMap.addMarker(new MarkerOptions().position(eventLocation).title("Event Location"));
+
+        // move camera / zoom in
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLocation, zoomLevel));
     }
 }
