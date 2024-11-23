@@ -3,6 +3,8 @@ import org.apache.commons.io.filefilter.FalseFileFilter
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
+//    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -52,14 +54,20 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.firebase.firestore)
     implementation(libs.play.services.tasks)
+    implementation(libs.play.services.maps)
+    //implementation(libs.play.services.vision)
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.ext.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    //this is so the javadoc runs
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
+    //Things i tried to fix the JavaDoc error:
+//    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20")
+//    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20")
+//    implementation(libs.jetbrains.kotlin.stdlib.jdk7)
+//    implementation(libs.kotlin.stdlib.jdk8)
+//    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
 
     // Android test dependencies
     androidTestImplementation ("androidx.test.ext:junit:1.1.3")
@@ -95,4 +103,21 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.3.0") {isTransitive=false}
     implementation(libs.zxing.core) // for QR code generation
 
+}
+
+secrets {
+    // To add your Maps API key to this project:
+    // 1. If the secrets.properties file does not exist, create it in the same folder as the local.properties file.
+    // 2. Add this line, where YOUR_API_KEY is your API key:
+    //        MAPS_API_KEY=YOUR_API_KEY
+    propertiesFileName = "secrets.properties"
+
+    // A properties file containing default secret values. This file can be
+    // checked in version control.
+    defaultPropertiesFileName = "local.defaults.properties"
+
+    // Configure which keys should be ignored by the plugin by providing regular expressions.
+    // "sdk.dir" is ignored by default.
+    ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
+    ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
 }

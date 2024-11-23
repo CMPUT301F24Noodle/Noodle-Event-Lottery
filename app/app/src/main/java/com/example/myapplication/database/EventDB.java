@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.ui.notifications.Notification;
+import com.example.myapplication.objects.notificationClasses.Notification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,7 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -403,6 +403,7 @@ public class EventDB implements Serializable {
                     //add each user to the arraylist
                     winnersList.add(document.toObject(UserProfile.class));
                     Log.v(TAG, "size: " + winnersList.size());
+
                 }
 
             }
@@ -411,7 +412,16 @@ public class EventDB implements Serializable {
 
     }
 
-
+    /**
+     * Author: Erin-Marie
+     * Method to remove an event from the DB
+     * Because of the database design, this will also cause all users associated with the event to no longer see the event
+     * TODO: maybe make it send a notification to all entrants letting them know the event has been cancelled
+     * @param event the event to be deleted
+     */
+    public void deleteEvent(Event event){
+        (event.getDocRef()).delete();
+    }
 
     /**
      * Author: Erin-Marie

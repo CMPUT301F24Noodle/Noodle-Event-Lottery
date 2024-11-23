@@ -7,7 +7,6 @@ import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.zxing.WriterException;
 
-import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
 
@@ -23,7 +22,7 @@ public class EventTests {
 
     static UserProfile organizer = new UserProfile();
     UserProfile entrant = new UserProfile();
-    static Facility facility = new Facility("TestFacility", "your moms house");
+    static Facility facility = new Facility("TestFacility", "your moms house", organizer);
 
     /**
      * method makes an event object the test cases can use.

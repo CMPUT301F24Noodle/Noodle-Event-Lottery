@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
         android:allowBackup="true"
@@ -26,7 +27,15 @@
 
         </activity>
 
-
+        <activity android:name="com.example.myapplication.Geolocation_view_googlemaps"
+            android:exported="true"
+            android:label="@string/title_activity_geolocation_view_googlemaps">
+<!--        <intent-filter>-->
+<!--&lt;!&ndash;        <action android:name="android.intent.action.MAIN" />&ndash;&gt;-->
+<!--&lt;!&ndash;        <category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;-->
+<!--&lt;!&ndash;            only MainActivity can have the LAUNCHER intent filter&ndash;&gt;-->
+<!--        </intent-filter>-->
+        </activity>
 
         <!--        <activity-->
         <!--            android:name=".ui.notifications.NotificationsFragment"-->

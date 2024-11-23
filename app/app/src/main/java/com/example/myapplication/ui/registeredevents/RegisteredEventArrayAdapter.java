@@ -67,7 +67,7 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
 
         // Set OnClickListener for the item
         view.setOnClickListener(v -> {
-            if (event.hasAccepted(event, currUser)) {
+            if (!event.hasAccepted(event, currUser)) {
                 showAcceptDeclineDialog(event);
             } else {
                 Toast.makeText(context, "You have not won the lottery for this event.", Toast.LENGTH_SHORT).show();
@@ -102,7 +102,7 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
      *[US 01.05.02] As an entrant I want to be able to accept the invitation to register/sign up when chosen to participate in an event
      * @param event
      */
-    private void acceptInvitation(Event event) {
+    public void acceptInvitation(Event event) {
         event.getAcceptedList().add(currUser);
         event.getWinnersList().remove(currUser);
         event.getEntrantsList().remove(currUser);
@@ -116,7 +116,7 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
      *[US 01.05.03] As an entrant I want to be able to decline an invitation when chosen to participate in an event
      * @param event
      */
-    private void declineInvitation(Event event) {
+    public void declineInvitation(Event event) {
         event.getDeclinedList().add(currUser);
         event.getEntrantsList().remove(currUser);
         eventDB.updateEvent(event);

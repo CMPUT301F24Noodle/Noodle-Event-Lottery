@@ -1,6 +1,6 @@
 package com.example.myapplication.ui.notifications;
 
-import android.graphics.Insets;
+import android.app.NotificationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,13 +22,10 @@ import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.databinding.FragmentNotificationsBinding;
 import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.facilityClasses.Facility;
+import com.example.myapplication.objects.notificationClasses.Notification;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.zxing.WriterException;
 
-
-import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 
@@ -37,8 +34,11 @@ import java.util.ArrayList;
  * Author: Erin-Marie
  * USERSTORIES: US.01.04.01, US.01.04.02
  * Uses the notifications_activity.XML layout file
- * TODO: make the class that will represent the notifications activity
- *       display the users array of notifications, notifications are not interacted with beyond scrolling
+ * QUESTION: what notifications need to be device notifications each time the app is launched?
+ *  is there a way to mark which ones have already been seen?
+ *  should notifications populate while navigating the app as well?
+ * TODO: make it so the user can toggle notifications within the app
+ *  you'll need to use the toggle from the nav menu
  */
 public class NotificationsFragment extends Fragment {
 
@@ -53,6 +53,7 @@ public class NotificationsFragment extends Fragment {
     public String uuid;
     public UserProfile user;
     public Event event;
+    public NotificationManager notifMan;
     public FacilityDB facilityDB;
 
     public ArrayList<Notification> notificationsList;
@@ -87,6 +88,21 @@ public class NotificationsFragment extends Fragment {
         View root = binding.getRoot();
 
 
+//        //TODO Remove; this is just for testing that the notification spawns
+//        Button button = root.findViewById(R.id.test_button);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ArrayList<DocumentReference> recipients = new ArrayList<DocumentReference>();
+//                recipients.add(user.getDocRef());
+//
+//                Notification notif = new Notification("test notification", "test message", recipients, user);
+//
+//                Log.v("notiffrag", "notif being called by set up db");
+//                main.displayNotification(notif);
+//            }
+//        });
+
         ListView listView = binding.notificationsList;
 
         adapter = new NotificationArrayAdapter(requireContext(), notificationsList);
@@ -111,7 +127,7 @@ public class NotificationsFragment extends Fragment {
         main = (MainActivity) getActivity();
         assert main != null;
         connection = main.connection;
-
+        notifMan = main.notificationManager;
         notifDB = connection.getNotifDB();
         user = connection.getUser();
         eventDB = connection.getEventDB();

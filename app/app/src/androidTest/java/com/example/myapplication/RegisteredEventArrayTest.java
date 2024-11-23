@@ -10,7 +10,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.example.myapplication.MainActivity;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.example.myapplication.objects.facilityClasses.Facility;
@@ -65,7 +64,7 @@ public class RegisteredEventArrayTest {
     public static Event makeTestEvent() throws ParseException, WriterException {
         UserProfile organizer = new UserProfile();
         organizer.setName("Test Org");
-        Facility facility = new Facility("TestFacility", "Testing area");
+        Facility facility = new Facility("TestFacility", "Testing area", organizer );
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         Date dateEvent = dateFormat.parse("29/05/2002");

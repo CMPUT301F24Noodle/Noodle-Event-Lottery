@@ -1,15 +1,19 @@
-package com.example.myapplication.ui.notifications;
+package com.example.myapplication.objects.notificationClasses;
 
 import static java.time.Instant.now;
 
+import androidx.core.app.NotificationCompat;
+
+import com.example.myapplication.R;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
-import java.time.Instant;
+import org.w3c.dom.Document;
+
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Objects;
 
 /**
  * Author: Erin-Marie
@@ -20,7 +24,10 @@ public class Notification {
     String message;
     String sender;
     ArrayList<DocumentReference> recipients;
+    ArrayList<DocumentReference> notReadBy;
     Timestamp sentTime;
+
+    DocumentReference docRef;
 
 
     /**
@@ -29,6 +36,7 @@ public class Notification {
      */
     public Notification(){
     }
+
     /**
      * Author: Erin-Marie
      * Notification Constructor for a message from an event ending
@@ -41,6 +49,7 @@ public class Notification {
         this.title = "Event Lottery Result";
         this.message = message;
         this.recipients = recipients;
+        this.notReadBy = recipients;
         this.sender = event.getEventName();
         this.sentTime = new Timestamp(now());
     }
@@ -58,9 +67,18 @@ public class Notification {
         this.title = title;
         this.message = message;
         this.recipients = recipients;
+        this.notReadBy = recipients;
+        //If the user who sent the message does not have a Name set in their UserProfile, display "<Title> from Event Organizer" instead
+        if (senderUser.getName().equals("Name")){
+            this.sender = "Event Organizer";
+        }else {
+            this.sender = senderUser.getName();
+        }
         this.sender = senderUser.getName();
         this.sentTime = new Timestamp(now());
     }
+
+
 
     public String getTitle() {
         return title;
@@ -104,5 +122,23 @@ public class Notification {
         this.sentTime = sentTime;
     }
 
+    public void setDocRef(DocumentReference docRef){
+        this.docRef = docRef;
+    }
 
+    public DocumentReference getDocRef(){
+        return this.docRef;
+    }
+
+    public ArrayList<DocumentReference> getNotReadBy() {
+        return notReadBy;
+    }
+
+    public void setNotReadBy(ArrayList<DocumentReference> notReadBy) {
+        this.notReadBy = notReadBy;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
 }
