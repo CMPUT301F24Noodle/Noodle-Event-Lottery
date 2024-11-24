@@ -24,6 +24,7 @@ import com.example.myapplication.database.UserDB;
 import com.example.myapplication.databinding.FragmentMyProfileBinding;
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.ui.myevents.DisplayQRCodeFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -73,8 +74,8 @@ public class MyProfileFragment extends Fragment {
 
         // display the generated image:
         CircleImageView profilePictureView = view.findViewById(R.id.profile_image);
-        Bitmap generatedPic = user.generateProfilePicture();
-        profilePictureView.setImageBitmap(generatedPic);
+        //Bitmap generatedPic = user.generateProfilePicture();
+        //profilePictureView.setImageBitmap(generatedPic);
 
         // if they have a facility, set their facility info
         if(user.getFacility() != null){
@@ -259,14 +260,13 @@ public class MyProfileFragment extends Fragment {
         profilePictureView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(main, "testing attributes", Toast.LENGTH_LONG).show();
-                //Bitmap generatedPic = user.generateProfilePicture();
-                //String TEST = user.getEncodedPicture();
-                Bitmap saved = user.decodeBase64StringToBitmap();
-                profilePictureView.setImageBitmap(saved);
+                ManageProfilePictureFragment PPFragment = new ManageProfilePictureFragment();
+                PPFragment.setUser(user);
+                PPFragment.setMyProfilePictureView(profilePictureView);
 
+                // Navigate to the fragment
+                PPFragment.show(getParentFragmentManager(), "ProfilePictureManagementFragment");
 
-                int a = 1+1;
             }
         });
 
