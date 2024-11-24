@@ -33,7 +33,6 @@ public class ManageProfilePictureFragment extends DialogFragment {
 
     // TODO TEST
     private ActivityResultLauncher<Intent> galleryLauncher;
-    private ActivityResultLauncher<String> permissionLauncher;
 
     public void setUser(UserProfile user) {
         this.user = user;
@@ -50,17 +49,7 @@ public class ManageProfilePictureFragment extends DialogFragment {
 
         ImageView fullProfilePicture = view.findViewById(R.id.full_profile_image);
 
-        // TODO test
-        permissionLauncher = registerForActivityResult(
-                new ActivityResultContracts.RequestPermission(),
-                isGranted -> {
-                    if (isGranted) {
-                        // Permission granted, proceed with gallery access
-                    } else {
-                        Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        );
+
 
         //TODO test
         galleryLauncher = registerForActivityResult(
@@ -80,13 +69,9 @@ public class ManageProfilePictureFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 // TODO TEST
-                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    permissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
-                } else {
-                    Intent intent = new Intent(Intent.ACTION_PICK);
-                    intent.setType("image/*");
-                    galleryLauncher.launch(intent);
-                }
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                galleryLauncher.launch(intent);
             }
         });
 
