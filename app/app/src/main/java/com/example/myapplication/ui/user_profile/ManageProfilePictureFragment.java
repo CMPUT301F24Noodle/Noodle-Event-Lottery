@@ -70,7 +70,7 @@ public class ManageProfilePictureFragment extends DialogFragment {
                             // and then save it to the user!
                             user.setEncodedPicture(encodedString);
                             user.setHasProfilePic(true);
-                            
+
                             // take the new bitmap and set the images to display the bitmap
                             fullProfilePicture.setImageBitmap(newProfilePicture);
                             MyProfilePictureView.setImageBitmap(newProfilePicture);
