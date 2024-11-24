@@ -330,7 +330,16 @@ public class UserProfile implements Serializable {
     public Bitmap generateProfilePicture(){
         // get the character for the picture
         // TEST
-        String firstChar = Character.toString(getName().charAt(0));
+        String firstChar;
+        // if the user doesn't have a name yet, just have an empty background
+        if(name == null || name.isEmpty()){
+            firstChar = " ";
+        }
+        // otherwise generate the picture based on the first character of their name
+        else{
+            firstChar = Character.toString(getName().charAt(0));
+        }
+
 
 
 

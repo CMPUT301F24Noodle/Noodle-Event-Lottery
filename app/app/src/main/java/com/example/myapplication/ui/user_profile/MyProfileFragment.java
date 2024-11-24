@@ -74,8 +74,8 @@ public class MyProfileFragment extends Fragment {
 
         // display the generated image:
         CircleImageView profilePictureView = view.findViewById(R.id.profile_image);
-        //Bitmap generatedPic = user.generateProfilePicture();
-        //profilePictureView.setImageBitmap(generatedPic);
+        Bitmap generatedPic = user.generateProfilePicture();
+        profilePictureView.setImageBitmap(generatedPic);
 
         // if they have a facility, set their facility info
         if(user.getFacility() != null){
