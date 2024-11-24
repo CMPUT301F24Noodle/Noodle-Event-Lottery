@@ -261,9 +261,11 @@ public class MyProfileFragment extends Fragment {
             public void onClick(View view) {
                 Toast.makeText(main, "testing attributes", Toast.LENGTH_LONG).show();
                 //Bitmap generatedPic = user.generateProfilePicture();
-                //String TEST = user.encodeBitmapToBase64(generatedPic);
-                user.setEncodedPicture("Hello2");
-                userDB.updateUserDocument(user);
+                //String TEST = user.getEncodedPicture();
+                Bitmap saved = user.decodeBase64StringToBitmap();
+                profilePictureView.setImageBitmap(saved);
+
+
                 int a = 1+1;
             }
         });

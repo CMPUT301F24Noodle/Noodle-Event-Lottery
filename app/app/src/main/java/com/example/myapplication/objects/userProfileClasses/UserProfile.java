@@ -79,7 +79,6 @@ public class UserProfile implements Serializable {
         this.myNotifications = new ArrayList<DocumentReference>();
         this.myEnteredEvents = new ArrayList<Event>();
         this.hasProfilePic = Boolean.FALSE;
-        this.encodedPicture = "why isnt this working????";
 
         // TODO: make a res file with a default profile picture to use until a user
         // submits their own
@@ -331,8 +330,8 @@ public class UserProfile implements Serializable {
     public Bitmap generateProfilePicture(){
         // get the character for the picture
         // TEST
-        //String firstChar = Character.toString(getName().charAt(0));
-        String firstChar = "xD";
+        String firstChar = Character.toString(getName().charAt(0));
+
 
 
         // set the dimensions of the picture
@@ -388,14 +387,16 @@ public class UserProfile implements Serializable {
 
     public String encodeBitmapToBase64(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        // Compress the bitmap to a JPEG format; you can use PNG if transparency is needed.
+
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
-        // Encode the byte array into a Base64 string
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     public void setEncodedPicture(String encodedBase64Picture) {
         this.encodedPicture = encodedBase64Picture;
+    }
+    public String getEncodedPicture(){
+        return this.encodedPicture;
     }
 }
