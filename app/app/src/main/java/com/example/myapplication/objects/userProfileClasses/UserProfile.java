@@ -1,15 +1,18 @@
 package com.example.myapplication.objects.userProfileClasses;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.Image;
+import android.util.Base64;
 
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -26,7 +29,11 @@ public class UserProfile implements Serializable {
     String email;
     String phoneNumber;
     String address;
-    Image profilePicture;
+
+    // Profile Picture Stuff
+    String encodedPicture;
+    Boolean hasProfilePic; // false if user has no profile pic and needs a generated one
+
     Integer privileges; // 0 is default, means they are just an entrant, 1 means they also have
                         // organizer privilege
     DocumentReference docRef;
@@ -47,11 +54,8 @@ public class UserProfile implements Serializable {
                                         // notifications
     Boolean geoLocationOn; // True if they allow geoLocation, False if not
 
-    String profilePicDownloadURL; // Based on some research, something like this is probably needed to get uploaded pictures from firebase
-    Boolean hasProfilePic; // false if user has no profile pic and needs a generated one
-
     public ArrayList<Event> myEnteredEvents;
-
+// ====
 
     public UserProfile() {
     } // need for firebase
@@ -75,6 +79,7 @@ public class UserProfile implements Serializable {
         this.myNotifications = new ArrayList<DocumentReference>();
         this.myEnteredEvents = new ArrayList<Event>();
         this.hasProfilePic = Boolean.FALSE;
+        this.encodedPicture = "why isnt this working????";
 
         // TODO: make a res file with a default profile picture to use until a user
         // submits their own
@@ -162,18 +167,6 @@ public class UserProfile implements Serializable {
     public void setAddress(String address) {
         this.address = address;
     }
-
-    public Image getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(Image profilePicture) {
-        this.profilePicture = profilePicture;
-    }
-
-    public String getProfilePicDownloadURL() {return profilePicDownloadURL;}
-
-    public void setProfilePicDownloadURL(String url) {this.profilePicDownloadURL = url;}
 
     public Boolean getHasProfilePic(){return hasProfilePic;}
 
@@ -337,7 +330,10 @@ public class UserProfile implements Serializable {
      */
     public Bitmap generateProfilePicture(){
         // get the character for the picture
-        String firstChar = Character.toString(getName().charAt(0));
+        // TEST
+        //String firstChar = Character.toString(getName().charAt(0));
+        String firstChar = "xD";
+
 
         // set the dimensions of the picture
         // TODO: what should the dimensions be?
@@ -378,4 +374,28 @@ public class UserProfile implements Serializable {
         return profilePic;
     }
 
+    /**
+     * Author: Xavier Salm
+     * converts the base64 string representation of an image into a bitmap that can be displayed
+     *
+     * @return profilePicture: the profile picture encoded in the base64 string
+     */
+    public Bitmap decodeBase64StringToBitmap(){
+        byte[] decodedBytes = Base64.decode(encodedPicture, Base64.DEFAULT); // convert the string into bytes
+        Bitmap profilePicture = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length); // and then turn those bytes into a bitmap
+        return  profilePicture;
+    }
+
+    public String encodeBitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        // Compress the bitmap to a JPEG format; you can use PNG if transparency is needed.
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        // Encode the byte array into a Base64 string
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    public void setEncodedPicture(String encodedBase64Picture) {
+        this.encodedPicture = encodedBase64Picture;
+    }
 }

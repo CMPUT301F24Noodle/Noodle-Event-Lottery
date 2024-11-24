@@ -259,7 +259,12 @@ public class MyProfileFragment extends Fragment {
         profilePictureView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(main, "Currently no implementation this :)", Toast.LENGTH_LONG).show();
+                Toast.makeText(main, "testing attributes", Toast.LENGTH_LONG).show();
+                //Bitmap generatedPic = user.generateProfilePicture();
+                //String TEST = user.encodeBitmapToBase64(generatedPic);
+                user.setEncodedPicture("Hello2");
+                userDB.updateUserDocument(user);
+                int a = 1+1;
             }
         });
 
