@@ -25,6 +25,8 @@ import com.google.firebase.firestore.auth.User;
 
 import android.Manifest;
 
+import java.io.IOException;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ManageProfilePictureFragment extends DialogFragment {
@@ -51,14 +53,31 @@ public class ManageProfilePictureFragment extends DialogFragment {
 
 
 
-        //TODO test
+        //TODO
+        // this launches once a picture has been selected
         galleryLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         Uri selectedImage = result.getData().getData();
-                        ImageView imageView = getView().findViewById(R.id.full_profile_image);
-                        imageView.setImageURI(selectedImage);
+                        try {
+                            // you have to do error catching because UriToBitmap can throw an error
+                            Bitmap newProfilePicture = user.UriToBitmap(selectedImage);
+
+                            // encode the bitmap
+                            String encodedString = user.encodeBitmapToBase64(newProfilePicture);
+
+                            // and then save it to the user!
+                            user.setEncodedPicture(encodedString);
+                            user.setHasProfilePic(true);
+                            
+                            // take the new bitmap and set the images to display the bitmap
+                            fullProfilePicture.setImageBitmap(newProfilePicture);
+                            MyProfilePictureView.setImageBitmap(newProfilePicture);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
                     }
                 }
         );

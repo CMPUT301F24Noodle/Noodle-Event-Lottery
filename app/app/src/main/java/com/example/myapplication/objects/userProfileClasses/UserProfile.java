@@ -1,11 +1,17 @@
 package com.example.myapplication.objects.userProfileClasses;
 
+import static android.app.PendingIntent.getActivity;
+
+import static java.security.AccessController.getContext;
+
+import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.Image;
+import android.net.Uri;
 import android.util.Base64;
 
 import com.example.myapplication.objects.eventClasses.Event;
@@ -13,7 +19,10 @@ import com.example.myapplication.objects.facilityClasses.Facility;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -400,6 +409,12 @@ public class UserProfile implements Serializable {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    public Bitmap UriToBitmap(Uri uri) throws IOException {
+        ContentResolver contentResolver = (ContentResolver) getContext().getDomainCombiner();
+        InputStream inputStream = contentResolver.openInputStream(uri);
+        return BitmapFactory.decodeStream(inputStream);
     }
 
     public void setEncodedPicture(String encodedBase64Picture) {
