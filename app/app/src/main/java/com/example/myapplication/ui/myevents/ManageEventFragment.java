@@ -34,6 +34,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.GoogleMap;
+//import com.google.android.gms.location.FusedLocationProviderClient;
+//import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
+
 /**
  * Author Erin-marie
  * Fragment to end an event manually, and view the entrants and selected attendees
@@ -190,20 +198,49 @@ public class ManageEventFragment extends Fragment {
                 // check if the map fragment already exists
                 SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentByTag("map_fragment");
 
+                CharSequence text = "Opening the map... This will take a while";
+                Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+
                 if (mapFragment == null) {
                     // map fragment doesn't exist, create and add it
                     mapFragment = SupportMapFragment.newInstance();
                     Bundle args = new Bundle();
-                    double eventLatitude = event.getLatitude();
-                    double eventLongitude = event.getLongitude();
-                    args.putDouble("latitude", eventLatitude);
-                    args.putDouble("longitude", eventLongitude);
+
+                    // default location: edmonton
+                    double defaultLatitude = 53.5461;
+                    double defaultLongitude = -113.4937;
+                    int zoomLevel = 12;
+
+                    args.putDouble("latitude", defaultLatitude);
+                    args.putDouble("longitude", defaultLongitude);
+                    args.putInt("zoomLevel", zoomLevel);
+
                     mapFragment.setArguments(args);
 
                     // add the map fragment dynamically
                     getChildFragmentManager().beginTransaction()
                             .replace(R.id.manage_event, mapFragment, "map_fragment")
                             .commit();
+
+                    // update the camera once ready
+                    mapFragment.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(GoogleMap googleMap) {
+                            double edmontonLatitude = 53.5461;
+                            double edmontonLongitude = -113.4937;
+                            int zoomLevel = 12;
+
+                            // camera position
+                            LatLng edmonton = new LatLng(edmontonLatitude, edmontonLongitude);
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edmonton, zoomLevel));
+
+                            // marker at edmonton
+//                            googleMap.addMarker(new MarkerOptions()
+//                                    .position(edmonton)
+//                                    .title("Edmonton"));
+                        }
+                    });
+
                 } else {
                     // map fragment exists, remove it
                     getChildFragmentManager().beginTransaction()
