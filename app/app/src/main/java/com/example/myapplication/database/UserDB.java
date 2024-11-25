@@ -6,11 +6,13 @@ import androidx.annotation.NonNull;
 
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 
 
 /**
@@ -76,6 +78,7 @@ public class UserDB {
 
     }
 
+
     /**
      * Author: Erin-Marie
      * Looks up the users uuid in the AllUsers collection, and checks if they already exist in the database
@@ -98,6 +101,34 @@ public class UserDB {
 
     /**
      * Author: Erin-Marie
+     * Method to be called when a userprofile needs to be removed from the db
+     * Deletes the user's document from firebase
+     * TODO: find out what happens if a user has entered an event, then their profile is deleted.
+     *      do all the methods that get lists of entrants still work?
+     *      do all the methods for sending notifications still work?
+     *      make sure none of the methods throw an error if they cannot find a user document in the db
+     * @param user the user profile to be deleted
+     */
+    public void deleteUser(UserProfile user){
+        this.db.collection("AllUsers").document("User" + user.getUuid())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "User successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting user: User" + user.getUuid(), e);
+                    }
+                });
+
+    }
+
+    /**
+     * Author: Erin-Marie
      * Call this after editing a user profile to have the db reflect the updates
      * @param user to be updated
      * IDK if this will actually work but in theory it does
@@ -108,8 +139,8 @@ public class UserDB {
 
 
     //US.02.03.01
+    //IDk why this is here but im scared to delete it
     public void enterEvent(Event event){
-
         updateUserDocument(currentUser);
 
     }

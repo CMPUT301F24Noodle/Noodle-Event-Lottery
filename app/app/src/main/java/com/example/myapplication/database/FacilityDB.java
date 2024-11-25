@@ -66,7 +66,6 @@ public class FacilityDB {
     /**
      * Author: Erin-Marie
      * Method to be called when a user wants to delete their facility, or an Admin chooses to delete a facility
-     * Deletes a users facility, revokes their organizer privilege, removes the facility from the database, removes all events associated with the facility from the database
      * @param facility the facility instance to be deleted
      */
     public void deleteFacility(Facility facility){

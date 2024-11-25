@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.myapplication.objects.eventClasses.Event;
+import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.example.myapplication.objects.notificationClasses.Notification;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -414,13 +415,26 @@ public class EventDB implements Serializable {
 
     /**
      * Author: Erin-Marie
-     * Method to remove an event from the DB
-     * Because of the database design, this will also cause all users associated with the event to no longer see the event
-     * TODO: maybe make it send a notification to all entrants letting them know the event has been cancelled
+     * Method to be called when a user wants to delete an event, or an Admin chooses to delete an event
+     * Deletes an event
      * @param event the event to be deleted
      */
     public void deleteEvent(Event event){
-        (event.getDocRef()).delete();
+        this.db.collection("AllEvents").document(event.getEventID())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Event successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting Event:" + event.getEventID(), e);
+                    }
+                });
+
     }
 
     /**
