@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-
 
 
     <application
@@ -29,19 +30,25 @@
 
         </activity>
 
-        <activity android:name="com.example.myapplication.Geolocation_view_googlemaps"
-            android:exported="true"
-            android:label="@string/title_activity_geolocation_view_googlemaps">
-<!--        <intent-filter>-->
-<!--&lt;!&ndash;        <action android:name="android.intent.action.MAIN" />&ndash;&gt;-->
-<!--&lt;!&ndash;        <category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;-->
-<!--&lt;!&ndash;            only MainActivity can have the LAUNCHER intent filter&ndash;&gt;-->
-<!--        </intent-filter>-->
-        </activity>
+<!--        <activity android:name="com.example.myapplication.Geolocation_view_googlemaps"-->
+<!--            android:exported="true"-->
+<!--            android:label="@string/title_activity_geolocation_view_googlemaps">-->
+<!--&lt;!&ndash;        <intent-filter>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <action android:name="android.intent.action.MAIN" />&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;        <category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            only MainActivity can have the LAUNCHER intent filter&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;        </intent-filter>&ndash;&gt;-->
+<!--        </activity>-->
 
         <!--        <activity-->
         <!--            android:name=".ui.notifications.NotificationsFragment"-->
         <!--            android:label="My Notifications" />-->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <activity
             android:name="com.example.myapplication.ui.ViewEventActivity"
             android:exported="true"

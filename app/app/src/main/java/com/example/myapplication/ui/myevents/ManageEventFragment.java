@@ -2,6 +2,7 @@ package com.example.myapplication.ui.myevents;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.Geolocation_view_googlemaps;
 import com.example.myapplication.R;
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
@@ -24,9 +26,21 @@ import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.example.myapplication.objects.notificationClasses.Notification;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.GoogleMap;
+//import com.google.android.gms.location.FusedLocationProviderClient;
+//import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
 
 /**
  * Author Erin-marie
@@ -181,14 +195,72 @@ public class ManageEventFragment extends Fragment {
         viewMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CharSequence text = "This feature is not available yet, sorry";
-                Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+                // check if the map fragment already exists
+                SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentByTag("map_fragment");
+
+                CharSequence text = "Opening the map... This will take a while";
+                Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+
+                if (mapFragment == null) {
+                    // map fragment doesn't exist, create and add it
+                    mapFragment = SupportMapFragment.newInstance();
+                    Bundle args = new Bundle();
+
+                    // default location: edmonton
+                    double defaultLatitude = 53.5461;
+                    double defaultLongitude = -113.4937;
+                    int zoomLevel = 12;
+
+                    args.putDouble("latitude", defaultLatitude);
+                    args.putDouble("longitude", defaultLongitude);
+                    args.putInt("zoomLevel", zoomLevel);
+
+                    mapFragment.setArguments(args);
+
+                    // add the map fragment dynamically
+                    getChildFragmentManager().beginTransaction()
+                            .replace(R.id.manage_event, mapFragment, "map_fragment")
+                            .commit();
+
+                    // update the camera once ready
+                    mapFragment.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(GoogleMap googleMap) {
+                            double edmontonLatitude = 53.5461;
+                            double edmontonLongitude = -113.4937;
+                            int zoomLevel = 12;
+
+                            // camera position
+                            LatLng edmonton = new LatLng(edmontonLatitude, edmontonLongitude);
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edmonton, zoomLevel));
+
+                            // marker at edmonton
+//                            googleMap.addMarker(new MarkerOptions()
+//                                    .position(edmonton)
+//                                    .title("Edmonton"));
+                        }
+                    });
+
+                } else {
+                    // map fragment exists, remove it
+                    getChildFragmentManager().beginTransaction()
+                            .remove(mapFragment)
+                            .commit();
+                }
             }
         });
 
+//
+//        SupportMapFragment mapFragment = (SupportMapFragment) getParentFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
 
         return view;
     }
 
+//    @Override
+//    public void onMapReady(GoogleMap googleMap) {
+//        // Do something
+//    }
 
 }
