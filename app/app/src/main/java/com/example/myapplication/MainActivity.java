@@ -137,7 +137,10 @@ public class MainActivity extends AppCompatActivity {
                     eventDB.getUserOrgEvents(user); //initiate their list of organized events
                     connection.setUser(user);
                     notifDB.getUserNotifications(); //intitiate their list of all notifications
-                    notifDB.getUserNewNotifications(); //get the list of users unseen notifications
+                    if (user.getAllowNotifs() == Boolean.TRUE) {
+                        notifDB.getUserNewNotifications(); //get the list of users unseen notifications
+                    }
+
 
                     Log.v("SetUpDB", "Set profile for existing user");
 
