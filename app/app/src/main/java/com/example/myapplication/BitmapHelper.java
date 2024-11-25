@@ -123,14 +123,7 @@ public class BitmapHelper {
 
         String firstChar;
         String name = user.getName();
-        // if the user doesn't have a name yet, just have an empty background
-        if(name == null || name.isEmpty()){
-            firstChar = " ";
-        }
-        // otherwise generate the picture based on the first character of their name
-        else{
-            firstChar = Character.toString(user.getName().charAt(0));
-        }
+
 
         // set the dimensions of the picture
         // TODO: what should the dimensions be?
@@ -147,10 +140,18 @@ public class BitmapHelper {
 
         // create the paint for the background
         Paint backgroundPaint = new Paint();
-        backgroundPaint.setColor(Color.WHITE); // TODO this color can be changed for
+        backgroundPaint.setColor(Color.WHITE); // TODO this color can be changed for UI
 
         // set the entire bitmap to a background color (because its not allowed to be transparent)
         canvas.drawRect(0, 0, width, height, backgroundPaint);
+
+        // if the user has no name, just return the blank bitmap
+        if(name == null || name.isEmpty()){
+            return profilePic;
+        }
+
+        // otherwise get the character to paint onto the bitmap
+        firstChar = Character.toString(user.getName().charAt(0));
 
         // now that the canvas is painted, we can actually draw on it
         Paint charPaint = new Paint();
@@ -168,6 +169,7 @@ public class BitmapHelper {
         // paint the string onto the canvas!
         canvas.drawText(firstChar, adjustedWidth, adjustedHeight, charPaint);
 
+        // return the generated profile picture
         return profilePic;
     }
 }
