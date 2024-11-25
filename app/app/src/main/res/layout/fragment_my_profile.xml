@@ -168,7 +168,7 @@
                 android:textSize="18dp"
                 android:text="@string/enable_notifications"
                 android:textColor="@color/text_cyan"
-                android:id="@+id/profile_facility_section_text" />
+               />
 
             <Switch
                 android:id="@+id/switch_notifications"
