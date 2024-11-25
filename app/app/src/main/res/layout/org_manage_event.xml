@@ -159,6 +159,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_dialog_map" />
 
+    <!-- Back Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/FAB_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="85dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
+
     <!-- Buttons -->
     <Button
         android:id="@+id/notify_button"
