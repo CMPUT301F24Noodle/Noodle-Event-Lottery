@@ -1,12 +1,29 @@
 package com.example.myapplication.objects.userProfileClasses;
 
+import static android.app.PendingIntent.getActivity;
+
+import static java.security.AccessController.getContext;
+
+import android.content.ContentResolver;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.media.Image;
+import android.net.Uri;
+import android.util.Base64;
 
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +39,11 @@ public class UserProfile implements Serializable {
     String email;
     String phoneNumber;
     String address;
-    Image profilePicture;
+
+    // Profile Picture Stuff
+    String encodedPicture;
+    Boolean hasProfilePic; // false if user has no profile pic and needs a generated one
+
     Integer privileges; // 0 is default, means they are just an entrant, 1 means they also have
                         // organizer privilege
     DocumentReference docRef;
@@ -44,6 +65,7 @@ public class UserProfile implements Serializable {
     Boolean geoLocationOn; // True if they allow geoLocation, False if not
 
     public ArrayList<Event> myEnteredEvents;
+// ====
 
     public UserProfile() {
     } // need for firebase
@@ -57,8 +79,6 @@ public class UserProfile implements Serializable {
      */
     public UserProfile(String uuid) {
 
-        this.name = "Name";
-        this.email = "Email";
         this.privileges = 0; // defaults to entrant privileges
         this.allowNotifs = Boolean.TRUE; // defaults to allow notifications
         this.geoLocationOn = Boolean.FALSE; // defaults to false, need to ask user for permission first
@@ -68,6 +88,7 @@ public class UserProfile implements Serializable {
         this.myOrgEvents = new ArrayList<DocumentReference>();
         this.myNotifications = new ArrayList<DocumentReference>();
         this.myEnteredEvents = new ArrayList<Event>();
+        this.hasProfilePic = Boolean.FALSE;
 
         // TODO: make a res file with a default profile picture to use until a user
         // submits their own
@@ -156,13 +177,9 @@ public class UserProfile implements Serializable {
         this.address = address;
     }
 
-    public Image getProfilePicture() {
-        return profilePicture;
-    }
+    public Boolean getHasProfilePic(){return hasProfilePic;}
 
-    public void setProfilePicture(Image profilePicture) {
-        this.profilePicture = profilePicture;
-    }
+    public void setHasProfilePic(Boolean newHasProfilePic){ this.hasProfilePic = newHasProfilePic;}
 
     public Integer getPrivileges() {
         return privileges;
@@ -313,4 +330,10 @@ public class UserProfile implements Serializable {
         myNotifications = new ArrayList<DocumentReference>();
     }
 
+    public void setEncodedPicture(String encodedBase64Picture) {
+        this.encodedPicture = encodedBase64Picture;
+    }
+    public String getEncodedPicture(){
+        return this.encodedPicture;
+    }
 }

@@ -3,6 +3,7 @@ package com.example.myapplication.ui.user_profile;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.BitmapHelper;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.database.FacilityDB;
@@ -23,6 +25,9 @@ import com.example.myapplication.database.UserDB;
 import com.example.myapplication.databinding.FragmentMyProfileBinding;
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.ui.myevents.DisplayQRCodeFragment;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -39,6 +44,7 @@ public class MyProfileFragment extends Fragment {
     Facility facility;
     FacilityDB facilityDB;
     MainActivity main;
+    BitmapHelper helper;
 
 
     @Override
@@ -48,6 +54,9 @@ public class MyProfileFragment extends Fragment {
 
         FragmentMyProfileBinding binding = FragmentMyProfileBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+
+        // create the helper
+        helper = new BitmapHelper();
 
         // get the user and userDB
         getUserUserDB();
@@ -61,12 +70,16 @@ public class MyProfileFragment extends Fragment {
         TextView facilityNameText = view.findViewById(R.id.profile_facility_name);
         TextView facilityLocationText = view.findViewById(R.id.profile_facility_location);
 
-
         // display user info
         usernameText.setText(user.getName());
         emailText.setText(user.getEmail());
         phoneNumberText.setText(user.getPhoneNumber());
         addressText.setText(user.getAddress());
+
+        // display the generated image:
+        CircleImageView profilePictureView = view.findViewById(R.id.profile_image);
+        Bitmap ProfilePic = helper.loadProfilePicture(user);
+        profilePictureView.setImageBitmap(ProfilePic);
 
         // if they have a facility, set their facility info
         if(user.getFacility() != null){
@@ -129,6 +142,18 @@ public class MyProfileFragment extends Fragment {
                 // verify input
                 if(!username.isEmpty()){
                     user.setName(username);
+                    // only generate a new PP for the user if they don't have one uploaded
+                    if(user.getHasProfilePic() == null){ // if somehow, the user didn't have this set (because they were created before this attribute was added, assume they don't have one)
+                        user.setHasProfilePic(false);
+                        // TODO THIS IS JUST HERE SO YOU KNOW WHEN THIS HAPPENS
+                        Toast.makeText(main, "Reset profile pic status to no uploaded profile picture", Toast.LENGTH_LONG).show();
+                    }
+                    if(!user.getHasProfilePic()){
+                        Bitmap newProfilePic = helper.generateProfilePicture(user);
+                        profilePictureView.setImageBitmap(newProfilePic);
+                    }
+
+
                 }
                 if(!email.isEmpty()){
                     user.setEmail(email);
@@ -235,6 +260,21 @@ public class MyProfileFragment extends Fragment {
             }
         });
 
+        // SET UP PROFILE PICTURE AS A BUTTON FOR MANAGING PROFILE PICTURE
+        profilePictureView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ManageProfilePictureFragment PPFragment = new ManageProfilePictureFragment();
+                PPFragment.setUser(user);
+                PPFragment.setMyProfilePictureView(profilePictureView);
+                PPFragment.setUserDB(userDB);
+
+                // Navigate to the fragment
+                PPFragment.show(getParentFragmentManager(), "ProfilePictureManagementFragment");
+
+            }
+        });
+
         return view;
     }
 
@@ -251,6 +291,7 @@ public class MyProfileFragment extends Fragment {
         assert userDB != null;
         facilityDB = main.facilityDB;
     }
+
 
 }
 
