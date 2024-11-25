@@ -74,8 +74,8 @@ public class MyProfileFragment extends Fragment {
 
         // display the generated image:
         CircleImageView profilePictureView = view.findViewById(R.id.profile_image);
-        Bitmap generatedPic = user.generateProfilePicture();
-        profilePictureView.setImageBitmap(generatedPic);
+        Bitmap ProfilePic = loadProfilePicture();
+        profilePictureView.setImageBitmap(ProfilePic);
 
         // if they have a facility, set their facility info
         if(user.getFacility() != null){
@@ -263,6 +263,7 @@ public class MyProfileFragment extends Fragment {
                 ManageProfilePictureFragment PPFragment = new ManageProfilePictureFragment();
                 PPFragment.setUser(user);
                 PPFragment.setMyProfilePictureView(profilePictureView);
+                PPFragment.setUserDB(userDB);
 
                 // Navigate to the fragment
                 PPFragment.show(getParentFragmentManager(), "ProfilePictureManagementFragment");
@@ -287,7 +288,18 @@ public class MyProfileFragment extends Fragment {
         facilityDB = main.facilityDB;
     }
 
-
+    public Bitmap loadProfilePicture(){
+        Bitmap profilePicture;
+        // if they have a profile picture, decode it
+        if(user.getHasProfilePic()){
+            profilePicture = user.decodeBase64StringToBitmap(user.getEncodedPicture());
+        }
+        // if they dont have a profile picture, generate one
+        else{
+            profilePicture = user.generateProfilePicture();
+        }
+        return profilePicture;
+    }
 
 }
 
