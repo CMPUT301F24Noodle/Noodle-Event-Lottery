@@ -89,7 +89,7 @@ public class ManageProfilePictureFragment extends DialogFragment {
                 user.setHasProfilePic(false); // they should now get generated profile pictures
 
                 // now update the image views with a generated profile picture
-                Bitmap generatedPP = user.generateProfilePicture();
+                Bitmap generatedPP = helper.generateProfilePicture(user);
                 MyProfilePictureView.setImageBitmap(generatedPP);
                 fullProfilePicture.setImageBitmap(generatedPP);
 

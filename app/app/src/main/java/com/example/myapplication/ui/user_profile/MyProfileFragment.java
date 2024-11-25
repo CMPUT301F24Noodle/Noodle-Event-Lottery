@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.BitmapHelper;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.database.FacilityDB;
@@ -43,6 +44,7 @@ public class MyProfileFragment extends Fragment {
     Facility facility;
     FacilityDB facilityDB;
     MainActivity main;
+    BitmapHelper helper;
 
 
     @Override
@@ -52,6 +54,9 @@ public class MyProfileFragment extends Fragment {
 
         FragmentMyProfileBinding binding = FragmentMyProfileBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+
+        // create the helper
+        helper = new BitmapHelper();
 
         // get the user and userDB
         getUserUserDB();
@@ -65,7 +70,6 @@ public class MyProfileFragment extends Fragment {
         TextView facilityNameText = view.findViewById(R.id.profile_facility_name);
         TextView facilityLocationText = view.findViewById(R.id.profile_facility_location);
 
-
         // display user info
         usernameText.setText(user.getName());
         emailText.setText(user.getEmail());
@@ -74,7 +78,7 @@ public class MyProfileFragment extends Fragment {
 
         // display the generated image:
         CircleImageView profilePictureView = view.findViewById(R.id.profile_image);
-        Bitmap ProfilePic = loadProfilePicture();
+        Bitmap ProfilePic = helper.loadProfilePicture(user);
         profilePictureView.setImageBitmap(ProfilePic);
 
         // if they have a facility, set their facility info
@@ -145,7 +149,7 @@ public class MyProfileFragment extends Fragment {
                         Toast.makeText(main, "Reset profile pic status to no uploaded profile picture", Toast.LENGTH_LONG).show();
                     }
                     if(!user.getHasProfilePic()){
-                        Bitmap newProfilePic = user.generateProfilePicture();
+                        Bitmap newProfilePic = helper.generateProfilePicture(user);
                         profilePictureView.setImageBitmap(newProfilePic);
                     }
 
@@ -288,18 +292,6 @@ public class MyProfileFragment extends Fragment {
         facilityDB = main.facilityDB;
     }
 
-    public Bitmap loadProfilePicture(){
-        Bitmap profilePicture;
-        // if they have a profile picture, decode it
-        if(user.getHasProfilePic()){
-            profilePicture = user.decodeBase64StringToBitmap(user.getEncodedPicture());
-        }
-        // if they dont have a profile picture, generate one
-        else{
-            profilePicture = user.generateProfilePicture();
-        }
-        return profilePicture;
-    }
 
 }
 
