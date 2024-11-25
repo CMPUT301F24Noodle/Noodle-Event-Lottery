@@ -99,31 +99,47 @@ public class ManageEventFragment extends Fragment {
             currentWaitView.setText(text);
         }
 
-        //All Entrants
-        eventDB.getEventEntrants(event);
-        ArrayList<UserProfile> entrants = eventDB.getEntrantsList();
+        //if the event has ended, include the length of each list in the text view
+        if(event.getEventOver() == Boolean.TRUE){
+            String selectedText = "People Selected: " + event.getWinnersList().size();
+            selectedView.setText(selectedText);
 
+            String cancelledText = "People Cancelled: " + event.getDeclinedList().size();
+            cancelledView.setText(cancelledText);
+
+            String attendingText = "People Attending: " + event.getAcceptedList().size();
+            attendingView.setText(attendingText);
+
+        }
+
+        //Just to get these tasks going early
+        eventDB.getEventEntrants(event);
+        eventDB.getEventDeclined(event);
+        eventDB.getEventWinners(event);
+        eventDB.getEventAccepted(event);
+
+        //All Waitlisted (Entrants)
+        ArrayList<UserProfile> entrants = eventDB.getEntrantsList();
         EntrantArrayAdapter waitAdapter= new EntrantArrayAdapter(getContext(), entrants);
         waitingListView.setAdapter(waitAdapter);
 
-        eventDB.getEventWinners(event);
+        //All Selected (Winners)
+        ArrayList<UserProfile> winners = eventDB.getWinnersList();
+        EntrantArrayAdapter selectedAdapter = new EntrantArrayAdapter(getContext(), winners);
+        selectedListView.setAdapter(selectedAdapter);
 
-        //If the event is over then show the winners list
+        //All Cancelled (declined)
+        ArrayList<UserProfile> declined = eventDB.getDeclinedList();
+        EntrantArrayAdapter declinedAdapter = new EntrantArrayAdapter(getContext(), declined);
+        cancelledListView.setAdapter(declinedAdapter);
 
-            ArrayList<UserProfile> winners = eventDB.getWinnersList();
-
-            EntrantArrayAdapter selectedAdapter= new EntrantArrayAdapter(getContext(), winners);
-            selectedListView.setAdapter(selectedAdapter);
-
-        //TODO add accepted list and declined list
-
-
-
+        //All Attending (accepted)
+        ArrayList<UserProfile> accepted = eventDB.getAcceptedList();
+        EntrantArrayAdapter acceptedAdapter = new EntrantArrayAdapter(getContext(), accepted);
+        attendingListView.setAdapter(acceptedAdapter);
 
 
-        /**
-         * When the organizer presses the send message button, they will get an alert dialog to write a custom message that all entrants will recieve as a notification
-         */
+        //When the organizer presses the send message button, they will get an alert dialog to write a custom message that all entrants will recieve as a notification
         sendMessageButton.setOnClickListener( new View.OnClickListener() {
 
             @Override
@@ -164,12 +180,10 @@ public class ManageEventFragment extends Fragment {
                     alertDialog.show();
                 }
             }
-        }
-        );
+        });
 
         //onCLick for when the endLottery button is selected
         endLotteryButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 eventDB.endEvent(event);
@@ -177,13 +191,15 @@ public class ManageEventFragment extends Fragment {
                 Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
                 waitAdapter.notifyDataSetChanged();
                 selectedAdapter.notifyDataSetChanged();
+                declinedAdapter.notifyDataSetChanged();
+                acceptedAdapter.notifyDataSetChanged();
 
             }
         });
 
 
 
-       // TODO: make these actually work
+       // TODO: make this actually work
         replaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -192,6 +208,8 @@ public class ManageEventFragment extends Fragment {
             }
         });
 
+
+        //Button for viewing the GeoLocation map of all entrants for the event
         viewMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

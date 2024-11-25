@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.v("SetUpDB", "Set profile for new user");
                 }
                 //testCreateNotif();
-                createNewNotifications(); //populate the new notificatons to the device notifications
+                createNewNotifications(); //populate the new notifications to the device notifications
             }
         });
         // sets the currentUser attribute for MainActivity
