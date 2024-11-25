@@ -55,4 +55,20 @@ public class Facility implements Serializable {
 
     //QUESTION: there needs to be a function somewhere that checks if a facility already exists before creating it, but I think that will need to be within the CreateFacilityFragment
 
+
+    public UserProfile getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserProfile owner) {
+        this.owner = owner;
+    }
+
+    public String getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(String ownerID) {
+        this.ownerID = ownerID;
+    }
 }
