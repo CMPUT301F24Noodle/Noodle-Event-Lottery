@@ -1,10 +1,14 @@
 import org.apache.commons.io.filefilter.FalseFileFilter
+import org.gradle.internal.impldep.org.bouncycastle.oer.OERDefinition.optional
 
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
 //    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+
+//trying to fix javadoc
+//    id("org.jetbrains.kotlin.android") version "1.6.21" apply false
 }
 
 android {
@@ -64,11 +68,13 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 
     //Things i tried to fix the JavaDoc error:
-//    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20")
-//    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20")
+//    implementation(libs.kotlin.stdlib)
+//    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22")
+//    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22")
 //    implementation(libs.jetbrains.kotlin.stdlib.jdk7)
 //    implementation(libs.kotlin.stdlib.jdk8)
 //    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
+//    implementation(files("C:/Users/Erins/AppData/Local/Android/Sdk/platforms/android-34/android.jar"))
 
     // Android test dependencies
     androidTestImplementation ("androidx.test.ext:junit:1.1.3")
@@ -84,6 +90,7 @@ dependencies {
     testImplementation ("androidx.test.ext:junit:1.1.3")
     testImplementation ("androidx.test:runner:1.4.0")
     testImplementation ("androidx.test:rules:1.4.0")
+
 
 
     // dependencies for Firebase Authentication and Cloud Firestore
