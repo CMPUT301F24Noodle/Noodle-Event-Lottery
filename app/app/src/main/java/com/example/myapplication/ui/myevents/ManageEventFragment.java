@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +25,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
 import com.example.myapplication.database.NotificationDB;
+import com.example.myapplication.databinding.FragmentRegisteredEventsBinding;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.example.myapplication.objects.notificationClasses.Notification;
@@ -33,6 +36,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -45,8 +50,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 /**
  * Author Erin-marie
  * Fragment to end an event manually, and view the entrants and selected attendees
- * TODO: add functionality to the map button and the replace cancelled button
- * TODO: add lists for the people who cancelled and the people who have accepted their invitation
+ * TODO: add functionality to the replace cancelled button
  * TODO: write tests
  */
 public class ManageEventFragment extends Fragment {
@@ -55,14 +59,22 @@ public class ManageEventFragment extends Fragment {
     EventDB eventDB;
     DBConnection connection;
     NotificationDB notifDB;
+    ExpandableListView expandableListView;
+    ExpandableListAdapter expandableListAdapter;
+    ArrayList<String> expandableListTitle;
+    HashMap<String, ArrayList<UserProfile>> expandableListDetail;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
+
         View view = inflater.inflate(R.layout.org_manage_event, container, false);
 
-        connection = new DBConnection(getContext());
-        notifDB = connection.getNotifDB();
+        //connection = new DBConnection(getContext());
+        //notifDB = connection.getNotifDB();
 
         Bundle args = getArguments();
         assert args != null;
@@ -71,77 +83,130 @@ public class ManageEventFragment extends Fragment {
         assert eventDB != null;
 
 
-        TextView currentWaitView = view.findViewById(R.id.nav_waiting);
-        ListView waitingListView = view.findViewById(R.id.nav_waiting_list);
-
-        TextView selectedView = view.findViewById(R.id.nav_selected);
-        ListView selectedListView = view.findViewById(R.id.selected_ppl);
-
-        TextView cancelledView = view.findViewById(R.id.nav_cancelled);
-        ListView cancelledListView = view.findViewById(R.id.cancelled_ppl);
-
-        TextView attendingView = view.findViewById(R.id.nav_attending);
-        ListView attendingListView = view.findViewById(R.id.attending_ppl);
-
-        //initialize buttons
-        FloatingActionButton viewMapButton = view.findViewById(R.id.FAB_map);
-        Button sendMessageButton = view.findViewById((R.id.notify_button));
-        Button replaceButton = view.findViewById(R.id.replace_button);
-        Button endLotteryButton = view.findViewById(R.id.draw_name_button);
-
-
-        String text;
-        if (event.getMaxEntrants() == -1){
-            text = "Current waiting list: " + event.getWaitingListSize() + " entrants";
-            currentWaitView.setText(text);
-        } else {
-            text = "Current Waiting List: " + event.countEntrants().toString() + " / " + event.getMaxEntrants();
-            currentWaitView.setText(text);
-        }
-
-        //if the event has ended, include the length of each list in the text view
-        if(event.getEventOver() == Boolean.TRUE){
-            String selectedText = "People Selected: " + event.getWinnersList().size();
-            selectedView.setText(selectedText);
-
-            String cancelledText = "People Cancelled: " + event.getDeclinedList().size();
-            cancelledView.setText(cancelledText);
-
-            String attendingText = "People Attending: " + event.getAcceptedList().size();
-            attendingView.setText(attendingText);
-
-        }
-
-        //Just to get these tasks going early
+        //BROKEN these aren't being done executing early enough
         eventDB.getEventEntrants(event);
         eventDB.getEventDeclined(event);
         eventDB.getEventWinners(event);
         eventDB.getEventAccepted(event);
 
-        //All Waitlisted (Entrants)
-        ArrayList<UserProfile> entrants = eventDB.getEntrantsList();
-        EntrantArrayAdapter waitAdapter= new EntrantArrayAdapter(getContext(), entrants);
-        waitingListView.setAdapter(waitAdapter);
 
-        //All Selected (Winners)
-        ArrayList<UserProfile> winners = eventDB.getWinnersList();
-        EntrantArrayAdapter selectedAdapter = new EntrantArrayAdapter(getContext(), winners);
-        selectedListView.setAdapter(selectedAdapter);
 
-        //All Cancelled (declined)
-        ArrayList<UserProfile> declined = eventDB.getDeclinedList();
-        EntrantArrayAdapter declinedAdapter = new EntrantArrayAdapter(getContext(), declined);
-        cancelledListView.setAdapter(declinedAdapter);
+        //initialize buttons
+        FloatingActionButton viewMapButton = view.findViewById(R.id.FAB_map);
+        FloatingActionButton backButton = view.findViewById(R.id.FAB_back);
+        Button sendMessageButton = view.findViewById((R.id.notify_button));
+        Button replaceButton = view.findViewById(R.id.replace_button);
+        Button endLotteryButton = view.findViewById(R.id.draw_name_button);
 
-        //All Attending (accepted)
-        ArrayList<UserProfile> accepted = eventDB.getAcceptedList();
-        EntrantArrayAdapter acceptedAdapter = new EntrantArrayAdapter(getContext(), accepted);
-        attendingListView.setAdapter(acceptedAdapter);
+        GetListData listPopulator = new GetListData(eventDB);
+
+        expandableListView = (ExpandableListView) view.findViewById(R.id.expandableListView);
+        expandableListDetail = listPopulator.getData();
+        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+        expandableListAdapter = new CustomExpandableListAdapter(this.getContext(), expandableListTitle, expandableListDetail);
+        expandableListView.setAdapter(expandableListAdapter);
+
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                Toast.makeText(getContext(), expandableListTitle.get(groupPosition) + " List Expanded.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                Toast.makeText(getContext(),
+                        expandableListTitle.get(groupPosition) + " List Collapsed.",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                Toast.makeText(
+                        getContext(),
+                        expandableListTitle.get(groupPosition)
+                                + " -> "
+                                + expandableListDetail.get(
+                                expandableListTitle.get(groupPosition)).get(
+                                childPosition), Toast.LENGTH_SHORT
+                ).show();
+                return false;
+            }
+        });
+
+
+//        TextView currentWaitView = view.findViewById(R.id.nav_waiting);
+//        ListView waitingListView = view.findViewById(R.id.nav_waiting_list);
+//
+//        //TextView selectedView = view.findViewById(R.id.nav_selected);
+//
+//        ExpandableListView expandableListView = view.findViewById(R.id.selected_ppl);
+//
+//        TextView cancelledView = view.findViewById(R.id.nav_cancelled);
+//        ListView cancelledListView = view.findViewById(R.id.cancelled_ppl);
+//
+//        TextView attendingView = view.findViewById(R.id.nav_attending);
+//        ListView attendingListView = view.findViewById(R.id.attending_ppl);
+
+
+
+
+//        String text;
+//        if (event.getMaxEntrants().equals(-1)){
+//            text = "Current waiting list: " + event.getWaitingListSize() + " entrants";
+//            currentWaitView.setText(text);
+//        } else {
+//            text = "Current Waiting List: " + event.countEntrants().toString() + " / " + event.getMaxEntrants();
+//            currentWaitView.setText(text);
+//        }
+//
+//        //if the event has ended, include the length of each list in the text view
+//        if(event.getEventOver() == Boolean.TRUE){
+//            String selectedText = "People Selected: " + event.getWinnersList().size();
+//            //selectedView.setText(selectedText);
+//
+//            String cancelledText = "People Cancelled: " + event.getDeclinedList().size();
+//            cancelledView.setText(cancelledText);
+//
+//            String attendingText = "People Attending: " + event.getAcceptedList().size();
+//            attendingView.setText(attendingText);
+//
+//        }
+
+
+
+
+
+
+//        EntrantArrayAdapter waitAdapter= new EntrantArrayAdapter(getContext(), entrants);
+//        waitingListView.setAdapter(waitAdapter);
+//
+//        //All Selected (Winners)
+//
+//        EntrantArrayAdapter selectedAdapter = new EntrantArrayAdapter(getContext(), winners);
+//        selectedListView.setAdapter(selectedAdapter);
+//
+//        //All Cancelled (declined)
+//        EntrantArrayAdapter declinedAdapter = new EntrantArrayAdapter(getContext(), declined);
+//        cancelledListView.setAdapter(declinedAdapter);
+//
+//        //All Attending (accepted)
+//        EntrantArrayAdapter acceptedAdapter = new EntrantArrayAdapter(getContext(), accepted);
+//        attendingListView.setAdapter(acceptedAdapter);
+
+
 
 
         //When the organizer presses the send message button, they will get an alert dialog to write a custom message that all entrants will recieve as a notification
         sendMessageButton.setOnClickListener( new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 {
@@ -169,7 +234,7 @@ public class ManageEventFragment extends Fragment {
                     });
 
                     // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
-                    builder.setNegativeButton("No", (DialogInterface.OnClickListener) (dialog, which) -> {
+                    builder.setNegativeButton("Cancel", (DialogInterface.OnClickListener) (dialog, which) -> {
                         // If user click no then dialog box is canceled.
                         dialog.cancel();
                     });
@@ -183,21 +248,26 @@ public class ManageEventFragment extends Fragment {
         });
 
         //onCLick for when the endLottery button is selected
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
+
+        //onCLick for when the endLottery button is selected
         endLotteryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 eventDB.endEvent(event);
                 CharSequence text = "Event lottery ended, notifications have been sent to entrants.";
                 Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
-                waitAdapter.notifyDataSetChanged();
-                selectedAdapter.notifyDataSetChanged();
-                declinedAdapter.notifyDataSetChanged();
-                acceptedAdapter.notifyDataSetChanged();
+//                waitAdapter.notifyDataSetChanged();
+//                selectedAdapter.notifyDataSetChanged();
+//                declinedAdapter.notifyDataSetChanged();
+//                acceptedAdapter.notifyDataSetChanged();
 
             }
         });
-
-
 
        // TODO: make this actually work
         replaceButton.setOnClickListener(new View.OnClickListener() {
@@ -207,7 +277,6 @@ public class ManageEventFragment extends Fragment {
                 Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
             }
         });
-
 
         //Button for viewing the GeoLocation map of all entrants for the event
         viewMapButton.setOnClickListener(new View.OnClickListener() {
@@ -275,6 +344,25 @@ public class ManageEventFragment extends Fragment {
 
         return view;
     }
+
+//    public HashMap<String, ArrayList<UserProfile>> getData(){
+//        HashMap<String, ArrayList<UserProfile>> expandableListDetail = new HashMap<String, ArrayList<UserProfile>>();
+//        //All Waitlisted (Entrants)
+//        ArrayList<UserProfile> entrants = eventDB.getEntrantsList();
+//        ArrayList<UserProfile> winners = eventDB.getWinnersList();
+//        ArrayList<UserProfile> declined = eventDB.getDeclinedList();
+//        ArrayList<UserProfile> accepted = eventDB.getAcceptedList();
+//        Log.v("getData", "size of entrants list: " + entrants.size());
+//
+//        expandableListDetail.put("Entrants", entrants);
+//        expandableListDetail.put("Winners", winners);
+//        expandableListDetail.put("Declined", declined);
+//        expandableListDetail.put("Accepted", accepted);
+//
+//        Log.v("getData", "size of entrants list: " + entrants.size());
+//
+//        return expandableListDetail;
+//    }
 
 //    @Override
 //    public void onMapReady(GoogleMap googleMap) {

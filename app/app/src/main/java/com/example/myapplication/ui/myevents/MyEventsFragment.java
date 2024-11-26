@@ -198,6 +198,7 @@ public class MyEventsFragment extends Fragment {
      * Constructs a bundle of arguments to send to the new fragment
      */
     private void openAddEventsFragment() {
+
         // Create a new instance of AddEventsFragment
         AddEventsFragment addEventsFragment = new AddEventsFragment();
         Bundle args = new Bundle();
