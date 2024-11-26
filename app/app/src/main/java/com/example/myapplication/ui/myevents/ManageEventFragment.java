@@ -3,6 +3,8 @@ package com.example.myapplication.ui.myevents;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
+import android.Manifest;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.Geolocation_view_googlemaps;
@@ -26,10 +29,15 @@ import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.example.myapplication.objects.notificationClasses.Notification;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -55,6 +63,17 @@ public class ManageEventFragment extends Fragment {
     EventDB eventDB;
     DBConnection connection;
     NotificationDB notifDB;
+
+    // The entry point to the Fused Location Provider.
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private Location lastKnownLocation;
+    private static final String TAG = ManageEventFragment.class.getSimpleName();
+    private GoogleMap map;
+    private CameraPosition cameraPosition;
+    private static final int DEFAULT_ZOOM = 15;
+    private final LatLng defaultLocation = new LatLng(53.5461, -113.4937);
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +89,8 @@ public class ManageEventFragment extends Fragment {
         eventDB = (EventDB) args.get("eventDB");
         assert eventDB != null;
 
+        // Construct a FusedLocationProviderClient.
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         TextView currentWaitView = view.findViewById(R.id.nav_waiting);
         ListView waitingListView = view.findViewById(R.id.nav_waiting_list);
@@ -216,8 +237,12 @@ public class ManageEventFragment extends Fragment {
                 // check if the map fragment already exists
                 SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentByTag("map_fragment");
 
-                CharSequence text = "Opening the map... This will take a while";
+                CharSequence text = "Opening the map... This might take a while";
                 Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
 
                 if (mapFragment == null) {
                     // map fragment doesn't exist, create and add it
@@ -244,18 +269,8 @@ public class ManageEventFragment extends Fragment {
                     mapFragment.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
-                            double edmontonLatitude = 53.5461;
-                            double edmontonLongitude = -113.4937;
-                            int zoomLevel = 12;
-
-                            // camera position
-                            LatLng edmonton = new LatLng(edmontonLatitude, edmontonLongitude);
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edmonton, zoomLevel));
-
-                            // marker at edmonton
-//                            googleMap.addMarker(new MarkerOptions()
-//                                    .position(edmonton)
-//                                    .title("Edmonton"));
+                            map = googleMap;
+                            getDeviceLocation();
                         }
                     });
 
@@ -266,13 +281,43 @@ public class ManageEventFragment extends Fragment {
                             .commit();
                 }
             }
+        private void getDeviceLocation() {
+                /*
+                 * Get the best and most recent location of the device, which may be null in rare
+                 * cases when a location is not available.
+                 */
+                try {
+                        Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
+                        locationResult.addOnCompleteListener(new OnCompleteListener<Location>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Location> task) {
+                                if (task.isSuccessful()) {
+                                    // Set the map's camera position to the current location of the device.
+                                    lastKnownLocation = task.getResult();
+                                    if (lastKnownLocation != null) {
+                                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                                new LatLng(lastKnownLocation.getLatitude(),
+                                                        lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                                        // marker
+                                        map.addMarker(new MarkerOptions()
+                                                .position(new LatLng(lastKnownLocation.getLatitude(),
+                                                        lastKnownLocation.getLongitude()))
+                                                .title("User's location"));
+                                    }
+                                } else {
+                                    Log.d(TAG, "Current location is null. Using defaults.");
+                                    Log.e(TAG, "Exception: %s", task.getException());
+                                    map.moveCamera(CameraUpdateFactory
+                                            .newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
+                                    map.getUiSettings().setMyLocationButtonEnabled(false);
+                                }
+                            }
+                        });
+                } catch (SecurityException e)  {
+                    Log.e("Exception: %s", e.getMessage(), e);
+                }
+        }
         });
-
-//
-//        SupportMapFragment mapFragment = (SupportMapFragment) getParentFragmentManager()
-//                .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
-
         return view;
     }
 
@@ -280,5 +325,4 @@ public class ManageEventFragment extends Fragment {
 //    public void onMapReady(GoogleMap googleMap) {
 //        // Do something
 //    }
-
 }
