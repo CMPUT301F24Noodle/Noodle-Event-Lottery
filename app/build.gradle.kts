@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.org.bouncycastle.oer.OERDefinition.optional
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     alias(libs.plugins.android.application) apply false
@@ -20,5 +22,6 @@ buildscript {
 //        classpath(libs.gradle)
         classpath(libs.secrets.gradle.plugin)
         classpath(libs.google.services)
+
     }
 }

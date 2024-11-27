@@ -52,6 +52,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delete"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/belanosima"
+            android:background="@drawable/mybutton"/>
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
             android:fontFamily="@font/belanosima"
             android:background="@drawable/mybutton"/>
     </LinearLayout>

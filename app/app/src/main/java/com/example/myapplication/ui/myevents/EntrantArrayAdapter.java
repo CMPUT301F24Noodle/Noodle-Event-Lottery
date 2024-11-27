@@ -45,7 +45,6 @@ public class EntrantArrayAdapter extends ArrayAdapter<UserProfile> {
         TextView headingView = convertView.findViewById(R.id.user_name);
 
 
-
         // Populate the data into the template view using the data object
         assert user != null;
         headingView.setText(user.getName());

@@ -3,6 +3,8 @@ package com.example.myapplication.ui.myevents;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
+import android.Manifest;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.Geolocation_view_googlemaps;
@@ -26,10 +29,15 @@ import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.example.myapplication.objects.notificationClasses.Notification;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -55,6 +63,17 @@ public class ManageEventFragment extends Fragment {
     EventDB eventDB;
     DBConnection connection;
     NotificationDB notifDB;
+
+    // The entry point to the Fused Location Provider.
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private Location lastKnownLocation;
+    private static final String TAG = ManageEventFragment.class.getSimpleName();
+    private GoogleMap map;
+    private CameraPosition cameraPosition;
+    private static final int DEFAULT_ZOOM = 15;
+    private final LatLng defaultLocation = new LatLng(53.5461, -113.4937);
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +89,8 @@ public class ManageEventFragment extends Fragment {
         eventDB = (EventDB) args.get("eventDB");
         assert eventDB != null;
 
+        // Construct a FusedLocationProviderClient.
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         TextView currentWaitView = view.findViewById(R.id.nav_waiting);
         ListView waitingListView = view.findViewById(R.id.nav_waiting_list);
@@ -99,31 +120,47 @@ public class ManageEventFragment extends Fragment {
             currentWaitView.setText(text);
         }
 
-        //All Entrants
-        eventDB.getEventEntrants(event);
-        ArrayList<UserProfile> entrants = eventDB.getEntrantsList();
+        //if the event has ended, include the length of each list in the text view
+        if(event.getEventOver() == Boolean.TRUE){
+            String selectedText = "People Selected: " + event.getWinnersList().size();
+            selectedView.setText(selectedText);
 
+            String cancelledText = "People Cancelled: " + event.getDeclinedList().size();
+            cancelledView.setText(cancelledText);
+
+            String attendingText = "People Attending: " + event.getAcceptedList().size();
+            attendingView.setText(attendingText);
+
+        }
+
+        //Just to get these tasks going early
+        eventDB.getEventEntrants(event);
+        eventDB.getEventDeclined(event);
+        eventDB.getEventWinners(event);
+        eventDB.getEventAccepted(event);
+
+        //All Waitlisted (Entrants)
+        ArrayList<UserProfile> entrants = eventDB.getEntrantsList();
         EntrantArrayAdapter waitAdapter= new EntrantArrayAdapter(getContext(), entrants);
         waitingListView.setAdapter(waitAdapter);
 
-        eventDB.getEventWinners(event);
+        //All Selected (Winners)
+        ArrayList<UserProfile> winners = eventDB.getWinnersList();
+        EntrantArrayAdapter selectedAdapter = new EntrantArrayAdapter(getContext(), winners);
+        selectedListView.setAdapter(selectedAdapter);
 
-        //If the event is over then show the winners list
+        //All Cancelled (declined)
+        ArrayList<UserProfile> declined = eventDB.getDeclinedList();
+        EntrantArrayAdapter declinedAdapter = new EntrantArrayAdapter(getContext(), declined);
+        cancelledListView.setAdapter(declinedAdapter);
 
-            ArrayList<UserProfile> winners = eventDB.getWinnersList();
-
-            EntrantArrayAdapter selectedAdapter= new EntrantArrayAdapter(getContext(), winners);
-            selectedListView.setAdapter(selectedAdapter);
-
-        //TODO add accepted list and declined list
-
-
-
+        //All Attending (accepted)
+        ArrayList<UserProfile> accepted = eventDB.getAcceptedList();
+        EntrantArrayAdapter acceptedAdapter = new EntrantArrayAdapter(getContext(), accepted);
+        attendingListView.setAdapter(acceptedAdapter);
 
 
-        /**
-         * When the organizer presses the send message button, they will get an alert dialog to write a custom message that all entrants will recieve as a notification
-         */
+        //When the organizer presses the send message button, they will get an alert dialog to write a custom message that all entrants will recieve as a notification
         sendMessageButton.setOnClickListener( new View.OnClickListener() {
 
             @Override
@@ -164,12 +201,10 @@ public class ManageEventFragment extends Fragment {
                     alertDialog.show();
                 }
             }
-        }
-        );
+        });
 
         //onCLick for when the endLottery button is selected
         endLotteryButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 eventDB.endEvent(event);
@@ -177,13 +212,15 @@ public class ManageEventFragment extends Fragment {
                 Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
                 waitAdapter.notifyDataSetChanged();
                 selectedAdapter.notifyDataSetChanged();
+                declinedAdapter.notifyDataSetChanged();
+                acceptedAdapter.notifyDataSetChanged();
 
             }
         });
 
 
 
-       // TODO: make these actually work
+       // TODO: make this actually work
         replaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -192,14 +229,20 @@ public class ManageEventFragment extends Fragment {
             }
         });
 
+
+        //Button for viewing the GeoLocation map of all entrants for the event
         viewMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // check if the map fragment already exists
                 SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentByTag("map_fragment");
 
-                CharSequence text = "Opening the map... This will take a while";
+                CharSequence text = "Opening the map... This might take a while";
                 Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
+
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
 
                 if (mapFragment == null) {
                     // map fragment doesn't exist, create and add it
@@ -226,18 +269,8 @@ public class ManageEventFragment extends Fragment {
                     mapFragment.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
-                            double edmontonLatitude = 53.5461;
-                            double edmontonLongitude = -113.4937;
-                            int zoomLevel = 12;
-
-                            // camera position
-                            LatLng edmonton = new LatLng(edmontonLatitude, edmontonLongitude);
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edmonton, zoomLevel));
-
-                            // marker at edmonton
-//                            googleMap.addMarker(new MarkerOptions()
-//                                    .position(edmonton)
-//                                    .title("Edmonton"));
+                            map = googleMap;
+                            getDeviceLocation();
                         }
                     });
 
@@ -248,13 +281,43 @@ public class ManageEventFragment extends Fragment {
                             .commit();
                 }
             }
+        private void getDeviceLocation() {
+                /*
+                 * Get the best and most recent location of the device, which may be null in rare
+                 * cases when a location is not available.
+                 */
+                try {
+                        Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
+                        locationResult.addOnCompleteListener(new OnCompleteListener<Location>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Location> task) {
+                                if (task.isSuccessful()) {
+                                    // Set the map's camera position to the current location of the device.
+                                    lastKnownLocation = task.getResult();
+                                    if (lastKnownLocation != null) {
+                                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                                new LatLng(lastKnownLocation.getLatitude(),
+                                                        lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                                        // marker
+                                        map.addMarker(new MarkerOptions()
+                                                .position(new LatLng(lastKnownLocation.getLatitude(),
+                                                        lastKnownLocation.getLongitude()))
+                                                .title("User's location"));
+                                    }
+                                } else {
+                                    Log.d(TAG, "Current location is null. Using defaults.");
+                                    Log.e(TAG, "Exception: %s", task.getException());
+                                    map.moveCamera(CameraUpdateFactory
+                                            .newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
+                                    map.getUiSettings().setMyLocationButtonEnabled(false);
+                                }
+                            }
+                        });
+                } catch (SecurityException e)  {
+                    Log.e("Exception: %s", e.getMessage(), e);
+                }
+        }
         });
-
-//
-//        SupportMapFragment mapFragment = (SupportMapFragment) getParentFragmentManager()
-//                .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
-
         return view;
     }
 
@@ -262,5 +325,4 @@ public class ManageEventFragment extends Fragment {
 //    public void onMapReady(GoogleMap googleMap) {
 //        // Do something
 //    }
-
 }

@@ -35,7 +35,7 @@ public class FacilityDB {
     public String uuid; //for when the current user adds an event
 
     //reference to the current users facility document in the AllUsers collection
-    private final DocumentReference facilityDocument;
+    //private final DocumentReference facilityDocument;
 
     /**
      * Author: Erin-Marie
@@ -44,7 +44,7 @@ public class FacilityDB {
      */
     public FacilityDB(DBConnection connection) {
         //Gets a reference to the current users facility document in the db
-        this.facilityDocument = connection.getFacilityDocument();
+        //this.facilityDocument = connection.getFacilityDocument();
         this.connection = connection;
         this.allFacilities = connection.getAllFacilitiesCollection();
         this.db = connection.getDB();
@@ -66,19 +66,23 @@ public class FacilityDB {
     /**
      * Author: Erin-Marie
      * Method to be called when a user wants to delete their facility, or an Admin chooses to delete a facility
-     * Deletes a users facility, revokes their organizer privilege, removes the facility from the database, removes all events associated with the facility from the database
-     * @param facility
-     * TODO: write the method
+     * @param facility the facility instance to be deleted
      */
     public void deleteFacility(Facility facility){
-        //remove it from the users facility attribute
-
-        //set the user to not having organizer privileges
-
-        //remove it from the AllFacilities collection
-
-        //Remove all events that have this facility
-            //QUESTION do we send a notif to people associated with the event saying it has been removed, or do we set it to say This Event No Longer Exists?
+        this.db.collection("AllFacilities").document("Facility" + facility.getOwnerID())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Facility successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting Facility: Facility" + facility.getOwnerID(), e);
+                    }
+                });
 
     }
 

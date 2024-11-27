@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.myapplication.objects.eventClasses.Event;
+import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.example.myapplication.objects.notificationClasses.Notification;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,6 +47,8 @@ public class EventDB implements Serializable {
     public ArrayList<UserProfile> losersList = new ArrayList<UserProfile>();
     public ArrayList<UserProfile> winnersList = new ArrayList<UserProfile>();
     public ArrayList<UserProfile> entrantsList = new ArrayList<UserProfile>();
+    public ArrayList<UserProfile> acceptedList = new ArrayList<UserProfile>();
+    public ArrayList<UserProfile> declinedList = new ArrayList<UserProfile>();
 
 
     /**
@@ -325,7 +328,7 @@ public class EventDB implements Serializable {
     public void getEventLosers(Event event){
         //query for all losers documents of the users in the events losersList
         ArrayList<DocumentReference> losers = event.getLosersList();
-        if (losers.size() == 0){
+        if (losers.isEmpty()){
             Log.v(TAG, "event has no losers to retrieve from db");
             return;
         }
@@ -334,7 +337,6 @@ public class EventDB implements Serializable {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 //empty the current list of losers so there are not duplicates
-                ArrayList<Event> myEventsCol = new ArrayList<Event>();
                 losersList.clear();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     //add each user to the arraylist
@@ -356,7 +358,7 @@ public class EventDB implements Serializable {
     public void getEventEntrants(Event event){
         //query for all losers documents of the users in the events losersList
         ArrayList<DocumentReference> entrants = event.getEntrantsList();
-        if (entrants.size() == 0){
+        if (entrants.isEmpty()){
             Log.v(TAG, "event has no entrants to retrieve from db");
             return;
         }
@@ -383,12 +385,11 @@ public class EventDB implements Serializable {
      * Author Erin-Marie
      * sets EventDB objects winnersList array to be all of the winners of the event
      * @param event that has been completed
-     * @return this.losersList but the return value isnt actually used
      */
     public void getEventWinners(Event event){
         //query for all the winners' documents of the users in the events winnersList
         ArrayList<DocumentReference> winners = event.getWinnersList();
-        if (winners.size() == 0){
+        if (winners.isEmpty()){
             Log.v(TAG, "event has no winners to retrieve from db");
             return;
         }
@@ -397,12 +398,11 @@ public class EventDB implements Serializable {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 //empty the current list of winners so there are not duplicates
-                ArrayList<Event> myEventsCol = new ArrayList<Event>();
                 winnersList.clear();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     //add each user to the arraylist
                     winnersList.add(document.toObject(UserProfile.class));
-                    Log.v(TAG, "size: " + winnersList.size());
+                    Log.v(TAG, "Winners list size: " + winnersList.size());
 
                 }
 
@@ -413,14 +413,82 @@ public class EventDB implements Serializable {
     }
 
     /**
+     * Author Erin-Marie
+     * sets EventDB objects  array to be all of the winners that have accepted their invitation
+     * @param event that has been completed
+     */
+    public void getEventAccepted(Event event){
+        //query for all the winners' documents of the users in the events winnersList
+        ArrayList<DocumentReference> accepted = event.getAcceptedList();
+        if (accepted.isEmpty()){
+            Log.v(TAG, "event has no entrants who have accepted");
+            return;
+        }
+        Query query = db.collection("allUsers").whereArrayContainsAny("acceptedList", accepted);
+        getQuery(query, new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                //empty the current list of winners so there are not duplicates
+                acceptedList.clear();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    //add each user to the arraylist
+                    acceptedList.add(document.toObject(UserProfile.class));
+                    Log.v(TAG, "Winners list size: " + acceptedList.size());
+                }
+            }
+        });
+    }
+
+    /**
+     * Author Erin-Marie
+     * sets EventDB objects  array to be all of the winners that have accepted their invitation
+     * @param event that has been completed
+     */
+    public void getEventDeclined(Event event){
+        //query for all the winners' documents of the users in the events winnersList
+        ArrayList<DocumentReference> declined = event.getAcceptedList();
+        if (declined.isEmpty()){
+            Log.v(TAG, "event has no entrants who have accepted");
+            return;
+        }
+        Query query = db.collection("allUsers").whereArrayContainsAny("declinedList", declined);
+        getQuery(query, new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                //empty the current list of winners so there are not duplicates
+                declinedList.clear();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    //add each user to the arraylist
+                    declinedList.add(document.toObject(UserProfile.class));
+                    Log.v(TAG, "Declined list size: " + declinedList.size());
+                }
+            }
+        });
+    }
+
+
+    /**
      * Author: Erin-Marie
-     * Method to remove an event from the DB
-     * Because of the database design, this will also cause all users associated with the event to no longer see the event
-     * TODO: maybe make it send a notification to all entrants letting them know the event has been cancelled
+     * Method to be called when a user wants to delete an event, or an Admin chooses to delete an event
+     * Deletes an event
      * @param event the event to be deleted
      */
     public void deleteEvent(Event event){
-        (event.getDocRef()).delete();
+        this.db.collection("AllEvents").document(event.getEventID())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Event successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting Event:" + event.getEventID(), e);
+                    }
+                });
+
     }
 
     /**
@@ -547,5 +615,75 @@ public class EventDB implements Serializable {
         connection.getNotifDB().addNotification(forWinners);
     }
 
+    public DBConnection getConnection() {
+        return connection;
+    }
 
+    public void setConnection(DBConnection connection) {
+        this.connection = connection;
+    }
+
+    public CollectionReference getAllEvents() {
+        return allEvents;
+    }
+
+    public void setAllEvents(CollectionReference allEvents) {
+        this.allEvents = allEvents;
+    }
+
+    public FirebaseFirestore getDb() {
+        return db;
+    }
+
+    public void setDb(FirebaseFirestore db) {
+        this.db = db;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public String getEventID() {
+        return eventID;
+    }
+
+    public void setEventID(String eventID) {
+        this.eventID = eventID;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setLosersList(ArrayList<UserProfile> losersList) {
+        this.losersList = losersList;
+    }
+
+    public void setEntrantsList(ArrayList<UserProfile> entrantsList) {
+        this.entrantsList = entrantsList;
+    }
+
+    public void setWinnersList(ArrayList<UserProfile> winnersList) {
+        this.winnersList = winnersList;
+    }
+
+    public ArrayList<UserProfile> getAcceptedList() {
+        return acceptedList;
+    }
+
+    public void setAcceptedList(ArrayList<UserProfile> acceptedList) {
+        this.acceptedList = acceptedList;
+    }
+
+    public ArrayList<UserProfile> getDeclinedList() {
+        return declinedList;
+    }
+
+    public void setDeclinedList(ArrayList<UserProfile> declinedList) {
+        this.declinedList = declinedList;
+    }
 }

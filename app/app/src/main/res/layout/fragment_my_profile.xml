@@ -151,6 +151,37 @@
             android:textColor="@color/text_cyan"
             android:maxLength="50"/>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textAlignment="textStart"
+                android:backgroundTint="@color/text_cyan"
+                android:ems="12"
+                android:fontFamily="@font/aleo_medium"
+                android:textSize="18dp"
+                android:text="@string/enable_notifications"
+                android:textColor="@color/text_cyan"
+               />
+
+            <Switch
+                android:id="@+id/switch_notifications"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:checked="false"
+                android:thumbTint="@color/accent_pink"
+                android:trackTint="@color/accent_pink"
+                android:gravity="center_vertical"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+        </LinearLayout>
+
 
 
     <LinearLayout

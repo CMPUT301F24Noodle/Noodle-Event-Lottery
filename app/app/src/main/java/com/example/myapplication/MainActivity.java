@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -136,7 +137,10 @@ public class MainActivity extends AppCompatActivity {
                     eventDB.getUserOrgEvents(user); //initiate their list of organized events
                     connection.setUser(user);
                     notifDB.getUserNotifications(); //intitiate their list of all notifications
-                    notifDB.getUserNewNotifications(); //get the list of users unseen notifications
+                    if (user.getAllowNotifs() == Boolean.TRUE) {
+                        notifDB.getUserNewNotifications(); //get the list of users unseen notifications
+                    }
+
 
                     Log.v("SetUpDB", "Set profile for existing user");
 
@@ -151,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.v("SetUpDB", "Set profile for new user");
                 }
                 //testCreateNotif();
-                createNewNotifications(); //populate the new notificatons to the device notifications
+                createNewNotifications(); //populate the new notifications to the device notifications
             }
         });
         // sets the currentUser attribute for MainActivity

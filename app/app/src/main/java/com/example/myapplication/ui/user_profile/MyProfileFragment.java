@@ -96,6 +96,8 @@ public class MyProfileFragment extends Fragment {
         Button saveInfoButton = view.findViewById(R.id.profile_save_info_button);
 
         Switch toggleFacilitySwitch = view.findViewById(R.id.profile_facility_toggle_switch);
+        Switch toggleNotificationSwitch = view.findViewById(R.id.switch_notifications);
+        toggleNotificationSwitch.setChecked(user.getAllowNotifs());
 
         // BUTTON CONFIRMING A DELETION OF THE USER'S FACILITY
         deleteFacilityButton.setOnClickListener(new View.OnClickListener() {
@@ -256,6 +258,18 @@ public class MyProfileFragment extends Fragment {
                     facilityNameText.setVisibility(View.GONE);
                     facilityLocationText.setVisibility(View.GONE);
                     deleteFacilityButton.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        // SWITCH TO TOGGLE NOTIFICATIONS
+        toggleNotificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) { //the user wants notifications on
+                    user.setAllowNotifs(Boolean.TRUE);
+                } else { //the user wants notifications off
+                    user.setAllowNotifs(Boolean.FALSE);
                 }
             }
         });
