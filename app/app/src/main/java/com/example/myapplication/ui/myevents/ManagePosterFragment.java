@@ -120,7 +120,7 @@ public class ManagePosterFragment extends DialogFragment {
                             event.setEventPoster(encodedBitmap);
 
                             // now save it to database
-                            
+
                             eventDB.updateEvent(event);
 
                             // take the new bitmap and set the images to display the bitmap

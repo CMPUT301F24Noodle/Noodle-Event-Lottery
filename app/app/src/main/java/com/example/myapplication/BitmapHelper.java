@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import static java.security.AccessController.getContext;
 
 import android.content.ContentResolver;
 import android.content.Context;
