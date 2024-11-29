@@ -6,9 +6,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
@@ -21,6 +24,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -33,6 +37,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Author: Erin-Marie
@@ -57,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     public NotificationManager notificationManager;
     private final String CHANNEL_ID = "NoodleNotifs";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,9 +79,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
-
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+        View headerView = navigationView.getHeaderView(0);
+        CircleImageView profileImage = headerView.findViewById(R.id.nav_header_profile_image);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.g
         // TODONE: add UserProfile to the nav drawer so it can be selected and we can view the UserProfile fragment
@@ -86,6 +94,12 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        profileImage.setOnClickListener(v -> {
+            navController.navigate(R.id.nav_profile);
+            drawer.closeDrawer(GravityCompat.START);// Replace with the correct ID of your ProfileFragment
+        });
+
     }
 
 
@@ -127,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
         this.userDB.checkUserExists(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot snapshot) {
+                BitmapHelper helper = new BitmapHelper();
                 if (snapshot != null) { // user is already in the database
                     // fetch their profile data, make it a userprofile object, and store it as
                     // currentUser
@@ -141,7 +156,8 @@ public class MainActivity extends AppCompatActivity {
                         notifDB.getUserNewNotifications(); //get the list of users unseen notifications
                     }
 
-
+                    Bitmap pfp = helper.loadProfilePicture(user);
+                    updateSidebarHeader(user.getName(),user.getEmail(),pfp);
                     Log.v("SetUpDB", "Set profile for existing user");
 
                 } else { // User is not already in the database
@@ -152,6 +168,8 @@ public class MainActivity extends AppCompatActivity {
                     eventDB.getUserEnteredEvents(user);
                     eventDB.getUserOrgEvents(user);
                     connection.setUser(user);
+                    Bitmap pfp = helper.loadProfilePicture(user);
+                    updateSidebarHeader("Name","Email Address",pfp);
                     Log.v("SetUpDB", "Set profile for new user");
                 }
                 //testCreateNotif();
@@ -247,6 +265,23 @@ public class MainActivity extends AppCompatActivity {
 
         this.notificationManager.notify(id, builder.build());
         Log.v(TAG, "notification sent");
+    }
+
+    public void updateSidebarHeader(String name, String email, Bitmap profileImage) {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+
+        // Update name
+        TextView headerName = headerView.findViewById(R.id.nav_header_username);
+        headerName.setText(name);
+
+        // Update email
+        TextView headerEmail = headerView.findViewById(R.id.nav_header_email_address);
+        headerEmail.setText(email);
+
+        // Update profile image
+        CircleImageView headerProfileImage = headerView.findViewById(R.id.nav_header_profile_image);
+        headerProfileImage.setImageBitmap(profileImage);
     }
 
     // a method used for testing
