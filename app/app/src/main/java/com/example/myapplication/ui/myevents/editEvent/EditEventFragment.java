@@ -11,10 +11,9 @@
  * - saveUpdatedEventData: Saves modified event data back to Firebase using the provided event ID.
  */
 
-        package com.example.myapplication.ui.myevents;
+        package com.example.myapplication.ui.myevents.editEvent;
 
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,9 +36,9 @@ import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.ui.myevents.manageEvent.DisplayQRCodeFragment;
+import com.example.myapplication.ui.myevents.manageEvent.ManageEventFragment;
 import com.google.zxing.WriterException;
-
-import java.io.Serializable;
 
 /**
  * Authors: Erin-Marie, Nishchay

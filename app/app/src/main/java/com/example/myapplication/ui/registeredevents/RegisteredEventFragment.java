@@ -1,7 +1,6 @@
 package com.example.myapplication.ui.registeredevents;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +21,10 @@ import com.example.myapplication.database.UserDB;
 import com.example.myapplication.databinding.FragmentRegisteredEventsBinding;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.ui.home.MyEventsListArrayAdapter;
-import com.example.myapplication.ui.home.ListItem;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Author: Sam Lee

@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.myevents;
+package com.example.myapplication.ui.myevents.manageEvent;
 
 import android.content.Context;
 import android.view.LayoutInflater;

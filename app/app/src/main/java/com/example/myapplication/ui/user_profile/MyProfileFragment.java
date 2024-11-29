@@ -25,7 +25,6 @@ import com.example.myapplication.database.UserDB;
 import com.example.myapplication.databinding.FragmentMyProfileBinding;
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.ui.myevents.DisplayQRCodeFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
