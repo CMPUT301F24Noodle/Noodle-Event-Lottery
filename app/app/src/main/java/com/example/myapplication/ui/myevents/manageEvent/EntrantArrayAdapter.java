@@ -15,12 +15,15 @@ import com.example.myapplication.objects.UserProfile;
 
 import java.util.ArrayList;
 
+/**
+ * Array adapter class for displaying the arrays for the Manage Event fragment
+ * Adapts ArrayLists for Waiting list, winners (selected) list, accepted list, and cancelled list
+ */
 public class EntrantArrayAdapter extends ArrayAdapter<UserProfile> {
 
     public EntrantArrayAdapter(@NonNull Context context, @NonNull ArrayList<UserProfile> entrants) {
         super(context, 0, entrants);
     }
-
 
     /**
      * Author: Erin-Marie
