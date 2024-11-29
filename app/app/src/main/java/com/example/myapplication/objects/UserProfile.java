@@ -100,6 +100,7 @@ public class UserProfile implements Serializable {
         this.myEnteredEvents = myEnteredEvents;
     }
 
+
     public DocumentReference getDocRef() {
         return docRef;
     }
