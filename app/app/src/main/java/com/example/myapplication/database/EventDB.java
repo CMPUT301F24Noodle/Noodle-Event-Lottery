@@ -433,7 +433,6 @@ public class EventDB implements Serializable {
             Log.v(TAG, "event has no entrants who have declined");
             return;
         }
-        ArrayList<UserProfile> declinedList = new ArrayList<>();
         for (int i = 0; i<declined.size(); i++){
             connection.getDocumentFromReference(declined.get(i), new OnSuccessListener<DocumentSnapshot>() {
                 @Override
