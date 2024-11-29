@@ -51,8 +51,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         }
         TextView expandedListTextView = convertView.findViewById(R.id.expandedListItem);
         if (userName == null){
-//            expandedListTextView.setText(userItem.getUuid())
-            expandedListTextView.setText("Anon_noodle");
+            expandedListTextView.setText("Anonymous_Noodle");
         } else {
             expandedListTextView.setText(userItem.getName());
         }

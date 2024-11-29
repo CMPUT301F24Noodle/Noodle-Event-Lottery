@@ -7,43 +7,6 @@
     android:id="@+id/manage_event"
     android:background="@color/back_gray">
 
-<!--    &lt;!&ndash; Current Waiting List &ndash;&gt;-->
-<!--    <LinearLayout-->
-<!--        android:id="@+id/linearLayout_waiting"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="vertical"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/nav_waiting"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:fontFamily="@font/alexandria_semibold"-->
-<!--            android:text="Current Waiting List: (2/3)"-->
-<!--            android:textColor="@color/text_cyan"-->
-<!--            android:textSize="25dp"-->
-<!--            android:padding="10dp" />-->
-
-<!--        <ListView-->
-<!--            android:id="@+id/nav_waiting_list"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:divider="@color/text_cyan"-->
-<!--            android:dividerHeight="2dp" />-->
-<!--    </LinearLayout>-->
-
-    <!-- Divider Line -->
-<!--    <View-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="2dp"-->
-<!--        android:background="@color/text_cyan"-->
-<!--        app:layout_constraintTop_toBottomOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
-
     <!-- Selected People -->
     <RelativeLayout
         android:id="@+id/linear_Layout_selected"
@@ -59,7 +22,6 @@
             android:id="@+id/expandableListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
             android:groupIndicator="@color/text_cyan"
             android:divider="@color/text_cyan"
             android:dividerHeight="2dp" />
@@ -67,79 +29,6 @@
     </RelativeLayout>
 
 
-<!--    &lt;!&ndash; Divider Line &ndash;&gt;-->
-<!--    <View-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="2dp"-->
-<!--        android:background="@color/text_cyan"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/linearLayout_selected"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
-
-<!--    &lt;!&ndash; Cancelled People &ndash;&gt;-->
-<!--    <LinearLayout-->
-<!--        android:id="@+id/linearLayout_cancelled"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="vertical"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/linearLayout_selected"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/nav_cancelled"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="People Cancelled:"-->
-<!--            android:textColor="@color/text_cyan"-->
-<!--            android:textSize="25dp"-->
-<!--            android:padding="10dp"-->
-<!--            android:fontFamily="@font/alexandria_semibold" />-->
-
-<!--        <ListView-->
-<!--            android:id="@+id/cancelled_ppl"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:divider="@color/text_cyan"-->
-<!--            android:dividerHeight="2dp" />-->
-<!--    </LinearLayout>-->
-
-<!--    &lt;!&ndash; Divider Line &ndash;&gt;-->
-<!--    <View-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="2dp"-->
-<!--        android:background="@color/text_cyan"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/linearLayout_cancelled"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
-
-<!--    &lt;!&ndash; Attending People &ndash;&gt;-->
-<!--    <LinearLayout-->
-<!--        android:id="@+id/linearLayout_attending"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="vertical"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/linearLayout_cancelled"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent">-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/nav_attending"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="People Attending:"-->
-<!--            android:textColor="@color/text_cyan"-->
-<!--            android:textSize="25dp"-->
-<!--            android:padding="10dp"-->
-<!--            android:fontFamily="@font/alexandria_semibold" />-->
-
-<!--        <ListView-->
-<!--            android:id="@+id/attending_ppl"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:divider="@color/text_cyan"-->
-<!--            android:dividerHeight="2dp" />-->
-<!--    </LinearLayout>-->
 
     <!-- Floating Action Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton

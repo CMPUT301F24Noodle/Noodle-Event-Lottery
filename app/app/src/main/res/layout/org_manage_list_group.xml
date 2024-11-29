@@ -21,7 +21,9 @@
             android:id="@+id/listTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableEnd="@android:drawable/arrow_down_float"
             android:fontFamily="@font/alexandria_semibold"
+            android:indicatorRight="?android:attr/expandableListPreferredItemIndicatorRight"
             android:padding="10dp"
             android:textColor="@color/text_cyan"
             android:textSize="25sp" />

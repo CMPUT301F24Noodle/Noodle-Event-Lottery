@@ -21,6 +21,8 @@
             android:textColor="@color/text_cyan"
             android:textSize="25sp"
             android:padding="10dp"
+            android:paddingStart="?android:attr/expandableListPreferredItemPaddingLeft"
+            android:paddingEnd="?android:attr/expandableListPreferredItemPaddingLeft"
             android:fontFamily="@font/alexandria_semibold" />
 
     </LinearLayout>
