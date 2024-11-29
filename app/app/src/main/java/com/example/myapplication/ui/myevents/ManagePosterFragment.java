@@ -33,6 +33,7 @@ public class ManagePosterFragment extends DialogFragment {
     CircleImageView MyProfilePictureView; // so that the view in MyProfileFragment also gets changed
     EventDB eventDB;
     BitmapHelper helper;
+    Boolean isCreated; // a boolean to determine if the event has been saved in the DB
 
     // TODO TEST
     private ActivityResultLauncher<Intent> galleryLauncher;
@@ -54,11 +55,20 @@ public class ManagePosterFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.delete_view_images, container, false);
 
         helper = new BitmapHelper();
-        ImageView fullProfilePicture = view.findViewById(R.id.full_profile_image);
+        ImageView posterImage = view.findViewById(R.id.full_profile_image);
 
-        // display the picture
-        //Bitmap profilePicture = helper.loadProfilePicture(user); // either decodes the profile picture or provides a generated one
-        //fullProfilePicture.setImageBitmap(profilePicture);
+        // if no poster, then hide the image:
+        if(event.getEventPoster() == null){
+            posterImage.setVisibility(View.GONE);
+        }
+        // or set the view to show the image
+        else{
+            String encodedPoster = event.getEventPoster();
+            Bitmap poster = helper.decodeBase64StringToBitmap(encodedPoster);
+            posterImage.setVisibility(View.VISIBLE);
+            posterImage.setImageBitmap(poster);
+        }
+
 
 
 
@@ -81,6 +91,9 @@ public class ManagePosterFragment extends DialogFragment {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                event.setEventPoster(null); // remove the poster from the event
+                posterImage.setVisibility(View.GONE); // make the view go away
+                posterImage.setImageDrawable(null); // clear the view
 
 
             }

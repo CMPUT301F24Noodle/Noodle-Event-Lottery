@@ -76,9 +76,7 @@ public class AddEventsFragment extends Fragment {
     private UserProfile currentUserProfile;
 
     Event event; // the event that will be made
-    // for poster selection
-    BitmapHelper helper;
-    private ActivityResultLauncher<Intent> galleryLauncher;
+
 
     @Nullable
     @Override
@@ -97,7 +95,7 @@ public class AddEventsFragment extends Fragment {
 
         event = new Event();
 
-        setGallery(); // for poster uploading
+
         initializeViews(view);
         setButtonListeners();
 
@@ -125,6 +123,7 @@ public class AddEventsFragment extends Fragment {
         removeActionTextView = view.findViewById(R.id.remove_action);
 
         geoLocationSwitch = view.findViewById(R.id.geolocation_toggle);
+
     }
 
     /**
@@ -136,58 +135,17 @@ public class AddEventsFragment extends Fragment {
         addPosterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO TEST
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                galleryLauncher.launch(intent);
-            }
-        });
+                ManagePosterFragment PFragment = new ManagePosterFragment();
+                PFragment.setEvent(event);
 
-        removeActionTextView.setOnClickListener(v -> {
-            if (posterImageView != null) {
-                posterImageView.setImageResource(0);
-                selectedImageUri = null;
-                currentStatusTextView.setText("Current: None");
-                Toast.makeText(getContext(), "Poster Removed", Toast.LENGTH_SHORT).show();
+                // Navigate to the fragment
+                PFragment.show(getParentFragmentManager(), "PosterManagementFragment");
             }
         });
 
         saveButton.setOnClickListener(v -> saveEventDetails());
     }
 
-    private void setGallery(){
-        galleryLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        Uri selectedImage = result.getData().getData(); // selectedImage is a link to where the selected image is on the device
-
-                        try {
-                            // you have to do error catching because UriToBitmap can throw an error
-                            Context context = getContext();
-
-                            assert context != null;
-                            Bitmap originalPoster = helper.UriToBitmap(selectedImage, context); // convert the poster into a bitmap
-                            Bitmap resizedPoster = helper.resizeBitmap(originalPoster); // need to resize so the string representation isn't too long
-
-                            // encode the bitmap
-                            String encodedBitmap = helper.encodeBitmapToBase64(resizedPoster);
-
-                            // and then save it to the event!
-                            event.setEventPoster(encodedBitmap);
-
-                            // take the new bitmap and set the images to display the bitmap
-                            posterImageView.setImageBitmap(resizedPoster);
-
-
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                    }
-                }
-        );
-    }
 
     /**
      * Validates and gathers input data, creates an Event object, and saves it to Firebase.

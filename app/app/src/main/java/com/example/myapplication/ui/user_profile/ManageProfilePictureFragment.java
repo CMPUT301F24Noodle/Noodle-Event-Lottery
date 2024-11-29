@@ -93,6 +93,9 @@ public class ManageProfilePictureFragment extends DialogFragment {
                 MyProfilePictureView.setImageBitmap(generatedPP);
                 fullProfilePicture.setImageBitmap(generatedPP);
 
+                // now update the user in the db so that it saves
+                userDB.updateUserDocument(user);
+
             }
         });
 
