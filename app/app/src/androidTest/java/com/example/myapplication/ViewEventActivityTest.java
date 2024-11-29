@@ -8,9 +8,9 @@ import android.widget.TextView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.facilityClasses.Facility;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.objects.Event;
+import com.example.myapplication.objects.Facility;
+import com.example.myapplication.objects.UserProfile;
 import com.example.myapplication.ui.ViewEventActivity;
 import com.google.zxing.WriterException;
 

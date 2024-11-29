@@ -44,8 +44,8 @@ import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
-import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.objects.Event;
+import com.example.myapplication.objects.UserProfile;
 import com.example.myapplication.ui.myevents.editEvent.EditEventFragment;
 
 import java.io.IOException;

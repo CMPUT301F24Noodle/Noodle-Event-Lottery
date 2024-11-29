@@ -1,13 +1,10 @@
-package com.example.myapplication.objects.eventClasses;
+package com.example.myapplication.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
 
-import com.example.myapplication.objects.facilityClasses.Facility;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -15,7 +12,6 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
 import org.jetbrains.annotations.Nullable;
-import org.w3c.dom.Document;
 
 import java.io.Serializable;
 import java.util.ArrayList;

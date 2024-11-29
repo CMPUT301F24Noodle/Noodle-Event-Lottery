@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.myapplication.R;
-import com.example.myapplication.objects.eventClasses.Event;
+import com.example.myapplication.objects.Event;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.database.EventDB;
 import com.google.firebase.firestore.DocumentReference;

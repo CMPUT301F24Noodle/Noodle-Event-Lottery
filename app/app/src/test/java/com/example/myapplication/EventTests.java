@@ -2,9 +2,9 @@ package com.example.myapplication;
 
 import static org.junit.Assert.assertEquals;
 
-import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.facilityClasses.Facility;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.objects.Event;
+import com.example.myapplication.objects.Facility;
+import com.example.myapplication.objects.UserProfile;
 import com.google.zxing.WriterException;
 
 import org.junit.experimental.runners.Enclosed;

@@ -23,8 +23,8 @@ import com.example.myapplication.R;
 import com.example.myapplication.database.FacilityDB;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.databinding.FragmentMyProfileBinding;
-import com.example.myapplication.objects.facilityClasses.Facility;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.objects.Facility;
+import com.example.myapplication.objects.UserProfile;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 

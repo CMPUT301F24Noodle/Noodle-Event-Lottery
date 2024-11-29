@@ -46,7 +46,7 @@
 
     <fragment
         android:id="@+id/nav_qr_fragment"
-        android:name="com.example.myapplication.ui.QRFragment"
+        android:name="com.example.myapplication.ui.registeredevents.QRFragment"
         android:label="QR Scanner"
         tools:layout="@layout/qr_scanner" />
 </navigation>

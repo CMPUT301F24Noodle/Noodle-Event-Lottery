@@ -5,10 +5,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.facilityClasses.Facility;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.objects.notificationClasses.Notification;
+import com.example.myapplication.objects.Event;
+import com.example.myapplication.objects.UserProfile;
+import com.example.myapplication.objects.Notification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,7 +22,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.io.Serializable;
-import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.Random;
 
