@@ -46,7 +46,7 @@
 
     <!-- Selected People -->
     <RelativeLayout
-        android:id="@+id/linearLayout_selected"
+        android:id="@+id/linear_Layout_selected"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -60,8 +60,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+            android:groupIndicator="@color/text_cyan"
             android:divider="@color/text_cyan"
             android:dividerHeight="2dp" />
+
     </RelativeLayout>
 
 

@@ -12,16 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/expandedListItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/text_cyan"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:padding="10dp"
             android:fontFamily="@font/alexandria_semibold" />
 

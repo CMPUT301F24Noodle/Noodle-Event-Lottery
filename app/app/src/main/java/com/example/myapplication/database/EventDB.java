@@ -364,8 +364,8 @@ public class EventDB implements Serializable {
             connection.getDocumentFromReference(entrants.get(i), new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    entrantsList.add(documentSnapshot.toObject(UserProfile.class));
-                    Log.v(TAG, "added to entrants list. size:  " + entrantsList.size());
+                        entrantsList.add(documentSnapshot.toObject(UserProfile.class));
+                        Log.v(TAG, "added to entrants list. size:  " + entrantsList.size());
                 }
             });
         }
@@ -387,8 +387,10 @@ public class EventDB implements Serializable {
             connection.getDocumentFromReference(winners.get(i), new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    winnersList.add(documentSnapshot.toObject(UserProfile.class));
-                    Log.v(TAG, "added to winners list. size:  " + winnersList.size());
+                    if (documentSnapshot.exists()) {
+                        winnersList.add(documentSnapshot.toObject(UserProfile.class));
+                        Log.v(TAG, "added to winners list. size:  " + winnersList.size());
+                    }
                 }
             });
         }
@@ -411,8 +413,10 @@ public class EventDB implements Serializable {
             connection.getDocumentFromReference(accepted.get(i), new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    acceptedList.add(documentSnapshot.toObject(UserProfile.class));
-                    Log.v(TAG, "added to accepted list. size:  " + acceptedList.size());
+                    if (documentSnapshot.exists()) {
+                        acceptedList.add(documentSnapshot.toObject(UserProfile.class));
+                        Log.v(TAG, "added to accepted list. size:  " + acceptedList.size());
+                    }
                 }
             });
         }
@@ -434,8 +438,10 @@ public class EventDB implements Serializable {
             connection.getDocumentFromReference(declined.get(i), new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    declinedList.add(documentSnapshot.toObject(UserProfile.class));
-                    Log.v(TAG, "added to declined list. size:  " + declinedList.size());
+                    if (documentSnapshot.exists()) {
+                        declinedList.add(documentSnapshot.toObject(UserProfile.class));
+                        Log.v(TAG, "added to declined list. size:  " + declinedList.size());
+                    }
                 }
             });
         }

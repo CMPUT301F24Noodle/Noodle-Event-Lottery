@@ -68,27 +68,13 @@ public class ManageEventFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-
         View view = inflater.inflate(R.layout.org_manage_event, container, false);
-
-        //connection = new DBConnection(getContext());
-        //notifDB = connection.getNotifDB();
 
         Bundle args = getArguments();
         assert args != null;
         event = (Event) args.getSerializable("event");
         eventDB = (EventDB) args.get("eventDB");
         assert eventDB != null;
-
-
-        //BROKEN these aren't being done executing early enough
-        eventDB.getEventEntrants(event);
-        eventDB.getEventDeclined(event);
-        eventDB.getEventWinners(event);
-        eventDB.getEventAccepted(event);
-
 
 
         //initialize buttons
