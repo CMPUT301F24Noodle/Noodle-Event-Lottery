@@ -326,6 +326,8 @@ public class UserProfile implements Serializable {
 
     }
 
+    public Boolean checkIsOrganizer(){return privileges == 1;}
+
     public void clearNotifs() {
         myNotifications = new ArrayList<DocumentReference>();
     }
