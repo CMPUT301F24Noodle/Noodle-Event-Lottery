@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.example.myapplication.R;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 
@@ -16,13 +18,13 @@ public class SelectedArrayAdapter extends ArrayAdapter<UserProfile> {
 
     private Context context;
     private List<UserProfile> participants;
-    private OnRemoveClickListener onRemoveClickListener;
+    private OnRemoveClickListener listener;
 
     public SelectedArrayAdapter(Context context, List<UserProfile> participants, OnRemoveClickListener listener) {
         super(context, 0, participants);
         this.context = context;
         this.participants = participants;
-        this.onRemoveClickListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -33,6 +35,7 @@ public class SelectedArrayAdapter extends ArrayAdapter<UserProfile> {
      * @param parent the parent view
      * @return view to be used for that notification
      */
+    @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Reuse view if possible
@@ -50,8 +53,8 @@ public class SelectedArrayAdapter extends ArrayAdapter<UserProfile> {
         // Set the "REMOVE" button
         TextView removeText = convertView.findViewById(R.id.remove_text);
         removeText.setOnClickListener(v -> {
-            if (onRemoveClickListener != null) {
-                onRemoveClickListener.onRemoveClick(participant);
+            if (listener != null) {
+                listener.onRemoveClick(participant);
             }
         });
 

@@ -110,6 +110,12 @@ public class EditEventFragment extends Fragment {
             eventWaitingListEditText.setText("Capacity: " + eventWaitingList);
             eventStatusTextView.setText("Status: " + eventStatus);
 
+            //prep for the manage event page
+            eventDB.getEventEntrants(event);
+            eventDB.getEventDeclined(event);
+            eventDB.getEventWinners(event);
+            eventDB.getEventAccepted(event);
+
 
 
             //TODO make the event poster show up

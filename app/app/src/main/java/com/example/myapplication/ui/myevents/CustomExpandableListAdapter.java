@@ -19,6 +19,7 @@ import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, ArrayList<UserProfile>> expandableListDetail;
@@ -32,8 +33,8 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         this.expandableListDetail = expandableListDetail;
     }
     @Override
-    public Object getChild(int listPosition, int expandedListPosition) {
-        return this.expandableListDetail.get(this.expandableListTitle.get(listPosition))
+    public UserProfile getChild(int listPosition, int expandedListPosition) {
+        return (UserProfile) Objects.requireNonNull(this.expandableListDetail.get(this.expandableListTitle.get(listPosition)))
                 .get(expandedListPosition);
     }
 
@@ -45,16 +46,18 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int listPosition, final int expandedListPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        UserProfile userItem = (UserProfile) getChild(listPosition, expandedListPosition);
+        UserProfile userItem = getChild(listPosition, expandedListPosition);
+        assert userItem != null;
+        String userName = userItem.getName();
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = layoutInflater.inflate(R.layout.entrant_item, null);
+            convertView = layoutInflater.inflate(R.layout.org_manage_list_item, null);
         }
-        TextView expandedListTextView = (TextView) convertView
-                .findViewById(R.id.expandedListItem);
-        if (userItem.getName().isEmpty()){
-            expandedListTextView.setText(userItem.getUuid());
+        TextView expandedListTextView = convertView.findViewById(R.id.expandedListItem);
+        if (userName == null){
+//            expandedListTextView.setText(userItem.getUuid())
+            expandedListTextView.setText("Anon_noodle");
         } else {
             expandedListTextView.setText(userItem.getName());
         }
