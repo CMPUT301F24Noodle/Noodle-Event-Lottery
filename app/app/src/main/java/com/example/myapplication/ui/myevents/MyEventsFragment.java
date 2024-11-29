@@ -106,6 +106,7 @@ public class MyEventsFragment extends Fragment {
             } else {
                 // Navigate to create event fragment
                 openAddEventsFragment();
+
             }
 
         });

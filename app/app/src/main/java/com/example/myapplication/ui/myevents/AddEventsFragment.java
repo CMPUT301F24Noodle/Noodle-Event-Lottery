@@ -139,6 +139,7 @@ public class AddEventsFragment extends Fragment {
             public void onClick(View v) {
                 ManagePosterFragment PFragment = new ManagePosterFragment();
                 PFragment.setEvent(event);
+                PFragment.setEventDB(eventDB);
 
                 // Navigate to the fragment
                 PFragment.show(getParentFragmentManager(), "PosterManagementFragment");

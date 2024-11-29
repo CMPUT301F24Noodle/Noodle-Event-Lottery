@@ -51,7 +51,7 @@ public class ManagePosterFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.delete_view_images, container, false);
-        
+
         helper = new BitmapHelper();
         ImageView posterImage = view.findViewById(R.id.full_profile_image);
 
