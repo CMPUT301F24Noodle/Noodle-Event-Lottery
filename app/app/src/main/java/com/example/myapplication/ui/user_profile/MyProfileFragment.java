@@ -26,6 +26,7 @@ import com.example.myapplication.databinding.FragmentMyProfileBinding;
 import com.example.myapplication.objects.facilityClasses.Facility;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.example.myapplication.ui.myevents.DisplayQRCodeFragment;
+import com.google.android.material.navigation.NavigationView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -226,6 +227,7 @@ public class MyProfileFragment extends Fragment {
                 // update the DB
 
                 userDB.updateUserDocument(user);
+                main.updateSidebarHeader(user.getName(), user.getEmail(), helper.loadProfilePicture(user));
 
                 //Display toast
                 CharSequence toastText = "Save Successful";
