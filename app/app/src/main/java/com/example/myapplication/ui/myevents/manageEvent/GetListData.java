@@ -1,10 +1,9 @@
-package com.example.myapplication.ui.myevents;
+package com.example.myapplication.ui.myevents.manageEvent;
 
 import android.util.Log;
 
 import com.example.myapplication.database.EventDB;
-import com.example.myapplication.database.UserDB;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.objects.UserProfile;
 
 import java.util.ArrayList;
 import java.util.HashMap;

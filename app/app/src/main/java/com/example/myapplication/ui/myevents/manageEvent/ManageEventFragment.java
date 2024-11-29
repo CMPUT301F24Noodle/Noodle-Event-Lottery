@@ -1,8 +1,7 @@
-package com.example.myapplication.ui.myevents;
+package com.example.myapplication.ui.myevents.manageEvent;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,39 +11,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.myapplication.Geolocation_view_googlemaps;
 import com.example.myapplication.R;
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
 import com.example.myapplication.database.NotificationDB;
-import com.example.myapplication.databinding.FragmentRegisteredEventsBinding;
-import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.objects.notificationClasses.Notification;
+import com.example.myapplication.objects.Event;
+import com.example.myapplication.objects.UserProfile;
+import com.example.myapplication.objects.Notification;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.GoogleMap;
 //import com.google.android.gms.location.FusedLocationProviderClient;
 //import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 
 /**

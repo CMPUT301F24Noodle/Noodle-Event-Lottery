@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.myevents;
+package com.example.myapplication.ui.myevents.viewMyEvents;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.myapplication.R;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.objects.UserProfile;
 
 import java.util.List;
 
