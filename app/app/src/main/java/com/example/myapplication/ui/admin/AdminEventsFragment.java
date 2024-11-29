@@ -13,6 +13,10 @@ import androidx.fragment.app.Fragment;
 import com.example.myapplication.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.Timestamp;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class AdminEventsFragment extends Fragment {
 
@@ -47,8 +51,17 @@ public class AdminEventsFragment extends Fragment {
 
                         // Loop through each document in the collection
                         for (com.google.firebase.firestore.DocumentSnapshot document : querySnapshot.getDocuments()) {
-                            // Extract the fields
-                            String eventDate = document.getString("eventDate");
+                            // Fetch the eventDate field as a Timestamp
+                            Timestamp eventDateTimestamp = document.getTimestamp("eventDate");
+                            String eventDate = null;
+
+                            if (eventDateTimestamp != null) {
+                                // Format the Timestamp as a String (e.g., "2024-11-29")
+                                eventDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                                        .format(eventDateTimestamp.toDate());
+                            }
+
+                            // Fetch the eventDetails and eventName fields as Strings
                             String eventDetails = document.getString("eventDetails");
                             String eventName = document.getString("eventName");
 
