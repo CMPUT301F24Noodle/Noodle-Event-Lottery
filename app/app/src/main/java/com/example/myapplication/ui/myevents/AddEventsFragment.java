@@ -18,6 +18,7 @@ package com.example.myapplication.ui.myevents;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -34,6 +35,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -42,12 +45,14 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.myapplication.BitmapHelper;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.ui.user_profile.ManageProfilePictureFragment;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -70,6 +75,11 @@ public class AddEventsFragment extends Fragment {
     private EventDB eventDB;
     private UserProfile currentUserProfile;
 
+    Event event; // the event that will be made
+    // for poster selection
+    BitmapHelper helper;
+    private ActivityResultLauncher<Intent> galleryLauncher;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,6 +95,9 @@ public class AddEventsFragment extends Fragment {
         assert args != null;
         eventDB = (EventDB) args.get("eventDB");
 
+        event = new Event();
+
+        setGallery(); // for poster uploading
         initializeViews(view);
         setButtonListeners();
 
@@ -118,9 +131,15 @@ public class AddEventsFragment extends Fragment {
      * Sets button click listeners for adding/removing poster and saving event details.
      */
     private void setButtonListeners() {
-        addPosterButton.setOnClickListener(v -> {
-            if (checkAndRequestPermissions()) {
-                openImagePicker();
+
+
+        addPosterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO TEST
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                galleryLauncher.launch(intent);
             }
         });
 
@@ -134,6 +153,40 @@ public class AddEventsFragment extends Fragment {
         });
 
         saveButton.setOnClickListener(v -> saveEventDetails());
+    }
+
+    private void setGallery(){
+        galleryLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        Uri selectedImage = result.getData().getData(); // selectedImage is a link to where the selected image is on the device
+
+                        try {
+                            // you have to do error catching because UriToBitmap can throw an error
+                            Context context = getContext();
+
+                            assert context != null;
+                            Bitmap originalPoster = helper.UriToBitmap(selectedImage, context); // convert the poster into a bitmap
+                            Bitmap resizedPoster = helper.resizeBitmap(originalPoster); // need to resize so the string representation isn't too long
+
+                            // encode the bitmap
+                            String encodedBitmap = helper.encodeBitmapToBase64(resizedPoster);
+
+                            // and then save it to the event!
+                            event.setEventPoster(encodedBitmap);
+
+                            // take the new bitmap and set the images to display the bitmap
+                            posterImageView.setImageBitmap(resizedPoster);
+
+
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    }
+                }
+        );
     }
 
     /**
@@ -153,8 +206,6 @@ public class AddEventsFragment extends Fragment {
             Toast.makeText(getContext(), "Please fill in all required fields", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        Event event = new Event();
 
         //Set all the event data
         event.setEventName(eventName);
@@ -272,50 +323,5 @@ public class AddEventsFragment extends Fragment {
         }
     }
 
-    /**
-     * Opens the image picker to select an event poster.
-     */
-    private void openImagePicker() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
-    }
 
-    /**
-     * Checks if the storage permission is granted; requests it if not.
-     * @return true if permission is granted, false otherwise.
-     */
-    private boolean checkAndRequestPermissions() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE_REQUEST && data != null && data.getData() != null) {
-            selectedImageUri = data.getData();
-            displaySelectedImage(selectedImageUri);
-        }
-    }
-
-    /**
-     * Displays the selected image in the ImageView and updates status text.
-     * @param imageUri the URI of the selected image.
-     */
-    private void displaySelectedImage(Uri imageUri) {
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageUri);
-            if (posterImageView != null) {
-                posterImageView.setImageBitmap(bitmap);
-                currentStatusTextView.setText("Current: Poster Added");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), "Error loading image", Toast.LENGTH_SHORT).show();
-        }
-    }
 }
