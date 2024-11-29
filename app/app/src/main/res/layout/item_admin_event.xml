@@ -5,6 +5,15 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <ListView
+        android:id="@+id/event_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/text_cyan"
+        android:background="@color/text_cyan"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
+
     <TextView
         android:id="@+id/event_title"
         android:layout_width="wrap_content"

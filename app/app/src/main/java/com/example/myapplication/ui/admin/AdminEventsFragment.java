@@ -5,6 +5,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,11 +19,18 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.Timestamp;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class AdminEventsFragment extends Fragment {
 
     private static final String TAG = "AdminEventsFragment";
+
+    private ListView eventListView;
+    private ArrayList<String> eventList;
+    private ArrayList<String> eventIDs; // To store event IDs for deletion
+    private ArrayAdapter<String> eventAdapter;
+    private FirebaseFirestore db;
 
     public AdminEventsFragment() {
         // Required empty public constructor
@@ -32,22 +42,52 @@ public class AdminEventsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.item_admin_event, container, false);
 
-        // Fetch and log events data
+        // Initialize ListView, ArrayList, and Firestore
+        eventListView = rootView.findViewById(R.id.event_list_view);
+        eventList = new ArrayList<>();
+        eventIDs = new ArrayList<>();
+        db = FirebaseFirestore.getInstance();
+
+        // Set up the adapter
+        eventAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, eventList);
+        eventListView.setAdapter(eventAdapter);
+
+        // Set up long-press listener for deletion
+        eventListView.setOnItemLongClickListener((parent, view, position, id) -> {
+            // Get the event ID associated with the clicked item
+            String eventID = eventIDs.get(position);
+
+            // Delete the event from Firestore
+            deleteEvent(eventID);
+
+            // Remove the item from the list and update the adapter
+            eventList.remove(position);
+            eventIDs.remove(position);
+            eventAdapter.notifyDataSetChanged();
+
+            // Show a toast
+            Toast.makeText(requireContext(), "Event deleted successfully!", Toast.LENGTH_SHORT).show();
+
+            return true; // Indicates the long-press was handled
+        });
+
+        // Fetch and populate events
         fetchAllEvents();
 
         return rootView;
     }
 
     private void fetchAllEvents() {
-        // Get Firestore instance
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         // Reference the "AllEvents" collection
         db.collection("AllEvents")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         QuerySnapshot querySnapshot = task.getResult();
+
+                        // Clear existing data to avoid duplicates
+                        eventList.clear();
+                        eventIDs.clear();
 
                         // Loop through each document in the collection
                         for (com.google.firebase.firestore.DocumentSnapshot document : querySnapshot.getDocuments()) {
@@ -65,15 +105,32 @@ public class AdminEventsFragment extends Fragment {
                             String eventDetails = document.getString("eventDetails");
                             String eventName = document.getString("eventName");
 
-                            // Log the data
-                            Log.d(TAG, "Event Name: " + eventName);
-                            Log.d(TAG, "Event Date: " + eventDate);
-                            Log.d(TAG, "Event Details: " + eventDetails);
+                            // Combine the data into a single string for display
+                            String eventData = "Name: " + eventName + "\nDate: " + eventDate + "\nDetails: " + eventDetails;
+
+                            // Add the formatted string to the list
+                            eventList.add(eventData);
+
+                            // Store the event ID for later deletion
+                            eventIDs.add(document.getId());
+
+                            Log.d(TAG, "Event Data: " + eventData);
                         }
+
+                        // Notify adapter about data changes
+                        eventAdapter.notifyDataSetChanged();
                     } else {
                         // Log an error if the query fails
                         Log.e(TAG, "Error fetching events: ", task.getException());
                     }
                 });
+    }
+
+    private void deleteEvent(String eventID) {
+        // Delete the event from Firestore
+        db.collection("AllEvents").document(eventID)
+                .delete()
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "Event successfully deleted: " + eventID))
+                .addOnFailureListener(e -> Log.w(TAG, "Error deleting event: " + eventID, e));
     }
 }
