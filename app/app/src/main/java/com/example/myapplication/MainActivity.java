@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
     public NotificationManager notificationManager;
     private final String CHANNEL_ID = "NoodleNotifs";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -38,11 +38,22 @@
         android:label="Notifications"
         tools:layout="@layout/fragment_notifications"/>
 
-<!--    <fragment-->
-<!--        android:id="@id/nav_admin"-->
-<!--        android:name="com.example.myapplication.ui.admin.AdminFragment"-->
-<!--        android:label="App Management"-->
-<!--        tools:layout="@layout/fragment_admin"/>-->
+    <fragment
+        android:id="@id/nav_admin"
+        android:name="com.example.myapplication.ui.admin.AdminFragment"
+        android:label="App Management"
+        tools:layout="@layout/fragment_admin"/>
+
+    <fragment
+        android:id="@+id/adminProfileFragment"
+        android:name="com.example.myapplication.ui.admin.AdminProfileFragment"
+        android:label="Admin Profile"
+        tools:layout="@layout/item_admin_profile" />
+    <fragment
+        android:id="@+id/adminEventFragment"
+        android:name="com.example.myapplication.ui.admin.AdminEventsFragment"
+        android:label="Admin All Events"
+        tools:layout="@layout/item_admin_profile" />
 
     <fragment
         android:id="@+id/nav_qr_fragment"
