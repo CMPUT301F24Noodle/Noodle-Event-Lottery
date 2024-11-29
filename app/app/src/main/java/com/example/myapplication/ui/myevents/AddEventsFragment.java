@@ -50,9 +50,11 @@ import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
+import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.eventClasses.Event;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.example.myapplication.ui.user_profile.ManageProfilePictureFragment;
+import com.google.firebase.firestore.auth.User;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -140,6 +142,7 @@ public class AddEventsFragment extends Fragment {
 
                 // Navigate to the fragment
                 PFragment.show(getParentFragmentManager(), "PosterManagementFragment");
+
             }
         });
 
@@ -189,7 +192,7 @@ public class AddEventsFragment extends Fragment {
             event.setMaxEntrants(maxWait);
         }
 
-
+        // TODO THIS IS THE DUMB CODE THAT SETS THE DATE TO THE CURRENT DATE
         event.setEventDate(new Date());
 
         event.setContact(contactNumberEditText.getText().toString().trim());

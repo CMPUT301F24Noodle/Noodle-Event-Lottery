@@ -198,6 +198,8 @@ public class MyEventsFragment extends Fragment {
      * Constructs a bundle of arguments to send to the new fragment
      */
     private void openAddEventsFragment() {
+
+        /*
         // Create a new instance of AddEventsFragment
         AddEventsFragment addEventsFragment = new AddEventsFragment();
         Bundle args = new Bundle();
@@ -209,6 +211,27 @@ public class MyEventsFragment extends Fragment {
         transaction.replace(R.id.nav_host_fragment_content_main, addEventsFragment); // Ensure this ID matches your main container ID
         transaction.addToBackStack(null); // Adds the transaction to the back stack
         transaction.commit();
+        */
+
+        // Create a new instance of AddEventsFragment
+        AddEventsFragment addEventsFragment = new AddEventsFragment();
+
+        // Pass arguments to the fragment
+        Bundle args = new Bundle();
+        args.putSerializable("eventDB", eventDB);
+        addEventsFragment.setArguments(args);
+
+        // Begin the Fragment transaction
+        requireActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.nav_host_fragment_content_main, addEventsFragment) // Ensure this ID matches your main container ID
+                .addToBackStack(null) // Optional: Add to the back stack for navigation
+                .commit();
+
+
+
+
     }
 
     @Override

@@ -65,49 +65,6 @@ public class ManageProfilePictureFragment extends DialogFragment {
         fullProfilePicture.setImageBitmap(profilePicture);
 
 
-
-        // a button to let the user upload a profile picture
-        // launches an intent that allows users to open their photo gallery
-        // doesn't need permissions because its just photos
-        Button editButton = view.findViewById(R.id.edit_picture_button);
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO TEST
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                galleryLauncher.launch(intent);
-            }
-        });
-
-        // a button to remove the picture
-        Button deleteButton = view.findViewById(R.id.delete_picture_button);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                user.setEncodedPicture(null); // remove their old profile picture
-                user.setHasProfilePic(false); // they should now get generated profile pictures
-
-                // now update the image views with a generated profile picture
-                Bitmap generatedPP = helper.generateProfilePicture(user);
-                MyProfilePictureView.setImageBitmap(generatedPP);
-                fullProfilePicture.setImageBitmap(generatedPP);
-
-                // now update the user in the db so that it saves
-                userDB.updateUserDocument(user);
-
-            }
-        });
-
-        // a button to leave the fragment
-        Button backButton = view.findViewById(R.id.picture_back_button);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss(); // close the fragment
-            }
-        });
-
         //TODO
         // what happens after a the user selects an image from their gallery
         // the Uri of their selected image is gotten through result.getData().getData()
@@ -148,6 +105,50 @@ public class ManageProfilePictureFragment extends DialogFragment {
                     }
                 }
         );
+
+        // a button to let the user upload a profile picture
+        // launches an intent that allows users to open their photo gallery
+        // doesn't need permissions because its just photos
+        Button editButton = view.findViewById(R.id.edit_picture_button);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO TEST
+                Intent intent = new Intent(Intent.ACTION_PICK); // they need to pick something from their gallery
+                intent.setType("image/*"); // only allow for images to be selected
+                galleryLauncher.launch(intent); // launch the intent and make the user select their image
+            }
+        });
+
+        // a button to remove the picture
+        Button deleteButton = view.findViewById(R.id.delete_picture_button);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                user.setEncodedPicture(null); // remove their old profile picture
+                user.setHasProfilePic(false); // they should now get generated profile pictures
+
+                // now update the image views with a generated profile picture
+                Bitmap generatedPP = helper.generateProfilePicture(user);
+                MyProfilePictureView.setImageBitmap(generatedPP);
+                fullProfilePicture.setImageBitmap(generatedPP);
+
+                // now update the user in the db so that it saves
+                userDB.updateUserDocument(user);
+
+            }
+        });
+
+        // a button to leave the fragment
+        Button backButton = view.findViewById(R.id.picture_back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss(); // close the fragment
+            }
+        });
+
+
 
         return view;
     }
