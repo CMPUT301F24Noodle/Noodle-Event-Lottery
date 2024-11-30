@@ -35,4 +35,6 @@
     <string name="canceled">Scan canceled</string>
     <string name="qr_view_text">Event QR Code:</string>
     <string name="title_activity_geolocation_view_googlemaps">Geolocation_view_googlemaps</string>
+    <string name="user_metrics">User Metrics</string>
+    <string name="user_name">User Name</string>
 </resources>
