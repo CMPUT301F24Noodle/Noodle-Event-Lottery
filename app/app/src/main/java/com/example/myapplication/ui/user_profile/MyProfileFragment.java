@@ -226,6 +226,8 @@ public class MyProfileFragment extends Fragment {
                 // update the DB
 
                 userDB.updateUserDocument(user);
+                main.updateSidebarHeader(user.getName(), user.getEmail(), helper.loadProfilePicture(user));
+                main.updateSidebarForUserType(user);
 
                 //Display toast
                 CharSequence toastText = "Save Successful";
