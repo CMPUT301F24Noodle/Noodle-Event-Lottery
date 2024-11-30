@@ -49,4 +49,11 @@
         android:name="com.example.myapplication.ui.registeredevents.QRFragment"
         android:label="QR Scanner"
         tools:layout="@layout/qr_scanner" />
+
+    <fragment
+        android:id="@id/nav_metrics"
+        android:name="com.example.myapplication.ui.notifications.NotificationsFragment"
+        android:label="User Metrics"
+        tools:layout="@layout/fragment_notifications"/>
+
 </navigation>
