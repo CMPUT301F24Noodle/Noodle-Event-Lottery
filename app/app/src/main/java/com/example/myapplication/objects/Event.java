@@ -272,7 +272,7 @@ public class Event implements Serializable {
      */
     public int getUsersNeededCount(){
         int count = maxParticipants - winnersList.size() - acceptedList.size();
-        return Math.max(count, losersList.size());
+        return Math.min(count, losersList.size());
     }
 
     // getters and setters

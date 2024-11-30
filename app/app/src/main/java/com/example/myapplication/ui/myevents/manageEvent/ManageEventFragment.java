@@ -228,8 +228,7 @@ public class ManageEventFragment extends Fragment {
         replaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CharSequence text = "Replacement winners have been selected and notified";
-                Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+
                 int usersNeeded = event.getUsersNeededCount(); //TODO write this method that will return the number of users that need to be selected to make up for declined users
                 //get replacement winners and notify them
                 eventDB.getRandomWinners(event.getLosersList(), usersNeeded, event);
@@ -237,6 +236,10 @@ public class ManageEventFragment extends Fragment {
                 eventDB.sendMessageToWinners(event);
                 //remove all of the declined users and notify them
                 removeDeclinedUsers();
+
+                //print a toast
+                CharSequence text = usersNeeded + " Replacement winners have been selected and notified";
+                Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
 
             }
         });
