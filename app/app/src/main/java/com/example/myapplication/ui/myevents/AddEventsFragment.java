@@ -42,6 +42,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.myapplication.BitmapHelper;
 import com.example.myapplication.MainActivity;
@@ -144,7 +145,7 @@ public class AddEventsFragment extends Fragment {
             }
         });
 
-        saveButton.setOnClickListener(v -> saveEventDetails());
+        saveButton.setOnClickListener(v -> saveEventDetails(v));
     }
 
 
@@ -152,7 +153,7 @@ public class AddEventsFragment extends Fragment {
      * Validates and gathers input data, creates an Event object, and saves it to Firebase.
      * Navigates to EditEventFragment if the save is successful.
      */
-    private void saveEventDetails() {
+    private void saveEventDetails(View v) {
         String eventName = eventNameEditText.getText().toString().trim();
         String eventLocation = eventLocationEditText.getText().toString().trim();
         Integer maxParticipants = null;
@@ -223,7 +224,7 @@ public class AddEventsFragment extends Fragment {
             Toast.makeText(getContext(), sorry, Toast.LENGTH_SHORT).show();
             return;
         }
-
+        /*
 
 
             // Prepare date formatting for passing to EditEventFragment
@@ -260,6 +261,16 @@ public class AddEventsFragment extends Fragment {
                     .replace(R.id.nav_host_fragment_content_main, editEventFragment)
                     .addToBackStack(null)
                     .commit();
+
+         */
+        // Retrieve instances from MainActivity
+        MainActivity main = (MainActivity) getActivity();
+        if (main != null) {
+            main.currentEvent = event; // pass this in so fragment can access it
+        }
+
+        //Navigation.findNavController(v).navigate(R.id.nav_edit_event, args);
+        Navigation.findNavController(v).navigate(R.id.nav_edit_event);
 
     }
 

@@ -71,6 +71,13 @@
         tools:layout="@layout/view_event_organizer">
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_manage_event"
+        android:name="com.example.myapplication.ui.myevents.manageEvent.ManageEventFragment"
+        android:label="Event Details"
+        tools:layout="@layout/org_manage_event">
+    </fragment>
+
 
     <fragment
         android:id="@id/nav_metrics"

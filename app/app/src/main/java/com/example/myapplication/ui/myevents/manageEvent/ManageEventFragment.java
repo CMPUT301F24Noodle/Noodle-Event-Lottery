@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
@@ -62,6 +63,17 @@ public class ManageEventFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.org_manage_event, container, false);
 
+        // Retrieve instances from MainActivity
+        MainActivity main = (MainActivity) getActivity();
+        if (main != null) {
+            this.connection = main.connection;
+            this.eventDB = main.eventDB;
+            this.event = main.currentEvent;
+        }
+        notifDB = connection.getNotifDB();
+        assert eventDB != null;
+
+        /*
         Bundle args = getArguments();
         assert args != null;
         event = (Event) args.getSerializable("event");
@@ -69,7 +81,7 @@ public class ManageEventFragment extends Fragment {
         connection = eventDB.getConnection();
         notifDB = connection.getNotifDB();
         assert eventDB != null;
-
+        */
 
         //initialize buttons
         FloatingActionButton viewMapButton = view.findViewById(R.id.FAB_map);

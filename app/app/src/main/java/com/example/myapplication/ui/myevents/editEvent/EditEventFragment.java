@@ -203,10 +203,18 @@ public class EditEventFragment extends Fragment {
         });
 
         manageEventButton.setOnClickListener(v -> {
-            Bundle manageArgs = new Bundle();
-            manageArgs.putSerializable("event", event);
-            manageArgs.putSerializable("eventDB", eventDB);
-            openManageEventFragment(manageArgs);
+            //Bundle manageArgs = new Bundle();
+            //manageArgs.putSerializable("event", event);
+            //manageArgs.putSerializable("eventDB", eventDB);
+            //openManageEventFragment(manageArgs);
+
+            // set event and eventDB in main
+            if (main != null) {
+                main.currentEvent = event;
+                main.eventDB = eventDB;
+            }
+
+            Navigation.findNavController(v).navigate(R.id.nav_manage_event);
         });
 
         QRButton.setOnClickListener(new View.OnClickListener() {
@@ -251,11 +259,13 @@ public class EditEventFragment extends Fragment {
         return view;
     }
 
+
     /**
      * Author: Erin-Marie
      * Opens the AddEventsFragment when the user selects the Manage Event button
      * @param manageArgs which is a bundle of arguments to be passed to the new fragment
      */
+    /*
     private void openManageEventFragment(Bundle manageArgs) {
         // Create a new instance of AddEventsFragment
         ManageEventFragment addManageEventFragment = new ManageEventFragment();
@@ -267,6 +277,7 @@ public class EditEventFragment extends Fragment {
         transaction.addToBackStack(null); // Adds the transaction to the back stack
         transaction.commit();
     }
+    */
 
     /**
      * Author: Nishchay

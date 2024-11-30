@@ -181,6 +181,7 @@ public class MyEventsFragment extends Fragment {
             args.putString("event_waiting_list", event.getWaitingListSize() + " / " + event.getMaxEntrants());
         }
         */
+
         // Retrieve instances from MainActivity
         MainActivity main = (MainActivity) getActivity();
         if (main != null) {
