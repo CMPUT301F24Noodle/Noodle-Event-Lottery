@@ -106,6 +106,7 @@ public class Event implements Serializable {
         this.maxParticipants = maxParticipants;
         this.lotteryCloses = lotteryCloses;
         this.geoLocation = geoLocation;
+        this.eventOver = Boolean.FALSE;
         this.eventFull = Boolean.FALSE; // event capacity cannot be 0, so it is always false at init
         this.entrantsList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
         this.winnersList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
