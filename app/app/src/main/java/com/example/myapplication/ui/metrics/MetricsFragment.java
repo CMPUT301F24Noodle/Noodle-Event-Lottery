@@ -54,7 +54,7 @@ public class MetricsFragment extends Fragment {
         enteredEvent.setText("Events Currently Entered: "+metric.getNumberOfEnteredEvents(user));
 
         TextView enteredLife = view.findViewById(R.id.metric_entered_life);
-        enteredLife.setText("Events Currently Entered: "+metric.getNumberOfLiftimeEvents(user, eventDB));
+        enteredLife.setText("Events Entered (Lifetime): "+metric.getNumberOfLiftimeEvents(user, eventDB));
 
         TextView successRate = view.findViewById(R.id.metric_success);
         successRate.setText("Success Rate: "+String.format("%.2f%%", metric.getSuccessRate(user, eventDB)));
