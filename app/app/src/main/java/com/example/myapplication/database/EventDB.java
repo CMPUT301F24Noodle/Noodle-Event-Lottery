@@ -296,6 +296,37 @@ public class EventDB implements Serializable {
     }
 
     /**
+     * Author Apoorv
+     * sets EventDB objects myEvents array to be all of the events the user has won
+     * @param user current user
+     * @return this.myEvents is a list of all the won events.
+     */
+    public ArrayList<Event> getUserWinnerEvents(UserProfile user) {
+        // Query all events where the current user is in the winnersList
+        Query query = allEvents.whereArrayContains("winnersList", user.getDocRef()).orderBy("eventDate", Query.Direction.DESCENDING);
+
+        getQuery(query, new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                // Empty the current list of events to avoid duplicates
+                ArrayList<Event> myEventsCol = new ArrayList<Event>();
+                myEvents.clear();
+
+                // Add each event to the ArrayList
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    myEvents.add(document.toObject(Event.class));
+                    Log.v(TAG, "size: " + myEvents.size());
+                }
+
+                Log.v(TAG, "On complete getUserWinnerEvents finished");
+            }
+        });
+        // Return the list of events where the user is in the winnersList
+        return this.myEvents;
+    }
+
+
+    /**
      * Author Erin-Marie
      * sets EventDB objects myOrgEvents array to be all of the events the user has organized
      * @param user current user

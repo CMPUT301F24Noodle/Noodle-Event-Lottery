@@ -99,6 +99,14 @@ public class MyProfileFragment extends Fragment {
         Switch toggleNotificationSwitch = view.findViewById(R.id.switch_notifications);
         toggleNotificationSwitch.setChecked(user.getAllowNotifs());
 
+       //Added by Apoorv: If the user is already an organizer then this part will be visible and checked
+        if (user.checkIsOrganizer()==true){
+           toggleFacilitySwitch.setChecked(true);
+           facilityNameText.setVisibility(View.VISIBLE);
+           facilityLocationText.setVisibility(View.VISIBLE);
+           deleteFacilityButton.setVisibility(View.VISIBLE);
+       }
+
         // BUTTON CONFIRMING A DELETION OF THE USER'S FACILITY
         deleteFacilityButton.setOnClickListener(new View.OnClickListener() {
             @Override
