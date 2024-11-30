@@ -110,6 +110,7 @@ public class NotificationsFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        notifDB.getUserNotifications();
         super.onDestroyView();
         binding = null;
     }

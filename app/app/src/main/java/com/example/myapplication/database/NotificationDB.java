@@ -76,11 +76,11 @@ public class NotificationDB {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 //empty the current list of notifs so there are not duplicates
-                myNewNotifs.clear();
+                ArrayList<Notification> moreNotifs = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     //add each notification to the arraylist
                     Notification notification = document.toObject(Notification.class);
-                    myNewNotifs.add(notification);
+                    moreNotifs.add(notification);
                     //mark the user as having seen the notification
                     //remove the user from the recipients list
                     //(document.getReference()).update("recipients", arrayRemove(userDocumentReference));
@@ -89,9 +89,10 @@ public class NotificationDB {
 
                     Log.v(TAG, "new" + document.getId() + " => " + document.getData());
                 }
-                if (myNewNotifs.isEmpty()){
+                if (moreNotifs.isEmpty()){
                     Log.v(TAG, "user has no new notifications");
                 }
+                myNewNotifs = moreNotifs;
             }
         });
         return this.myNewNotifs;
@@ -112,14 +113,15 @@ public class NotificationDB {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 //empty the current list of notifs so there are not duplicates
-                myNotifs.clear();
+                ArrayList<Notification> moreNotifs = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     //add each notification to the arraylist
                     Notification notification = document.toObject(Notification.class);
-                    myNotifs.add(notification);
+                    moreNotifs.add(notification);
 
                     Log.v(TAG, document.getId() + " => " + document.getData());
                 }
+                myNotifs = moreNotifs;
             }
         });
         return this.myNotifs;
