@@ -572,6 +572,10 @@ public class EventDB implements Serializable {
      */
     public Boolean addEntrant(Event event){
         DocumentReference entrant = connection.getUserDocumentRef();
+        if (event.getEventOver() == Boolean.TRUE){
+            Log.v(TAG, "This event lottery has already ended");
+            return Boolean.FALSE;
+        }
         Integer added = event.addEntrant(entrant);
         if (added == 0){
             Log.v(TAG, "Waiting list is full, user could not be added");
@@ -582,7 +586,6 @@ public class EventDB implements Serializable {
             if(event.getEventFull() == Boolean.TRUE && event.getEventOver() == Boolean.FALSE){
                 endEvent(event);
             }
-
 
             return Boolean.TRUE;
         }
