@@ -578,6 +578,12 @@ public class EventDB implements Serializable {
             return Boolean.FALSE;
         } else {
             updateEvent(event);
+            //if the event has a max waitlist size, end the event once the waitlist capacity is reached
+            if(event.getEventFull() == Boolean.TRUE && event.getEventOver() == Boolean.FALSE){
+                endEvent(event);
+            }
+
+
             return Boolean.TRUE;
         }
 

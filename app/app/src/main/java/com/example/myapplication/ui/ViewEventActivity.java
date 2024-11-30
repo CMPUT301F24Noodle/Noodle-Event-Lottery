@@ -54,10 +54,11 @@ public class ViewEventActivity extends AppCompatActivity {
         // Add user to event's entrants list
         UserDB userDB = new UserDB(new DBConnection(getApplicationContext()));
         DocumentReference userRef = userDB.getUserDocumentReference();
-        event.addEntrant(userRef);
+
 
         // Update event in database
         EventDB eventDB = new EventDB(new DBConnection(getApplicationContext()));
+        eventDB.addEntrant(event);
         eventDB.updateEvent(event);
 
         // Update registered events list
