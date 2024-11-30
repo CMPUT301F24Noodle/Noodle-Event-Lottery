@@ -41,6 +41,10 @@ import com.example.myapplication.ui.myevents.manageEvent.DisplayQRCodeFragment;
 import com.example.myapplication.ui.myevents.manageEvent.ManageEventFragment;
 import com.google.zxing.WriterException;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.Objects;
+
 /**
  * Authors: Erin-Marie, Nishchay
  * Fragment that appears when the user wants to edit an events details
@@ -85,8 +89,53 @@ public class EditEventFragment extends Fragment {
             this.connection = main.connection;
             this.eventDB = main.eventDB;
             this.currentUserProfile = main.user;
+            this.event = main.currentEvent;
         }
 
+        // trying to do this without using bundle, all of these must be transferred
+        /*
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        String formattedDate = dateFormat.format(event.getEventDate());
+
+        // Create arguments to pass to EditEventFragment
+        Bundle args = new Bundle();
+        args.putSerializable("event", event);
+        //args.putString("event_id", newEvent.getEventID());
+        args.putString("event_name", event.getEventName());
+//        args.putString("event_location",  location);
+        args.putString("event_date_time", formattedDate);
+        args.putString("event_details", event.getEventDetails());
+        if (event.getEventOver() == Boolean.FALSE){
+            args.putString("event_status", "Event Lottery Open");
+        } else {
+            args.putString("event_status", "Event Lottery Closed");
+        }
+
+        if (event.getMaxEntrants() == -1){
+            args.putString("event_waiting_list", event.getWaitingListSize() + " entrants");
+        } else {
+            args.putString("event_waiting_list", event.getWaitingListSize() + " / " + event.getMaxEntrants());
+        }
+         */
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+
+        String eventName = event.getEventName();
+        String eventLocation = event.getFacility().getLocation();
+        String eventDateTime = dateFormat.format(Objects.requireNonNull(event.getEventDate()));
+        String eventDetails = event.getEventDetails();
+        String eventWaitingList;
+        String eventStatus;
+        if (event.getMaxEntrants() == -1){
+            eventWaitingList = event.getWaitingListSize() + " entrants";
+        } else {
+           eventWaitingList = event.getWaitingListSize() + " / " + event.getMaxEntrants();
+        }
+        if (event.getEventOver() == Boolean.FALSE){
+            eventStatus = "Event Lottery Open";
+        } else {
+            eventStatus = "Event Lottery Closed";
+        }
+        /*
         // Retrieve data from arguments
         Bundle args = getArguments();
         if (args != null) {
@@ -100,7 +149,7 @@ public class EditEventFragment extends Fragment {
             String eventDetails = args.getString("event_details");
             String eventWaitingList = args.getString("event_waiting_list");
             String eventStatus = args.getString("event_status");
-
+            */
 
             // Populate fields with data from the Bundle
             eventNameEditText.setText(eventName != null ? eventName : "");
@@ -116,7 +165,7 @@ public class EditEventFragment extends Fragment {
             eventDB.getEventWinners(event);
             eventDB.getEventAccepted(event);
 
-
+        /*
 
             //TODO make the event poster show up
             // // eventPosterView.setImageResource(null);
@@ -133,7 +182,7 @@ public class EditEventFragment extends Fragment {
         } else {
             Toast.makeText(getContext(), "No event data provided", Toast.LENGTH_SHORT).show();
         }
-
+        */
         // set the event to main activity so it can be retrieved there
         if (main != null) {
             main.currentEvent = event; // set the event!

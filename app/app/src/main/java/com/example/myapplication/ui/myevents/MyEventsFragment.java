@@ -157,6 +157,7 @@ public class MyEventsFragment extends Fragment {
      * @param event the event selected from the listview
      */
     private void openEditEventFragment(Event event, View v){
+        /*
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         String formattedDate = dateFormat.format(event.getEventDate());
 
@@ -179,8 +180,15 @@ public class MyEventsFragment extends Fragment {
         } else {
             args.putString("event_waiting_list", event.getWaitingListSize() + " / " + event.getMaxEntrants());
         }
+        */
+        // Retrieve instances from MainActivity
+        MainActivity main = (MainActivity) getActivity();
+        if (main != null) {
+            main.currentEvent = event; // pass this in so fragment can access it
+        }
 
-        Navigation.findNavController(v).navigate(R.id.nav_edit_event, args);
+        //Navigation.findNavController(v).navigate(R.id.nav_edit_event, args);
+        Navigation.findNavController(v).navigate(R.id.nav_edit_event);
 
         /*
         EditEventFragment editEventFragment = new EditEventFragment();
