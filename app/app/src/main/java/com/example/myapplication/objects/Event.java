@@ -140,25 +140,30 @@ public class Event implements Serializable {
     /**
      * Author: Erin-Marie
      * Checks whether a user has accepted their invitation for an event yet
-     * 
+     *
      * @param event the event being checked
      * @param user  the user of interest
-     * @return False if the user has not accepted their invitiation, or True if they
-     *         have
+     * @return 0 if the event lottery has not ended
+     *          1 if the user has already responded to their invitation
+     *          2 if the user has not accepted their invitatin
+     *          3 if the user did not recieve an invitation
+     * have
      */
-    public Boolean hasAccepted(Event event, DocumentReference user) {
+    public int hasAccepted(Event event, DocumentReference user) {
+        if (event.eventOver == Boolean.FALSE){ //the event has not ended yet
+            return 0;
+        }
+        //have not responded to invitation
         if (event.getWinnersList().contains(user)) {
-            if (event.getAcceptedList().contains(user)) {
-                Log.v("Event", "User has accepted their invitiation");
-                return Boolean.TRUE;
-
-            } else {
                 Log.v("Event", "User has not accepted their invitiation");
-                return Boolean.FALSE;
-            }
+                return 2;
+        } else if (event.getAcceptedList().contains(user) || event.getDeclinedList().contains(user)){
+            Log.v("Event", "User has already responded to their invitiation");
+            return 1;
+
         } else {
             Log.v("Event", "user was not selected for the event");
-            return Boolean.FALSE;
+            return 3;
         }
 
     }

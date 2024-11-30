@@ -50,7 +50,7 @@ public class ManageEventFragment extends Fragment {
     DBConnection connection;
     NotificationDB notifDB;
     ExpandableListView expandableListView;
-    ExpandableListAdapter expandableListAdapter;
+    CustomExpandableListAdapter expandableListAdapter;
     ArrayList<String> expandableListTitle;
     HashMap<String, ArrayList<UserProfile>> expandableListDetail;
 
@@ -76,12 +76,17 @@ public class ManageEventFragment extends Fragment {
 
         GetListData listPopulator = new GetListData(eventDB);
 
+        //initialize the expandable list view
         expandableListView = (ExpandableListView) view.findViewById(R.id.expandableListView);
+        //get the list data
         expandableListDetail = listPopulator.getData();
+        //set the title for each list group
         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+        //set the list adapter
         expandableListAdapter = new CustomExpandableListAdapter(this.getContext(), expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
 
+        //listener for expanding a list group
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
@@ -91,6 +96,7 @@ public class ManageEventFragment extends Fragment {
             }
         });
 
+        //listener for collapsing a list group
         expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
 
             @Override
@@ -102,84 +108,40 @@ public class ManageEventFragment extends Fragment {
             }
         });
 
+        //listener for selecting a list item
+        //TODO make this able to remove a user
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                Toast.makeText(
-                        getContext(),
-                        expandableListTitle.get(groupPosition)
-                                + " -> "
-                                + expandableListDetail.get(
-                                expandableListTitle.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT
-                ).show();
-                return false;
+
+                if (groupPosition != 3){ //only declined users can be removed
+                    Toast.makeText(getContext(),
+                             "Users in the " + expandableListTitle.get(groupPosition) + " list cannot be removed.",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+                else {
+                    // create a dialogue box for them to confirm their choice
+                    new AlertDialog.Builder(requireContext()) //
+                            .setTitle("Remove User")
+                            .setMessage("Are you sure you would like to remove this user from the list?")
+                            .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    UserProfile user = expandableListAdapter.deleteChild(groupPosition, childPosition);
+                                    user.getDocRef();
+
+                                }
+                            })
+                            .setNegativeButton("Cancel", null) // closes the dialog on cancel
+                            .show();
+
+
+                }
+                return true;
             }
         });
-
-
-//        TextView currentWaitView = view.findViewById(R.id.nav_waiting);
-//        ListView waitingListView = view.findViewById(R.id.nav_waiting_list);
-//
-//        //TextView selectedView = view.findViewById(R.id.nav_selected);
-//
-//        ExpandableListView expandableListView = view.findViewById(R.id.selected_ppl);
-//
-//        TextView cancelledView = view.findViewById(R.id.nav_cancelled);
-//        ListView cancelledListView = view.findViewById(R.id.cancelled_ppl);
-//
-//        TextView attendingView = view.findViewById(R.id.nav_attending);
-//        ListView attendingListView = view.findViewById(R.id.attending_ppl);
-
-
-
-
-//        String text;
-//        if (event.getMaxEntrants().equals(-1)){
-//            text = "Current waiting list: " + event.getWaitingListSize() + " entrants";
-//            currentWaitView.setText(text);
-//        } else {
-//            text = "Current Waiting List: " + event.countEntrants().toString() + " / " + event.getMaxEntrants();
-//            currentWaitView.setText(text);
-//        }
-//
-//        //if the event has ended, include the length of each list in the text view
-//        if(event.getEventOver() == Boolean.TRUE){
-//            String selectedText = "People Selected: " + event.getWinnersList().size();
-//            //selectedView.setText(selectedText);
-//
-//            String cancelledText = "People Cancelled: " + event.getDeclinedList().size();
-//            cancelledView.setText(cancelledText);
-//
-//            String attendingText = "People Attending: " + event.getAcceptedList().size();
-//            attendingView.setText(attendingText);
-//
-//        }
-
-
-
-
-
-
-//        EntrantArrayAdapter waitAdapter= new EntrantArrayAdapter(getContext(), entrants);
-//        waitingListView.setAdapter(waitAdapter);
-//
-//        //All Selected (Winners)
-//
-//        EntrantArrayAdapter selectedAdapter = new EntrantArrayAdapter(getContext(), winners);
-//        selectedListView.setAdapter(selectedAdapter);
-//
-//        //All Cancelled (declined)
-//        EntrantArrayAdapter declinedAdapter = new EntrantArrayAdapter(getContext(), declined);
-//        cancelledListView.setAdapter(declinedAdapter);
-//
-//        //All Attending (accepted)
-//        EntrantArrayAdapter acceptedAdapter = new EntrantArrayAdapter(getContext(), accepted);
-//        attendingListView.setAdapter(acceptedAdapter);
-
-
-
 
         //When the organizer presses the send message button, they will get an alert dialog to write a custom message that all entrants will recieve as a notification
         sendMessageButton.setOnClickListener( new View.OnClickListener() {
@@ -237,10 +199,6 @@ public class ManageEventFragment extends Fragment {
                 eventDB.endEvent(event);
                 CharSequence text = "Event lottery ended, notifications have been sent to entrants.";
                 Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
-//                waitAdapter.notifyDataSetChanged();
-//                selectedAdapter.notifyDataSetChanged();
-//                declinedAdapter.notifyDataSetChanged();
-//                acceptedAdapter.notifyDataSetChanged();
 
             }
         });
@@ -297,10 +255,6 @@ public class ManageEventFragment extends Fragment {
                             LatLng edmonton = new LatLng(edmontonLatitude, edmontonLongitude);
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edmonton, zoomLevel));
 
-                            // marker at edmonton
-//                            googleMap.addMarker(new MarkerOptions()
-//                                    .position(edmonton)
-//                                    .title("Edmonton"));
                         }
                     });
 
@@ -313,36 +267,7 @@ public class ManageEventFragment extends Fragment {
             }
         });
 
-//
-//        SupportMapFragment mapFragment = (SupportMapFragment) getParentFragmentManager()
-//                .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
-
         return view;
     }
-
-//    public HashMap<String, ArrayList<UserProfile>> getData(){
-//        HashMap<String, ArrayList<UserProfile>> expandableListDetail = new HashMap<String, ArrayList<UserProfile>>();
-//        //All Waitlisted (Entrants)
-//        ArrayList<UserProfile> entrants = eventDB.getEntrantsList();
-//        ArrayList<UserProfile> winners = eventDB.getWinnersList();
-//        ArrayList<UserProfile> declined = eventDB.getDeclinedList();
-//        ArrayList<UserProfile> accepted = eventDB.getAcceptedList();
-//        Log.v("getData", "size of entrants list: " + entrants.size());
-//
-//        expandableListDetail.put("Entrants", entrants);
-//        expandableListDetail.put("Winners", winners);
-//        expandableListDetail.put("Declined", declined);
-//        expandableListDetail.put("Accepted", accepted);
-//
-//        Log.v("getData", "size of entrants list: " + entrants.size());
-//
-//        return expandableListDetail;
-//    }
-
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        // Do something
-//    }
 
 }

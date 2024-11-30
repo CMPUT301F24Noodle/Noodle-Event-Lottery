@@ -35,8 +35,8 @@ public class GetListData {
 
         expandableListDetail.put("Entrants", entrants);
         expandableListDetail.put("Winners", winners);
-        expandableListDetail.put("Declined", declined);
-        expandableListDetail.put("Accepted", accepted);
+        expandableListDetail.put("Cancelled", declined);
+        expandableListDetail.put("Attending", accepted);
 
 
         return expandableListDetail;

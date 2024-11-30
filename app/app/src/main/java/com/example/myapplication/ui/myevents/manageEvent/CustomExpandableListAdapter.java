@@ -16,6 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Author: Erin-Marie
+ * Expandable List Adapter, used for the Manage Events Fragment
+ */
 public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     private HashMap<String, ArrayList<UserProfile>> expandableListDetail;
     private Context context;
@@ -38,6 +42,15 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         return expandedListPosition;
     }
 
+    /**
+     * Author: Erin-Marie
+     * Method that displays the list item within the group view within the expanded list view
+     * @param listPosition the position of the list group in the expanded list
+     * @param expandedListPosition the position of the list item in the expanded list group
+     * @param convertView view
+     * @param parent viewGroup parent
+     * @return convertView which is the view for the list group, and has the correct title attr
+     */
     @Override
     public View getChildView(int listPosition, final int expandedListPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
@@ -51,6 +64,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         }
         TextView expandedListTextView = convertView.findViewById(R.id.expandedListItem);
         if (userName == null){
+            //if a user does not have a Name set in their profile, they are displayed as Anonymous Noodle
             expandedListTextView.setText("Anonymous_Noodle");
         } else {
             expandedListTextView.setText(userItem.getName());
@@ -79,6 +93,15 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         return listPosition;
     }
 
+    /**
+     * Author: Erin-Marie
+     * Method that displays the group view within the expanded list view
+     * @param listPosition the position of the list group in the expanded list
+     * @param isExpanded boolean
+     * @param convertView view
+     * @param parent viewGroup parent
+     * @return convertView which is the view for the list group, and has the correct title attr
+     */
     @Override
     public View getGroupView(int listPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
@@ -103,6 +126,22 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int listPosition, int expandedListPosition) {
         return true;
+    }
+
+    /**
+     * Author Erin-Marie
+     * Method to delete a list item from the list view for ManageEvent
+     *
+     * @param listPosition         list group selected
+     * @param expandedListPosition list item selected
+     * @return user UserProfile that was just removed from the list
+     */
+    public UserProfile deleteChild(int listPosition, int expandedListPosition){
+        UserProfile user = getChild(listPosition, expandedListPosition);
+        //remove the user from the visible list
+        (Objects.requireNonNull(this.expandableListDetail.get(this.expandableListTitle.get(listPosition)))).remove(expandedListPosition);
+        this.notifyDataSetChanged();
+        return user;
     }
 }
 
