@@ -55,6 +55,9 @@ public class AdminFragment extends Fragment {
 
         imageButton.setOnClickListener(v -> {
             // Handle Image button click
+            NavController navController = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.adminPhotoFragment);
+
             Toast.makeText(getContext(), "Image button clicked", Toast.LENGTH_SHORT).show();
             // Navigate to Image Fragment or Activity
         });
