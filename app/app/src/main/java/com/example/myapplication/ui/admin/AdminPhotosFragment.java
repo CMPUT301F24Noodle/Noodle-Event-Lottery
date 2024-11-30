@@ -18,8 +18,9 @@ import androidx.fragment.app.Fragment;
 import com.example.myapplication.BitmapHelper;
 import com.example.myapplication.R;
 import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,7 @@ public class AdminPhotosFragment extends Fragment {
     private ListView docRefListView;
     private ArrayList<UserItem> userList;
     private UserAdapter userAdapter;
+    private ListenerRegistration listenerRegistration;
 
     @Nullable
     @Override
@@ -41,35 +43,101 @@ public class AdminPhotosFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Initialize ListView and Adapter
         docRefListView = view.findViewById(R.id.doc_ref_list_view);
         userList = new ArrayList<>();
         userAdapter = new UserAdapter();
         docRefListView.setAdapter(userAdapter);
 
-        fetchUserData();
+        // Start listening to Firestore
+        startListeningToFirestore();
     }
 
-    private void fetchUserData() {
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        stopListeningToFirestore();
+    }
+
+    private void startListeningToFirestore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("AllUsers")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            String name = document.getString("name");
-                            String uuid = document.getString("uuid");
-                            String encodedPicture = document.getString("encodedPicture");
+        listenerRegistration = db.collection("AllUsers")
+                .addSnapshotListener((snapshots, error) -> {
+                    if (error != null) {
+                        Log.e(TAG, "Error listening to Firestore changes: ", error);
+                        return;
+                    }
 
-                            userList.add(new UserItem(name, uuid, encodedPicture));
-                            Log.d(TAG, "Name: " + name + ", UUID: " + uuid);
+                    if (snapshots != null) {
+                        for (DocumentChange change : snapshots.getDocumentChanges()) {
+                            switch (change.getType()) {
+                                case ADDED:
+                                    addUser(change);
+                                    break;
+
+                                case MODIFIED:
+                                    updateUser(change);
+                                    break;
+
+                                case REMOVED:
+                                    removeUser(change);
+                                    break;
+                            }
                         }
-
-                        userAdapter.notifyDataSetChanged();
-                    } else {
-                        Log.e(TAG, "Error fetching users: ", task.getException());
                     }
                 });
+    }
+
+    private void stopListeningToFirestore() {
+        if (listenerRegistration != null) {
+            listenerRegistration.remove();
+            listenerRegistration = null;
+        }
+    }
+
+    private void addUser(DocumentChange change) {
+        String name = change.getDocument().getString("name");
+        String uuid = change.getDocument().getString("uuid");
+        String encodedPicture = change.getDocument().getString("encodedPicture");
+
+        if (name != null && uuid != null) {
+            userList.add(new UserItem(name, uuid, encodedPicture));
+            userAdapter.notifyDataSetChanged();
+        } else {
+            Log.e(TAG, "Invalid user data: name=" + name + ", uuid=" + uuid);
+        }
+    }
+
+    private void updateUser(DocumentChange change) {
+        String uuid = change.getDocument().getString("uuid");
+
+        for (int i = 0; i < userList.size(); i++) {
+            if (userList.get(i).getUuid().equals(uuid)) {
+                String name = change.getDocument().getString("name");
+                String encodedPicture = change.getDocument().getString("encodedPicture");
+
+                if (name != null) {
+                    userList.set(i, new UserItem(name, uuid, encodedPicture));
+                    userAdapter.notifyDataSetChanged();
+                } else {
+                    Log.e(TAG, "Invalid updated user data: uuid=" + uuid);
+                }
+                return;
+            }
+        }
+    }
+
+    private void removeUser(DocumentChange change) {
+        String uuid = change.getDocument().getString("uuid");
+
+        for (int i = 0; i < userList.size(); i++) {
+            if (userList.get(i).getUuid().equals(uuid)) {
+                userList.remove(i);
+                userAdapter.notifyDataSetChanged();
+                return;
+            }
+        }
     }
 
     private class UserAdapter extends ArrayAdapter<UserItem> {
@@ -97,12 +165,17 @@ public class AdminPhotosFragment extends Fragment {
             try {
                 BitmapHelper bitmapHelper = new BitmapHelper();
                 UserProfile userProfile = new UserProfile();
+
+                // Safely set UUID and encoded picture
                 userProfile.setUuid(userItem.getUuid());
+                userProfile.setEncodedPicture(userItem.getEncodedPicture());
+                userProfile.setHasProfilePic(userItem.getEncodedPicture() != null); // Example logic
+
                 Bitmap profilePicture = bitmapHelper.loadProfilePicture(userProfile);
                 if (profilePicture != null) {
                     eventPosterImageView.setImageBitmap(profilePicture);
                 } else {
-                    Log.e(TAG, "Failed to load profile picture for UUID: " + userItem.getUuid());
+                    Log.e(TAG, "Profile picture is null for UUID: " + userItem.getUuid());
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error loading profile picture for UUID: " + userItem.getUuid(), e);
