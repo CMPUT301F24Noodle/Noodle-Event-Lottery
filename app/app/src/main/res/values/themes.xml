@@ -32,4 +32,9 @@
         <item name="android:textColor">@color/bonus_yellow</item>
     </style>
 
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@color/bonus_yellow</item> <!-- Title color -->
+        <item name="android:colorControlNormal">@color/bonus_yellow</item> <!-- Icon color -->
+    </style>
+
 </resources>
