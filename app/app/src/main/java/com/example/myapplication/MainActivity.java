@@ -302,4 +302,9 @@ public class MainActivity extends AppCompatActivity {
         return connection;
     }
 
+    // for events nav controller
+    public NavController getMyEventsNavController() {
+        return myEventsNavController;
+    }
+
 }

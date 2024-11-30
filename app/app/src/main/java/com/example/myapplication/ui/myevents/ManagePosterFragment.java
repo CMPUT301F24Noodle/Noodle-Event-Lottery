@@ -24,8 +24,8 @@ import com.example.myapplication.BitmapHelper;
 import com.example.myapplication.R;
 import com.example.myapplication.database.EventDB;
 import com.example.myapplication.database.UserDB;
-import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.objects.Event;
+import com.example.myapplication.objects.UserProfile;
 
 import java.io.IOException;
 

@@ -26,6 +26,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
@@ -91,7 +93,10 @@ public class MyEventsFragment extends Fragment {
             }
         });
 
-
+        NavController myEventsNavController = ((MainActivity) requireActivity()).getMyEventsNavController();
+        if (myEventsNavController != null) {
+            myEventsNavController.navigate(R.id.nav_my_events);
+        }
 
 
         // Set up the FloatingActionButton click listener
@@ -197,7 +202,7 @@ public class MyEventsFragment extends Fragment {
      * Constructs a bundle of arguments to send to the new fragment
      */
     private void openAddEventsFragment() {
-
+        /*
         // Create a new instance of AddEventsFragment
         AddEventsFragment addEventsFragment = new AddEventsFragment();
         Bundle args = new Bundle();
@@ -210,7 +215,9 @@ public class MyEventsFragment extends Fragment {
         transaction.add(R.id.nav_host_fragment_content_main, addEventsFragment);
         transaction.addToBackStack(null); // Adds the transaction to the back stack
         transaction.commit();
-
+        */
+        NavController navController = Navigation.findNavController(requireView());
+        navController.navigate(R.id.action_MyEventsFragment_to_addEventsFragment);
 
 
     }

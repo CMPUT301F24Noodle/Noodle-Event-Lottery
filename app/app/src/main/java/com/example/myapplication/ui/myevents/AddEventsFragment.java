@@ -51,9 +51,7 @@ import com.example.myapplication.database.EventDB;
 import com.example.myapplication.objects.Event;
 import com.example.myapplication.objects.UserProfile;
 import com.example.myapplication.ui.myevents.editEvent.EditEventFragment;
-import com.example.myapplication.database.UserDB;
-import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+
 import com.example.myapplication.ui.user_profile.ManageProfilePictureFragment;
 import com.google.firebase.firestore.auth.User;
 
@@ -92,10 +90,10 @@ public class AddEventsFragment extends Fragment {
             this.connection = main.connection;
             this.currentUserProfile = main.user;
         }
-        Bundle args = getArguments();
-        assert args != null;
-        eventDB = (EventDB) args.get("eventDB");
-
+        //Bundle args = getArguments();
+        //assert args != null;
+        //eventDB = (EventDB) args.get("eventDB");
+        eventDB = new EventDB(connection);
         event = new Event();
 
 
