@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.admin;
 
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,9 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,13 +46,14 @@ public class AdminPhotosFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialize ListView and Adapter
         docRefListView = view.findViewById(R.id.doc_ref_list_view);
         userList = new ArrayList<>();
         userAdapter = new UserAdapter();
         docRefListView.setAdapter(userAdapter);
 
-        // Start listening to Firestore
+        // Set item click listener to show popup
+        docRefListView.setOnItemClickListener((parent, v, position, id) -> showPopupDialog(userList.get(position)));
+
         startListeningToFirestore();
     }
 
@@ -140,6 +144,72 @@ public class AdminPhotosFragment extends Fragment {
         }
     }
 
+    private void showPopupDialog(UserItem userItem) {
+        // Inflate the popup layout
+        View popupView = LayoutInflater.from(requireContext()).inflate(R.layout.delete_view_images, null);
+
+        // Create the AlertDialog
+        AlertDialog dialog = new AlertDialog.Builder(requireContext()).setView(popupView).create();
+
+        // Bind views
+        ImageView fullProfileImage = popupView.findViewById(R.id.full_profile_image);
+        Button editButton = popupView.findViewById(R.id.edit_picture_button);
+        Button deleteButton = popupView.findViewById(R.id.delete_picture_button);
+        Button backButton = popupView.findViewById(R.id.picture_back_button);
+
+        // Set the profile image
+        try {
+            BitmapHelper bitmapHelper = new BitmapHelper();
+            UserProfile userProfile = new UserProfile();
+            userProfile.setUuid(userItem.getUuid());
+            userProfile.setEncodedPicture(userItem.getEncodedPicture());
+            userProfile.setHasProfilePic(userItem.getEncodedPicture() != null);
+
+            Bitmap profilePicture = bitmapHelper.loadProfilePicture(userProfile);
+            if (profilePicture != null) {
+                fullProfileImage.setImageBitmap(profilePicture);
+            } else {
+                Log.e(TAG, "Failed to load full profile picture for UUID: " + userItem.getUuid());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error loading full profile picture for UUID: " + userItem.getUuid(), e);
+        }
+
+        // Set button actions
+        editButton.setOnClickListener(v -> {
+            Toast.makeText(requireContext(), "Edit functionality not implemented", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+
+        deleteButton.setOnClickListener(v -> {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("AllUsers").document(userItem.getUuid())
+                    .update("encodedPicture", null) // Set the encodedPicture field to null
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(requireContext(), "Profile picture deleted successfully!", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+
+                        // Update the user item in the list and refresh the adapter
+                        for (int i = 0; i < userList.size(); i++) {
+                            if (userList.get(i).getUuid().equals(userItem.getUuid())) {
+                                userList.get(i).setEncodedPicture(null); // Update local object
+                                userAdapter.notifyDataSetChanged(); // Refresh the ListView
+                                break;
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(requireContext(), "Failed to delete profile picture!", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Error deleting profile picture: ", e);
+                    });
+        });
+
+        backButton.setOnClickListener(v -> dialog.dismiss());
+
+        // Show the dialog
+        dialog.show();
+    }
+
     private class UserAdapter extends ArrayAdapter<UserItem> {
 
         public UserAdapter() {
@@ -165,11 +235,9 @@ public class AdminPhotosFragment extends Fragment {
             try {
                 BitmapHelper bitmapHelper = new BitmapHelper();
                 UserProfile userProfile = new UserProfile();
-
-                // Safely set UUID and encoded picture
                 userProfile.setUuid(userItem.getUuid());
                 userProfile.setEncodedPicture(userItem.getEncodedPicture());
-                userProfile.setHasProfilePic(userItem.getEncodedPicture() != null); // Example logic
+                userProfile.setHasProfilePic(userItem.getEncodedPicture() != null);
 
                 Bitmap profilePicture = bitmapHelper.loadProfilePicture(userProfile);
                 if (profilePicture != null) {
@@ -186,9 +254,9 @@ public class AdminPhotosFragment extends Fragment {
     }
 
     private static class UserItem {
-        private final String name;
-        private final String uuid;
-        private final String encodedPicture;
+        private String name;
+        private String uuid;
+        private String encodedPicture;
 
         public UserItem(String name, String uuid, String encodedPicture) {
             this.name = name;
@@ -206,6 +274,10 @@ public class AdminPhotosFragment extends Fragment {
 
         public String getEncodedPicture() {
             return encodedPicture;
+        }
+
+        public void setEncodedPicture(String encodedPicture) {
+            this.encodedPicture = encodedPicture;
         }
     }
 }
