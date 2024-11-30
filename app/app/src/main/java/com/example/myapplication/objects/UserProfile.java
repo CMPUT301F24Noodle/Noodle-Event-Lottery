@@ -1,29 +1,10 @@
-package com.example.myapplication.objects.userProfileClasses;
+package com.example.myapplication.objects;
 
 import static android.app.PendingIntent.getActivity;
 
-import static java.security.AccessController.getContext;
-
-import android.content.ContentResolver;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.media.Image;
-import android.net.Uri;
-import android.util.Base64;
-
-import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.facilityClasses.Facility;
 import com.google.firebase.firestore.DocumentReference;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -118,6 +99,7 @@ public class UserProfile implements Serializable {
     public void setMyEnteredEvents(ArrayList<Event> myEnteredEvents) {
         this.myEnteredEvents = myEnteredEvents;
     }
+
 
     public DocumentReference getDocRef() {
         return docRef;

@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.UserDB;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.objects.UserProfile;
 
 
 

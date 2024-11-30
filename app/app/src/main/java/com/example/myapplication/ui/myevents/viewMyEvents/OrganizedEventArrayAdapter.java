@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.myevents;
+package com.example.myapplication.ui.myevents.viewMyEvents;
 
 import static android.app.PendingIntent.getActivity;
 
@@ -12,20 +12,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
-import com.example.myapplication.database.DBConnection;
-import com.example.myapplication.database.EventDB;
-import com.example.myapplication.database.FacilityDB;
-import com.example.myapplication.database.NotificationDB;
-import com.example.myapplication.database.UserDB;
-import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.objects.Event;
+import com.example.myapplication.objects.UserProfile;
+import com.example.myapplication.ui.myevents.manageEvent.ManageEventFragment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class OrganizedEventArrayAdapter extends ArrayAdapter<Event> {
 

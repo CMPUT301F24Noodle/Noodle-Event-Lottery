@@ -1,7 +1,4 @@
-package com.example.myapplication.objects.facilityClasses;
-
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.google.firebase.firestore.DocumentReference;
+package com.example.myapplication.objects;
 
 import java.io.Serializable;
 

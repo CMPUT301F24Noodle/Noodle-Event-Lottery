@@ -3,7 +3,6 @@ package com.example.myapplication.ui.user_profile;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,21 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.myapplication.BitmapHelper;
 import com.example.myapplication.R;
 import com.example.myapplication.database.UserDB;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.google.firebase.firestore.auth.User;
-
-import android.Manifest;
+import com.example.myapplication.objects.UserProfile;
 
 import java.io.IOException;
 

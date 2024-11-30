@@ -10,9 +10,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.objects.facilityClasses.Facility;
+import com.example.myapplication.objects.Event;
+import com.example.myapplication.objects.UserProfile;
+import com.example.myapplication.objects.Facility;
 import com.example.myapplication.ui.registeredevents.RegisteredEventArrayAdapter;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.database.EventDB;

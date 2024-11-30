@@ -11,7 +11,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.util.Base64;
 
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.objects.UserProfile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

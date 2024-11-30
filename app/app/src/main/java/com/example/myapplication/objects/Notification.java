@@ -1,19 +1,11 @@
-package com.example.myapplication.objects.notificationClasses;
+package com.example.myapplication.objects;
 
 import static java.time.Instant.now;
 
-import androidx.core.app.NotificationCompat;
-
-import com.example.myapplication.R;
-import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
-import org.w3c.dom.Document;
-
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Author: Erin-Marie
