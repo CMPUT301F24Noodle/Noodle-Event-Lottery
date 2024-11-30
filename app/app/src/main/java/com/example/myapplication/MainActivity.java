@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -93,13 +94,12 @@ public class MainActivity extends AppCompatActivity {
         // TODONE: add UserProfile to the nav drawer so it can be selected and we can view the UserProfile fragment
         //MAYBE: to add nav_home activity back into the menu, uncomment the MAYBE below, as well as both MAYBE in mobile_navigation.XML and in activity_drawer_main.XML
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_profile, R.id.nav_myevents, R.id.nav_registered, R.id.nav_notifications)
+                R.id.nav_home, R.id.nav_profile, R.id.nav_myevents, R.id.nav_registered, R.id.nav_notifications, R.id.nav_metrics)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
         profileImage.setOnClickListener(v -> {
             navController.navigate(R.id.nav_profile);
             drawer.closeDrawer(GravityCompat.START);// Replace with the correct ID of your ProfileFragment
@@ -163,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
                     Bitmap pfp = helper.loadProfilePicture(user);
                     updateSidebarHeader(user.getName(),user.getEmail(),pfp);
+                    updateSidebarForUserType(user);
                     Log.v("SetUpDB", "Set profile for existing user");
 
                 } else { // User is not already in the database
@@ -176,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
                     Bitmap pfp = helper.loadProfilePicture(user);
                     updateSidebarHeader("Name","Email Address",pfp);
                     Log.v("SetUpDB", "Set profile for new user");
+                    updateSidebarForUserType(user);
                 }
                 //testCreateNotif();
                 createNewNotifications(); //populate the new notifications to the device notifications
@@ -271,7 +273,13 @@ public class MainActivity extends AppCompatActivity {
         this.notificationManager.notify(id, builder.build());
         Log.v(TAG, "notification sent");
     }
-
+    /**
+     * Author: Apoorv
+     * This method updates the sidebar header to show accurate profile information
+     * @param name the name set by the user
+     * @param email the email of the user
+     * @param profileImage the bitmap of the profile image set by the user.
+     */
     public void updateSidebarHeader(String name, String email, Bitmap profileImage) {
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
@@ -287,6 +295,20 @@ public class MainActivity extends AppCompatActivity {
         // Update profile image
         CircleImageView headerProfileImage = headerView.findViewById(R.id.nav_header_profile_image);
         headerProfileImage.setImageBitmap(profileImage);
+    }
+    /**
+     * Author: Apoorv
+     * This method updates the sidebar to show menus that the user has access to.
+     * @param user the user who's priveledges are being checked.
+     */
+    public void updateSidebarForUserType(UserProfile user) {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        MenuItem navORG = menu.findItem(R.id.nav_myevents);
+        MenuItem navADM = menu.findItem(R.id.nav_admin);
+
+        navORG.setVisible(user.checkIsOrganizer());
+        navADM.setVisible(user.getAdmin());
     }
 
     // a method used for testing

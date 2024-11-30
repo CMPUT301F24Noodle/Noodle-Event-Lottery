@@ -33,9 +33,9 @@
             android:id="@+id/delete_picture_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete"
+            android:background="@drawable/mybutton"
             android:fontFamily="@font/belanosima"
-            android:background="@drawable/mybutton"/>
+            android:text="Delete" />
 
     </LinearLayout>
 

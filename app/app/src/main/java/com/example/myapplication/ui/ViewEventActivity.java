@@ -49,15 +49,18 @@ public class ViewEventActivity extends AppCompatActivity {
      * Author: Sam Lee
      * Add userRef to event's entrants list and update database.
      * [US 01.01.01] As an entrant, I want to join the waiting list for a specific event
+     * TODO: addEntrant(event) returns False if the user could not be added, whether because the waitlist is full, or if the event has already ended.
+     *      should print a toast or something if the user could not be added
      */
     private void saveEvent() {
         // Add user to event's entrants list
         UserDB userDB = new UserDB(new DBConnection(getApplicationContext()));
         DocumentReference userRef = userDB.getUserDocumentReference();
-        event.addEntrant(userRef);
+
 
         // Update event in database
         EventDB eventDB = new EventDB(new DBConnection(getApplicationContext()));
+        eventDB.addEntrant(event);
         eventDB.updateEvent(event);
 
         // Update registered events list

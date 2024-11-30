@@ -133,11 +133,15 @@ public class EventDB implements Serializable {
 
     /**
      * Author: Erin-Marie
-     * @param entrants the entrants of the event
+     * @param userList the userList of the event;
+     *                  it is the entrant list if method is called for ending the event
+     *                  it is the losers list if the method is called for replacing declined entrants
      * @param participants the number of users to be chosen to participate in the event
+     *                     it is the value of event.maxParticipants if called for ending the event
+     *                     it is the value of event.getUsersNeededCount if called for replacing declined entrants
      * @param event the event to be attended
      */
-    public void getRandomWinners(ArrayList<DocumentReference> entrants, int participants, Event event)
+    public void getRandomWinners(ArrayList<DocumentReference> userList, int participants, Event event)
     {
         //Initialize random
         Random rand = new Random();
@@ -147,22 +151,23 @@ public class EventDB implements Serializable {
 
         for (int i = 0; i < participants; i++) {
             //use random indexes to chose winners
-            int randomEntrantIndex = rand.nextInt(entrants.size());
+            int randomEntrantIndex = rand.nextInt(userList.size());
 
             // add the winner to the winner list
-            eventWinnersList.add(entrants.get(randomEntrantIndex));
+            eventWinnersList.add(userList.get(randomEntrantIndex));
 
-            //remove the entrant from the entrants list
-            entrants.remove(randomEntrantIndex);
+            //remove the entrant from the userList list
+            userList.remove(randomEntrantIndex);
         }
         //set the winners list
         event.setWinnersList(eventWinnersList);
 
-        //The remaining users in entrants are the losers
-        event.setLosersList(entrants);
+        //The remaining users in userList are the losers
+        event.setLosersList(userList);
 
 
     }
+
 
 
     /**
@@ -289,6 +294,37 @@ public class EventDB implements Serializable {
         return this.myEvents;
 
     }
+
+    /**
+     * Author Apoorv
+     * sets EventDB objects myEvents array to be all of the events the user has won
+     * @param user current user
+     * @return this.myEvents is a list of all the won events.
+     */
+    public ArrayList<Event> getUserWinnerEvents(UserProfile user) {
+        // Query all events where the current user is in the winnersList
+        Query query = allEvents.whereArrayContains("winnersList", user.getDocRef()).orderBy("eventDate", Query.Direction.DESCENDING);
+
+        getQuery(query, new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                // Empty the current list of events to avoid duplicates
+                ArrayList<Event> myEventsCol = new ArrayList<Event>();
+                myEvents.clear();
+
+                // Add each event to the ArrayList
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    myEvents.add(document.toObject(Event.class));
+                    Log.v(TAG, "size: " + myEvents.size());
+                }
+
+                Log.v(TAG, "On complete getUserWinnerEvents finished");
+            }
+        });
+        // Return the list of events where the user is in the winnersList
+        return this.myEvents;
+    }
+
 
     /**
      * Author Erin-Marie
@@ -567,12 +603,21 @@ public class EventDB implements Serializable {
      */
     public Boolean addEntrant(Event event){
         DocumentReference entrant = connection.getUserDocumentRef();
+        if (event.getEventOver() == Boolean.TRUE){
+            Log.v(TAG, "This event lottery has already ended");
+            return Boolean.FALSE;
+        }
         Integer added = event.addEntrant(entrant);
         if (added == 0){
             Log.v(TAG, "Waiting list is full, user could not be added");
             return Boolean.FALSE;
         } else {
             updateEvent(event);
+            //if the event has a max waitlist size, end the event once the waitlist capacity is reached
+            if(event.getEventFull() == Boolean.TRUE && event.getEventOver() == Boolean.FALSE){
+                endEvent(event);
+            }
+
             return Boolean.TRUE;
         }
 

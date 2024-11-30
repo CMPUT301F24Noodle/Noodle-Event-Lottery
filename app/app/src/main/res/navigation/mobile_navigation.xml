@@ -71,4 +71,11 @@
         tools:layout="@layout/view_event_organizer">
     </fragment>
 
+
+    <fragment
+        android:id="@id/nav_metrics"
+        android:name="com.example.myapplication.ui.metrics.MetricsFragment"
+        android:label="User Metrics"
+        tools:layout="@layout/fragment_notifications"/>
+
 </navigation>
