@@ -82,7 +82,18 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
         view.setOnClickListener(v -> {
             int result = event.hasAccepted(event, currUser);
             if (result == 0){ // if the event lottery is not over
-                Toast.makeText(context, "Winners have not been chosen for this event yet", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Leave Event Waitlist")
+                        .setMessage("Are you sure you want to leave the waitlist for this event?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            event.removeEntrant(currUser);
+                            eventDB.updateEvent(event);
+                            events.remove(position);
+                        })
+                        .setNegativeButton("No", (dialog, which) -> {
+                            //close dialog
+                        })
+                        .show();
             } else if (result == 1) { //if the user already responded to their invitation
                 Toast.makeText(context, "You have already responded to you invitation for this event", Toast.LENGTH_SHORT).show();
             } else if (result == 2) { //if user has an unanswered invitation

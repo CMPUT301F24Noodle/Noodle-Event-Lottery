@@ -78,6 +78,10 @@ public class ManageEventFragment extends Fragment {
         Button replaceButton = view.findViewById(R.id.replace_button);
         Button endLotteryButton = view.findViewById(R.id.draw_name_button);
 
+        if (event.getEventOver() == Boolean.TRUE){
+            endLotteryButton.setVisibility(View.INVISIBLE);
+        }
+
         GetListData listPopulator = new GetListData(eventDB);
 
         //initialize the expandable list view
@@ -90,15 +94,15 @@ public class ManageEventFragment extends Fragment {
         expandableListAdapter = new CustomExpandableListAdapter(this.getContext(), expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
 
-        //listener for expanding a list group
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getContext(), expandableListTitle.get(groupPosition) + " List Expanded.",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+//        //listener for expanding a list group
+//        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+//
+//            @Override
+//            public void onGroupExpand(int groupPosition) {
+//                Toast.makeText(getContext(), expandableListTitle.get(groupPosition) + " List Expanded.",
+//                        Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 //        //listener for collapsing a list group
 //        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
@@ -208,10 +212,15 @@ public class ManageEventFragment extends Fragment {
         endLotteryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                eventDB.endEvent(event);
-                CharSequence text = "Event lottery ended, notifications have been sent to entrants.";
-                Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
-
+                if (event.getEventOver() != Boolean.TRUE) {
+                    eventDB.endEvent(event);
+                    endLotteryButton.setVisibility(View.INVISIBLE);
+                    CharSequence text = "Event lottery ended, notifications have been sent to entrants.";
+                    Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+                } else {
+                    CharSequence text = "Event lottery has already been ended";
+                    Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -219,8 +228,7 @@ public class ManageEventFragment extends Fragment {
         replaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CharSequence text = "Replacement winners have been selected and notified";
-                Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+
                 int usersNeeded = event.getUsersNeededCount(); //TODO write this method that will return the number of users that need to be selected to make up for declined users
                 //get replacement winners and notify them
                 eventDB.getRandomWinners(event.getLosersList(), usersNeeded, event);
@@ -228,6 +236,10 @@ public class ManageEventFragment extends Fragment {
                 eventDB.sendMessageToWinners(event);
                 //remove all of the declined users and notify them
                 removeDeclinedUsers();
+
+                //print a toast
+                CharSequence text = usersNeeded + " Replacement winners have been selected and notified";
+                Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
 
             }
         });

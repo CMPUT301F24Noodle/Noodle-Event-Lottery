@@ -106,6 +106,7 @@ public class Event implements Serializable {
         this.maxParticipants = maxParticipants;
         this.lotteryCloses = lotteryCloses;
         this.geoLocation = geoLocation;
+        this.eventOver = Boolean.FALSE;
         this.eventFull = Boolean.FALSE; // event capacity cannot be 0, so it is always false at init
         this.entrantsList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
         this.winnersList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
@@ -130,7 +131,7 @@ public class Event implements Serializable {
      * if capacity is 1, then add new entrant, now check that it is returning maxed
      */
     public void setEventFull() {
-        if (this.maxEntrants == -1 | this.maxEntrants > this.entrantsList.size()) {
+        if (this.maxEntrants == -1 || this.maxEntrants > this.entrantsList.size()) {
             this.eventFull = Boolean.FALSE;
         } else {
             this.eventFull = Boolean.TRUE;
@@ -177,18 +178,11 @@ public class Event implements Serializable {
      * @return 1 if the user was added to the entrant list, or 0 if not
      *         calling function needs to add the event to the users myevents list,
      *         dependent on the return value of addEntrant
-     *         TODO: needs to update firebase db
-     *         TESTED: tested in EventTests.java testAddEntrant()
      *         if capacity it maxed, should return 0
      *         if capacity is not maxed, should return 1 and check that the entrant
      *         is now in the entrantsList
      */
     public int addEntrant(DocumentReference entrant) {
-        // check that entrant is not already in the entrantList, and the event is not
-        // full
-        // entrant
-        // if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE)
-        // {
         if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE
                 && this.eventOver == Boolean.FALSE) {
             this.entrantsList.add(entrant);
@@ -271,7 +265,7 @@ public class Event implements Serializable {
      */
     public int getUsersNeededCount(){
         int count = maxParticipants - winnersList.size() - acceptedList.size();
-        return Math.max(count, losersList.size());
+        return Math.min(count, losersList.size());
     }
 
     // getters and setters
