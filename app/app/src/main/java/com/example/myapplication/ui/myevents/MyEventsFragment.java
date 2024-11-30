@@ -107,6 +107,7 @@ public class MyEventsFragment extends Fragment {
                 // Navigate to create event fragment
                 openAddEventsFragment();
 
+
             }
 
         });
@@ -200,7 +201,7 @@ public class MyEventsFragment extends Fragment {
      */
     private void openAddEventsFragment() {
 
-        /*
+
         // Create a new instance of AddEventsFragment
         AddEventsFragment addEventsFragment = new AddEventsFragment();
         Bundle args = new Bundle();
@@ -209,27 +210,10 @@ public class MyEventsFragment extends Fragment {
 
         // Begin the Fragment transaction
         FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.nav_host_fragment_content_main, addEventsFragment); // Ensure this ID matches your main container ID
+        //transaction.replace(R.id.nav_host_fragment_content_main, addEventsFragment); // Ensure this ID matches your main container ID
+        transaction.add(R.id.nav_host_fragment_content_main, addEventsFragment);
         transaction.addToBackStack(null); // Adds the transaction to the back stack
         transaction.commit();
-        */
-
-        // Create a new instance of AddEventsFragment
-        AddEventsFragment addEventsFragment = new AddEventsFragment();
-
-        // Pass arguments to the fragment
-        Bundle args = new Bundle();
-        args.putSerializable("eventDB", eventDB);
-        addEventsFragment.setArguments(args);
-
-        // Begin the Fragment transaction
-        requireActivity()
-                .getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment_content_main, addEventsFragment) // Ensure this ID matches your main container ID
-                .addToBackStack(null) // Optional: Add to the back stack for navigation
-                .commit();
-
 
 
 

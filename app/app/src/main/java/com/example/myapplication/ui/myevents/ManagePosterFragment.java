@@ -1,11 +1,13 @@
 package com.example.myapplication.ui.myevents;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,10 +37,11 @@ public class ManagePosterFragment extends DialogFragment {
     BitmapHelper helper;
     Boolean inFirebase; // a boolean to determine if the event has been saved in the DB
 
-    UserProfile user;
-
     // TODO TEST
     ActivityResultLauncher<Intent> galleryLauncher;
+
+    ImageView posterImage;
+
 
     public void setEvent(Event event) {
         this.event = event;
@@ -49,41 +52,8 @@ public class ManagePosterFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.delete_view_images, container, false);
-
-        helper = new BitmapHelper();
-        ImageView posterImage = view.findViewById(R.id.full_profile_image);
-
-        // determine if you can actually save the event or not
-        // this might be called from AddEventsFragment, which hasn't created the event yet
-        if(event.getEventID() == null){
-            inFirebase = false;
-        }
-        else{
-            inFirebase = true;
-        }
-
-        if(!isAdded()){
-            Toast.makeText(getContext(), "uh oh", Toast.LENGTH_SHORT).show();
-        }
-
-        if(getActivity() == null){
-            Toast.makeText(getContext(), "dang", Toast.LENGTH_SHORT).show();
-        }
-
-        // if no poster, then hide the image:
-        if(event.getEventPoster() == null){
-            posterImage.setVisibility(View.GONE);
-        }
-        // or set the view to show the image
-        else{
-            String encodedPoster = event.getEventPoster();
-            Bitmap poster = helper.decodeBase64StringToBitmap(encodedPoster);
-            posterImage.setVisibility(View.VISIBLE);
-            posterImage.setImageBitmap(poster);
-        }
-
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
 
         //TODO
         // what happens after a the user selects an image from their gallery
@@ -127,6 +97,46 @@ public class ManagePosterFragment extends DialogFragment {
                     }
                 }
         );
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.delete_view_images, container, false);
+
+        helper = new BitmapHelper();
+        posterImage = view.findViewById(R.id.full_profile_image);
+
+        // determine if you can actually save the event or not
+        // this might be called from AddEventsFragment, which hasn't created the event yet
+        if(event.getEventID() == null){
+            inFirebase = false;
+        }
+        else{
+            inFirebase = true;
+        }
+
+        if(!isAdded()){
+            Toast.makeText(getContext(), "uh oh", Toast.LENGTH_SHORT).show();
+        }
+
+        if(getActivity() == null){
+            Toast.makeText(getContext(), "dang", Toast.LENGTH_SHORT).show();
+        }
+
+        // if no poster, then hide the image:
+        if(event.getEventPoster() == null){
+            posterImage.setVisibility(View.GONE);
+        }
+        // or set the view to show the image
+        else{
+            String encodedPoster = event.getEventPoster();
+            Bitmap poster = helper.decodeBase64StringToBitmap(encodedPoster);
+            posterImage.setVisibility(View.VISIBLE);
+            posterImage.setImageBitmap(poster);
+        }
+
+
+
 
         // a button to let the user upload a poster
         // launches an intent that allows users to open their photo gallery

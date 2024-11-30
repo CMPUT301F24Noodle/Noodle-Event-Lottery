@@ -53,6 +53,8 @@ public class ManageProfilePictureFragment extends DialogFragment {
         this.userDB = userDB;
     }
 
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.delete_view_images, container, false);
