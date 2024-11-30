@@ -137,6 +137,7 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
      */
     public void declineInvitation(Event event) {
         event.getDeclinedList().add(currUser);
+        event.getWinnersList().remove(currUser);
         //event.getEntrantsList().remove(currUser);
         eventDB.updateEvent(event);
         notifyDataSetChanged();

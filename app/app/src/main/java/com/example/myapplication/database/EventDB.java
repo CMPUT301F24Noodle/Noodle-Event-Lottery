@@ -133,11 +133,15 @@ public class EventDB implements Serializable {
 
     /**
      * Author: Erin-Marie
-     * @param entrants the entrants of the event
+     * @param userList the userList of the event;
+     *                  it is the entrant list if method is called for ending the event
+     *                  it is the losers list if the method is called for replacing declined entrants
      * @param participants the number of users to be chosen to participate in the event
+     *                     it is the value of event.maxParticipants if called for ending the event
+     *                     it is the value of event.getUsersNeededCount if called for replacing declined entrants
      * @param event the event to be attended
      */
-    public void getRandomWinners(ArrayList<DocumentReference> entrants, int participants, Event event)
+    public void getRandomWinners(ArrayList<DocumentReference> userList, int participants, Event event)
     {
         //Initialize random
         Random rand = new Random();
@@ -147,22 +151,23 @@ public class EventDB implements Serializable {
 
         for (int i = 0; i < participants; i++) {
             //use random indexes to chose winners
-            int randomEntrantIndex = rand.nextInt(entrants.size());
+            int randomEntrantIndex = rand.nextInt(userList.size());
 
             // add the winner to the winner list
-            eventWinnersList.add(entrants.get(randomEntrantIndex));
+            eventWinnersList.add(userList.get(randomEntrantIndex));
 
-            //remove the entrant from the entrants list
-            entrants.remove(randomEntrantIndex);
+            //remove the entrant from the userList list
+            userList.remove(randomEntrantIndex);
         }
         //set the winners list
         event.setWinnersList(eventWinnersList);
 
-        //The remaining users in entrants are the losers
-        event.setLosersList(entrants);
+        //The remaining users in userList are the losers
+        event.setLosersList(userList);
 
 
     }
+
 
 
     /**

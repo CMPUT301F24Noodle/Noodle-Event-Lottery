@@ -114,7 +114,7 @@ public class Event implements Serializable {
         this.declinedList = new ArrayList<DocumentReference>();
         this.docRef = null;
 
-        // TODO: Need to create QR code and do something with hash data
+
         if (this.eventID != null) {
             this.QRCode = generateQRCode(eventID, 200, 200);
         }
@@ -199,25 +199,6 @@ public class Event implements Serializable {
         return 0;
     }
 
-    // /**
-    // * testing version of above function
-    // * @param entrant
-    // * @return
-    // */
-    // public int addEntrant(DocumentReference entrant) {
-    // // check that entrant is not already in the entrantList, and the event is not
-    // // full
-    // if (!this.entrantsList.contains(entrant)) {
-    // this.entrantsList.add(entrant);
-    // //add the event to the entrants list of events
-    // //setEventFull(); // update whether the event is full
-    // return 1;
-    // }
-    //
-    // // return 0 if user is not added to the list
-    // return 0;
-    // }
-
     /**
      * Author: Erin-Marie
      * Adds an entrant to the list of entrants for the event
@@ -235,9 +216,10 @@ public class Event implements Serializable {
         setEventFull(); // update whether the event is full
     }
 
-    // START OF QR CODE STUFF
+
     /**
      * Author: Xavier Salm
+     * getter for the QR code
      */
     public Bitmap getQRCode() {
         return QRCode;
@@ -281,6 +263,15 @@ public class Event implements Serializable {
         }
         this.QRCode = QRCode;
         return QRCode;
+    }
+
+    /**
+     * Calculates how many new users need to be selected to fill the event, and returns the value
+     * @return int max users that can be added to the event
+     */
+    public int getUsersNeededCount(){
+        int count = maxParticipants - winnersList.size() - acceptedList.size();
+        return Math.max(count, losersList.size());
     }
 
     // getters and setters
