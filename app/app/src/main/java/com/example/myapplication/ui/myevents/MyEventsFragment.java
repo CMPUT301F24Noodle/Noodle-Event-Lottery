@@ -93,11 +93,6 @@ public class MyEventsFragment extends Fragment {
             }
         });
 
-        NavController myEventsNavController = ((MainActivity) requireActivity()).getMyEventsNavController();
-        if (myEventsNavController != null) {
-            myEventsNavController.navigate(R.id.nav_my_events);
-        }
-
 
         // Set up the FloatingActionButton click listener
         // Set OnClickListener for the FAB
@@ -107,7 +102,7 @@ public class MyEventsFragment extends Fragment {
                 Toast.makeText(this.getContext(), text, Toast.LENGTH_SHORT).show();
             } else {
                 // Navigate to create event fragment
-                openAddEventsFragment();
+                Navigation.findNavController(v).navigate(R.id.nav_add_events);
 
 
             }
@@ -216,8 +211,7 @@ public class MyEventsFragment extends Fragment {
         transaction.addToBackStack(null); // Adds the transaction to the back stack
         transaction.commit();
         */
-        NavController navController = Navigation.findNavController(requireView());
-        navController.navigate(R.id.action_MyEventsFragment_to_addEventsFragment);
+
 
 
     }

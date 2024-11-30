@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
     public UserProfile user;
     public NotificationManager notificationManager;
     private final String CHANNEL_ID = "NoodleNotifs";
-    private NavController myEventsNavController;
 
 
     @Override
@@ -96,13 +95,6 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-        // a different nav component for myevent related activities
-        NavHostFragment myEventsNavHostFragment = (NavHostFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.myevents_nav_host_fragment);
-        if (myEventsNavHostFragment != null) {
-            myEventsNavController = myEventsNavHostFragment.getNavController();
-        }
 
         profileImage.setOnClickListener(v -> {
             navController.navigate(R.id.nav_profile);
@@ -302,9 +294,5 @@ public class MainActivity extends AppCompatActivity {
         return connection;
     }
 
-    // for events nav controller
-    public NavController getMyEventsNavController() {
-        return myEventsNavController;
-    }
 
 }
