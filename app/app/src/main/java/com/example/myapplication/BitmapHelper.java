@@ -1,7 +1,5 @@
 package com.example.myapplication;
 
-import static java.security.AccessController.getContext;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,7 +10,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.util.Base64;
 
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.objects.UserProfile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

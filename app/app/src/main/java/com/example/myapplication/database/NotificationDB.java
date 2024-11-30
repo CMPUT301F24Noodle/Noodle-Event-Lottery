@@ -1,19 +1,17 @@
 package com.example.myapplication.database;
 
 import static com.google.firebase.firestore.FieldValue.arrayRemove;
-import static com.google.firebase.firestore.FieldValue.arrayUnion;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.objects.notificationClasses.Notification;
+import com.example.myapplication.objects.UserProfile;
+import com.example.myapplication.objects.Notification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;

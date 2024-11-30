@@ -19,8 +19,8 @@ import com.example.myapplication.database.EventDB;
 import com.example.myapplication.database.FacilityDB;
 import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.database.UserDB;
-import com.example.myapplication.objects.notificationClasses.Notification;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.objects.Notification;
+import com.example.myapplication.objects.UserProfile;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 

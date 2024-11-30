@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
 import com.example.myapplication.database.UserDB;
-import com.example.myapplication.objects.eventClasses.Event;
+import com.example.myapplication.objects.Event;
 import com.example.myapplication.ui.registeredevents.RegisteredEventArrayAdapter;
 import com.example.myapplication.ui.registeredevents.RegisteredEventFragment;
 import com.google.firebase.firestore.DocumentReference;

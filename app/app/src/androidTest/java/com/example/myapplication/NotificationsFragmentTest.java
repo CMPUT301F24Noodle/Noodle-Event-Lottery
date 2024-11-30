@@ -21,8 +21,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.NotificationDB;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.objects.notificationClasses.Notification;
+import com.example.myapplication.objects.UserProfile;
+import com.example.myapplication.objects.Notification;
 import com.google.firebase.firestore.DocumentReference;
 
 import org.junit.Before;
