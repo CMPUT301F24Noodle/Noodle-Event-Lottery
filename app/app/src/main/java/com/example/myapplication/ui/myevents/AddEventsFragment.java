@@ -204,6 +204,7 @@ public class AddEventsFragment extends Fragment {
         try {
             eventDB.addEvent(event);
             currentUserProfile.addOrgEvent(event);
+            eventDB.getUserOrgEvents(currentUserProfile);
             Toast.makeText(getContext(), "Event saved successfully!", Toast.LENGTH_SHORT).show();
             clearFields();
 

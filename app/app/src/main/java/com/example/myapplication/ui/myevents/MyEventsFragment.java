@@ -76,6 +76,7 @@ public class MyEventsFragment extends Fragment {
 
 
         // Initialize the ListView with a simple adapter
+
         eventList = eventDB.getMyOrgEvents();
         Log.v("events", "size: " + eventList.size());
 
