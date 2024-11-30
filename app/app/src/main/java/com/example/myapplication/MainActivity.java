@@ -18,6 +18,7 @@ import com.example.myapplication.database.EventDB;
 import com.example.myapplication.database.FacilityDB;
 import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.database.UserDB;
+import com.example.myapplication.objects.Event;
 import com.example.myapplication.objects.Notification;
 import com.example.myapplication.objects.UserProfile;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -63,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
     public UserProfile user;
     public NotificationManager notificationManager;
     private final String CHANNEL_ID = "NoodleNotifs";
+
+    // this is for myevents trickery
+    public Event currentEvent;
 
 
     @Override

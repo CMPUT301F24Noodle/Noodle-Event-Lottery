@@ -74,6 +74,7 @@ public class MyEventsFragment extends Fragment {
 
 
         ListView listView = binding.createdEventList;
+        //
         FloatingActionButton createEventButton = binding.createEventButton;
 
 
@@ -89,7 +90,7 @@ public class MyEventsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                openEditEventFragment(eventList.get(i));
+                openEditEventFragment(eventList.get(i), view);
             }
         });
 
@@ -102,8 +103,8 @@ public class MyEventsFragment extends Fragment {
                 Toast.makeText(this.getContext(), text, Toast.LENGTH_SHORT).show();
             } else {
                 // Navigate to create event fragment
+                //openAddEventsFragment(v);
                 Navigation.findNavController(v).navigate(R.id.nav_add_events);
-
 
             }
 
@@ -127,7 +128,7 @@ public class MyEventsFragment extends Fragment {
         eventDB.getUserOrgEvents(currentUserProfile);
     }
 
-
+    // TODO IF THIS IS DEPRECATED SHOULD IT BE DELETED??
     /**
      * @deprecated
      * Selecting an event should call openEditEventFragment()
@@ -155,7 +156,7 @@ public class MyEventsFragment extends Fragment {
      * Constructs a bundle of arguments to send to the new fragment
      * @param event the event selected from the listview
      */
-    private void openEditEventFragment(Event event){
+    private void openEditEventFragment(Event event, View v){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         String formattedDate = dateFormat.format(event.getEventDate());
 
@@ -179,7 +180,9 @@ public class MyEventsFragment extends Fragment {
             args.putString("event_waiting_list", event.getWaitingListSize() + " / " + event.getMaxEntrants());
         }
 
+        Navigation.findNavController(v).navigate(R.id.nav_edit_event, args);
 
+        /*
         EditEventFragment editEventFragment = new EditEventFragment();
         editEventFragment.setArguments(args);
 
@@ -187,7 +190,7 @@ public class MyEventsFragment extends Fragment {
                 .replace(R.id.nav_host_fragment_content_main, editEventFragment)
                 .addToBackStack(null)
                 .commit();
-
+        */
     }
 
     /**
@@ -196,14 +199,17 @@ public class MyEventsFragment extends Fragment {
      * Method called when the user selects the add event button of the MyEventsFragment
      * Constructs a bundle of arguments to send to the new fragment
      */
-    private void openAddEventsFragment() {
-        /*
-        // Create a new instance of AddEventsFragment
-        AddEventsFragment addEventsFragment = new AddEventsFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("eventDB", eventDB);
-        addEventsFragment.setArguments(args);
+    // TODO DELETE THIS, JUST MAKE SURE IT ALL LOOKS GOOD OR SOMETHING
+    private void openAddEventsFragment(View v) {
 
+        // Create a new instance of AddEventsFragment
+        //AddEventsFragment addEventsFragment = new AddEventsFragment();
+        Bundle args = new Bundle();
+        String test = "test";
+        args.putSerializable("eventDB", eventDB);
+        //addEventsFragment.setArguments(args);
+        Navigation.findNavController(v).navigate(R.id.nav_add_events, args);
+        /*
         // Begin the Fragment transaction
         FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
         //transaction.replace(R.id.nav_host_fragment_content_main, addEventsFragment); // Ensure this ID matches your main container ID

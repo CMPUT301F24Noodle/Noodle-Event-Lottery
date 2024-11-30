@@ -54,5 +54,21 @@
         android:id="@+id/nav_add_events"
         android:name="com.example.myapplication.ui.myevents.AddEventsFragment"
         android:label="Add Events Fragment"
-        tools:layout="@layout/org_create_new_event" />
+        tools:layout="@layout/org_create_new_event">
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_edit_event_details"
+        android:name="com.example.myapplication.ui.myevents.editEvent.EditEventPosterDetailsFragment"
+        android:label="Edit Event Poster and Details"
+        tools:layout="@layout/org_create_new_event">
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_edit_event"
+        android:name="com.example.myapplication.ui.myevents.editEvent.EditEventFragment"
+        android:label="Edit and View event"
+        tools:layout="@layout/view_event_organizer">
+    </fragment>
+
 </navigation>

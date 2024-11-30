@@ -29,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
@@ -133,11 +134,18 @@ public class EditEventFragment extends Fragment {
             Toast.makeText(getContext(), "No event data provided", Toast.LENGTH_SHORT).show();
         }
 
+        // set the event to main activity so it can be retrieved there
+        if (main != null) {
+            main.currentEvent = event; // set the event!
+        }
+
         // Set EditTexts as non-editable initially
         setFieldsEditable(false);
 
         // Edit button toggles fields to editable
-        editButton.setOnClickListener(v -> setFieldsEditable(true));
+        editButton.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.nav_edit_event_details);
+        });
 
         // Save button saves data and toggles back to non-editable mode
         saveButton.setOnClickListener(v -> {
