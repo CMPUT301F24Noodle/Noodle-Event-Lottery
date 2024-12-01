@@ -23,11 +23,6 @@ import java.util.Date;
  * Author: Erin-Marie
  * Purpose: Event object contains all information and methods for an event an
  * organizer creates
- * TODO make methods for ending the contest and selecting winners
- * make method for notifying winners and losers and sending their invitations
- * make method for making the list of confirmed attendants
- * make method for selecting a new winner if someone rejects an invitation
- * make method for organizer to send a notification with custom message to all
  */
 @IgnoreExtraProperties // Ignore extra properties from Firebase
 public class Event implements Serializable {
@@ -52,16 +47,13 @@ public class Event implements Serializable {
     private int waitingListSize;
     // QRCODE STUFF
     private Bitmap QRCode; // the bitmap of the QR code
-    private String HashedString; // TODO for part 4, do stuff with hash
-
+    private String HashedString;
     // For status of the lottery
     public Date lotteryCloses; // date winners will be selected and notified
     public Boolean eventOver; // False until the event attendance list is finalized, or the eventDate has
     public Boolean eventFull; // False if there is still room for entrants, or if maxEntrants == -1
-
     public ArrayList<DocumentReference> entrantsList; // list of all entrants, by document reference
     public ArrayList<DocumentReference> winnersList; // list of all users who won the lottery, may have max length equal
-                                                     // to
     public ArrayList<DocumentReference> losersList; // list of all users who lost the lottery
     public ArrayList<DocumentReference> acceptedList; // list of all users who have accepted their invitation
     public ArrayList<DocumentReference> declinedList; // list of all users who have accepted their invitation
@@ -81,7 +73,6 @@ public class Event implements Serializable {
 
     /**
      * Class constructor
-     * 
      * @param facility      the facility the event is hosted at, cannot be null
      * @param organizer     the user profile of the event creator, cannot be null
      * @param eventName     the name of the event
@@ -118,7 +109,6 @@ public class Event implements Serializable {
         this.declinedList = new ArrayList<DocumentReference>();
         this.docRef = null;
 
-
         if (this.eventID != null) {
             this.QRCode = generateQRCode(eventID, 200, 200);
         }
@@ -129,7 +119,6 @@ public class Event implements Serializable {
      * Author: Erin-Marie
      * Called anytime an entrant is added or removed from the entrants list
      * Updates whether the event entrant limit has been reached
-     * TESTED: tested in EventTests.java testAddEntrant()
      * if capacity is already maxed,
      * if capacity is 1, then add new entrant, now check that it is returning maxed
      */
@@ -189,7 +178,6 @@ public class Event implements Serializable {
         if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE
                 && this.eventOver == Boolean.FALSE) {
             this.entrantsList.add(entrant);
-            // entrant.addEvent(this); //add the event to the entrants list of events
             setEventFull(); // update whether the event is full
             return 1;
         }
@@ -202,13 +190,9 @@ public class Event implements Serializable {
      * Checks that the entrant is not already in the list of entrants
      *
      * @param entrant UserProfile that wants to un-enter the event lottery
-     *                TODO: needs to update firebase db
-     *                TESTME: check that entrant is actually removed from the
-     *                entrantList
      */
     public void removeEntrant(DocumentReference entrant) {
         this.entrantsList.remove(entrant);
-        // entrant.leaveEvent(this.getEventID()); // remove the event from the entrants
         // list of events
         setEventFull(); // update whether the event is full
     }
@@ -285,7 +269,6 @@ public class Event implements Serializable {
         this.losersList = losersList;
     }
 
-
     public String getEventLocation() {
         return eventLocation;
     }
@@ -293,9 +276,6 @@ public class Event implements Serializable {
     public void setEventLocation(String eventLocation) {
         this.eventLocation = eventLocation;
     }
-
-
-
 
     public DocumentReference getOrganizerRef() {
         return organizerRef;
@@ -356,7 +336,6 @@ public class Event implements Serializable {
 
     @Nullable // Sam: added Nullable for testing purpose
     public UserProfile getOrganizer() {
-
         return organizer;
     }
 
@@ -387,7 +366,6 @@ public class Event implements Serializable {
         } catch (NullPointerException e) {
             return null;
         }
-
         return eventDate;
     }
 
