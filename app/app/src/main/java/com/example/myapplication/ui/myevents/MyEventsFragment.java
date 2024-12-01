@@ -187,6 +187,8 @@ public class MyEventsFragment extends Fragment {
                 .addToBackStack(null)
                 .commit();
 
+        eventAdapter.notifyDataSetChanged();
+
     }
 
     /**
@@ -208,6 +210,8 @@ public class MyEventsFragment extends Fragment {
         transaction.replace(R.id.nav_host_fragment_content_main, addEventsFragment); // Ensure this ID matches your main container ID
         transaction.addToBackStack(null); // Adds the transaction to the back stack
         transaction.commit();
+
+        eventAdapter.notifyDataSetChanged();
     }
 
     @Override
