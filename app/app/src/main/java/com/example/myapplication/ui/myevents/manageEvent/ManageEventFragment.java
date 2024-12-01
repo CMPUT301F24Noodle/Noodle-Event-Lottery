@@ -1,5 +1,7 @@
 package com.example.myapplication.ui.myevents.manageEvent;
 
+import static androidx.navigation.ui.NavigationUI.navigateUp;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -209,6 +211,7 @@ public class ManageEventFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getActivity().onBackPressed();
             }
         });
 
