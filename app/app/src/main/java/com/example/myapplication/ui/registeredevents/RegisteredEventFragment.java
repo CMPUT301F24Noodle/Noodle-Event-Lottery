@@ -88,6 +88,7 @@ public class RegisteredEventFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        eventDB.getUserEnteredEvents(user);
         super.onDestroyView();
         binding = null;
     }

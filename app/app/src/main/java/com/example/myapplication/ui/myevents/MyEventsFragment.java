@@ -74,11 +74,11 @@ public class MyEventsFragment extends Fragment {
 
 
         ListView listView = binding.createdEventList;
-        //
         FloatingActionButton createEventButton = binding.createEventButton;
 
 
         // Initialize the ListView with a simple adapter
+
         eventList = eventDB.getMyOrgEvents();
         Log.v("events", "size: " + eventList.size());
 
@@ -145,8 +145,32 @@ public class MyEventsFragment extends Fragment {
         //Navigation.findNavController(v).navigate(R.id.nav_edit_event, args);
         Navigation.findNavController(v).navigate(R.id.nav_edit_event);
 
+        eventAdapter.notifyDataSetChanged();
+
     }
 
+    /**
+     * Author: Nishchay
+     * Edited: Erin-Marie
+     * Method called when the user selects the add event button of the MyEventsFragment
+     * Constructs a bundle of arguments to send to the new fragment
+     */
+    private void openAddEventsFragment() {
+
+        // Create a new instance of AddEventsFragment
+        AddEventsFragment addEventsFragment = new AddEventsFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("eventDB", eventDB);
+        addEventsFragment.setArguments(args);
+
+        // Begin the Fragment transaction
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.nav_host_fragment_content_main, addEventsFragment); // Ensure this ID matches your main container ID
+        transaction.addToBackStack(null); // Adds the transaction to the back stack
+        transaction.commit();
+
+        eventAdapter.notifyDataSetChanged();
+    }
 
     @Override
     public void onDestroyView() {
