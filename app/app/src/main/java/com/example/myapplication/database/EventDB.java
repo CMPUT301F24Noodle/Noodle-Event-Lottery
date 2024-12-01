@@ -371,12 +371,13 @@ public class EventDB implements Serializable {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 //empty the current list of losers so there are not duplicates
-                losersList.clear();
+                ArrayList<UserProfile> moreLosers = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     //add each user to the arraylist
-                    losersList.add(document.toObject(UserProfile.class));
-                    Log.v(TAG, "size: " + losersList.size());
+                    moreLosers.add(document.toObject(UserProfile.class));
+                    Log.v(TAG, "size: " + moreLosers.size());
                 }
+                losersList = moreLosers;
 
             }
         });
@@ -395,16 +396,17 @@ public class EventDB implements Serializable {
             Log.v(TAG, "event has no entrants who have accepted");
             return;
         }
-        entrantsList.clear();
+        ArrayList<UserProfile> moreEntrants = new ArrayList<>();
         for (int i = 0; i<entrants.size(); i++){
             connection.getDocumentFromReference(entrants.get(i), new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        entrantsList.add(documentSnapshot.toObject(UserProfile.class));
-                        Log.v(TAG, "added to entrants list. size:  " + entrantsList.size());
+                        moreEntrants.add(documentSnapshot.toObject(UserProfile.class));
+                        Log.v(TAG, "added to entrants list. size:  " + moreEntrants.size());
                 }
             });
         }
+        entrantsList = moreEntrants;
     }
 
     /**
@@ -418,18 +420,19 @@ public class EventDB implements Serializable {
             Log.v(TAG, "event has no winners");
             return;
         }
-        winnersList.clear();
+        ArrayList<UserProfile> moreWinners = new ArrayList<>();
         for (int i = 0; i<winners.size(); i++){
             connection.getDocumentFromReference(winners.get(i), new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()) {
-                        winnersList.add(documentSnapshot.toObject(UserProfile.class));
-                        Log.v(TAG, "added to winners list. size:  " + winnersList.size());
+                        moreWinners.add(documentSnapshot.toObject(UserProfile.class));
+                        Log.v(TAG, "added to winners list. size:  " + moreWinners.size());
                     }
                 }
             });
         }
+        winnersList = moreWinners;
     }
 
     /**
@@ -444,18 +447,20 @@ public class EventDB implements Serializable {
             Log.v(TAG, "event has no entrants who have accepted");
             return;
         }
-        acceptedList.clear();
+
+        ArrayList<UserProfile> moreAccepted = new ArrayList<>();
         for (int i = 0; i<accepted.size(); i++){
             connection.getDocumentFromReference(accepted.get(i), new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()) {
-                        acceptedList.add(documentSnapshot.toObject(UserProfile.class));
-                        Log.v(TAG, "added to accepted list. size:  " + acceptedList.size());
+                        moreAccepted.add(documentSnapshot.toObject(UserProfile.class));
+                        Log.v(TAG, "added to accepted list. size:  " + moreAccepted.size());
                     }
                 }
             });
         }
+        acceptedList = moreAccepted;
     }
 
     /**
@@ -470,18 +475,19 @@ public class EventDB implements Serializable {
             return;
         }
 
-        declinedList.clear();
+        ArrayList<UserProfile> moreDeclined= new ArrayList<>();
         for (int i = 0; i<declined.size(); i++){
             connection.getDocumentFromReference(declined.get(i), new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()) {
-                        declinedList.add(documentSnapshot.toObject(UserProfile.class));
-                        Log.v(TAG, "added to declined list. size:  " + declinedList.size());
+                        moreDeclined.add(documentSnapshot.toObject(UserProfile.class));
+                        Log.v(TAG, "added to declined list. size:  " + moreDeclined.size());
                     }
                 }
             });
         }
+        declinedList = moreDeclined;
     }
 
 
