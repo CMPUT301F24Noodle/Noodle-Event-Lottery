@@ -1,7 +1,6 @@
 package com.example.myapplication.ui.registeredevents;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,16 +19,12 @@ import com.example.myapplication.database.FacilityDB;
 import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.databinding.FragmentRegisteredEventsBinding;
-import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.ui.home.MyEventsListArrayAdapter;
-import com.example.myapplication.ui.home.ListItem;
+import com.example.myapplication.objects.Event;
+import com.example.myapplication.objects.UserProfile;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Author: Sam Lee
@@ -54,12 +49,9 @@ public class RegisteredEventFragment extends Fragment {
     public String uuid;
     public UserProfile user;
     public Event event;
-    public FacilityDB facilityDB;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        RegisteredEventViewModel registeredEventViewModel = new ViewModelProvider(this)
-                .get(RegisteredEventViewModel.class);
 
         getVarFromMain();
 
@@ -93,6 +85,7 @@ public class RegisteredEventFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        eventDB.getUserEnteredEvents(user);
         super.onDestroyView();
         binding = null;
     }

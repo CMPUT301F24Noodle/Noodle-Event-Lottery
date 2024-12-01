@@ -169,12 +169,12 @@
             android:layout_width="300dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
-            android:textAlignment="center"
-            android:hint="Details"
-            android:fontFamily="@font/anybody_light"
-            android:textColorHint="@color/text_cyan"
             android:background="@drawable/detail_border_textbox"
-            android:textColor="@color/text_cyan"/>
+            android:fontFamily="@font/anybody_light"
+            android:hint="Details"
+            android:textAlignment="center"
+            android:textColor="@color/text_cyan"
+            android:textColorHint="@color/text_cyan" />
 
         <EditText
             android:id="@+id/contact_num"
@@ -223,7 +223,9 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:id="@+id/geolocationLayout"
+            >
 
             <TextView
                 android:layout_height="wrap_content"

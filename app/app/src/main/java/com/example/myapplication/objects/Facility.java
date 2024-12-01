@@ -1,7 +1,4 @@
-package com.example.myapplication.objects.facilityClasses;
-
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.google.firebase.firestore.DocumentReference;
+package com.example.myapplication.objects;
 
 import java.io.Serializable;
 
@@ -17,8 +14,6 @@ public class Facility implements Serializable {
     String facilityName; //Facility name
     String location; //Facility address
     String ownerID;
-    //QUESTION: do we need an array for the events being hosted at the facility? we don't need to be able to filter by facility to display events, so I don't think so?
-
 
     public Facility(){}
     /**
@@ -27,13 +22,15 @@ public class Facility implements Serializable {
      *
      * @param facilityName the name of the new facility
      * @param location     the address of the facility
-     * @param owner
+     * @param owner the user that created the facility
      */
     public Facility(String facilityName, String location, UserProfile owner) {
         this.facilityName = facilityName;
         this.ownerID = owner.getUuid();
         this.location = location;
     }
+
+    //getter and setters
 
     public String getLocation() {
         return location;
@@ -52,9 +49,6 @@ public class Facility implements Serializable {
     public void setFacilityName(String facilityName) {
         this.facilityName = facilityName;
     }
-
-    //QUESTION: there needs to be a function somewhere that checks if a facility already exists before creating it, but I think that will need to be within the CreateFacilityFragment
-
 
     public UserProfile getOwner() {
         return owner;

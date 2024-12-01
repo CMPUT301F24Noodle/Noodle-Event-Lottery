@@ -1,19 +1,17 @@
 package com.example.myapplication.database;
 
 import static com.google.firebase.firestore.FieldValue.arrayRemove;
-import static com.google.firebase.firestore.FieldValue.arrayUnion;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.objects.notificationClasses.Notification;
+import com.example.myapplication.objects.UserProfile;
+import com.example.myapplication.objects.Notification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -35,7 +33,6 @@ public class NotificationDB {
     public DBConnection storeConnection;
     public CollectionReference allNotifications;
     public FirebaseFirestore db;
-    public UserProfile currentUser;
     public String uuid;
     public ArrayList<Notification> myNotifs = new ArrayList<Notification>();
     public ArrayList<Notification> myNewNotifs = new ArrayList<Notification>();
@@ -78,11 +75,11 @@ public class NotificationDB {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 //empty the current list of notifs so there are not duplicates
-                myNewNotifs.clear();
+                ArrayList<Notification> moreNotifs = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     //add each notification to the arraylist
                     Notification notification = document.toObject(Notification.class);
-                    myNewNotifs.add(notification);
+                    moreNotifs.add(notification);
                     //mark the user as having seen the notification
                     //remove the user from the recipients list
                     //(document.getReference()).update("recipients", arrayRemove(userDocumentReference));
@@ -91,9 +88,10 @@ public class NotificationDB {
 
                     Log.v(TAG, "new" + document.getId() + " => " + document.getData());
                 }
-                if (myNewNotifs.isEmpty()){
+                if (moreNotifs.isEmpty()){
                     Log.v(TAG, "user has no new notifications");
                 }
+                myNewNotifs = moreNotifs;
             }
         });
         return this.myNewNotifs;
@@ -114,14 +112,15 @@ public class NotificationDB {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 //empty the current list of notifs so there are not duplicates
-                myNotifs.clear();
+                ArrayList<Notification> moreNotifs = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     //add each notification to the arraylist
                     Notification notification = document.toObject(Notification.class);
-                    myNotifs.add(notification);
+                    moreNotifs.add(notification);
 
                     Log.v(TAG, document.getId() + " => " + document.getData());
                 }
+                myNotifs = moreNotifs;
             }
         });
         return this.myNotifs;
@@ -150,6 +149,7 @@ public class NotificationDB {
     }
 
 
+    //Getters and Setters
     public ArrayList<Notification> getMyNewNotifs() {
         return myNewNotifs;
     }
@@ -157,7 +157,6 @@ public class NotificationDB {
     public void setMyNewNotifs(ArrayList<Notification> myNewNotifs) {
         this.myNewNotifs = myNewNotifs;
     }
-
     public ArrayList<Notification> getMyNotifs() {
         return myNotifs;
     }

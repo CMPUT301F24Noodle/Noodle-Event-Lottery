@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.myapplication.R;
-import com.example.myapplication.objects.eventClasses.Event;
+import com.example.myapplication.objects.Event;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.database.EventDB;
 import com.google.firebase.firestore.DocumentReference;
@@ -57,19 +57,49 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
         TextView eventName = view.findViewById(R.id.eventname_status);
         TextView eventDate = view.findViewById(R.id.event_date);
         TextView eventTime = view.findViewById(R.id.event_time);
-        TextView orgName = view.findViewById(R.id.organizer_name);
+        TextView status = view.findViewById(R.id.organizer_name);
 
         // Populate the data into the template view using the data object
         eventName.setText(event.getEventName());
         eventDate.setText(event.getEventDate() != null ? event.getEventDate().toString() : "No Date");
-        eventTime.setText(event.getEventTime() != null ? event.getEventTime() : "No Time");
-        orgName.setText(event.getOrganizer() != null ? event.getOrganizer().getFacility().getFacilityName() : "No Org");
+        //eventTime.setText(event.getEventTime() != null ? event.getEventTime() : "No Time");
+
+        String userStatus;
+        if (!event.eventOver){
+            userStatus = "Status: Lottery is still open";
+        } else {
+            if (event.winnersList.contains(currUser)){
+                userStatus = "Status: View Invitation";
+            } else if (event.acceptedList.contains(currUser)){
+                userStatus = "Status: Attending";
+            } else {
+                userStatus = "Status: Not Attending";
+            }
+        }
+        status.setText(userStatus);
 
         // Set OnClickListener for the item
         view.setOnClickListener(v -> {
-            if (!event.hasAccepted(event, currUser)) {
+            int result = event.hasAccepted(event, currUser);
+            if (result == 0){ // if the event lottery is not over
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Leave Event Waitlist")
+                        .setMessage("Are you sure you want to leave the waitlist for this event?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            event.removeEntrant(currUser);
+                            eventDB.updateEvent(event);
+                            events.remove(position);
+                            this.notifyDataSetChanged();
+                        })
+                        .setNegativeButton("No", (dialog, which) -> {
+                            //close dialog
+                        })
+                        .show();
+            } else if (result == 1) { //if the user already responded to their invitation
+                Toast.makeText(context, "You have already responded to you invitation for this event", Toast.LENGTH_SHORT).show();
+            } else if (result == 2) { //if user has an unanswered invitation
                 showAcceptDeclineDialog(event);
-            } else {
+            } else if (result == 3) { // if the user did not win the lottery for this event
                 Toast.makeText(context, "You have not won the lottery for this event.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -105,8 +135,8 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
     public void acceptInvitation(Event event) {
         event.getAcceptedList().add(currUser);
         event.getWinnersList().remove(currUser);
-        event.getEntrantsList().remove(currUser);
         eventDB.updateEvent(event);
+        notifyDataSetChanged();
         Toast.makeText(context, "You have accepted the invitation.", Toast.LENGTH_SHORT).show();
     }
 
@@ -118,8 +148,9 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
      */
     public void declineInvitation(Event event) {
         event.getDeclinedList().add(currUser);
-        event.getEntrantsList().remove(currUser);
+        event.getWinnersList().remove(currUser);
         eventDB.updateEvent(event);
+        notifyDataSetChanged();
         Toast.makeText(context, "You have declined the invitation.", Toast.LENGTH_SHORT).show();
     }
 }

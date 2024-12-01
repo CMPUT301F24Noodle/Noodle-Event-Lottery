@@ -5,10 +5,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.myapplication.objects.eventClasses.Event;
-import com.example.myapplication.objects.facilityClasses.Facility;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
-import com.example.myapplication.objects.notificationClasses.Notification;
+import com.example.myapplication.objects.Event;
+import com.example.myapplication.objects.UserProfile;
+import com.example.myapplication.objects.Notification;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,7 +22,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.io.Serializable;
-import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -135,11 +133,15 @@ public class EventDB implements Serializable {
 
     /**
      * Author: Erin-Marie
-     * @param entrants the entrants of the event
+     * @param userList the userList of the event;
+     *                  it is the entrant list if method is called for ending the event
+     *                  it is the losers list if the method is called for replacing declined entrants
      * @param participants the number of users to be chosen to participate in the event
+     *                     it is the value of event.maxParticipants if called for ending the event
+     *                     it is the value of event.getUsersNeededCount if called for replacing declined entrants
      * @param event the event to be attended
      */
-    public void getRandomWinners(ArrayList<DocumentReference> entrants, int participants, Event event)
+    public void getRandomWinners(ArrayList<DocumentReference> userList, int participants, Event event)
     {
         //Initialize random
         Random rand = new Random();
@@ -149,22 +151,23 @@ public class EventDB implements Serializable {
 
         for (int i = 0; i < participants; i++) {
             //use random indexes to chose winners
-            int randomEntrantIndex = rand.nextInt(entrants.size());
+            int randomEntrantIndex = rand.nextInt(userList.size());
 
             // add the winner to the winner list
-            eventWinnersList.add(entrants.get(randomEntrantIndex));
+            eventWinnersList.add(userList.get(randomEntrantIndex));
 
-            //remove the entrant from the entrants list
-            entrants.remove(randomEntrantIndex);
+            //remove the entrant from the userList list
+            userList.remove(randomEntrantIndex);
         }
         //set the winners list
         event.setWinnersList(eventWinnersList);
 
-        //The remaining users in entrants are the losers
-        event.setLosersList(entrants);
+        //The remaining users in userList are the losers
+        event.setLosersList(userList);
 
 
     }
+
 
 
     /**
@@ -293,6 +296,37 @@ public class EventDB implements Serializable {
     }
 
     /**
+     * Author Apoorv
+     * sets EventDB objects myEvents array to be all of the events the user has won
+     * @param user current user
+     * @return this.myEvents is a list of all the won events.
+     */
+    public ArrayList<Event> getUserWinnerEvents(UserProfile user) {
+        // Query all events where the current user is in the winnersList
+        Query query = allEvents.whereArrayContains("winnersList", user.getDocRef()).orderBy("eventDate", Query.Direction.DESCENDING);
+
+        getQuery(query, new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                // Empty the current list of events to avoid duplicates
+                ArrayList<Event> myEventsCol = new ArrayList<Event>();
+                myEvents.clear();
+
+                // Add each event to the ArrayList
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    myEvents.add(document.toObject(Event.class));
+                    Log.v(TAG, "size: " + myEvents.size());
+                }
+
+                Log.v(TAG, "On complete getUserWinnerEvents finished");
+            }
+        });
+        // Return the list of events where the user is in the winnersList
+        return this.myEvents;
+    }
+
+
+    /**
      * Author Erin-Marie
      * sets EventDB objects myOrgEvents array to be all of the events the user has organized
      * @param user current user
@@ -337,12 +371,13 @@ public class EventDB implements Serializable {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 //empty the current list of losers so there are not duplicates
-                losersList.clear();
+                ArrayList<UserProfile> moreLosers = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     //add each user to the arraylist
-                    losersList.add(document.toObject(UserProfile.class));
-                    Log.v(TAG, "size: " + losersList.size());
+                    moreLosers.add(document.toObject(UserProfile.class));
+                    Log.v(TAG, "size: " + moreLosers.size());
                 }
+                losersList = moreLosers;
 
             }
         });
@@ -356,29 +391,22 @@ public class EventDB implements Serializable {
      * no actual return, but will set this.entrantsList to contain all of the UserProfiles of the entrants that did not win the lottery
      */
     public void getEventEntrants(Event event){
-        //query for all losers documents of the users in the events losersList
         ArrayList<DocumentReference> entrants = event.getEntrantsList();
         if (entrants.isEmpty()){
-            Log.v(TAG, "event has no entrants to retrieve from db");
+            Log.v(TAG, "event has no entrants who have accepted");
             return;
         }
-        Query query = db.collection("allUsers").whereArrayContainsAny("entrantsList", entrants);
-        getQuery(query, new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                //empty the current list of losers so there are not duplicates
-                ArrayList<Event> myEventsCol = new ArrayList<Event>();
-                entrantsList.clear();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    //add each user to the arraylist
-                    entrantsList.add(document.toObject(UserProfile.class));
-                    //Log.v(TAG, "size: " + entrantsList.size());
+        ArrayList<UserProfile> moreEntrants = new ArrayList<>();
+        for (int i = 0; i<entrants.size(); i++){
+            connection.getDocumentFromReference(entrants.get(i), new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        moreEntrants.add(documentSnapshot.toObject(UserProfile.class));
+                        Log.v(TAG, "added to entrants list. size:  " + moreEntrants.size());
                 }
-                Log.v(TAG, "Entrants list read from database");
-
-            }
-
-        });
+            });
+        }
+        entrantsList = moreEntrants;
     }
 
     /**
@@ -387,29 +415,24 @@ public class EventDB implements Serializable {
      * @param event that has been completed
      */
     public void getEventWinners(Event event){
-        //query for all the winners' documents of the users in the events winnersList
         ArrayList<DocumentReference> winners = event.getWinnersList();
         if (winners.isEmpty()){
-            Log.v(TAG, "event has no winners to retrieve from db");
+            Log.v(TAG, "event has no winners");
             return;
         }
-        Query query = db.collection("allUsers").whereArrayContainsAny("winnersList", winners);
-        getQuery(query, new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                //empty the current list of winners so there are not duplicates
-                winnersList.clear();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    //add each user to the arraylist
-                    winnersList.add(document.toObject(UserProfile.class));
-                    Log.v(TAG, "Winners list size: " + winnersList.size());
-
+        ArrayList<UserProfile> moreWinners = new ArrayList<>();
+        for (int i = 0; i<winners.size(); i++){
+            connection.getDocumentFromReference(winners.get(i), new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        moreWinners.add(documentSnapshot.toObject(UserProfile.class));
+                        Log.v(TAG, "added to winners list. size:  " + moreWinners.size());
+                    }
                 }
-
-            }
-        });
-        //Log.v(TAG, "size: " + myEvents.size());
-
+            });
+        }
+        winnersList = moreWinners;
     }
 
     /**
@@ -424,19 +447,20 @@ public class EventDB implements Serializable {
             Log.v(TAG, "event has no entrants who have accepted");
             return;
         }
-        Query query = db.collection("allUsers").whereArrayContainsAny("acceptedList", accepted);
-        getQuery(query, new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                //empty the current list of winners so there are not duplicates
-                acceptedList.clear();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    //add each user to the arraylist
-                    acceptedList.add(document.toObject(UserProfile.class));
-                    Log.v(TAG, "Winners list size: " + acceptedList.size());
+
+        ArrayList<UserProfile> moreAccepted = new ArrayList<>();
+        for (int i = 0; i<accepted.size(); i++){
+            connection.getDocumentFromReference(accepted.get(i), new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        moreAccepted.add(documentSnapshot.toObject(UserProfile.class));
+                        Log.v(TAG, "added to accepted list. size:  " + moreAccepted.size());
+                    }
                 }
-            }
-        });
+            });
+        }
+        acceptedList = moreAccepted;
     }
 
     /**
@@ -445,26 +469,27 @@ public class EventDB implements Serializable {
      * @param event that has been completed
      */
     public void getEventDeclined(Event event){
-        //query for all the winners' documents of the users in the events winnersList
-        ArrayList<DocumentReference> declined = event.getAcceptedList();
+        ArrayList<DocumentReference> declined = event.getDeclinedList();
         if (declined.isEmpty()){
-            Log.v(TAG, "event has no entrants who have accepted");
+            Log.v(TAG, "event has no entrants who have declined");
             return;
         }
-        Query query = db.collection("allUsers").whereArrayContainsAny("declinedList", declined);
-        getQuery(query, new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                //empty the current list of winners so there are not duplicates
-                declinedList.clear();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    //add each user to the arraylist
-                    declinedList.add(document.toObject(UserProfile.class));
-                    Log.v(TAG, "Declined list size: " + declinedList.size());
+
+        ArrayList<UserProfile> moreDeclined= new ArrayList<>();
+        for (int i = 0; i<declined.size(); i++){
+            connection.getDocumentFromReference(declined.get(i), new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        moreDeclined.add(documentSnapshot.toObject(UserProfile.class));
+                        Log.v(TAG, "added to declined list. size:  " + moreDeclined.size());
+                    }
                 }
-            }
-        });
+            });
+        }
+        declinedList = moreDeclined;
     }
+
 
 
     /**
@@ -584,12 +609,21 @@ public class EventDB implements Serializable {
      */
     public Boolean addEntrant(Event event){
         DocumentReference entrant = connection.getUserDocumentRef();
+        if (event.getEventOver() == Boolean.TRUE){
+            Log.v(TAG, "This event lottery has already ended");
+            return Boolean.FALSE;
+        }
         Integer added = event.addEntrant(entrant);
         if (added == 0){
             Log.v(TAG, "Waiting list is full, user could not be added");
             return Boolean.FALSE;
         } else {
             updateEvent(event);
+            //if the event has a max waitlist size, end the event once the waitlist capacity is reached
+            if(event.getEventFull() == Boolean.TRUE && event.getEventOver() == Boolean.FALSE){
+                endEvent(event);
+            }
+
             return Boolean.TRUE;
         }
 

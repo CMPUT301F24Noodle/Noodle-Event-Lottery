@@ -13,13 +13,18 @@
             android:icon="@drawable/profile"
             android:title="@string/your_profile" />
         <item
+            android:id="@+id/nav_metrics"
+            android:icon="@drawable/ic_user_metrics"
+            android:title="@string/user_metrics" />
+        <item
             android:id="@+id/nav_notifications"
             android:icon="@drawable/notifications"
             android:title="@string/notifications" />
         <item
             android:id="@+id/nav_myevents"
             android:icon="@drawable/my_events"
-            android:title="@string/menu_myevents" />
+            android:title="@string/menu_myevents"
+            android:visible="false"/>
         <item
             android:id="@+id/nav_registered"
             android:icon="@drawable/registered_events"
@@ -27,7 +32,8 @@
         <item
             android:id="@+id/nav_admin"
             android:icon="@drawable/admin_menu"
-            android:title="@string/admin_menu" />
+            android:title="@string/admin_menu"
+            android:visible="false"/>
 
     </group>
 </menu>

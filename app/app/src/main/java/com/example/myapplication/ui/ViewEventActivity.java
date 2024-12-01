@@ -1,7 +1,9 @@
 package com.example.myapplication.ui;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -9,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
 import com.example.myapplication.database.UserDB;
-import com.example.myapplication.objects.eventClasses.Event;
+import com.example.myapplication.objects.Event;
 import com.example.myapplication.ui.registeredevents.RegisteredEventArrayAdapter;
 import com.example.myapplication.ui.registeredevents.RegisteredEventFragment;
 import com.google.firebase.firestore.DocumentReference;
@@ -36,6 +38,12 @@ public class ViewEventActivity extends AppCompatActivity {
         TextView eventDateTime = findViewById(R.id.event_date_time);
         TextView eventLocation = findViewById(R.id.event_location);
         Button saveButton = findViewById(R.id.event_save_button);
+        ImageView posterImage = findViewById(R.id.event_poster);
+
+        // display the poster
+        if(event.getEventPoster() != null){
+            Bitmap eventPoster = event.generatePoster();
+        }
 
         eventName.setText(event.getEventName());
         eventDateTime.setText(event.getEventDate().toString() + " " + event.getEventTime());
@@ -49,15 +57,18 @@ public class ViewEventActivity extends AppCompatActivity {
      * Author: Sam Lee
      * Add userRef to event's entrants list and update database.
      * [US 01.01.01] As an entrant, I want to join the waiting list for a specific event
+     * TODO: addEntrant(event) returns False if the user could not be added, whether because the waitlist is full, or if the event has already ended.
+     *      should print a toast or something if the user could not be added
      */
     private void saveEvent() {
         // Add user to event's entrants list
         UserDB userDB = new UserDB(new DBConnection(getApplicationContext()));
         DocumentReference userRef = userDB.getUserDocumentReference();
-        event.addEntrant(userRef);
+
 
         // Update event in database
         EventDB eventDB = new EventDB(new DBConnection(getApplicationContext()));
+        eventDB.addEntrant(event);
         eventDB.updateEvent(event);
 
         // Update registered events list

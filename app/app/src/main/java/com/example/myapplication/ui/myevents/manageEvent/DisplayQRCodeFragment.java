@@ -3,10 +3,8 @@
  *
  * This fragment displays the QR code for the event, and allows the user to return after
  */
-package com.example.myapplication.ui.myevents;
+package com.example.myapplication.ui.myevents.manageEvent;
 
-import android.app.Dialog;
-import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,11 +14,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.myapplication.R;
-import com.example.myapplication.databinding.FragmentMyProfileBinding;
 
 public class DisplayQRCodeFragment extends DialogFragment {
 

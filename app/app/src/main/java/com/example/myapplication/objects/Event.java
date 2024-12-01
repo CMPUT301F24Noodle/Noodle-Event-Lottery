@@ -1,13 +1,11 @@
-package com.example.myapplication.objects.eventClasses;
+package com.example.myapplication.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
 
-import com.example.myapplication.objects.facilityClasses.Facility;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.BitmapHelper;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -15,7 +13,6 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
 import org.jetbrains.annotations.Nullable;
-import org.w3c.dom.Document;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,11 +23,6 @@ import java.util.Date;
  * Author: Erin-Marie
  * Purpose: Event object contains all information and methods for an event an
  * organizer creates
- * TODO make methods for ending the contest and selecting winners
- * make method for notifying winners and losers and sending their invitations
- * make method for making the list of confirmed attendants
- * make method for selecting a new winner if someone rejects an invitation
- * make method for organizer to send a notification with custom message to all
  */
 @IgnoreExtraProperties // Ignore extra properties from Firebase
 public class Event implements Serializable {
@@ -55,19 +47,18 @@ public class Event implements Serializable {
     private int waitingListSize;
     // QRCODE STUFF
     private Bitmap QRCode; // the bitmap of the QR code
-    private String HashedString; // TODO for part 4, do stuff with hash
-
+    private String HashedString;
     // For status of the lottery
     public Date lotteryCloses; // date winners will be selected and notified
     public Boolean eventOver; // False until the event attendance list is finalized, or the eventDate has
     public Boolean eventFull; // False if there is still room for entrants, or if maxEntrants == -1
-
     public ArrayList<DocumentReference> entrantsList; // list of all entrants, by document reference
     public ArrayList<DocumentReference> winnersList; // list of all users who won the lottery, may have max length equal
-                                                     // to
     public ArrayList<DocumentReference> losersList; // list of all users who lost the lottery
     public ArrayList<DocumentReference> acceptedList; // list of all users who have accepted their invitation
     public ArrayList<DocumentReference> declinedList; // list of all users who have accepted their invitation
+
+
 
     // Editor: Sam
     // No-arg constructor for Firebase
@@ -82,7 +73,6 @@ public class Event implements Serializable {
 
     /**
      * Class constructor
-     * 
      * @param facility      the facility the event is hosted at, cannot be null
      * @param organizer     the user profile of the event creator, cannot be null
      * @param eventName     the name of the event
@@ -110,6 +100,7 @@ public class Event implements Serializable {
         this.maxParticipants = maxParticipants;
         this.lotteryCloses = lotteryCloses;
         this.geoLocation = geoLocation;
+        this.eventOver = Boolean.FALSE;
         this.eventFull = Boolean.FALSE; // event capacity cannot be 0, so it is always false at init
         this.entrantsList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
         this.winnersList = new ArrayList<DocumentReference>(); // have to intialize so .size() wont return null
@@ -118,7 +109,6 @@ public class Event implements Serializable {
         this.declinedList = new ArrayList<DocumentReference>();
         this.docRef = null;
 
-        // TODO: Need to create QR code and do something with hash data
         if (this.eventID != null) {
             this.QRCode = generateQRCode(eventID, 200, 200);
         }
@@ -129,12 +119,11 @@ public class Event implements Serializable {
      * Author: Erin-Marie
      * Called anytime an entrant is added or removed from the entrants list
      * Updates whether the event entrant limit has been reached
-     * TESTED: tested in EventTests.java testAddEntrant()
      * if capacity is already maxed,
      * if capacity is 1, then add new entrant, now check that it is returning maxed
      */
     public void setEventFull() {
-        if (this.maxEntrants == -1 | this.maxEntrants > this.entrantsList.size()) {
+        if (this.maxEntrants == -1 || this.maxEntrants > this.entrantsList.size()) {
             this.eventFull = Boolean.FALSE;
         } else {
             this.eventFull = Boolean.TRUE;
@@ -144,25 +133,30 @@ public class Event implements Serializable {
     /**
      * Author: Erin-Marie
      * Checks whether a user has accepted their invitation for an event yet
-     * 
+     *
      * @param event the event being checked
      * @param user  the user of interest
-     * @return False if the user has not accepted their invitiation, or True if they
-     *         have
+     * @return 0 if the event lottery has not ended
+     *          1 if the user has already responded to their invitation
+     *          2 if the user has not accepted their invitatin
+     *          3 if the user did not recieve an invitation
+     * have
      */
-    public Boolean hasAccepted(Event event, DocumentReference user) {
+    public int hasAccepted(Event event, DocumentReference user) {
+        if (event.eventOver == Boolean.FALSE){ //the event has not ended yet
+            return 0;
+        }
+        //have not responded to invitation
         if (event.getWinnersList().contains(user)) {
-            if (event.getAcceptedList().contains(user)) {
-                Log.v("Event", "User has accepted their invitiation");
-                return Boolean.TRUE;
-
-            } else {
                 Log.v("Event", "User has not accepted their invitiation");
-                return Boolean.FALSE;
-            }
+                return 2;
+        } else if (event.getAcceptedList().contains(user) || event.getDeclinedList().contains(user)){
+            Log.v("Event", "User has already responded to their invitiation");
+            return 1;
+
         } else {
             Log.v("Event", "user was not selected for the event");
-            return Boolean.FALSE;
+            return 3;
         }
 
     }
@@ -176,46 +170,19 @@ public class Event implements Serializable {
      * @return 1 if the user was added to the entrant list, or 0 if not
      *         calling function needs to add the event to the users myevents list,
      *         dependent on the return value of addEntrant
-     *         TODO: needs to update firebase db
-     *         TESTED: tested in EventTests.java testAddEntrant()
      *         if capacity it maxed, should return 0
      *         if capacity is not maxed, should return 1 and check that the entrant
      *         is now in the entrantsList
      */
     public int addEntrant(DocumentReference entrant) {
-        // check that entrant is not already in the entrantList, and the event is not
-        // full
-        // entrant
-        // if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE)
-        // {
         if (!this.entrantsList.contains(entrant) && this.eventFull == Boolean.FALSE
                 && this.eventOver == Boolean.FALSE) {
             this.entrantsList.add(entrant);
-            // entrant.addEvent(this); //add the event to the entrants list of events
             setEventFull(); // update whether the event is full
             return 1;
         }
         return 0;
     }
-
-    // /**
-    // * testing version of above function
-    // * @param entrant
-    // * @return
-    // */
-    // public int addEntrant(DocumentReference entrant) {
-    // // check that entrant is not already in the entrantList, and the event is not
-    // // full
-    // if (!this.entrantsList.contains(entrant)) {
-    // this.entrantsList.add(entrant);
-    // //add the event to the entrants list of events
-    // //setEventFull(); // update whether the event is full
-    // return 1;
-    // }
-    //
-    // // return 0 if user is not added to the list
-    // return 0;
-    // }
 
     /**
      * Author: Erin-Marie
@@ -223,20 +190,17 @@ public class Event implements Serializable {
      * Checks that the entrant is not already in the list of entrants
      *
      * @param entrant UserProfile that wants to un-enter the event lottery
-     *                TODO: needs to update firebase db
-     *                TESTME: check that entrant is actually removed from the
-     *                entrantList
      */
     public void removeEntrant(DocumentReference entrant) {
         this.entrantsList.remove(entrant);
-        // entrant.leaveEvent(this.getEventID()); // remove the event from the entrants
         // list of events
         setEventFull(); // update whether the event is full
     }
 
-    // START OF QR CODE STUFF
+
     /**
      * Author: Xavier Salm
+     * getter for the QR code
      */
     public Bitmap getQRCode() {
         return QRCode;
@@ -282,6 +246,15 @@ public class Event implements Serializable {
         return QRCode;
     }
 
+    /**
+     * Calculates how many new users need to be selected to fill the event, and returns the value
+     * @return int max users that can be added to the event
+     */
+    public int getUsersNeededCount(){
+        int count = maxParticipants - winnersList.size() - acceptedList.size();
+        return Math.min(count, losersList.size());
+    }
+
     // getters and setters
 
     public void setEntrantsList(ArrayList<DocumentReference> entrantsList) {
@@ -296,7 +269,6 @@ public class Event implements Serializable {
         this.losersList = losersList;
     }
 
-
     public String getEventLocation() {
         return eventLocation;
     }
@@ -304,9 +276,6 @@ public class Event implements Serializable {
     public void setEventLocation(String eventLocation) {
         this.eventLocation = eventLocation;
     }
-
-
-
 
     public DocumentReference getOrganizerRef() {
         return organizerRef;
@@ -367,7 +336,6 @@ public class Event implements Serializable {
 
     @Nullable // Sam: added Nullable for testing purpose
     public UserProfile getOrganizer() {
-
         return organizer;
     }
 
@@ -398,7 +366,6 @@ public class Event implements Serializable {
         } catch (NullPointerException e) {
             return null;
         }
-
         return eventDate;
     }
 
@@ -517,5 +484,13 @@ public class Event implements Serializable {
 
     public double getLongitude() {
         return -113.0;
+    }
+
+    public Bitmap generatePoster(){
+        if(eventPoster == null){
+            return null;
+        }
+        BitmapHelper helper = new BitmapHelper();
+        return helper.decodeBase64StringToBitmap(eventPoster);
     }
 }
