@@ -28,6 +28,7 @@ import com.example.myapplication.objects.Facility;
 import com.example.myapplication.objects.UserProfile;
 import com.example.myapplication.objects.Notification;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.auth.User;
 import com.google.zxing.WriterException;
 
 import org.junit.After;
@@ -41,10 +42,8 @@ import java.util.Date;
 
 
 /**
- * Author: Xavier Salm
+ * Author: Xavier Salm, Erin-Marie
  * Tests for the notifications fragment
- * US 02.07.03 As an organizer I want to send a notification to all cancelled entrants
- * US 01.04.03 As an entrant I want to opt out of receiving notifications from organizers and admin
  */
 @RunWith(AndroidJUnit4.class)
 @MediumTest
@@ -175,6 +174,7 @@ public class NotificationsFragmentTest {
         //now clean up the db
         cleanup(mockEvent);
     }
+
 
     /**
      * Author: Erin-Marie

@@ -33,6 +33,7 @@ import com.example.myapplication.objects.UserProfile;
  * Author: Xavier Salm
  * Test class for all UI elements in MyProfileFragment
  * Run at your own risk! This test will override the info (user details, facility and facility details) of the user associated with the device that runs this test
+ * TODO:  * US 01.04.03 As an entrant I want to opt out of receiving notifications from organizers and admin -> just show flicking the button
  */
 
 @RunWith(AndroidJUnit4.class)
