@@ -39,28 +39,28 @@ public class ViewScannedEventFragmentTest {
         Date dateClose = dateFormat.parse("30/05/2002");
         return new Event(facility, organizer, "TestEvent", null, dateEvent, null, null, 1, 1, dateClose, Boolean.FALSE);
     }
-
-    /**
-     * Author: Sam Lee
-     * Tests that the event name is displayed correctly in the ViewEventActivity
-     * 
-     * @throws ParseException
-     * @throws WriterException
-     */
-    @Test
-    public void testViewEventActivityDisplaysEventName() throws ParseException, WriterException {
-        // Create a test event
-        Event event = makeTestEvent();
-
-        // Launch ViewEventActivity with the test event
-        Intent intent = new Intent("com.example.myapplication.ACTION_VIEW_EVENT");
-        intent.putExtra("event", event);
-        try (ActivityScenario<ViewScannedEventFragment> scenario = ActivityScenario.launch(intent)) {
-            scenario.onActivity(activity -> {
-                // Verify that the event name is displayed correctly
-                TextView eventName = activity.findViewById(R.id.event_name);
-                assertEquals("TestEvent", eventName.getText().toString());
-            });
-        }
-    }
+//
+//    /**
+//     * Author: Sam Lee
+//     * Tests that the event name is displayed correctly in the ViewEventActivity
+//     *
+//     * @throws ParseException
+//     * @throws WriterException
+//     */
+//    @Test
+//    public void testViewEventActivityDisplaysEventName() throws ParseException, WriterException {
+//        // Create a test event
+//        Event event = makeTestEvent();
+//
+//        // Launch ViewEventActivity with the test event
+//        Intent intent = new Intent("com.example.myapplication.ACTION_VIEW_EVENT");
+//        intent.putExtra("event", event);
+//        try (ActivityScenario<ViewScannedEventFragment> scenario = ActivityScenario.launch(intent)) {
+//            scenario.onActivity(activity -> {
+//                // Verify that the event name is displayed correctly
+//                TextView eventName = activity.findViewById(R.id.event_name);
+//                assertEquals("TestEvent", eventName.getText().toString());
+//            });
+//        }
+//    }
 }

@@ -44,9 +44,7 @@ import java.util.Date;
  * Author: Xavier Salm
  * Tests for the notifications fragment
  * US 02.07.03 As an organizer I want to send a notification to all cancelled entrants
-
  * US 01.04.03 As an entrant I want to opt out of receiving notifications from organizers and admin
-
  */
 @RunWith(AndroidJUnit4.class)
 @MediumTest
@@ -65,9 +63,6 @@ public class NotificationsFragmentTest {
     NotificationDB notifDB;
     Facility facility;
 
-
-
-    // before each test, get the user and connection stored in main
     @Before
     public void xavierBefore() {
         activityRule.getScenario().onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
@@ -86,34 +81,6 @@ public class NotificationsFragmentTest {
             }
         });
     }
-
-//    /**
-//     * Tests that if a notification is added for a user, that notification can be retrieved through getUserNotifications()
-//     */
-//    @Test
-//    public void ReceiveNotificationTest() throws InterruptedException {
-//
-//        // first get the number of notifications the user currently has
-//        ArrayList<Notification> notificationList = notifDB.getMyNotifs();
-//
-//        // wait 10 whole seconds for the query to finish
-//        Thread.sleep(5000);
-//
-//        int oldCount = notificationList.size();
-//
-//        // send a notification
-//        SendFakeNotification("RECEIVE");
-//
-//        // now see if the user has +1 notification
-//        ArrayList<Notification> newNotificationList = notifDB.getMyNotifs();
-//
-//        // wait 10 whole seconds for the query to finish
-//        Thread.sleep(5000);
-//
-//        int newCount = newNotificationList.size();
-//
-//        assertEquals(newCount, (oldCount + 1));
-//    }
 
     /**
     * tests that if a user has a notification, they can navigate to notification fragment and see the notification
@@ -145,16 +112,20 @@ public class NotificationsFragmentTest {
      * Author: Erin-Marie
      * Test For:
      *      US 02.07.02 As an organizer I want to send notifications to all selected entrants
+     *          - The notification is sent within the call eventDB.endEvent(mockEvent)
      *      US 02.07.01 As an organizer I want to send notifications to all entrants on the waiting list
+     *          - The notification is sent within the call eventDB.endEvent(mockEvent)
      *      US 02.05.01 As an organizer I want to send a notification to chosen entrants to sign up for events. This is the notification that they "won" the lottery
+     *          - The notification are sent within the call eventDB.endEvent(mockEvent)
      *      US 01.04.01 As an entrant I want to receive notification when chosen from the waiting list (when I "win" the lottery)
+     *          - The notifications are received and displayed in the notifications fragment
      * @throws InterruptedException
      * @throws WriterException
      */
     @Test
     public void SendWinnerNotification() throws InterruptedException, WriterException {
         //get a mock event
-        Event mockEvent = MockEvent("Test Event");
+        Event mockEvent = MockEvent("Test Event 2");
         //add the test user to the mock event as an entrant
         eventDB.addEntrant(mockEvent);
         Thread.sleep(5000);
@@ -184,10 +155,12 @@ public class NotificationsFragmentTest {
     public void SendLoserNotification() throws InterruptedException, WriterException {
         //get a mock event
         Event mockEvent = MockEvent("Test Event");
-       // mockEvent.setMaxParticipants(0);
         //add the test user to the mock event as an entrant
         eventDB.addEntrant(mockEvent);
+        //set to 0, so all entrants are not chosen (are losers)
+        mockEvent.setMaxParticipants(0);
         Thread.sleep(5000);
+
         //end the event, drawing the winners and losers and sending them their notifications
         eventDB.endEvent(mockEvent);
         Thread.sleep(5000);
@@ -245,6 +218,7 @@ public class NotificationsFragmentTest {
      * Method to clean the db after all tests run
      */
 
+    @After
     public void cleanAfter(){
         userDB.deleteUser(user);
         eventDB.deleteFacility(facility);
