@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.BitmapHelper;
 import com.example.myapplication.R;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.objects.UserProfile;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
