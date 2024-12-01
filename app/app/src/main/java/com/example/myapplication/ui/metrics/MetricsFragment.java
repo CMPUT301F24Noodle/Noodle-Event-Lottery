@@ -42,7 +42,11 @@ public class MetricsFragment extends Fragment {
         user = main.user;
 
         TextView usernameText = view.findViewById(R.id.metric_username);
-        usernameText.setText(user.getName());
+        if (user.getName() != null){
+            usernameText.setText(user.getName());
+        } else {
+        usernameText.setText("Your Metrics");
+        }
 
         Bitmap pfp = bitmapper.loadProfilePicture(user);
         CircleImageView profileImage = view.findViewById(R.id.metric_image);
