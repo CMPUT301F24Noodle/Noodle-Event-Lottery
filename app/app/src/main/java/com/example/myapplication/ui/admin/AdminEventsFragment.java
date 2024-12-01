@@ -1,3 +1,14 @@
+/**
+ * AdminEventsFragment.java
+ *
+ * This class represents a fragment that displays and manages administrative events.
+ * It allows viewing, editing, and deleting events stored in a Firestore database.
+ * The events are presented in a list, and users can interact with individual events
+ * to perform CRUD operations.
+ *
+ * Author: Nishchay Ranjan
+ */
+
 package com.example.myapplication.ui.admin;
 
 import android.os.Bundle;
@@ -30,39 +41,61 @@ public class AdminEventsFragment extends Fragment {
 
     private static final String TAG = "AdminEventsFragment";
 
+    // UI components
     private ListView eventListView;
     private ArrayList<String> eventList;
     private ArrayList<String> eventIDs;
     private ArrayAdapter<String> eventAdapter;
+
+    // Firebase Firestore instance
     private FirebaseFirestore db;
 
+    /**
+     * Default constructor required for instantiation.
+     */
     public AdminEventsFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * Creates and returns the view hierarchy associated with this fragment.
+     *
+     * @param inflater LayoutInflater object to inflate views.
+     * @param container Parent view that this fragment's UI will be attached to.
+     * @param savedInstanceState Saved state for fragment recreation, if any.
+     * @return The root view for the fragment's UI.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.item_admin_event, container, false);
 
+        // Initialize UI components
         eventListView = rootView.findViewById(R.id.event_list_view);
         eventList = new ArrayList<>();
         eventIDs = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
 
+        // Set up list adapter
         eventAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, eventList);
         eventListView.setAdapter(eventAdapter);
 
+        // Set event list item click listener
         eventListView.setOnItemClickListener((parent, view, position, id) -> {
             String eventData = eventList.get(position);
             String eventID = eventIDs.get(position);
             showEventDetailsDialog(eventData, eventID);
         });
 
+        // Fetch all events from the database
         fetchAllEvents();
+
         return rootView;
     }
 
+    /**
+     * Fetches all events from the Firestore database and populates the list view.
+     */
     private void fetchAllEvents() {
         db.collection("AllEvents")
                 .get()
@@ -99,6 +132,12 @@ public class AdminEventsFragment extends Fragment {
                 });
     }
 
+    /**
+     * Displays a dialog for editing or deleting an event.
+     *
+     * @param eventData Details of the selected event.
+     * @param eventID Firestore document ID of the selected event.
+     */
     private void showEventDetailsDialog(String eventData, String eventID) {
         LayoutInflater inflater = LayoutInflater.from(requireContext());
         View dialogView = inflater.inflate(R.layout.admin_text_delete_view_event, null);
@@ -107,6 +146,7 @@ public class AdminEventsFragment extends Fragment {
         builder.setView(dialogView);
         android.app.AlertDialog dialog = builder.create();
 
+        // Dialog UI components
         EditText editEventTitle = dialogView.findViewById(R.id.edit_event_title);
         EditText editEventDate = dialogView.findViewById(R.id.edit_event_date);
         EditText editEventDetails = dialogView.findViewById(R.id.edit_event_details);
@@ -114,6 +154,7 @@ public class AdminEventsFragment extends Fragment {
         Button deleteButton = dialogView.findViewById(R.id.delete_button);
         Button backButton = dialogView.findViewById(R.id.back_button);
 
+        // Populate dialog fields with current event data
         String[] eventParts = eventData.split("\n");
         String eventName = eventParts[0].replace("Name: ", "");
         String eventDateStr = eventParts[1].replace("Date: ", "");
@@ -123,6 +164,7 @@ public class AdminEventsFragment extends Fragment {
         editEventDate.setText(eventDateStr);
         editEventDetails.setText(eventDetails);
 
+        // Save button functionality
         saveButton.setOnClickListener(v -> {
             String updatedEventName = editEventTitle.getText().toString().trim();
             String updatedEventDate = editEventDate.getText().toString().trim();
@@ -160,6 +202,7 @@ public class AdminEventsFragment extends Fragment {
             }
         });
 
+        // Delete button functionality
         deleteButton.setOnClickListener(v -> {
             deleteEvent(eventID);
             int position = eventIDs.indexOf(eventID);
@@ -173,11 +216,17 @@ public class AdminEventsFragment extends Fragment {
             dialog.dismiss();
         });
 
+        // Back button functionality
         backButton.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
     }
 
+    /**
+     * Deletes the selected event from the Firestore database.
+     *
+     * @param eventID Firestore document ID of the event to delete.
+     */
     private void deleteEvent(String eventID) {
         db.collection("AllEvents").document(eventID)
                 .delete()

@@ -1,3 +1,13 @@
+/**
+ * AdminPhotosFragment.java
+ *
+ * This class manages user profile photos in an administrative view.
+ * It listens to Firestore changes in the "AllUsers" collection to dynamically update a ListView of user data.
+ * Administrators can view, update, or delete profile pictures of users.
+ *
+ * Author: Nishchay Ranjan
+ */
+
 package com.example.myapplication.ui.admin;
 
 import android.app.AlertDialog;
@@ -20,7 +30,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.BitmapHelper;
 import com.example.myapplication.R;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
+import com.example.myapplication.objects.UserProfile;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -31,10 +41,10 @@ public class AdminPhotosFragment extends Fragment {
 
     private static final String TAG = "AdminPhotosFragment";
 
-    private ListView docRefListView;
-    private ArrayList<UserItem> userList;
-    private UserAdapter userAdapter;
-    private ListenerRegistration listenerRegistration;
+    private ListView docRefListView; // ListView to display user data
+    private ArrayList<UserItem> userList; // List of user items
+    private UserAdapter userAdapter; // Adapter to bind user data to the ListView
+    private ListenerRegistration listenerRegistration; // Firestore listener
 
     @Nullable
     @Override
@@ -46,12 +56,13 @@ public class AdminPhotosFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Initialize UI components
         docRefListView = view.findViewById(R.id.doc_ref_list_view);
         userList = new ArrayList<>();
         userAdapter = new UserAdapter();
         docRefListView.setAdapter(userAdapter);
 
-        // Set item click listener to show popup
+        // Set item click listener to show detailed user data in a popup dialog
         docRefListView.setOnItemClickListener((parent, v, position, id) -> showPopupDialog(userList.get(position)));
 
         startListeningToFirestore();
@@ -60,9 +71,12 @@ public class AdminPhotosFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        stopListeningToFirestore();
+        stopListeningToFirestore(); // Stop Firestore listener when view is destroyed
     }
 
+    /**
+     * Starts listening to Firestore for changes in the "AllUsers" collection.
+     */
     private void startListeningToFirestore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -79,11 +93,9 @@ public class AdminPhotosFragment extends Fragment {
                                 case ADDED:
                                     addUser(change);
                                     break;
-
                                 case MODIFIED:
                                     updateUser(change);
                                     break;
-
                                 case REMOVED:
                                     removeUser(change);
                                     break;
@@ -93,6 +105,9 @@ public class AdminPhotosFragment extends Fragment {
                 });
     }
 
+    /**
+     * Stops the Firestore listener.
+     */
     private void stopListeningToFirestore() {
         if (listenerRegistration != null) {
             listenerRegistration.remove();
@@ -100,6 +115,11 @@ public class AdminPhotosFragment extends Fragment {
         }
     }
 
+    /**
+     * Adds a new user to the list when detected by Firestore.
+     *
+     * @param change DocumentChange containing new user data.
+     */
     private void addUser(DocumentChange change) {
         String name = change.getDocument().getString("name");
         String uuid = change.getDocument().getString("uuid");
@@ -113,6 +133,11 @@ public class AdminPhotosFragment extends Fragment {
         }
     }
 
+    /**
+     * Updates an existing user in the list when changes are detected by Firestore.
+     *
+     * @param change DocumentChange containing updated user data.
+     */
     private void updateUser(DocumentChange change) {
         String uuid = change.getDocument().getString("uuid");
 
@@ -132,6 +157,11 @@ public class AdminPhotosFragment extends Fragment {
         }
     }
 
+    /**
+     * Removes a user from the list when deleted in Firestore.
+     *
+     * @param change DocumentChange containing user data to be removed.
+     */
     private void removeUser(DocumentChange change) {
         String uuid = change.getDocument().getString("uuid");
 
@@ -144,20 +174,21 @@ public class AdminPhotosFragment extends Fragment {
         }
     }
 
+    /**
+     * Shows a popup dialog for user interaction with a selected user's data.
+     *
+     * @param userItem The selected user.
+     */
     private void showPopupDialog(UserItem userItem) {
-        // Inflate the popup layout
         View popupView = LayoutInflater.from(requireContext()).inflate(R.layout.delete_view_images, null);
-
-        // Create the AlertDialog
         AlertDialog dialog = new AlertDialog.Builder(requireContext()).setView(popupView).create();
 
-        // Bind views
+        // Bind views in the popup
         ImageView fullProfileImage = popupView.findViewById(R.id.full_profile_image);
-       // Button editButton = popupView.findViewById(R.id.edit_picture_button);
         Button deleteButton = popupView.findViewById(R.id.delete_picture_button);
         Button backButton = popupView.findViewById(R.id.picture_back_button);
 
-        // Set the profile image
+        // Load profile image
         try {
             BitmapHelper bitmapHelper = new BitmapHelper();
             UserProfile userProfile = new UserProfile();
@@ -172,25 +203,22 @@ public class AdminPhotosFragment extends Fragment {
                 Log.e(TAG, "Failed to load full profile picture for UUID: " + userItem.getUuid());
             }
         } catch (Exception e) {
-            Log.e(TAG, "Error loading full profile picture for UUID: " + userItem.getUuid(), e);
+            Log.e(TAG, "Error loading profile picture for UUID: " + userItem.getUuid(), e);
         }
 
-        // Set button actions
-        
-
+        // Delete button functionality
         deleteButton.setOnClickListener(v -> {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("AllUsers").document(userItem.getUuid())
-                    .update("encodedPicture", null) // Set the encodedPicture field to null
+                    .update("encodedPicture", null)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(requireContext(), "Profile picture deleted successfully!", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
-
-                        // Update the user item in the list and refresh the adapter
+                        // Update user locally
                         for (int i = 0; i < userList.size(); i++) {
                             if (userList.get(i).getUuid().equals(userItem.getUuid())) {
-                                userList.get(i).setEncodedPicture(null); // Update local object
-                                userAdapter.notifyDataSetChanged(); // Refresh the ListView
+                                userList.get(i).setEncodedPicture(null);
+                                userAdapter.notifyDataSetChanged();
                                 break;
                             }
                         }
@@ -201,14 +229,16 @@ public class AdminPhotosFragment extends Fragment {
                     });
         });
 
+        // Back button functionality
         backButton.setOnClickListener(v -> dialog.dismiss());
 
-        // Show the dialog
         dialog.show();
     }
 
+    /**
+     * Adapter for displaying user data in the ListView.
+     */
     private class UserAdapter extends ArrayAdapter<UserItem> {
-
         public UserAdapter() {
             super(requireContext(), R.layout.item_admin_images, userList);
         }
@@ -229,6 +259,7 @@ public class AdminPhotosFragment extends Fragment {
             usernameTextView.setText(userItem.getName());
             logtimeTextView.setText(userItem.getUuid());
 
+            // Load profile picture
             try {
                 BitmapHelper bitmapHelper = new BitmapHelper();
                 UserProfile userProfile = new UserProfile();
@@ -250,9 +281,12 @@ public class AdminPhotosFragment extends Fragment {
         }
     }
 
+    /**
+     * Data model for storing user data.
+     */
     private static class UserItem {
-        private String name;
-        private String uuid;
+        private final String name;
+        private final String uuid;
         private String encodedPicture;
 
         public UserItem(String name, String uuid, String encodedPicture) {

@@ -1,3 +1,13 @@
+/**
+ * AdminProfileFragment.java
+ *
+ * This fragment displays and manages the profiles of users in an administrative interface.
+ * It fetches user details from the Firestore database and displays them in a ListView.
+ * Users can view, edit, and delete user profiles through a dialog interface.
+ *
+ * Author: Nishchay Ranjan
+ */
+
 package com.example.myapplication.ui.admin;
 
 import android.os.Bundle;
@@ -23,11 +33,16 @@ import java.util.ArrayList;
 public class AdminProfileFragment extends Fragment {
 
     private static final String TAG = "AdminProfileFragment";
+
+    // UI Components
     private ListView emailListView;
     private ArrayList<String> userList;
     private ArrayAdapter<String> userAdapter;
     private FirebaseFirestore db;
 
+    /**
+     * Default constructor required for instantiation.
+     */
     public AdminProfileFragment() {
         // Required empty public constructor
     }
@@ -37,13 +52,16 @@ public class AdminProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.item_admin_profile, container, false);
 
+        // Initialize UI components
         emailListView = rootView.findViewById(R.id.email_list_view);
         userList = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
 
+        // Set up the ListView adapter
         userAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, userList);
         emailListView.setAdapter(userAdapter);
 
+        // Set item click listener to show user details
         emailListView.setOnItemClickListener((parent, view, position, id) -> {
             String userData = userList.get(position);
             showUserDetailsDialog(userData, position);
@@ -54,6 +72,9 @@ public class AdminProfileFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Fetches user details from the Firestore database and populates the ListView.
+     */
     private void fetchUserDetails() {
         db.collection("AllUsers")
                 .get()
@@ -83,12 +104,20 @@ public class AdminProfileFragment extends Fragment {
                 });
     }
 
+    /**
+     * Displays a dialog to view, edit, or delete user details.
+     *
+     * @param userData Details of the selected user.
+     * @param position Position of the user in the list.
+     */
     private void showUserDetailsDialog(String userData, int position) {
+        // Inflate the dialog layout
         View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.admin_text_delete_view_profile, null);
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(requireContext());
         builder.setView(dialogView);
         android.app.AlertDialog dialog = builder.create();
 
+        // Bind dialog views
         EditText profileName = dialogView.findViewById(R.id.profile_name);
         EditText email = dialogView.findViewById(R.id.email);
         EditText profilePhone = dialogView.findViewById(R.id.profileid);
@@ -96,6 +125,7 @@ public class AdminProfileFragment extends Fragment {
         Button deleteButton = dialogView.findViewById(R.id.delete_button);
         Button backButton = dialogView.findViewById(R.id.back_button);
 
+        // Parse user data into fields
         String uuid = null;
         String[] userParts = userData.split("\n");
         for (String part : userParts) {
@@ -112,6 +142,7 @@ public class AdminProfileFragment extends Fragment {
 
         final String finalUuid = uuid;
 
+        // Save button functionality
         saveButton.setOnClickListener(v -> {
             String updatedName = profileName.getText().toString().trim();
             String updatedEmail = email.getText().toString().trim();
@@ -139,6 +170,7 @@ public class AdminProfileFragment extends Fragment {
             }
         });
 
+        // Delete button functionality
         deleteButton.setOnClickListener(v -> {
             if (finalUuid != null) {
                 db.collection("AllUsers").document(finalUuid)
@@ -158,6 +190,7 @@ public class AdminProfileFragment extends Fragment {
             }
         });
 
+        // Back button functionality
         backButton.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
