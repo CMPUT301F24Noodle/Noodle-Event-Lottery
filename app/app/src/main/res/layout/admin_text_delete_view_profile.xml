@@ -6,7 +6,7 @@
     android:padding="16dp"
     android:gravity="center">
 
-    <TextView
+    <EditText
         android:id="@+id/profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
-    <TextView
+    <EditText
         android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
         android:textColor="@color/text_cyan"
         android:textSize="18sp" />
 
-    <TextView
+    <EditText
         android:id="@+id/profileid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         android:textColor="@color/text_cyan"
         android:textSize="18sp" />
 
-    <TextView
+    <EditText
         android:id="@+id/roles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

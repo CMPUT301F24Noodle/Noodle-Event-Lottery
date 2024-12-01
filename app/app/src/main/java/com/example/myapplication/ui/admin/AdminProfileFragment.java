@@ -152,14 +152,9 @@ public class AdminProfileFragment extends Fragment {
                 UserProfile user = new UserProfile();
                 user.setUuid(finalUuid);
 
-                // Call the deleteUser method from the db class
-                deleteUser(user);
+                // Call the deleteUser method
+                deleteUser(user, position);
 
-                // Remove user from the list and update the adapter
-                userList.remove(position);
-                userAdapter.notifyDataSetChanged();
-
-                Toast.makeText(requireContext(), "User deleted successfully!", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             } else {
                 Toast.makeText(requireContext(), "Error: Unable to delete user. UUID is null.", Toast.LENGTH_SHORT).show();
@@ -174,11 +169,20 @@ public class AdminProfileFragment extends Fragment {
         dialog.show();
     }
 
-    private void deleteUser(UserProfile user) {
+    private void deleteUser(UserProfile user, int position) {
         // Use the deleteUser method defined in the db class
-        db.collection("AllUsers").document("User" + user.getUuid())
+        db.collection("AllUsers").document(user.getUuid()) // Directly use UUID
                 .delete()
-                .addOnSuccessListener(aVoid -> Log.d(TAG, "User successfully deleted!"))
-                .addOnFailureListener(e -> Log.w(TAG, "Error deleting user: User" + user.getUuid(), e));
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "User successfully deleted from Firestore!");
+                    // Remove user from the list and update the adapter
+                    userList.remove(position);
+                    userAdapter.notifyDataSetChanged();
+                    Toast.makeText(requireContext(), "User deleted successfully!", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Log.w(TAG, "Error deleting user from Firestore: " + user.getUuid(), e);
+                    Toast.makeText(requireContext(), "Failed to delete user. Try again.", Toast.LENGTH_SHORT).show();
+                });
     }
 }
