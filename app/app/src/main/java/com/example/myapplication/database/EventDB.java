@@ -176,7 +176,7 @@ public class EventDB implements Serializable {
      * @return eventRef DocumentReference of the event document in AllEvents collection
      */
     public DocumentReference getEventDocumentRef(String eventID){
-        DocumentReference eventRef = this.db.collection("AllEvents").document("Event" + eventID);
+        DocumentReference eventRef = this.db.collection("AllEvents").document(eventID);
         return eventRef;
     }
 
@@ -216,26 +216,26 @@ public class EventDB implements Serializable {
      * @param onSuccessListener to handle the task
      * @return event object of the event
      */
-    public Event getEvent(String eventID, OnSuccessListener<Event> onSuccessListener){
-        //See if the event exists in the db
+    public void getEvent(String eventID, OnSuccessListener<Event> onSuccessListener){
+        // See if the event exists in the db
         DocumentReference docRef = getEventDocumentRef(eventID);
         checkEventExists(docRef, new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot snapshot) {
-                // event exists
                 if (snapshot != null) {
                     Log.v(TAG, "Event fetched");
-                    //make the event snapshot into an event object and return it
-                    returnEvent(snapshot.toObject(Event.class));
+                    // Make the event snapshot into an event object and pass it to the listener
+                    Event event = snapshot.toObject(Event.class);
+                    onSuccessListener.onSuccess(event);
                 } else {
-                    Log.v(TAG, "Event not exist");
-                    //return null
-                    returnEvent(null);
+                    Log.v(TAG, "Event does not exist");
+                    // Return null if event doesn't exist
+                    onSuccessListener.onSuccess(null);
                 }
             }
         });
-        return this.event;
     }
+
 
     /**
      * Author: Erin-Marie
