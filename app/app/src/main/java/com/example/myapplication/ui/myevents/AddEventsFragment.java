@@ -224,45 +224,7 @@ public class AddEventsFragment extends Fragment {
             Toast.makeText(getContext(), sorry, Toast.LENGTH_SHORT).show();
             return;
         }
-        /*
 
-
-            // Prepare date formatting for passing to EditEventFragment
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-            String formattedDate = dateFormat.format(event.getEventDate());
-
-            // Create arguments to pass to EditEventFragment
-            Bundle args = new Bundle();
-            Event newEvent = eventDB.getEvent();
-            args.putSerializable("event", newEvent);
-            //args.putString("event_id", newEvent.getEventID());
-            args.putString("event_name", eventName);
-            args.putString("event_location", eventLocation);
-            args.putString("event_date_time", formattedDate);
-            args.putString("event_details", newEvent.getEventDetails());
-            if (event.getEventOver() == Boolean.FALSE){
-                args.putString("event_status", "Event Lottery Open");
-            } else {
-                args.putString("event_status", "Event Lottery Closed");
-            }
-
-            if (event.getMaxEntrants() == -1){
-                args.putString("event_waiting_list", event.getWaitingListSize() + " entrants");
-            } else {
-                args.putString("event_waiting_list", event.getWaitingListSize() + " / " + event.getMaxEntrants());
-            }
-
-
-            EditEventFragment editEventFragment = new EditEventFragment();
-            editEventFragment.setArguments(args);
-
-            requireActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.nav_host_fragment_content_main, editEventFragment)
-                    .addToBackStack(null)
-                    .commit();
-
-         */
         // Retrieve instances from MainActivity
         MainActivity main = (MainActivity) getActivity();
         if (main != null) {

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,8 +36,7 @@ public class EditEventPosterDetailsFragment  extends Fragment {
     private static final int PERMISSION_REQUEST_CODE = 100;
 
     private EditText eventNameEditText, eventLocationEditText, dateDayEditText, dateMonthEditText, dateYearEditText;
-    private EditText eventDetailsEditText, contactNumberEditText, maxParticipantsEditText, waitingListLimitEditText;
-    private EditText eventTimeHour, eventTimeMinute;
+    private EditText eventDetailsEditText, contactNumberEditText, maxParticipantsEditText, waitingListLimitEditText, eventTimeHour, eventTimeMinute;
     private Button addPosterButton, saveButton;
     private TextView currentStatusTextView, removeActionTextView, eventTimeColon;
     private ImageView posterImageView;
@@ -97,6 +97,7 @@ public class EditEventPosterDetailsFragment  extends Fragment {
         removeActionTextView = view.findViewById(R.id.remove_action);
 
         geoLocationSwitch = view.findViewById(R.id.geolocation_toggle);
+        LinearLayout geolocationLayout = view.findViewById(R.id.geolocationLayout);
 
         // and then make all the not relevant fields GONE or unchangeable
         eventNameEditText.setEnabled(false);
@@ -110,6 +111,8 @@ public class EditEventPosterDetailsFragment  extends Fragment {
         eventTimeColon.setVisibility(View.GONE);
         eventTimeHour.setVisibility(View.GONE);
         eventTimeMinute.setVisibility(View.GONE);
+        geolocationLayout.setVisibility(View.GONE);
+
 
 
         // set existing text

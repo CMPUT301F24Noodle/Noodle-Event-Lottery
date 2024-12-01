@@ -92,31 +92,6 @@ public class EditEventFragment extends Fragment {
             this.event = main.currentEvent;
         }
 
-        // trying to do this without using bundle, all of these must be transferred
-        /*
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-        String formattedDate = dateFormat.format(event.getEventDate());
-
-        // Create arguments to pass to EditEventFragment
-        Bundle args = new Bundle();
-        args.putSerializable("event", event);
-        //args.putString("event_id", newEvent.getEventID());
-        args.putString("event_name", event.getEventName());
-//        args.putString("event_location",  location);
-        args.putString("event_date_time", formattedDate);
-        args.putString("event_details", event.getEventDetails());
-        if (event.getEventOver() == Boolean.FALSE){
-            args.putString("event_status", "Event Lottery Open");
-        } else {
-            args.putString("event_status", "Event Lottery Closed");
-        }
-
-        if (event.getMaxEntrants() == -1){
-            args.putString("event_waiting_list", event.getWaitingListSize() + " entrants");
-        } else {
-            args.putString("event_waiting_list", event.getWaitingListSize() + " / " + event.getMaxEntrants());
-        }
-         */
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
 
         String eventName = event.getEventName();
@@ -125,64 +100,33 @@ public class EditEventFragment extends Fragment {
         String eventDetails = event.getEventDetails();
         String eventWaitingList;
         String eventStatus;
+
         if (event.getMaxEntrants() == -1){
             eventWaitingList = event.getWaitingListSize() + " entrants";
         } else {
            eventWaitingList = event.getWaitingListSize() + " / " + event.getMaxEntrants();
         }
+
         if (event.getEventOver() == Boolean.FALSE){
             eventStatus = "Event Lottery Open";
         } else {
             eventStatus = "Event Lottery Closed";
         }
-        /*
-        // Retrieve data from arguments
-        Bundle args = getArguments();
-        if (args != null) {
-            //eventId = args.getString("event_id");
-            event = (Event) args.getSerializable("event");
-            //eventId = eventDB.getEvent().getEventID();
-            String eventName = args.getString("event_name");
-            //String eventLocation = args.getString("event_location");
-            String eventLocation = event.getFacility().getFacilityName();
-            String eventDateTime = args.getString("event_date_time");
-            String eventDetails = args.getString("event_details");
-            String eventWaitingList = args.getString("event_waiting_list");
-            String eventStatus = args.getString("event_status");
-            */
 
-            // Populate fields with data from the Bundle
-            eventNameEditText.setText(eventName != null ? eventName : "");
-            eventLocationEditText.setText(eventLocation != null ? "Location: " + eventLocation : "Location:");
-            eventDateTimeEditText.setText(eventDateTime != null ? "Event Date: " + eventDateTime : "Event Date");
-            eventDetailsEditText.setText(eventDetails != null ? eventDetails : "");
-            eventWaitingListEditText.setText("Capacity: " + eventWaitingList);
-            eventStatusTextView.setText("Status: " + eventStatus);
+        // Populate fields with data from the Bundle
+        eventNameEditText.setText(eventName != null ? eventName : "");
+        eventLocationEditText.setText(eventLocation != null ? "Location: " + eventLocation : "Location:");
+        eventDateTimeEditText.setText(eventDateTime != null ? "Event Date: " + eventDateTime : "Event Date");
+        eventDetailsEditText.setText(eventDetails != null ? eventDetails : "");
+        eventWaitingListEditText.setText("Capacity: " + eventWaitingList);
+        eventStatusTextView.setText("Status: " + eventStatus);
 
-            //prep for the manage event page
-            eventDB.getEventEntrants(event);
-            eventDB.getEventDeclined(event);
-            eventDB.getEventWinners(event);
-            eventDB.getEventAccepted(event);
+        //prep for the manage event page
+        eventDB.getEventEntrants(event);
+        eventDB.getEventDeclined(event);
+        eventDB.getEventWinners(event);
+        eventDB.getEventAccepted(event);
 
-        /*
-
-            //TODO make the event poster show up
-            // // eventPosterView.setImageResource(null);
-            //eventWaitingListEditText.setText(eventWaitingList != null ? eventWaitingList : "");
-            //eventStatusTextView.setText(eventStatus != null ? eventStatus: "");
-
-            // Log the data for debugging
-            Log.d("EditEventFragment", "Event ID: " + eventId);
-            Log.d("EditEventFragment", "Event Name: " + eventName);
-            Log.d("EditEventFragment", "Event Location: " + eventLocation);
-            Log.d("EditEventFragment", "Event Date & Time: " + eventDateTime);
-            Log.d("EditEventFragment", "Event Details: " + eventDetails);
-            //Log.d("EditEventFragment", "Event Waiting List: " + eventWaitingList);
-        } else {
-            Toast.makeText(getContext(), "No event data provided", Toast.LENGTH_SHORT).show();
-        }
-        */
         // set the event to main activity so it can be retrieved there
         if (main != null) {
             main.currentEvent = event; // set the event!
@@ -259,25 +203,6 @@ public class EditEventFragment extends Fragment {
         return view;
     }
 
-
-    /**
-     * Author: Erin-Marie
-     * Opens the AddEventsFragment when the user selects the Manage Event button
-     * @param manageArgs which is a bundle of arguments to be passed to the new fragment
-     */
-    /*
-    private void openManageEventFragment(Bundle manageArgs) {
-        // Create a new instance of AddEventsFragment
-        ManageEventFragment addManageEventFragment = new ManageEventFragment();
-        addManageEventFragment.setArguments(manageArgs);
-
-        // Begin the Fragment transaction
-        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.nav_host_fragment_content_main, addManageEventFragment); // Ensure this ID matches your main container ID
-        transaction.addToBackStack(null); // Adds the transaction to the back stack
-        transaction.commit();
-    }
-    */
 
     /**
      * Author: Nishchay

@@ -73,15 +73,7 @@ public class ManageEventFragment extends Fragment {
         notifDB = connection.getNotifDB();
         assert eventDB != null;
 
-        /*
-        Bundle args = getArguments();
-        assert args != null;
-        event = (Event) args.getSerializable("event");
-        eventDB = (EventDB) args.get("eventDB");
-        connection = eventDB.getConnection();
-        notifDB = connection.getNotifDB();
-        assert eventDB != null;
-        */
+
 
         //initialize buttons
         FloatingActionButton viewMapButton = view.findViewById(R.id.FAB_map);
