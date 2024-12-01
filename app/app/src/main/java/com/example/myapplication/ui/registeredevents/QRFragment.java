@@ -1,7 +1,13 @@
 package com.example.myapplication.ui.registeredevents;
 
+import static android.Manifest.permission_group.CAMERA;
+
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +16,10 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.myapplication.R;
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
 import com.example.myapplication.objects.Event;
@@ -30,8 +37,11 @@ import com.journeyapps.barcodescanner.ScanOptions;
  */
 public class QRFragment extends Fragment {
 
+    private static final String TAG = "QRFragment";
+    private static final int REQUEST_CAMERA = 1 ;
     private EventDB eventDB;
     private ActivityResultLauncher<ScanOptions> barcodeLauncher;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,57 +50,68 @@ public class QRFragment extends Fragment {
         // Initialize EventDB
         eventDB = new EventDB(new DBConnection(getContext()));
 
-        // Register the launcher and result handler
-        barcodeLauncher = registerForActivityResult(new ScanContract(), result -> {
-            if (result.getContents() == null) {
-                Toast.makeText(getContext(), getString(R.string.canceled), Toast.LENGTH_LONG).show();
-            } else {
-                String eventID = result.getContents();
-                // Fetch event details and navigate to event page
-                fetchEventDetails(eventID);
-            }
-        });
+//        if(checkPermission())
+//        {
+//            Toast.makeText(this.getContext(), "Permission already granted!", Toast.LENGTH_LONG).show();
+//        }
+//        else
+//        {
+//            requestPermission();
+//        }
+
+
+        scanCode();
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.qr_scanner, container, false);
-
-        // Launch the QR scanner
-        ScanOptions options = new ScanOptions();
-        options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
-        options.setPrompt("Scan a QR code");
-        options.setCameraId(0);
-        options.setBeepEnabled(true);
-        options.setBarcodeImageEnabled(true);
-
-        barcodeLauncher.launch(options);
-
-        return view;
-    }
-
+//    private boolean checkPermission()
+//    {
+//        return (ContextCompat.checkSelfPermission(this.getContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
+//    }
+//
+//    private void requestPermission()
+//    {
+//        ActivityCompat.requestPermissions(this.getActivity(), new String[]{CAMERA}, REQUEST_CAMERA);
+//    }
     /**
-     * Author: Sam Lee
-     * Fetches event details from the database and navigates to the event page.
-     * 
-     * @param eventID
+     * Configures the scanning options and launches the QR scanner.
+     * Sets various options such as prompt text, beep sound, and screen orientation lock during scanning.
      */
-    private void fetchEventDetails(String eventID) {
-        eventDB.getEvent(eventID, new OnSuccessListener<Event>() {
-            @Override
-            public void onSuccess(Event event) {
-                if (event != null) {
-                    // Navigate to event page and pass event details
-                    Intent intent = new Intent(getActivity(), ViewEventActivity.class);
-                    intent.putExtra("event", event);
-                    startActivity(intent);
-                } else {
-                    // Handle event not found
-                    Toast.makeText(getContext(), "Event not found", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+    private void scanCode() {
+        Log.d("QrCode", "scanCode: Setting up scan options");
+        ScanOptions options = new ScanOptions();
+        options.setPrompt("Volume up to flash on");
+        options.setBeepEnabled(true);
+        //options.setOrientationLocked(true);
+
+        try {
+            Log.d("QrCode", "scanCode: Launching QR scanner");
+            barLauncher.launch(options);
+        } catch (Exception e) {
+            Log.e("QrCode", "scanCode: Failed to launch scanner", e);
+            Toast.makeText(this.getContext(), "Error launching scanner", Toast.LENGTH_SHORT).show();
+        }
     }
+
+    ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
+        if (result.getContents() != null) {
+            Log.d(TAG, "barLauncher: Scan result received");
+            String qrHash = result.getContents();
+            eventDB.getEvent(qrHash, new OnSuccessListener<Event>() {
+                @Override
+                public void onSuccess(Event event) {
+                    if (event != null) {
+                        // Navigate to event page and pass event details
+                        Intent intent = new Intent(getActivity(), ViewEventActivity.class);
+                        intent.putExtra("event", event);
+                        startActivity(intent);
+                    } else {
+                        // Handle event not found
+                        Toast.makeText(getContext(), "Event not found", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
+        }
+    });
+
 }

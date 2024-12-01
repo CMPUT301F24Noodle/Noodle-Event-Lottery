@@ -49,12 +49,9 @@ public class RegisteredEventFragment extends Fragment {
     public String uuid;
     public UserProfile user;
     public Event event;
-    public FacilityDB facilityDB;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        RegisteredEventViewModel registeredEventViewModel = new ViewModelProvider(this)
-                .get(RegisteredEventViewModel.class);
 
         getVarFromMain();
 
