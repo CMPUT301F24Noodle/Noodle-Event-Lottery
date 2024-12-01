@@ -36,8 +36,9 @@ public class ManagePosterFragment extends DialogFragment {
     EventDB eventDB;
     BitmapHelper helper;
     Boolean inFirebase; // a boolean to determine if the event has been saved in the DB
+    Button deleteButton, editButton, backButton;
 
-    // TODO TEST
+    // this manages what happens after the image is gotten from the users phone
     ActivityResultLauncher<Intent> galleryLauncher;
 
     ImageView posterImage;
@@ -55,25 +56,26 @@ public class ManagePosterFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        //TODO
         // what happens after a the user selects an image from their gallery
         // the Uri of their selected image is gotten through result.getData().getData()
         galleryLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        // get the link of the selected image
                         Uri selectedImage = result.getData().getData();
 
-                        try {
-                            // you have to do error catching because UriToBitmap can throw an error
+                        try { // you have to do error catching because UriToBitmap can throw an error
+
                             Context context = getContext();
-
                             assert context != null;
-                            Bitmap originalProfilePicture = helper.UriToBitmap(selectedImage, context);
-                            Bitmap resizedProfilePicture = helper.resizeBitmap(originalProfilePicture); // need to resize so the string representation isn't too long
 
-                            // encode the bitmap
-                            String encodedBitmap = helper.encodeBitmapToBase64(resizedProfilePicture);
+                            // turn the image into a bitmap, and then resize it
+                            Bitmap originalPosterImage = helper.UriToBitmap(selectedImage, context);
+                            Bitmap resizedPosterImage = helper.resizeBitmap(originalPosterImage); // need to resize so the string representation isn't too long
+
+                            // encode the bitmap into a string for storage
+                            String encodedBitmap = helper.encodeBitmapToBase64(resizedPosterImage);
 
 
                             // and then save it to the event!
@@ -85,9 +87,10 @@ public class ManagePosterFragment extends DialogFragment {
                             }
 
 
-                            // take the new bitmap and set the images to display the bitmap
-
-                            posterImage.setImageBitmap(resizedProfilePicture);
+                            // take the new bitmap and set the view to display the profile picture
+                            posterImage.setVisibility(View.VISIBLE);
+                            posterImage.setImageBitmap(resizedPosterImage);
+                            deleteButton.setVisibility(View.VISIBLE);
 
 
                         } catch (IOException e) {
@@ -106,6 +109,11 @@ public class ManagePosterFragment extends DialogFragment {
         helper = new BitmapHelper();
         posterImage = view.findViewById(R.id.full_profile_image);
 
+        // set up buttons
+        editButton = view.findViewById(R.id.edit_picture_button);
+        deleteButton = view.findViewById(R.id.delete_picture_button);
+        backButton = view.findViewById(R.id.picture_back_button);
+
         // determine if you can actually save the event or not
         // this might be called from AddEventsFragment, which hasn't created the event yet
         if(event.getEventID() == null){
@@ -115,17 +123,10 @@ public class ManagePosterFragment extends DialogFragment {
             inFirebase = true;
         }
 
-        if(!isAdded()){
-            Toast.makeText(getContext(), "uh oh", Toast.LENGTH_SHORT).show();
-        }
-
-        if(getActivity() == null){
-            Toast.makeText(getContext(), "dang", Toast.LENGTH_SHORT).show();
-        }
-
         // if no poster, then hide the image:
         if(event.getEventPoster() == null){
             posterImage.setVisibility(View.GONE);
+            deleteButton.setVisibility(View.GONE);
         }
         // or set the view to show the image
         else{
@@ -133,15 +134,13 @@ public class ManagePosterFragment extends DialogFragment {
             Bitmap poster = helper.decodeBase64StringToBitmap(encodedPoster);
             posterImage.setVisibility(View.VISIBLE);
             posterImage.setImageBitmap(poster);
+
         }
-
-
-
 
         // a button to let the user upload a poster
         // launches an intent that allows users to open their photo gallery
         // doesn't need permissions because its just photos
-        Button editButton = view.findViewById(R.id.edit_picture_button);
+
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,7 +152,7 @@ public class ManagePosterFragment extends DialogFragment {
         });
 
         // a button to remove the picture
-        Button deleteButton = view.findViewById(R.id.delete_picture_button);
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,7 +167,7 @@ public class ManagePosterFragment extends DialogFragment {
         });
 
         // a button to leave the fragment
-        Button backButton = view.findViewById(R.id.picture_back_button);
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

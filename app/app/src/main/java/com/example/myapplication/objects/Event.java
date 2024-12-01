@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.example.myapplication.BitmapHelper;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.zxing.BarcodeFormat;
@@ -64,6 +65,8 @@ public class Event implements Serializable {
     public ArrayList<DocumentReference> losersList; // list of all users who lost the lottery
     public ArrayList<DocumentReference> acceptedList; // list of all users who have accepted their invitation
     public ArrayList<DocumentReference> declinedList; // list of all users who have accepted their invitation
+
+
 
     // Editor: Sam
     // No-arg constructor for Firebase
@@ -503,5 +506,13 @@ public class Event implements Serializable {
 
     public double getLongitude() {
         return -113.0;
+    }
+
+    public Bitmap generatePoster(){
+        if(eventPoster == null){
+            return null;
+        }
+        BitmapHelper helper = new BitmapHelper();
+        return helper.decodeBase64StringToBitmap(eventPoster);
     }
 }

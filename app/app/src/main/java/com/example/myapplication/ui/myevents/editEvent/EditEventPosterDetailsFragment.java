@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
@@ -141,123 +143,21 @@ public class EditEventPosterDetailsFragment  extends Fragment {
             }
         });
 
-        saveButton.setOnClickListener(v -> saveEventDetails());
+        saveButton.setOnClickListener(v -> saveEventDetails(v));
     }
 
 
     /**
-     * Validates and gathers input data, creates an Event object, and saves it to Firebase.
-     * Navigates to EditEventFragment if the save is successful.
+     * Saves the event description, and returns to EditEventFragment
      */
-    private void saveEventDetails() {
-        String eventName = eventNameEditText.getText().toString().trim();
-        String eventLocation = eventLocationEditText.getText().toString().trim();
-        Integer maxParticipants = null;
-        String maxEntrants = waitingListLimitEditText.getText().toString().trim();
-        String eventDetails = eventDetailsEditText.getText().toString().trim();
+    private void saveEventDetails(View v) {
+        String newEventDetails = eventDetailsEditText.getText().toString();
+        event.setEventDetails(newEventDetails);
+        eventDB.updateEvent(event);
 
-
-
-        if (eventName.isEmpty() || eventLocation.isEmpty()) {
-            Toast.makeText(getContext(), "Please fill in all required fields", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        //Set all the event data
-        event.setEventName(eventName);
-
-        if (!eventDetails.isEmpty()) {
-            event.setEventDetails(eventDetails);
-        }
-
-        try {
-            maxParticipants = Integer.parseInt(maxParticipantsEditText.getText().toString());
-            event.setMaxParticipants(maxParticipants);
-        } catch (NumberFormatException e) {
-            CharSequence text = "Your event must a maximum number of participants";
-            Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
-            return; //force them to go back and add one
-        }
-
-        try {
-            Integer maxWait = Integer.parseInt(waitingListLimitEditText.getText().toString());
-            event.setMaxEntrants(maxWait);
-        } catch (NumberFormatException a) {
-            Integer maxWait = -1;
-            event.setMaxEntrants(maxWait);
-        }
-
-
-        event.setEventDate(new Date());
-
-        event.setContact(contactNumberEditText.getText().toString().trim());
-
-        event.setFacility(currentUserProfile.getFacility());
-
-        if (geoLocationSwitch.isChecked()) {
-            event.setGeoLocation(Boolean.TRUE);
-        } else {
-            event.setGeoLocation(Boolean.FALSE);
-        }
-
-        if (selectedImageUri != null) {
-            event.setEventPoster(selectedImageUri.toString());
-        }
-
-        event.setOrganizer(currentUserProfile);
-        event.setOrganizerRef(currentUserProfile.getDocRef());
-
-        event.eventOver = Boolean.FALSE;
-
-        try {
-            eventDB.addEvent(event);
-            currentUserProfile.addOrgEvent(event);
-            Toast.makeText(getContext(), "Event saved successfully!", Toast.LENGTH_SHORT).show();
-            clearFields();
-
-        } catch (Exception e) {
-            CharSequence sorry = "Event details could not be saved, please try again.";
-            Toast.makeText(getContext(), sorry, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-
-
-        // Prepare date formatting for passing to EditEventFragment
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-        String formattedDate = dateFormat.format(event.getEventDate());
-
-        // Create arguments to pass to EditEventFragment
-        Bundle args = new Bundle();
-        Event newEvent = event;
-        args.putSerializable("event", newEvent);
-        //args.putString("event_id", newEvent.getEventID());
-        args.putString("event_name", eventName);
-        args.putString("event_location", eventLocation);
-        args.putString("event_date_time", formattedDate);
-        args.putString("event_details", newEvent.getEventDetails());
-        if (event.getEventOver() == Boolean.FALSE){
-            args.putString("event_status", "Event Lottery Open");
-        } else {
-            args.putString("event_status", "Event Lottery Closed");
-        }
-
-        if (event.getMaxEntrants() == -1){
-            args.putString("event_waiting_list", event.getWaitingListSize() + " entrants");
-        } else {
-            args.putString("event_waiting_list", event.getWaitingListSize() + " / " + event.getMaxEntrants());
-        }
-
-
-        EditEventFragment editEventFragment = new EditEventFragment();
-        editEventFragment.setArguments(args);
-
-        requireActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.nav_host_fragment_content_main, editEventFragment)
-                .addToBackStack(null)
-                .commit();
-
+        // return to back to EditEventFragment
+        NavController navController = Navigation.findNavController(v);
+        navController.popBackStack();
     }
 
     /**
