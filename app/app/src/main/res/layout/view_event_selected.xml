@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="20dp"
@@ -61,13 +60,25 @@
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/alexandria_semibold"
-            android:text="@string/sample_date_time"
+            android:text="Start Date to End Date At Time"
             android:textColor="@color/text_cyan"
             android:textSize="22dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/event_poster"
             app:layout_goneMarginTop="0dp" />
+
+        <TextView
+            android:id="@+id/event_repeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repeats: Mon, Tue, Fri"
+            android:textColor="@color/text_cyan"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/event_date_time"
+            android:fontFamily="@font/aleo_medium"/>
 
 
         <TextView
@@ -80,7 +91,7 @@
             android:textSize="22dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/event_date_time" />
+            app:layout_constraintTop_toBottomOf="@id/event_repeat" />
 
         <TextView
             android:id="@+id/event_details"

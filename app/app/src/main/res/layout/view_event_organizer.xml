@@ -1,182 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:fillViewport="true">
 
-    android:background="@color/back_gray">
-
-    <!-- Event Name -->
-    <EditText
-        android:id="@+id/event_name"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/belanosima"
-        android:paddingTop="16dp"
-        android:text="Event Name"
-        android:textAlignment="center"
-        android:textColor="@color/text_cyan"
-        android:textSize="36sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:enabled="false"/>
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- Event Poster -->
-    <ImageView
-        android:id="@+id/event_poster"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:contentDescription="@string/poster"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toBottomOf="@id/event_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/rounded_image"
-        android:clipToOutline="true"/>
-<!--        android:src="@drawable/testposter"-->
-
-    <!-- Event Date & Time -->
-    <EditText
-        android:id="@+id/event_date_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/alexandria_semibold"
-        android:text="Date  Time"
-        android:textColor="@color/text_cyan"
-        android:textSize="22sp"
-        app:layout_constraintTop_toBottomOf="@id/event_poster"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:enabled="false"/>
-
-    <!-- Event Location -->
-    <EditText
-        android:id="@+id/event_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/aleo_medium"
-        android:text="Location"
-        android:textColor="@color/text_cyan"
-        android:textSize="22sp"
-        app:layout_constraintTop_toBottomOf="@id/event_date_time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:enabled="false"/>
-
-    <!-- Event Details -->
-    <EditText
-        android:id="@+id/event_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Event Details"
-        android:textColor="@color/text_cyan"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/event_location"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:fontFamily="@font/aleo_medium"
-        android:enabled="false"/>
-
-    <!-- Event Waiting List -->
-    <EditText
-        android:id="@+id/event_waiting_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/aleo_medium"
-        android:text="Current Participants: 33/45"
-        android:textColor="@color/text_cyan"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/event_details"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="5dp"
-        android:enabled="false"/>
-
-    <!-- Event Status -->
-    <TextView
-        android:id="@+id/event_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/aleo_medium"
-        android:text="Status: Names Drawn (Organizer)"
-        android:textColor="@color/text_cyan"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/event_waiting_list"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- Action Buttons -->
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/event_status"
-        android:layout_marginTop="20dp"
-        >
-
-        <Button
-            android:id="@+id/generate_qr"
-            android:layout_width="150dp"
+        <!-- Event Name -->
+        <EditText
+            android:id="@+id/event_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/belanosima"
-            android:text="Generate QR"
-            android:background="@drawable/mybutton"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"/>
+            android:paddingTop="16dp"
+            android:text="Event Name"
+            android:textAlignment="center"
+            android:textColor="@color/text_cyan"
+            android:textSize="36sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:enabled="false"/>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+        <!-- Event Poster -->
+        <ImageView
+            android:id="@+id/event_poster"
+            android:layout_width="350dp"
+            android:layout_height="450dp"
+            android:contentDescription="@string/poster"
+            android:scaleType="fitCenter"
+            app:layout_constraintTop_toBottomOf="@id/event_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/rounded_image"
+            android:clipToOutline="true"
+            android:visibility="gone"
+            />
+    <!--        android:src="@drawable/testposter"-->
 
-        <Button
-            android:id="@+id/manage_event"
-            android:layout_width="150dp"
+        <!-- Event Date & Time -->
+        <EditText
+            android:id="@+id/event_date_time"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/belanosima"
-            android:text="Manage Event"
-            android:background="@drawable/mybutton"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"/>
-    </LinearLayout>
+            android:fontFamily="@font/alexandria_semibold"
+            android:text="StartDate to EndDate at Time"
+            android:textColor="@color/text_cyan"
+            android:textSize="22sp"
+            app:layout_constraintTop_toBottomOf="@id/event_poster"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:enabled="false"/>
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout2"
-        android:layout_marginTop="10dp"
-        >
-
-        <Button
-            android:id="@+id/edit_event"
-            android:layout_width="150dp"
+        <!-- Event Location -->
+        <TextView
+            android:id="@+id/event_repeat"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/belanosima"
-            android:text="Edit Event"
-            android:background="@drawable/mybutton"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"/>
+            android:fontFamily="@font/aleo_medium"
+            android:text="Repeats: Mon, Tue, Fri."
+            android:textColor="@color/text_cyan"
+            android:textSize="22sp"
+            app:layout_constraintTop_toBottomOf="@id/event_date_time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/save_button"
-            android:layout_width="150dp"
+        <EditText
+            android:id="@+id/event_location"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/belanosima"
-            android:text="Save Changes"
-            android:background="@drawable/mybutton"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"/>
-    </LinearLayout>
+            android:fontFamily="@font/aleo_medium"
+            android:text="Location"
+            android:textColor="@color/text_cyan"
+            android:textSize="22sp"
+            app:layout_constraintTop_toBottomOf="@id/event_repeat"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:enabled="false"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Event Details -->
+        <EditText
+            android:id="@+id/event_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Event Details"
+            android:textColor="@color/text_cyan"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/event_location"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="@font/aleo_medium"
+            android:enabled="false"/>
+
+        <!-- Event Waiting List -->
+        <EditText
+            android:id="@+id/event_waiting_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/aleo_medium"
+            android:text="Current Participants: 33/45"
+            android:textColor="@color/text_cyan"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/event_details"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="5dp"
+            android:enabled="false"/>
+
+        <!-- Event Status -->
+        <TextView
+            android:id="@+id/event_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/aleo_medium"
+            android:text="Status: Names Drawn (Organizer)"
+            android:textColor="@color/text_cyan"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/event_waiting_list"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/event_registration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/aleo_medium"
+            android:text="Registration Period: Start to End"
+            android:textColor="@color/text_cyan"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/event_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/event_registration"
+            android:layout_marginTop="20dp"
+            >
+
+            <Button
+                android:id="@+id/generate_qr"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/belanosima"
+                android:text="Generate QR"
+                android:background="@drawable/mybutton"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/manage_event"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/belanosima"
+                android:text="Manage Event"
+                android:background="@drawable/mybutton"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/linearLayout2"
+            android:layout_marginTop="10dp"
+            >
+
+            <Button
+                android:id="@+id/edit_event"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/belanosima"
+                android:text="Edit Event"
+                android:background="@drawable/mybutton"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/save_button"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/belanosima"
+                android:text="Save Changes"
+                android:background="@drawable/mybutton"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"/>
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
