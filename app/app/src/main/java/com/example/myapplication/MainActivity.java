@@ -66,8 +66,10 @@ public class MainActivity extends AppCompatActivity {
     public NotificationManager notificationManager;
     private final String CHANNEL_ID = "NoodleNotifs";
 
-    // this is for myevents trickery
+    // for myEvents and registeredEvents
     public Event currentEvent;
+    public Event scannedEvent;
+
 
 
     @Override

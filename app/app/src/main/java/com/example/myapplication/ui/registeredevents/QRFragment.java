@@ -1,7 +1,6 @@
 package com.example.myapplication.ui.registeredevents;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +11,14 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
 import com.example.myapplication.objects.Event;
-import com.example.myapplication.ui.ViewEventActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.journeyapps.barcodescanner.CaptureActivity;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -34,6 +33,7 @@ public class QRFragment extends Fragment {
 
     private EventDB eventDB;
     private ActivityResultLauncher<ScanOptions> barcodeLauncher;
+    private View v;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,6 +70,7 @@ public class QRFragment extends Fragment {
 
         barcodeLauncher.launch(options);
 
+        v = view;
         return view;
     }
 
@@ -84,10 +85,12 @@ public class QRFragment extends Fragment {
             @Override
             public void onSuccess(Event event) {
                 if (event != null) {
-                    // Navigate to event page and pass event details
-                    Intent intent = new Intent(getActivity(), ViewEventActivity.class);
-                    intent.putExtra("event", event);
-                    startActivity(intent);
+                    MainActivity main = (MainActivity) getActivity();
+                    if (main != null) {
+                        main.scannedEvent = event;
+                    }
+                    // Navigate to event page
+                    Navigation.findNavController(v).navigate(R.id.nav_view_scanned_event);
                 } else {
                     // Handle event not found
                     Toast.makeText(getContext(), "Event not found", Toast.LENGTH_LONG).show();
