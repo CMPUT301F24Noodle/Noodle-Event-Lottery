@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -20,7 +21,7 @@ import java.io.InputStream;
  * Author: Xavier Salm
  * Contains several helper functions involving Bitmap objects
  * Mainly involves classes for converting bitmaps into other objects, or converting other objects into bitmaps
- * Primarily used for Image uploading/downloading, as well as QR code generation
+ * Primarily used for Image uploading/downloading, as well as profile picture generation
  */
 public class BitmapHelper {
     /**

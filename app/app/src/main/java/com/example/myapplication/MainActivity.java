@@ -19,6 +19,7 @@ import com.example.myapplication.database.EventDB;
 import com.example.myapplication.database.FacilityDB;
 import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.database.UserDB;
+import com.example.myapplication.objects.Event;
 import com.example.myapplication.objects.Notification;
 import com.example.myapplication.objects.UserProfile;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,6 +29,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -63,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
     public UserProfile user;
     public NotificationManager notificationManager;
     private final String CHANNEL_ID = "NoodleNotifs";
+
+    // this is for myevents trickery
+    public Event currentEvent;
 
 
     @Override
@@ -314,5 +319,6 @@ public class MainActivity extends AppCompatActivity {
     public DBConnection getConnection(){
         return connection;
     }
+
 
 }

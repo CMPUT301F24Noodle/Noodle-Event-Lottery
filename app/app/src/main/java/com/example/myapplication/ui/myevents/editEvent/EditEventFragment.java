@@ -29,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
@@ -39,6 +40,10 @@ import com.example.myapplication.objects.UserProfile;
 import com.example.myapplication.ui.myevents.manageEvent.DisplayQRCodeFragment;
 import com.example.myapplication.ui.myevents.manageEvent.ManageEventFragment;
 import com.google.zxing.WriterException;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Authors: Erin-Marie, Nishchay
@@ -84,60 +89,56 @@ public class EditEventFragment extends Fragment {
             this.connection = main.connection;
             this.eventDB = main.eventDB;
             this.currentUserProfile = main.user;
+            this.event = main.currentEvent;
         }
 
-        // Retrieve data from arguments
-        Bundle args = getArguments();
-        if (args != null) {
-            //eventId = args.getString("event_id");
-            event = (Event) args.getSerializable("event");
-            //eventId = eventDB.getEvent().getEventID();
-            String eventName = args.getString("event_name");
-            //String eventLocation = args.getString("event_location");
-            String eventLocation = event.getFacility().getFacilityName();
-            String eventDateTime = args.getString("event_date_time");
-            String eventDetails = args.getString("event_details");
-            String eventWaitingList = args.getString("event_waiting_list");
-            String eventStatus = args.getString("event_status");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
 
+        String eventName = event.getEventName();
+        String eventLocation = event.getFacility().getLocation();
+        String eventDateTime = dateFormat.format(Objects.requireNonNull(event.getEventDate()));
+        String eventDetails = event.getEventDetails();
+        String eventWaitingList;
+        String eventStatus;
 
-            // Populate fields with data from the Bundle
-            eventNameEditText.setText(eventName != null ? eventName : "");
-            eventLocationEditText.setText(eventLocation != null ? "Location: " + eventLocation : "Location:");
-            eventDateTimeEditText.setText(eventDateTime != null ? "Event Date: " + eventDateTime : "Event Date");
-            eventDetailsEditText.setText(eventDetails != null ? eventDetails : "");
-            eventWaitingListEditText.setText("Capacity: " + eventWaitingList);
-            eventStatusTextView.setText("Status: " + eventStatus);
-
-            //prep for the manage event page
-            eventDB.getEventEntrants(event);
-            eventDB.getEventDeclined(event);
-            eventDB.getEventWinners(event);
-            eventDB.getEventAccepted(event);
-
-
-
-            //TODO make the event poster show up
-            // // eventPosterView.setImageResource(null);
-            //eventWaitingListEditText.setText(eventWaitingList != null ? eventWaitingList : "");
-            //eventStatusTextView.setText(eventStatus != null ? eventStatus: "");
-
-            // Log the data for debugging
-            Log.d("EditEventFragment", "Event ID: " + eventId);
-            Log.d("EditEventFragment", "Event Name: " + eventName);
-            Log.d("EditEventFragment", "Event Location: " + eventLocation);
-            Log.d("EditEventFragment", "Event Date & Time: " + eventDateTime);
-            Log.d("EditEventFragment", "Event Details: " + eventDetails);
-            //Log.d("EditEventFragment", "Event Waiting List: " + eventWaitingList);
+        if (event.getMaxEntrants() == -1){
+            eventWaitingList = event.getWaitingListSize() + " entrants";
         } else {
-            Toast.makeText(getContext(), "No event data provided", Toast.LENGTH_SHORT).show();
+           eventWaitingList = event.getWaitingListSize() + " / " + event.getMaxEntrants();
+        }
+
+        if (event.getEventOver() == Boolean.FALSE){
+            eventStatus = "Event Lottery Open";
+        } else {
+            eventStatus = "Event Lottery Closed";
+        }
+
+        // Populate fields with data from the Bundle
+        eventNameEditText.setText(eventName != null ? eventName : "");
+        eventLocationEditText.setText(eventLocation != null ? "Location: " + eventLocation : "Location:");
+        eventDateTimeEditText.setText(eventDateTime != null ? "Event Date: " + eventDateTime : "Event Date");
+        eventDetailsEditText.setText(eventDetails != null ? eventDetails : "");
+        eventWaitingListEditText.setText("Capacity: " + eventWaitingList);
+        eventStatusTextView.setText("Status: " + eventStatus);
+
+        //prep for the manage event page
+        eventDB.getEventEntrants(event);
+        eventDB.getEventDeclined(event);
+        eventDB.getEventWinners(event);
+        eventDB.getEventAccepted(event);
+
+        // set the event to main activity so it can be retrieved there
+        if (main != null) {
+            main.currentEvent = event; // set the event!
         }
 
         // Set EditTexts as non-editable initially
         setFieldsEditable(false);
 
         // Edit button toggles fields to editable
-        editButton.setOnClickListener(v -> setFieldsEditable(true));
+        editButton.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.nav_edit_event_details);
+        });
 
         // Save button saves data and toggles back to non-editable mode
         saveButton.setOnClickListener(v -> {
@@ -146,10 +147,18 @@ public class EditEventFragment extends Fragment {
         });
 
         manageEventButton.setOnClickListener(v -> {
-            Bundle manageArgs = new Bundle();
-            manageArgs.putSerializable("event", event);
-            manageArgs.putSerializable("eventDB", eventDB);
-            openManageEventFragment(manageArgs);
+            //Bundle manageArgs = new Bundle();
+            //manageArgs.putSerializable("event", event);
+            //manageArgs.putSerializable("eventDB", eventDB);
+            //openManageEventFragment(manageArgs);
+
+            // set event and eventDB in main
+            if (main != null) {
+                main.currentEvent = event;
+                main.eventDB = eventDB;
+            }
+
+            Navigation.findNavController(v).navigate(R.id.nav_manage_event);
         });
 
         QRButton.setOnClickListener(new View.OnClickListener() {
@@ -194,22 +203,6 @@ public class EditEventFragment extends Fragment {
         return view;
     }
 
-    /**
-     * Author: Erin-Marie
-     * Opens the AddEventsFragment when the user selects the Manage Event button
-     * @param manageArgs which is a bundle of arguments to be passed to the new fragment
-     */
-    private void openManageEventFragment(Bundle manageArgs) {
-        // Create a new instance of AddEventsFragment
-        ManageEventFragment addManageEventFragment = new ManageEventFragment();
-        addManageEventFragment.setArguments(manageArgs);
-
-        // Begin the Fragment transaction
-        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.nav_host_fragment_content_main, addManageEventFragment); // Ensure this ID matches your main container ID
-        transaction.addToBackStack(null); // Adds the transaction to the back stack
-        transaction.commit();
-    }
 
     /**
      * Author: Nishchay

@@ -1,7 +1,9 @@
 package com.example.myapplication.ui;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -36,6 +38,12 @@ public class ViewEventActivity extends AppCompatActivity {
         TextView eventDateTime = findViewById(R.id.event_date_time);
         TextView eventLocation = findViewById(R.id.event_location);
         Button saveButton = findViewById(R.id.event_save_button);
+        ImageView posterImage = findViewById(R.id.event_poster);
+
+        // display the poster
+        if(event.getEventPoster() != null){
+            Bitmap eventPoster = event.generatePoster();
+        }
 
         eventName.setText(event.getEventName());
         eventDateTime.setText(event.getEventDate().toString() + " " + event.getEventTime());
