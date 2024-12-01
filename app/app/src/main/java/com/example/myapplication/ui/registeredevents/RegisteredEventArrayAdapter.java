@@ -89,6 +89,7 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
                             event.removeEntrant(currUser);
                             eventDB.updateEvent(event);
                             events.remove(position);
+                            this.notifyDataSetChanged();
                         })
                         .setNegativeButton("No", (dialog, which) -> {
                             //close dialog
