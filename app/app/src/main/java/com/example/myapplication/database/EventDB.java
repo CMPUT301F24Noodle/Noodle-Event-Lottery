@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.myapplication.objects.Event;
+import com.example.myapplication.objects.Facility;
 import com.example.myapplication.objects.UserProfile;
 import com.example.myapplication.objects.Notification;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -516,6 +517,32 @@ public class EventDB implements Serializable {
 
     }
 
+
+    /**
+     * Author: Erin-Marie
+     * Method to be called when a user wants to delete a facility, or an Admin chooses to delete a facility
+     * Also used for testing to keep db clean
+     * Deletes a facility
+     * @param facility to be deleted
+     */
+    public void deleteFacility(Facility facility){
+        this.db.collection("AllFacilities").document("Facility"+facility.getOwnerID())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Facility successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting Facility:", e);
+                    }
+                });
+
+    }
+
     /**
      * Author: Erin-Marie
      * this function will get the documents from any query passed to it
@@ -560,9 +587,7 @@ public class EventDB implements Serializable {
 
     /**
      * Author: Erin-Marie
-     * adds a newUser to the AllUsers collection, using the current users uuid as the document id
-     * stored as a custom object, which requires the public empty constructor in the UserProfile class
-     * Sets the currentUser and userDocument Reference attributes of the UserDB instance
+     * adds a newEvent to the AllEvents collection,
      * Reference: <a href="https://firebase.google.com/docs/firestore/manage-data/add-data?_gl=1">...</a>*189tp3e*_up*MQ..*_ga*MTI4NzA3MTQ3MC4xNzI5NzI3MjA0*_ga_CW55HF8NVT*MTcyOTcyNzIwNC4xLjAuMTcyOTcyNzIwNC4wLjAuMA..
      */
     public void addEvent(Event event){
@@ -604,6 +629,7 @@ public class EventDB implements Serializable {
      * @param event the event being entered
      * @return Boolean of the success of entering the event
      *         returns False if they could not be added becuase the waiting list is full
+     *         returns False if they could not be added becuase the waiting list is full
      *         returns True if they were added to the waiting list
      * assumed the entrant is the current user
      */
@@ -618,7 +644,9 @@ public class EventDB implements Serializable {
             Log.v(TAG, "Waiting list is full, user could not be added");
             return Boolean.FALSE;
         } else {
+            Log.v(TAG, "updating event with new entrant added");
             updateEvent(event);
+
             //if the event has a max waitlist size, end the event once the waitlist capacity is reached
             if(event.getEventFull() == Boolean.TRUE && event.getEventOver() == Boolean.FALSE){
                 endEvent(event);

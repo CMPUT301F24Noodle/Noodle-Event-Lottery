@@ -27,8 +27,8 @@ import java.util.Date;
 
 /**
  * Authors: Erin-Marie and Sam Lee
- * Activity for viewing an event scanned from QR code.
- *[US 01.06.01] As an entrant I want to view event details within the app by scanning the promotional QR code
+ * Activity for viewing and entering an event scanned from a QR code.
+ *[US 01.06.01, US 01.06.02]
  */
 public class ViewScannedEventFragment extends Fragment {
 
