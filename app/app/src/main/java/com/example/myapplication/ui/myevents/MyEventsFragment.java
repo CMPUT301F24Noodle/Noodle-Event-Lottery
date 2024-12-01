@@ -105,6 +105,7 @@ public class MyEventsFragment extends Fragment {
                 // Navigate to create event fragment
                 //openAddEventsFragment(v);
                 Navigation.findNavController(v).navigate(R.id.nav_add_events);
+                eventAdapter.notifyDataSetChanged();
 
             }
 
@@ -147,29 +148,6 @@ public class MyEventsFragment extends Fragment {
 
         eventAdapter.notifyDataSetChanged();
 
-    }
-
-    /**
-     * Author: Nishchay
-     * Edited: Erin-Marie
-     * Method called when the user selects the add event button of the MyEventsFragment
-     * Constructs a bundle of arguments to send to the new fragment
-     */
-    private void openAddEventsFragment() {
-
-        // Create a new instance of AddEventsFragment
-        AddEventsFragment addEventsFragment = new AddEventsFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("eventDB", eventDB);
-        addEventsFragment.setArguments(args);
-
-        // Begin the Fragment transaction
-        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.nav_host_fragment_content_main, addEventsFragment); // Ensure this ID matches your main container ID
-        transaction.addToBackStack(null); // Adds the transaction to the back stack
-        transaction.commit();
-
-        eventAdapter.notifyDataSetChanged();
     }
 
     @Override
