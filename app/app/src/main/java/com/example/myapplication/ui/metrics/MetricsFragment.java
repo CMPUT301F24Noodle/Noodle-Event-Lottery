@@ -24,9 +24,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MetricsFragment extends Fragment {
     private FragmentUserMetricsBinding binding;
-    UserProfile user;
-    UserDB userDB;
-    BitmapHelper bitmapper = new BitmapHelper();
+    private UserProfile user;
+    private UserDB userDB;
+    private BitmapHelper bitmapper = new BitmapHelper();
     private MetricsHelper metric;
     public DBConnection connection;
     public EventDB eventDB;
