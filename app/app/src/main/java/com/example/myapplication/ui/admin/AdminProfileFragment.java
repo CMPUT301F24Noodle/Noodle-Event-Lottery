@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
+import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class AdminProfileFragment extends Fragment {
     private ListView emailListView;
     private ArrayList<String> userList; // Stores user details
     private ArrayAdapter<String> userAdapter;
+    private FirebaseFirestore db;
 
     public AdminProfileFragment() {
         // Required empty public constructor
@@ -37,9 +39,10 @@ public class AdminProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.item_admin_profile, container, false);
 
-        // Initialize ListView and ArrayList
+        // Initialize ListView, ArrayList, and Firestore
         emailListView = rootView.findViewById(R.id.email_list_view);
         userList = new ArrayList<>();
+        db = FirebaseFirestore.getInstance();
 
         // Set up the adapter
         userAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, userList);
@@ -48,7 +51,7 @@ public class AdminProfileFragment extends Fragment {
         // Set click listener for list items
         emailListView.setOnItemClickListener((parent, view, position, id) -> {
             String userData = userList.get(position); // Get the clicked user data
-            showUserDetailsDialog(userData); // Display the user details in a dialog
+            showUserDetailsDialog(userData, position); // Display the user details in a dialog
         });
 
         // Fetch and populate user details
@@ -58,9 +61,6 @@ public class AdminProfileFragment extends Fragment {
     }
 
     private void fetchUserDetails() {
-        // Get Firestore instance
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         // Reference the "AllUsers" collection
         db.collection("AllUsers")
                 .get()
@@ -75,6 +75,7 @@ public class AdminProfileFragment extends Fragment {
                             String name = document.getString("name");
                             String email = document.getString("email");
                             String phoneNumber = document.getString("phonenumber");
+                            String uuid = document.getId(); // Use the document ID as UUID
 
                             // Create a string to represent the user's details
                             StringBuilder userInfo = new StringBuilder();
@@ -91,10 +92,12 @@ public class AdminProfileFragment extends Fragment {
                             }
 
                             if (phoneNumber != null) {
-                                userInfo.append("Phone: ").append(phoneNumber);
+                                userInfo.append("Phone: ").append(phoneNumber).append("\n");
                             } else {
-                                userInfo.append("Phone: N/A");
+                                userInfo.append("Phone: N/A\n");
                             }
+
+                            userInfo.append("UUID: ").append(uuid);
 
                             // Add the user info to the list
                             userList.add(userInfo.toString());
@@ -110,7 +113,7 @@ public class AdminProfileFragment extends Fragment {
                 });
     }
 
-    private void showUserDetailsDialog(String userData) {
+    private void showUserDetailsDialog(String userData, int position) {
         // Inflate the dialog layout
         View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.admin_text_delete_view_profile, null);
 
@@ -122,13 +125,12 @@ public class AdminProfileFragment extends Fragment {
         // Bind views in the dialog
         TextView profileName = dialogView.findViewById(R.id.profile_name);
         TextView email = dialogView.findViewById(R.id.email);
-        TextView profileId = dialogView.findViewById(R.id.profileid);
-        TextView roles = dialogView.findViewById(R.id.roles); // Placeholder
-        Button editButton = dialogView.findViewById(R.id.edit_button);
+        TextView profilePhone = dialogView.findViewById(R.id.profileid);
         Button deleteButton = dialogView.findViewById(R.id.delete_button);
         Button backButton = dialogView.findViewById(R.id.back_button);
 
         // Parse user data from the selected item
+        String uuid = null;
         String[] userParts = userData.split("\n");
         for (String part : userParts) {
             if (part.startsWith("Name: ")) {
@@ -136,28 +138,47 @@ public class AdminProfileFragment extends Fragment {
             } else if (part.startsWith("Email: ")) {
                 email.setText(part.replace("Email: ", ""));
             } else if (part.startsWith("Phone: ")) {
-                profileId.setText(part.replace("Phone: ", ""));
+                profilePhone.setText(part.replace("Phone: ", ""));
+            } else if (part.startsWith("UUID: ")) {
+                uuid = part.replace("UUID: ", "").trim();
             }
         }
-        roles.setText("N/A"); // Set default or dynamic value for roles
 
-        // Edit button functionality (currently placeholder)
-        editButton.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Edit functionality not implemented yet.", Toast.LENGTH_SHORT).show();
-        });
+        final String finalUuid = uuid;
 
-        // Delete button functionality
+        // Set delete button functionality
         deleteButton.setOnClickListener(v -> {
-            // Logic to delete user (can be implemented based on Firestore logic)
-            Toast.makeText(requireContext(), "Delete functionality not implemented yet.", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
+            if (finalUuid != null) {
+                UserProfile user = new UserProfile();
+                user.setUuid(finalUuid);
+
+                // Call the deleteUser method from the db class
+                deleteUser(user);
+
+                // Remove user from the list and update the adapter
+                userList.remove(position);
+                userAdapter.notifyDataSetChanged();
+
+                Toast.makeText(requireContext(), "User deleted successfully!", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            } else {
+                Toast.makeText(requireContext(), "Error: Unable to delete user. UUID is null.", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
         });
 
-        // Back button functionality
+        // Set back button functionality
         backButton.setOnClickListener(v -> dialog.dismiss());
 
         // Show the dialog
         dialog.show();
     }
 
+    private void deleteUser(UserProfile user) {
+        // Use the deleteUser method defined in the db class
+        db.collection("AllUsers").document("User" + user.getUuid())
+                .delete()
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "User successfully deleted!"))
+                .addOnFailureListener(e -> Log.w(TAG, "Error deleting user: User" + user.getUuid(), e));
+    }
 }
