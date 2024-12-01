@@ -83,6 +83,7 @@ public class ViewScannedEventFragment extends Fragment {
         // Add user to event's entrants list
         UserDB userDB = new UserDB(connection);
         DocumentReference userRef = userDB.getUserDocumentReference();
+        // TODO USERS DONT GET UPDATED?
 
 
         // Update event in database
@@ -99,8 +100,15 @@ public class ViewScannedEventFragment extends Fragment {
                 adapter.notifyDataSetChanged();  // Notify the adapter about the change
 
                 // now navigate back to registered events home page
-                Navigation.findNavController(v).popBackStack(R.id.nav_registered, false);
+                //Navigation.findNavController(v).popBackStack();
+                //Navigation.findNavController(v).popBackStack();
+                //Navigation.findNavController(v).navigate(R.id.nav_registered);
+
             }
         }
+        // now navigate back to registered events home page
+        //Navigation.findNavController(v).popBackStack();
+        //Navigation.findNavController(v).popBackStack();
+        Navigation.findNavController(v).navigate(R.id.nav_registered);
     }
 }
