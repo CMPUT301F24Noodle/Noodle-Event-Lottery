@@ -135,7 +135,6 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
     public void acceptInvitation(Event event) {
         event.getAcceptedList().add(currUser);
         event.getWinnersList().remove(currUser);
-        //event.getEntrantsList().remove(currUser);
         eventDB.updateEvent(event);
         notifyDataSetChanged();
         Toast.makeText(context, "You have accepted the invitation.", Toast.LENGTH_SHORT).show();
@@ -150,7 +149,6 @@ public class RegisteredEventArrayAdapter extends ArrayAdapter<Event> {
     public void declineInvitation(Event event) {
         event.getDeclinedList().add(currUser);
         event.getWinnersList().remove(currUser);
-        //event.getEntrantsList().remove(currUser);
         eventDB.updateEvent(event);
         notifyDataSetChanged();
         Toast.makeText(context, "You have declined the invitation.", Toast.LENGTH_SHORT).show();

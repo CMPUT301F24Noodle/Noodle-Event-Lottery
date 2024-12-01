@@ -5,6 +5,7 @@ import static androidx.navigation.ui.NavigationUI.navigateUp;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,8 +48,8 @@ import com.google.firebase.firestore.DocumentReference;
 
 /**
  * Author Erin-marie
- * Fragment to end an event manually, and view the entrants and selected attendees
- * TODO: add functionality to the replace cancelled button
+ * Fragment to manage an event
+ * end an event manually, view the entrants and selected attendees
  * TODO: write tests
  */
 public class ManageEventFragment extends Fragment {
@@ -75,8 +79,6 @@ public class ManageEventFragment extends Fragment {
         notifDB = connection.getNotifDB();
         assert eventDB != null;
 
-
-
         //initialize buttons
         FloatingActionButton viewMapButton = view.findViewById(R.id.FAB_map);
         FloatingActionButton backButton = view.findViewById(R.id.FAB_back);
@@ -99,26 +101,6 @@ public class ManageEventFragment extends Fragment {
         //set the list adapter
         expandableListAdapter = new CustomExpandableListAdapter(this.getContext(), expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
-
-//        //listener for expanding a list group
-//        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-//
-//            @Override
-//            public void onGroupExpand(int groupPosition) {
-//                Toast.makeText(getContext(), expandableListTitle.get(groupPosition) + " List Expanded.",
-//                        Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-//        //listener for collapsing a list group
-//        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-//
-//            @Override
-//            public void onGroupCollapse(int groupPosition) {
-//
-//
-//            }
-//        });
 
         //listener for selecting a list item
         //If a user item is selected, will open a dialog to remove the user from the event, and notify the user that they have been removed
@@ -161,6 +143,45 @@ public class ManageEventFragment extends Fragment {
 
                 }
                 return true;
+            }
+        });
+
+        Button exportCsvButton = view.findViewById(R.id.export_csv_button);
+        exportCsvButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    // Define the CSV file path
+                    File csvFile = new File(getContext().getExternalFilesDir(null), "event_details.csv");
+                    FileWriter writer = new FileWriter(csvFile);
+
+                    // Add headers
+                    writer.append("S. No.,Name,Email Address,Contact Number\n");
+
+                    // Write data for each list
+                    int serialNo = 1;
+                    for (String group : expandableListTitle) {
+                        ArrayList<UserProfile> userList = expandableListDetail.get(group);
+                        if (userList != null) {
+                            writer.append(group).append("\n");
+                            for (UserProfile user : userList) {
+                                writer.append((char) serialNo++).append(",");
+                                writer.append(user.getName() != null ? user.getName() : "NA").append(",");
+                                writer.append(user.getEmail() != null ? user.getEmail() : "NA").append(",");
+                                writer.append(user.getPhoneNumber() != null ? user.getPhoneNumber() : "NA").append("\n");
+                            }
+                        }
+                    }
+
+                    writer.flush();
+                    writer.close();
+
+                    // Notify user of success
+                    Toast.makeText(getContext(), "CSV Exported to: " + csvFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Error exporting CSV: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -236,7 +257,7 @@ public class ManageEventFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                int usersNeeded = event.getUsersNeededCount(); //TODO write this method that will return the number of users that need to be selected to make up for declined users
+                int usersNeeded = event.getUsersNeededCount();
                 //get replacement winners and notify them
                 eventDB.getRandomWinners(event.getLosersList(), usersNeeded, event);
                 //this will notify all the new winners, and also send another notification to any users who have no accepted yet

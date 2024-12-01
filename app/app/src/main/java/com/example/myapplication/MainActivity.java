@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
     public Event scannedEvent;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

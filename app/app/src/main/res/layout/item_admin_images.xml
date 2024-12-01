@@ -5,6 +5,13 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <ListView
+        android:id="@+id/doc_ref_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
+
     <TextView
         android:id="@+id/username"
         android:layout_width="wrap_content"
@@ -28,7 +35,7 @@
         android:layout_height="50dp"
         android:contentDescription="@string/poster"
         android:scaleType="centerCrop"
-        android:src="@drawable/testposter"
+
         android:background="@drawable/rounded_image"
         android:clipToOutline="true"/>
 

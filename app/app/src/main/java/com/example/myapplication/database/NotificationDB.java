@@ -33,7 +33,6 @@ public class NotificationDB {
     public DBConnection storeConnection;
     public CollectionReference allNotifications;
     public FirebaseFirestore db;
-    public UserProfile currentUser;
     public String uuid;
     public ArrayList<Notification> myNotifs = new ArrayList<Notification>();
     public ArrayList<Notification> myNewNotifs = new ArrayList<Notification>();
@@ -150,6 +149,7 @@ public class NotificationDB {
     }
 
 
+    //Getters and Setters
     public ArrayList<Notification> getMyNewNotifs() {
         return myNewNotifs;
     }
@@ -157,7 +157,6 @@ public class NotificationDB {
     public void setMyNewNotifs(ArrayList<Notification> myNewNotifs) {
         this.myNewNotifs = myNewNotifs;
     }
-
     public ArrayList<Notification> getMyNotifs() {
         return myNotifs;
     }

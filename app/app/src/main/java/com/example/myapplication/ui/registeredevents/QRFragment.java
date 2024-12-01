@@ -1,7 +1,13 @@
 package com.example.myapplication.ui.registeredevents;
 
+import static android.Manifest.permission_group.CAMERA;
+
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +16,8 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -31,9 +39,12 @@ import com.journeyapps.barcodescanner.ScanOptions;
  */
 public class QRFragment extends Fragment {
 
+    private static final String TAG = "QRFragment";
+    private static final int REQUEST_CAMERA = 1 ;
     private EventDB eventDB;
     private ActivityResultLauncher<ScanOptions> barcodeLauncher;
     private View v;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,17 +53,15 @@ public class QRFragment extends Fragment {
         // Initialize EventDB
         eventDB = new EventDB(new DBConnection(getContext()));
 
-        // Register the launcher and result handler
-        barcodeLauncher = registerForActivityResult(new ScanContract(), result -> {
-            if (result.getContents() == null) {
-                Toast.makeText(getContext(), getString(R.string.canceled), Toast.LENGTH_LONG).show();
-            } else {
-                String eventID = result.getContents();
-                // Fetch event details and navigate to event page
-                fetchEventDetails(eventID);
-            }
-        });
-    }
+//        if(checkPermission())
+//        {
+//            Toast.makeText(this.getContext(), "Permission already granted!", Toast.LENGTH_LONG).show();
+//        }
+//        else
+//        {
+//            requestPermission();
+//        }
+
 
     @Nullable
     @Override
@@ -60,15 +69,25 @@ public class QRFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.qr_scanner, container, false);
 
-        // Launch the QR scanner
+//    private boolean checkPermission()
+//    {
+//        return (ContextCompat.checkSelfPermission(this.getContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
+//    }
+//
+//    private void requestPermission()
+//    {
+//        ActivityCompat.requestPermissions(this.getActivity(), new String[]{CAMERA}, REQUEST_CAMERA);
+//    }
+    /**
+     * Configures the scanning options and launches the QR scanner.
+     * Sets various options such as prompt text, beep sound, and screen orientation lock during scanning.
+     */
+    private void scanCode() {
+        Log.d("QrCode", "scanCode: Setting up scan options");
         ScanOptions options = new ScanOptions();
-        options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
-        options.setPrompt("Scan a QR code");
-        options.setCameraId(0);
+        options.setPrompt("Volume up to flash on");
         options.setBeepEnabled(true);
-        options.setBarcodeImageEnabled(true);
-
-        barcodeLauncher.launch(options);
+        //options.setOrientationLocked(true);
 
         v = view;
         return view;
