@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
-import com.example.myapplication.objects.userProfileClasses.UserProfile;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -25,7 +24,7 @@ public class AdminProfileFragment extends Fragment {
 
     private static final String TAG = "AdminProfileFragment";
     private ListView emailListView;
-    private ArrayList<String> userList; // Stores user details
+    private ArrayList<String> userList;
     private ArrayAdapter<String> userAdapter;
     private FirebaseFirestore db;
 
@@ -36,100 +35,67 @@ public class AdminProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.item_admin_profile, container, false);
 
-        // Initialize ListView, ArrayList, and Firestore
         emailListView = rootView.findViewById(R.id.email_list_view);
         userList = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
 
-        // Set up the adapter
         userAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, userList);
         emailListView.setAdapter(userAdapter);
 
-        // Set click listener for list items
         emailListView.setOnItemClickListener((parent, view, position, id) -> {
-            String userData = userList.get(position); // Get the clicked user data
-            showUserDetailsDialog(userData, position); // Display the user details in a dialog
+            String userData = userList.get(position);
+            showUserDetailsDialog(userData, position);
         });
 
-        // Fetch and populate user details
         fetchUserDetails();
 
         return rootView;
     }
 
     private void fetchUserDetails() {
-        // Reference the "AllUsers" collection
         db.collection("AllUsers")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
-                        // Clear existing data to avoid duplicates
                         userList.clear();
 
-                        // Loop through each document
                         for (com.google.firebase.firestore.DocumentSnapshot document : task.getResult().getDocuments()) {
-                            // Fetch name, email, and phonenumber fields
                             String name = document.getString("name");
                             String email = document.getString("email");
                             String phoneNumber = document.getString("phonenumber");
-                            String uuid = document.getId(); // Use the document ID as UUID
+                            String uuid = document.getId();
 
-                            // Create a string to represent the user's details
                             StringBuilder userInfo = new StringBuilder();
-                            if (name != null) {
-                                userInfo.append("Name: ").append(name).append("\n");
-                            } else {
-                                userInfo.append("Name: N/A\n");
-                            }
-
-                            if (email != null) {
-                                userInfo.append("Email: ").append(email).append("\n");
-                            } else {
-                                userInfo.append("Email: N/A\n");
-                            }
-
-                            if (phoneNumber != null) {
-                                userInfo.append("Phone: ").append(phoneNumber).append("\n");
-                            } else {
-                                userInfo.append("Phone: N/A\n");
-                            }
-
+                            userInfo.append("Name: ").append(name != null ? name : "N/A").append("\n");
+                            userInfo.append("Email: ").append(email != null ? email : "N/A").append("\n");
+                            userInfo.append("Phone: ").append(phoneNumber != null ? phoneNumber : "N/A").append("\n");
                             userInfo.append("UUID: ").append(uuid);
 
-                            // Add the user info to the list
                             userList.add(userInfo.toString());
-                            Log.d(TAG, "User Details: " + userInfo);
                         }
 
-                        // Notify adapter about data changes
                         userAdapter.notifyDataSetChanged();
                     } else {
-                        // Log error
                         Log.e(TAG, "Error fetching data: ", task.getException());
                     }
                 });
     }
 
     private void showUserDetailsDialog(String userData, int position) {
-        // Inflate the dialog layout
         View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.admin_text_delete_view_profile, null);
-
-        // Create the dialog
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(requireContext());
         builder.setView(dialogView);
         android.app.AlertDialog dialog = builder.create();
 
-        // Bind views in the dialog
-        TextView profileName = dialogView.findViewById(R.id.profile_name);
-        TextView email = dialogView.findViewById(R.id.email);
-        TextView profilePhone = dialogView.findViewById(R.id.profileid);
+        EditText profileName = dialogView.findViewById(R.id.profile_name);
+        EditText email = dialogView.findViewById(R.id.email);
+        EditText profilePhone = dialogView.findViewById(R.id.profileid);
+        Button saveButton = dialogView.findViewById(R.id.save_button);
         Button deleteButton = dialogView.findViewById(R.id.delete_button);
         Button backButton = dialogView.findViewById(R.id.back_button);
 
-        // Parse user data from the selected item
         String uuid = null;
         String[] userParts = userData.split("\n");
         for (String part : userParts) {
@@ -146,43 +112,54 @@ public class AdminProfileFragment extends Fragment {
 
         final String finalUuid = uuid;
 
-        // Set delete button functionality
-        deleteButton.setOnClickListener(v -> {
+        saveButton.setOnClickListener(v -> {
+            String updatedName = profileName.getText().toString().trim();
+            String updatedEmail = email.getText().toString().trim();
+            String updatedPhone = profilePhone.getText().toString().trim();
+
+            if (updatedName.isEmpty() || updatedEmail.isEmpty()) {
+                Toast.makeText(requireContext(), "Name and Email cannot be empty!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if (finalUuid != null) {
-                UserProfile user = new UserProfile();
-                user.setUuid(finalUuid);
-
-                // Call the deleteUser method
-                deleteUser(user, position);
-
-                dialog.dismiss();
+                db.collection("AllUsers").document(finalUuid)
+                        .update("name", updatedName, "email", updatedEmail, "phonenumber", updatedPhone)
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(requireContext(), "User updated successfully!", Toast.LENGTH_SHORT).show();
+                            fetchUserDetails();
+                            dialog.dismiss();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(requireContext(), "Failed to update user.", Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "Error updating user: ", e);
+                        });
             } else {
-                Toast.makeText(requireContext(), "Error: Unable to delete user. UUID is null.", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
+                Toast.makeText(requireContext(), "Error: UUID is null.", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Set back button functionality
+        deleteButton.setOnClickListener(v -> {
+            if (finalUuid != null) {
+                db.collection("AllUsers").document(finalUuid)
+                        .delete()
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(requireContext(), "User deleted successfully!", Toast.LENGTH_SHORT).show();
+                            userList.remove(position);
+                            userAdapter.notifyDataSetChanged();
+                            dialog.dismiss();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(requireContext(), "Failed to delete user.", Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "Error deleting user: ", e);
+                        });
+            } else {
+                Toast.makeText(requireContext(), "Error: UUID is null.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         backButton.setOnClickListener(v -> dialog.dismiss());
 
-        // Show the dialog
         dialog.show();
-    }
-
-    private void deleteUser(UserProfile user, int position) {
-        // Use the deleteUser method defined in the db class
-        db.collection("AllUsers").document(user.getUuid()) // Directly use UUID
-                .delete()
-                .addOnSuccessListener(aVoid -> {
-                    Log.d(TAG, "User successfully deleted from Firestore!");
-                    // Remove user from the list and update the adapter
-                    userList.remove(position);
-                    userAdapter.notifyDataSetChanged();
-                    Toast.makeText(requireContext(), "User deleted successfully!", Toast.LENGTH_SHORT).show();
-                })
-                .addOnFailureListener(e -> {
-                    Log.w(TAG, "Error deleting user from Firestore: " + user.getUuid(), e);
-                    Toast.makeText(requireContext(), "Failed to delete user. Try again.", Toast.LENGTH_SHORT).show();
-                });
     }
 }

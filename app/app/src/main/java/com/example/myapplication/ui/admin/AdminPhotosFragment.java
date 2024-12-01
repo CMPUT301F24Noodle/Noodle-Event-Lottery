@@ -153,7 +153,7 @@ public class AdminPhotosFragment extends Fragment {
 
         // Bind views
         ImageView fullProfileImage = popupView.findViewById(R.id.full_profile_image);
-        Button editButton = popupView.findViewById(R.id.edit_picture_button);
+       // Button editButton = popupView.findViewById(R.id.edit_picture_button);
         Button deleteButton = popupView.findViewById(R.id.delete_picture_button);
         Button backButton = popupView.findViewById(R.id.picture_back_button);
 
@@ -176,10 +176,7 @@ public class AdminPhotosFragment extends Fragment {
         }
 
         // Set button actions
-        editButton.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Edit functionality not implemented", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
-        });
+        
 
         deleteButton.setOnClickListener(v -> {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
