@@ -23,6 +23,7 @@ import com.example.myapplication.objects.Event;
 
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
+import com.example.myapplication.objects.UserProfile;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -39,6 +40,7 @@ public class ViewScannedEventFragment extends Fragment {
 
     private Event event;
     private DBConnection connection;
+    private UserProfile user;
     private Boolean locationSharingAllowed = Boolean.FALSE; // Boolean for whether the entrant has allowed their geolocation to be shared
     private Boolean geolocationRequired; //Boolean for whether or not the event requires entrants geolocation
     private Boolean userCanEnter = Boolean.FALSE; //Boolean for whether or not the user has been approved to enter the event
@@ -57,21 +59,36 @@ public class ViewScannedEventFragment extends Fragment {
             this.connection = main.connection;
             this.event = main.scannedEvent;
             geolocationRequired = event.getGeoLocation();
+            user = connection.getUser();
 
+        }
+
+        //initialize view interactables
+        CheckBox confirmGeolocation = view.findViewById(R.id.location_sharing_checkbox);
+        Button saveButton = view.findViewById(R.id.event_save_button);
+        TextView switchText = view.findViewById(R.id.register_for_lottery_text);
+        Switch enterEventSwitch = view.findViewById(R.id.lottery_switch);
+
+
+        //Check that the user is not already in the event
+        if (event.getEntrantsList().contains(user.getDocRef())){
+            saveButton.setVisibility(View.GONE);
+            enterEventSwitch.setVisibility(View.GONE);
+            switchText.setVisibility(View.GONE);
+            confirmGeolocation.setVisibility(View.GONE);
+            Toast.makeText(getContext(), "You are already registered for this event", Toast.LENGTH_LONG).show();
         }
 
         //EVENT NAME/TITLE
         TextView eventName = view.findViewById(R.id.event_name);
         eventName.setText(event.getEventName());
 
-
-        TextView eventDateTime = view.findViewById(R.id.event_date_time);
-
-
+        //EVENT LOCATION
         TextView eventLocation = view.findViewById(R.id.event_location);
-
+        eventLocation.setText(event.getFacility().getFacilityName());
 
         //EVENT DATE AND TIME
+        TextView eventDateTime = view.findViewById(R.id.event_date_time);
         Date eventDate = event.getEventDate();
         String eventDateString = null;
         if (eventDate != null) {
@@ -81,16 +98,6 @@ public class ViewScannedEventFragment extends Fragment {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
         String newString = formatter.format(newDate);
         eventDateTime.setText(newString);
-
-
-        eventLocation.setText(event.getFacility().getFacilityName());
-
-        //initialize view interactables
-        CheckBox confirmGeolocation = view.findViewById(R.id.location_sharing_checkbox);
-        Button saveButton = view.findViewById(R.id.event_save_button);
-        Switch enterEventSwitch = view.findViewById(R.id.lottery_switch);
-
-
 
         //POSTER IMAGE
         ImageView posterImage = view.findViewById(R.id.event_poster);
@@ -196,10 +203,10 @@ public class ViewScannedEventFragment extends Fragment {
      */
     private void saveEvent(View v) {
 
+
         //Check if the user can enter the event
         if (userCanEnter != Boolean.TRUE){
             Toast.makeText(getContext(), "Your are unable to enter this event", Toast.LENGTH_LONG).show();
-
         } else {
 
             // Add the entrant to the event in the database
