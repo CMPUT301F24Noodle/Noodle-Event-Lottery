@@ -5,6 +5,7 @@ import static androidx.navigation.ui.NavigationUI.navigateUp;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -161,6 +165,45 @@ public class ManageEventFragment extends Fragment {
 
                 }
                 return true;
+            }
+        });
+
+        Button exportCsvButton = view.findViewById(R.id.export_csv_button);
+        exportCsvButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    // Define the CSV file path
+                    File csvFile = new File(getContext().getExternalFilesDir(null), "event_details.csv");
+                    FileWriter writer = new FileWriter(csvFile);
+
+                    // Add headers
+                    writer.append("S. No.,Name,Email Address,Contact Number\n");
+
+                    // Write data for each list
+                    int serialNo = 1;
+                    for (String group : expandableListTitle) {
+                        ArrayList<UserProfile> userList = expandableListDetail.get(group);
+                        if (userList != null) {
+                            writer.append(group).append("\n");
+                            for (UserProfile user : userList) {
+                                writer.append((char) serialNo++).append(",");
+                                writer.append(user.getName() != null ? user.getName() : "NA").append(",");
+                                writer.append(user.getEmail() != null ? user.getEmail() : "NA").append(",");
+                                writer.append(user.getPhoneNumber() != null ? user.getPhoneNumber() : "NA").append("\n");
+                            }
+                        }
+                    }
+
+                    writer.flush();
+                    writer.close();
+
+                    // Notify user of success
+                    Toast.makeText(getContext(), "CSV Exported to: " + csvFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Error exporting CSV: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

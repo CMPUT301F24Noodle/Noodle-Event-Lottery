@@ -30,7 +30,7 @@
 
 
 
-    <!-- Floating Action Button -->
+    <!-- Floating Action Button for Map -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/FAB_map"
         android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_dialog_map" />
 
-    <!-- Back Button -->
+    <!-- Floating Action Button for Back -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/FAB_back"
         android:layout_width="wrap_content"
@@ -58,6 +58,18 @@
 
     <!-- Buttons -->
     <Button
+        android:id="@+id/export_csv_button"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/belanosima"
+        android:text="Export CSV"
+        app:layout_constraintBottom_toTopOf="@id/FAB_map"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/mybutton" />
+
+    <Button
         android:id="@+id/notify_button"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
@@ -65,9 +77,9 @@
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/belanosima"
         android:text="Send Message"
-        app:layout_constraintBottom_toTopOf="@id/FAB_map"
+        app:layout_constraintBottom_toTopOf="@id/export_csv_button"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/mybutton"/>
+        android:background="@drawable/mybutton" />
 
     <Button
         android:id="@+id/replace_button"
@@ -79,7 +91,7 @@
         android:text="Replace Cancelled"
         app:layout_constraintBottom_toTopOf="@id/notify_button"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/mybutton"/>
+        android:background="@drawable/mybutton" />
 
     <Button
         android:id="@+id/draw_name_button"
@@ -91,7 +103,7 @@
         android:text="End Lottery"
         app:layout_constraintBottom_toTopOf="@id/notify_button"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/mybutton"/>
+        android:background="@drawable/mybutton" />
 
 
 
