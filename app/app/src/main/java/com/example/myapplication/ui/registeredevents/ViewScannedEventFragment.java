@@ -12,27 +12,21 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.objects.Event;
-
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
 import com.example.myapplication.objects.UserProfile;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
- * Author: Sam Lee
+ * Authors: Erin-Marie and Sam Lee
  * Activity for viewing an event scanned from QR code.
  *[US 01.06.01] As an entrant I want to view event details within the app by scanning the promotional QR code
  */
@@ -160,9 +154,6 @@ public class ViewScannedEventFragment extends Fragment {
             }
         });
 
-
-
-
         // SWITCH TO ENTER EVENT, DOES NOT SAVE UNTIL THE USER HITS SAVE THOUGH
         enterEventSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -198,8 +189,6 @@ public class ViewScannedEventFragment extends Fragment {
      * Edited: Erin-Marie
      * Add userRef to event's entrants list and update database.
      * [US 01.01.01] As an entrant, I want to join the waiting list for a specific event
-     * TODO: addEntrant(event) returns False if the user could not be added, whether because the waitlist is full, or if the event has already ended.
-     *      should print a toast or something if the user could not be added
      */
     private void saveEvent(View v) {
 
@@ -226,9 +215,6 @@ public class ViewScannedEventFragment extends Fragment {
                 }
             }
         }
-
-
-
 
     }
 }
