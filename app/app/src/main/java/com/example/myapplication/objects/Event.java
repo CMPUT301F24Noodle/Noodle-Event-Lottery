@@ -235,9 +235,9 @@ public class Event implements Serializable {
                 // otherwise set it to white
                 int color;
                 if (bitMatrix.get(row, col)) {
-                    color = Color.WHITE;
-                } else {
                     color = Color.BLACK;
+                } else {
+                    color = Color.WHITE;
                 }
                 QRCode.setPixel(row, col, color); // actually set the color for that pixel
             }

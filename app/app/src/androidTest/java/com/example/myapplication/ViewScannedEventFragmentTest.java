@@ -11,7 +11,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.example.myapplication.objects.Event;
 import com.example.myapplication.objects.Facility;
 import com.example.myapplication.objects.UserProfile;
-import com.example.myapplication.ui.ViewEventActivity;
+import com.example.myapplication.ui.registeredevents.ViewScannedEventFragment;
 import com.google.zxing.WriterException;
 
 import org.junit.Test;
@@ -28,7 +28,7 @@ import java.util.TimeZone;
  * Tests for the ViewEventActivity
  */
 @RunWith(AndroidJUnit4.class)
-public class ViewEventActivityTest {
+public class ViewScannedEventFragmentTest {
 
     public static Event makeTestEvent() throws ParseException, WriterException {
         UserProfile organizer = new UserProfile();
@@ -55,7 +55,7 @@ public class ViewEventActivityTest {
         // Launch ViewEventActivity with the test event
         Intent intent = new Intent("com.example.myapplication.ACTION_VIEW_EVENT");
         intent.putExtra("event", event);
-        try (ActivityScenario<ViewEventActivity> scenario = ActivityScenario.launch(intent)) {
+        try (ActivityScenario<ViewScannedEventFragment> scenario = ActivityScenario.launch(intent)) {
             scenario.onActivity(activity -> {
                 // Verify that the event name is displayed correctly
                 TextView eventName = activity.findViewById(R.id.event_name);

@@ -113,6 +113,7 @@ dependencies {
 
     implementation("com.journeyapps:zxing-android-embedded:4.3.0") {isTransitive=false}
     implementation(libs.zxing.core) // for QR code generation
+    implementation(libs.qr.scanner)
 
     // Maps SDK for Android
     implementation("com.google.android.gms:play-services-maps:19.0.0")
