@@ -108,7 +108,7 @@
         android:id="@+id/event_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/anybody_light"
+        android:fontFamily="@font/aleo_medium"
         android:text="Current Status: Accepting Entries"
         android:textColor="@color/text_cyan"
         android:textSize="18dp"
@@ -129,7 +129,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:fontFamily="@font/anybody_light"
+            android:fontFamily="@font/anybody"
             android:text="@string/loc_confirm"
             android:textAlignment="center"
             android:textColor="@color/accent_pink"
@@ -139,7 +139,7 @@
             android:id="@+id/location_sharing_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/bonus_yellow" />
+            android:buttonTint="@color/accent_pink" />
     </LinearLayout>
 
     <LinearLayout

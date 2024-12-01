@@ -100,7 +100,7 @@
         android:id="@+id/event_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/anybody_light"
+        android:fontFamily="@font/aleo_medium"
         android:text="Status: Names Drawn (Organizer)"
         android:textColor="@color/text_cyan"
         android:textSize="18sp"
