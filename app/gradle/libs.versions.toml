@@ -21,6 +21,7 @@ googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
 playServicesMaps = "18.1.0"
 secretsGradlePlugin = "2.0.1"
 playServicesLocation = "21.3.0"
+qrScanner = "4.3.0"
 
 [libraries]
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
@@ -46,6 +47,7 @@ secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.se
 zxing-core = { module = "com.google.zxing:core", version.ref = "coreVersion" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+qr-scanner = {group = "com.journeyapps", name = "zxing-android-embedded", version.ref = "qrScanner"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

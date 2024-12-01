@@ -173,7 +173,7 @@ public class EditEventFragment extends Fragment {
 
                     // get the QR code
                     try {
-                        QRCode = QRGenerator.generateQRCode(ID, 300, 300);
+                        QRCode = QRGenerator.generateQRCode(ID, 700, 700);
 
                     } catch (WriterException e) {
                         throw new RuntimeException(e);

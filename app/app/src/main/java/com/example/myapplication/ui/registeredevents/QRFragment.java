@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.registeredevents;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.example.myapplication.database.EventDB;
 import com.example.myapplication.objects.Event;
 import com.example.myapplication.ui.ViewEventActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.journeyapps.barcodescanner.CaptureActivity;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -55,7 +57,7 @@ public class QRFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.qr_scanner, container, false);
 
         // Launch the QR scanner
@@ -74,7 +76,7 @@ public class QRFragment extends Fragment {
     /**
      * Author: Sam Lee
      * Fetches event details from the database and navigates to the event page.
-     * 
+     *
      * @param eventID
      */
     private void fetchEventDetails(String eventID) {

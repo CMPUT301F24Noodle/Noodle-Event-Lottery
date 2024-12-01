@@ -30,6 +30,12 @@
 
         </activity>
 
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="portrait"
+            tools:replace="screenOrientation"
+             />
+
 <!--        <activity android:name="com.example.myapplication.Geolocation_view_googlemaps"-->
 <!--            android:exported="true"-->
 <!--            android:label="@string/title_activity_geolocation_view_googlemaps">-->
