@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
      * gets the current users UserProfile object based on the data stored in the db
      * If the user is not in the db, it adds them to the db.
      * No return, but does set the currentUser attributes of MainActivity and UserDB
+     * TODO Uncomment lines 165 to 167 and 178 to 180 once the profile bug has been fixed
      */
     public void setUpDB() {
         // Add the user to the db, added by Erin-Marie, if it breaks everything its my
@@ -162,9 +163,9 @@ public class MainActivity extends AppCompatActivity {
                         notifDB.getUserNewNotifications(); //get the list of users unseen notifications
                     }
 
-                    Bitmap pfp = helper.loadProfilePicture(user);
-                    updateSidebarHeader(user.getName(),user.getEmail(),pfp);
-                    updateSidebarForUserType(user);
+                    //Bitmap pfp = helper.loadProfilePicture(user);
+                    //updateSidebarHeader(user.getName(),user.getEmail(),pfp);
+                    //updateSidebarForUserType(user);
                     Log.v("SetUpDB", "Set profile for existing user");
 
                 } else { // User is not already in the database
@@ -175,10 +176,10 @@ public class MainActivity extends AppCompatActivity {
                     eventDB.getUserEnteredEvents(user);
                     eventDB.getUserOrgEvents(user);
                     connection.setUser(user);
-                    Bitmap pfp = helper.loadProfilePicture(user);
-                    updateSidebarHeader("Name","Email Address",pfp);
+                    //Bitmap pfp = helper.loadProfilePicture(user);
+                    //updateSidebarHeader("Name","Email Address",pfp);
+                    //updateSidebarForUserType(user);
                     Log.v("SetUpDB", "Set profile for new user");
-                    updateSidebarForUserType(user);
                 }
                 //testCreateNotif();
                 createNewNotifications(); //populate the new notifications to the device notifications
@@ -285,13 +286,22 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
 
-        // Update name
+
         TextView headerName = headerView.findViewById(R.id.nav_header_username);
-        headerName.setText(name);
+        if (name!= null){
+            headerName.setText(name);
+        } else{
+            headerName.setText("Username");
+        }
 
         // Update email
         TextView headerEmail = headerView.findViewById(R.id.nav_header_email_address);
-        headerEmail.setText(email);
+        if (email!= null){
+            headerEmail.setText(email);
+        } else{
+            headerEmail.setText("Your Email");
+        }
+
 
         // Update profile image
         CircleImageView headerProfileImage = headerView.findViewById(R.id.nav_header_profile_image);
