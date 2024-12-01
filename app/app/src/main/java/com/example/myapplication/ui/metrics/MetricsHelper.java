@@ -197,6 +197,9 @@ public class MetricsHelper {
      */
         public double calculatePastaRatio(UserProfile user) {
         String fullName = user.getName();
+        if (fullName == null){
+            return 0.0;
+        }
 
         //Making a list of noodle names
         ArrayList<String> noodleNames = new ArrayList<>(Arrays.asList(
