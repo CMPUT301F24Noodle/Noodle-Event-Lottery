@@ -65,10 +65,8 @@ public class MainActivity extends AppCompatActivity {
     public UserProfile user;
     public NotificationManager notificationManager;
     private final String CHANNEL_ID = "NoodleNotifs";
-
-    // this is for myevents trickery
+ // this is for myevents trickery
     public Event currentEvent;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
