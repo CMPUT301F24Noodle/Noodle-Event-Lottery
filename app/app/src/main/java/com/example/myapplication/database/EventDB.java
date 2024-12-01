@@ -226,7 +226,7 @@ public class EventDB implements Serializable {
                     Log.v(TAG, "Event fetched");
                     // Make the event snapshot into an event object and pass it to the listener
                     Event event = snapshot.toObject(Event.class);
-                    onSuccessListener.onSuccess(event);
+                    onSuccessListener.onSuccess(event); // call the method for the lisnener instead of returning the event
                 } else {
                     Log.v(TAG, "Event does not exist");
                     // Return null if event doesn't exist
