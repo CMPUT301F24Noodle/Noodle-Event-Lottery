@@ -90,6 +90,17 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
         View headerView = navigationView.getHeaderView(0);
         CircleImageView profileImage = headerView.findViewById(R.id.nav_header_profile_image);
+
+        //TODO apoorv this is the code Erin adde to fix the menu bar delay
+        updateSidebarHeader("","",null);
+        Menu menu = navigationView.getMenu();
+        MenuItem navORG = menu.findItem(R.id.nav_myevents);
+        MenuItem navADM = menu.findItem(R.id.nav_admin);
+        navORG.setVisible(true);
+        navADM.setVisible(true);
+
+
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.g
         // TODONE: add UserProfile to the nav drawer so it can be selected and we can view the UserProfile fragment
@@ -155,6 +166,9 @@ public class MainActivity extends AppCompatActivity {
                     // done through addUser() method in order to get the value returned from checkUserExists()
                     userDB.setCurrentProfile(snapshot);
                     user = userDB.getCurrentUser();
+                    Bitmap pfp = helper.loadProfilePicture(user);
+                    updateSidebarHeader(user.getName(),user.getEmail(),pfp);
+                    updateSidebarForUserType(user);
                     eventDB.getUserEnteredEvents(user); //initiate their list of entered events
                     eventDB.getUserOrgEvents(user); //initiate their list of organized events
                     connection.setUser(user);
@@ -163,9 +177,6 @@ public class MainActivity extends AppCompatActivity {
                         notifDB.getUserNewNotifications(); //get the list of users unseen notifications
                     }
 
-                    Bitmap pfp = helper.loadProfilePicture(user);
-                    updateSidebarHeader(user.getName(),user.getEmail(),pfp);
-                    updateSidebarForUserType(user);
                     Log.v("SetUpDB", "Set profile for existing user");
 
                 } else { // User is not already in the database
@@ -173,39 +184,21 @@ public class MainActivity extends AppCompatActivity {
                     // done through addUser() method in order to get the value returned from checkUserExists()
                     userDB.addCurrentUser();
                     user = userDB.getCurrentUser();
+                    Bitmap pfp = helper.loadProfilePicture(user);
+                    updateSidebarHeader("","",pfp);
+                    updateSidebarForUserType(user);
                     eventDB.getUserEnteredEvents(user);
                     eventDB.getUserOrgEvents(user);
                     connection.setUser(user);
-                    Bitmap pfp = helper.loadProfilePicture(user);
-                    updateSidebarHeader("Name","Email Address",pfp);
-                    updateSidebarForUserType(user);
                     Log.v("SetUpDB", "Set profile for new user");
                 }
                 //testCreateNotif();
                 createNewNotifications(); //populate the new notifications to the device notifications
-                updateSidebarForUserType(user);
+
             }
         });
         // sets the currentUser attribute for MainActivity
 
-
-    }
-
-    /**
-     * TODO remove this
-     * Author: Erin-Marie
-     * This is a method that is only for testing purposes as I figure out how to set up notifications
-     * it just creates a test notification and sends it to the running device
-     * It is called within setUpDB() so it is called everytime the app opens.
-     */
-    public void testCreateNotif(){
-        ArrayList<DocumentReference> recipients = new ArrayList<DocumentReference>();
-        recipients.add(user.getDocRef());
-
-        Notification notif = new Notification("test notification2", "test message", recipients, user);
-        notifDB.addNotification(notif);
-
-        Log.v(TAG, "notif created");
 
     }
 
@@ -319,8 +312,8 @@ public class MainActivity extends AppCompatActivity {
         MenuItem navORG = menu.findItem(R.id.nav_myevents);
         MenuItem navADM = menu.findItem(R.id.nav_admin);
 
-        navORG.setVisible(true);
-        navADM.setVisible(true);
+        navORG.setVisible(user.getPrivileges() == 1);
+        navADM.setVisible(user.getAdmin());
     }
 
     // a method used for testing
