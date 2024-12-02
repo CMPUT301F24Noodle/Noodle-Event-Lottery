@@ -32,6 +32,7 @@ public class GenerateQRCodeTest {
 
     UserProfile user;
     DBConnection connection;
+    UserDB userDB;
 
     // run this before every test to save repeating code
     @Before
@@ -43,18 +44,20 @@ public class GenerateQRCodeTest {
                 // call a few methods in MainActivity
                 user = activity.getUser();
                 connection = activity.getConnection();
+                userDB = connection.getUserDB();
             }
         });
 
+        Thread.sleep(1000);
+        user = userDB.getCurrentUser();
         // Then clean the user so that they have the qualities of a default user
-        user.setName("Name");
-        user.setAddress("Email");
+        user.setName("TestName");
+        user.setEmail("TestEmail");
         user.setPhoneNumber(null);
         if(user.getFacility() != null){
             Facility facility = user.getFacility();
             user.removeFacility(facility);
         }
-
         UserDB userDB = connection.getUserDB();
         userDB.updateUserDocument(user);
 
@@ -71,6 +74,11 @@ public class GenerateQRCodeTest {
 
     }
 
+    /**
+     * US 02.01.02 As an organizer I want to store hash data of the generated QR code in my database
+     * US 02.01.01 As an organizer I want to create a new event and generate a unique promotional QR code that links to the event description and event poster in the app
+     * @throws InterruptedException
+     */
     @Test
     public void generateQRCodeTest() throws InterruptedException {
         // create event
@@ -87,7 +95,9 @@ public class GenerateQRCodeTest {
         onView(withId(R.id.contact_num)).perform(ViewActions.typeText("1"));
         onView(withId(R.id.max_participants)).perform(ViewActions.typeText("10"));
 
-        onView(withId(R.id.save_button)).perform(click());
+
+
+        onView(withId(R.id.save_button)).perform(ViewActions.scrollTo()).perform(click());
 
         Thread.sleep(5000); // wait for query
 

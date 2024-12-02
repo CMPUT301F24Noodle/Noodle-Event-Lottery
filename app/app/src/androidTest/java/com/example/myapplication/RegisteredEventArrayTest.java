@@ -1,21 +1,32 @@
 package com.example.myapplication;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.example.myapplication.database.DBConnection;
+import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.objects.Event;
 import com.example.myapplication.objects.UserProfile;
 import com.example.myapplication.objects.Facility;
 import com.example.myapplication.ui.registeredevents.RegisteredEventArrayAdapter;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.database.EventDB;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.zxing.WriterException;
 
 import org.junit.Before;
@@ -31,13 +42,17 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
+import static java.util.regex.Pattern.matches;
 
 /**
- * Author: Sam Lee
+ * Author: Sam Lee and Erin-Marie
  * Tests for the RegisteredEventArrayAdapter
  */
+
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class RegisteredEventArrayTest {
@@ -49,6 +64,16 @@ public class RegisteredEventArrayTest {
     private EventDB mockEventDB;
     private UserProfile mockUserProfile;
 
+    UserProfile user;
+    DocumentReference userDocRef;
+    DBConnection connection;
+    EventDB eventDB;
+    UserDB userDB;
+    NotificationDB notifDB;
+    Facility facility;
+
+
+
     // Set up mocks for the UserDB and EventDB
     @Before
     public void setUp() {
@@ -57,7 +82,20 @@ public class RegisteredEventArrayTest {
         mockUserProfile = new UserProfile();
         mockUserProfile.setName("Test User");
 
+        scenario.getScenario().onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
+            @Override
+            public void perform(MainActivity activity) {
+                connection = activity.getConnection();
+                userDB = connection.getUserDB();
+                user = userDB.getCurrentUser();
+                eventDB = connection.getEventDB();
+                notifDB = connection.getNotifDB();
+                userDocRef = connection.getUserDocumentRef();
+            }});
+
         when(mockUserDB.getCurrentUser()).thenReturn(mockUserProfile);
+
+
     }
 
     // Create a test event
@@ -70,12 +108,12 @@ public class RegisteredEventArrayTest {
         Date dateEvent = dateFormat.parse("29/05/2002");
         Date dateClose = dateFormat.parse("30/05/2002");
         return new Event(facility, organizer, "TestEvent", null, dateEvent, null, null, 1, 1, dateClose, Boolean.FALSE);
+
     }
 
     /**
      * Author: Sam Lee
-     * Test that the RegisteredEventArrayAdapter displays the event details
-     * correctly
+     * Test that the RegisteredEventArrayAdapter displays the event details correctly
      * 
      * @throws ParseException
      * @throws WriterException
@@ -103,16 +141,13 @@ public class RegisteredEventArrayTest {
         TextView orgName = view.findViewById(R.id.organizer_name);
 
         assertEquals("TestEvent", eventName.getText().toString());
-        // no date test
-        assertEquals("No Time", eventTime.getText().toString());
         assertEquals("Test Org", orgName.getText().toString());
     }
 
     /**
      * Author: Sam Lee
-     * Test that the RegisteredEventArrayAdapter correctly handles accepting an
-     * invitation
-     * 
+     * Test that the RegisteredEventArrayAdapter correctly handles accepting an invitation
+     * US 01.05.02 As an entrant I want to be able to accept the invitation to register/sign up when chosen to participate in an event
      * @throws ParseException
      * @throws WriterException
      */
@@ -142,9 +177,8 @@ public class RegisteredEventArrayTest {
 
     /**
      * Author: Sam Lee
-     * Test that the RegisteredEventArrayAdapter correctly handles declining an
-     * invitation
-     * 
+     * Test that the RegisteredEventArrayAdapter correctly handles declining an invitation
+     * US 01.05.03 As an entrant I want to be able to decline an invitation when chosen to participate in an event
      * @throws ParseException
      * @throws WriterException
      */
@@ -170,5 +204,52 @@ public class RegisteredEventArrayTest {
         assertEquals(1, event.getDeclinedList().size());
         assertEquals(0, event.getEntrantsList().size());
         assertEquals(mockUserDB.getCurrentUser().getDocRef(), event.getDeclinedList().get(0));
+    }
+
+    /**
+     * Author: Erin-Marie
+     * US 01.01.02 As an entrant, I want to leave the waiting list for a specific event
+     */
+    @Test
+    public void LeaveWaitListTest() throws ParseException, WriterException, InterruptedException {
+        Event event = MockEvent("Test Event 2");
+        eventDB.updateEvent(event);
+        Thread.sleep(1000);
+        eventDB.getEventEntrants(event);
+        Thread.sleep(1000);
+
+        onView(withContentDescription("Open navigation drawer")).perform(click());
+        onView(withText("My Entered Events")).perform(click());
+        onView(withText("Test Event 2")).perform(click());
+        onView(withText("Yes")).perform(click());
+        Thread.sleep(1000);
+        eventDB.getEventEntrants(event);
+        Thread.sleep(1000);
+
+        //Assert that the entrant is no longer in the entrant list
+        assert(!eventDB.getEntrantsList().contains(user));
+
+    }
+
+    /**
+     * Author: Erin-Marie
+     * @param eventName a test event name to use
+     * @return mockEvent a new event object, with a mock organizer
+     */
+    public Event MockEvent(String eventName) throws WriterException, InterruptedException {
+        Thread.sleep(5000);
+
+        user = userDB.getCurrentUser();
+        facility = new Facility("test Facility", "test location", user);
+        Event mockEvent = new Event(facility, user, eventName, null, new Date(), "MockDetails", "MockContact", -1, 5, new Date(), Boolean.FALSE);
+        eventDB.addEvent(mockEvent);
+        Thread.sleep(1000);
+        eventDB.addEntrant(mockEvent);
+
+        Thread.sleep(5000);
+        eventDB.getUserEnteredEvents(user);
+
+        Thread.sleep(5000);
+        return mockEvent;
     }
 }

@@ -20,21 +20,16 @@ import com.example.myapplication.objects.Facility;
 import com.example.myapplication.objects.UserProfile;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.zxing.WriterException;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Author: Erin-Marie
  * Tests for the manage event fragment
- *  US 02.05.03 As an organizer I want to be able to draw a replacement applicant from the pooling system when a previously selected applicant cancels or rejects the invitation
- *  US 01.05.01 As an entrant I want another chance to be chosen from the waiting list if a selected user declines an invitation to sign up
  */
 @RunWith(AndroidJUnit4.class)
 @MediumTest
@@ -57,9 +52,14 @@ public class ManageEventFragmentTest {
             @Override
             public void perform(MainActivity activity) {
                 // call a few methods in MainActivity
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 connection = activity.getConnection();
-                user = connection.getUser();
                 userDB = connection.getUserDB();
+                user = userDB.getCurrentUser();
                 eventDB = connection.getEventDB();
                 notifDB = connection.getNotifDB();
                 userDocRef = connection.getUserDocumentRef();
@@ -80,7 +80,7 @@ public class ManageEventFragmentTest {
     public void TestCancelEntrant() throws InterruptedException, WriterException {
         Thread.sleep(2000);
         //get a mock event
-        Event mockEvent = MockEvent("Test Event");
+        Event mockEvent = MockEvent("Test Event5");
         //add the test user to the mock event as an entrant
         eventDB.addEntrant(mockEvent);
         //set to 0, so all entrants are not chosen (are losers)
@@ -93,7 +93,7 @@ public class ManageEventFragmentTest {
         // Now open manage event
         onView(withContentDescription("Open navigation drawer")).perform(click());
         onView(withText("My Organized Events")).perform(click());
-        onView(withText("Test Event")).perform(click());
+        onView(withText("Test Event5")).perform(click());
         onView(withText("Manage Event")).perform(click());
         onView(withText("Winners")).perform(click());
         onView(withText("Anonymous_Noodle")).perform(click());
@@ -119,7 +119,7 @@ public class ManageEventFragmentTest {
         Thread.sleep(1000);
         onView(withContentDescription("Open navigation drawer")).perform(click());
         onView(withId(R.id.nav_notifications)).perform(click());
-        onView(withText("Event Status Change")).check(matches(isDisplayed()));
+        onView(withText("Test Event5")).check(matches(isDisplayed()));
     }
 
     /**
@@ -156,7 +156,7 @@ public class ManageEventFragmentTest {
      */
     @Test
     public void TestWinnersListDisplayed() throws InterruptedException, WriterException {
-        Event mockEvent = MockEvent("Test Event");
+        Event mockEvent = MockEvent("Test Event2");
         ArrayList<DocumentReference> listData = new ArrayList<>();
         listData.add(user.getDocRef());
 
@@ -170,7 +170,7 @@ public class ManageEventFragmentTest {
         // Now open manage event
         onView(withContentDescription("Open navigation drawer")).perform(click());
         onView(withText("My Organized Events")).perform(click());
-        onView(withText("Test Event")).perform(click());
+        onView(withText("Test Event2")).perform(click());
         onView(withText("Manage Event")).perform(click());
         onView(withText("Winners")).perform(click());
         onView(withText("Anonymous_Noodle")).check(matches(isDisplayed()));
@@ -186,9 +186,9 @@ public class ManageEventFragmentTest {
      */
     @Test
     public void TestAcceptedListDisplayed() throws InterruptedException, WriterException {
-        Event mockEvent = MockEvent("Test Event");
+        Event mockEvent = MockEvent("Test Event3");
         ArrayList<DocumentReference> listData = new ArrayList<>();
-        listData.add(user.getDocRef());
+        listData.add(userDocRef);
 
         eventDB.endEvent(mockEvent);
         mockEvent.setAcceptedList(listData);
@@ -200,9 +200,9 @@ public class ManageEventFragmentTest {
         // Now open manage event
         onView(withContentDescription("Open navigation drawer")).perform(click());
         onView(withText("My Organized Events")).perform(click());
-        onView(withText("Test Event")).perform(click());
+        onView(withText("Test Event3")).perform(click());
         onView(withText("Manage Event")).perform(click());
-        onView(withText("Accepted")).perform(click());
+        onView(withText("Attending")).perform(click());
         onView(withText("Anonymous_Noodle")).check(matches(isDisplayed()));
 
     }
@@ -216,7 +216,7 @@ public class ManageEventFragmentTest {
      */
     @Test
     public void TestDeclinedListDisplayed() throws InterruptedException, WriterException {
-        Event mockEvent = MockEvent("Test Event");
+        Event mockEvent = MockEvent("Test Event4");
         ArrayList<DocumentReference> listData = new ArrayList<>();
         listData.add(user.getDocRef());
 
@@ -230,22 +230,33 @@ public class ManageEventFragmentTest {
         // Now open manage event
         onView(withContentDescription("Open navigation drawer")).perform(click());
         onView(withText("My Organized Events")).perform(click());
-        onView(withText("Test Event")).perform(click());
+        onView(withText("Test Event4")).perform(click());
         onView(withText("Manage Event")).perform(click());
         onView(withText("Cancelled")).perform(click());
         onView(withText("Anonymous_Noodle")).check(matches(isDisplayed()));
 
     }
 
+    /**
+     * Tests for selecting a new winner
+     *  *  US 02.05.03 As an organizer I want to be able to draw a replacement applicant from the pooling system when a previously selected applicant cancels or rejects the invitation
+     *  *  US 01.05.01 As an entrant I want another chance to be chosen from the waiting list if a selected user declines an invitation to sign up
+     * @throws InterruptedException
+     * @throws WriterException
+     */
     @Test
     public void TestReplaceEntrant() throws InterruptedException, WriterException {
-        Event mockEvent = MockEvent("Test Event");
+        Event mockEvent = MockEvent("Test Event6");
         ArrayList<DocumentReference> listData = new ArrayList<>();
         listData.add(user.getDocRef());
         eventDB.endEvent(mockEvent);
         //a user in the loser list will be selected to fill the event
         mockEvent.setLosersList(listData);
+        mockEvent.setEventOver(Boolean.TRUE);
         eventDB.updateEvent(mockEvent);
+        Thread.sleep(5000);
+        eventDB.getUserOrgEvents(user);
+        Thread.sleep(5000);
 
         //Show that before executing the replace, there are no winners
         assert eventDB.getWinnersList().isEmpty();
@@ -253,16 +264,13 @@ public class ManageEventFragmentTest {
         // Now open manage event
         onView(withContentDescription("Open navigation drawer")).perform(click());
         onView(withText("My Organized Events")).perform(click());
-        onView(withText("Test Event")).perform(click());
+        onView(withText("Test Event6")).perform(click());
         onView(withText("Manage Event")).perform(click());
         onView(withText("Replace Cancelled")).perform(click());
         Thread.sleep(1000);
-        onView(withText("Winners")).perform(click());
-        //onView(withText("Anonymous_Noodle")).check(matches(isDisplayed()));
 
-
-
-
+        //show that there is now a new winner
+        assert !eventDB.getWinnersList().isEmpty();
     }
 
     /**
@@ -272,6 +280,8 @@ public class ManageEventFragmentTest {
      */
     public Event MockEvent(String eventName) throws WriterException, InterruptedException {
         Thread.sleep(5000);
+
+        user = userDB.getCurrentUser();
         facility = new Facility("test Facility", "test location", user);
         Event mockEvent = new Event(facility, user, eventName, null, new Date(), "MockDetails", "MockContact", -1, 5, new Date(), Boolean.FALSE);
         eventDB.addEvent(mockEvent);

@@ -6,40 +6,40 @@
     android:padding="16dp"
     android:gravity="center">
 
-    <EditText
+    <TextView
         android:id="@+id/profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Name"
         android:fontFamily="@font/alexandria_semibold"
+        android:hint="Name"
         android:textColor="@color/text_cyan"
         android:textSize="24sp"
         android:textStyle="bold" />
 
-    <EditText
+    <TextView
         android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Email"
         android:fontFamily="@font/aleo_medium"
+        android:hint="Email"
         android:textColor="@color/text_cyan"
         android:textSize="18sp" />
 
-    <EditText
+    <TextView
         android:id="@+id/profileid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Phone"
         android:fontFamily="@font/aleo_medium"
+        android:hint="Phone"
         android:textColor="@color/text_cyan"
         android:textSize="18sp" />
 
-    <EditText
+    <TextView
         android:id="@+id/roles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Role"
         android:fontFamily="@font/aleo_medium"
+        android:hint="Role"
         android:textColor="@color/text_cyan"
         android:textSize="18sp" />
 

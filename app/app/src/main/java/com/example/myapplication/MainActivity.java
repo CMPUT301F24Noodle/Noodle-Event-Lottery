@@ -320,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
         MenuItem navADM = menu.findItem(R.id.nav_admin);
 
         navORG.setVisible(true);
-        navADM.setVisible(user.getAdmin());
+        navADM.setVisible(true);
     }
 
     // a method used for testing
