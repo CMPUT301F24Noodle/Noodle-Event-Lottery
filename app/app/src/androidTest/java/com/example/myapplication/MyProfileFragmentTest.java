@@ -215,4 +215,30 @@ public class MyProfileFragmentTest {
         user = userDB.getCurrentUser();
         assert (user.getAllowNotifs() == Boolean.FALSE);
     }
+
+    /**
+     * Tests if app identifies the user device and displays the specific info for that user
+     * US 01.07.01 As an entrant, I want to be identified by my device, so that I don't have to use a username and password
+     */
+    @Test
+    public void testIdentifiedDevice() throws InterruptedException {
+        onView(withId(R.id.profile_user_name)).perform(ViewActions.clearText());
+        onView(withId(R.id.profile_user_email)).perform(ViewActions.clearText());
+        onView(withId(R.id.profile_user_name)).perform(ViewActions.typeText("steve"));
+        onView(withId(R.id.profile_user_email)).perform(ViewActions.typeText("steve@gmail.com"));
+
+        onView(withId(R.id.profile_save_info_button)).perform(click());
+
+        scenario.getScenario().close();
+        ActivityScenario.launch(MainActivity.class);
+
+        Thread.sleep(2000);
+
+
+        onView(withContentDescription("Open navigation drawer")).perform(click());
+        onView(withId(R.id.nav_profile)).perform(click());
+
+        onView(withId(R.id.profile_user_name)).check(matches(withText("steve")));
+        onView(withId(R.id.profile_user_email)).check(matches(withText("steve@gmail.com")));
+    }
 }
