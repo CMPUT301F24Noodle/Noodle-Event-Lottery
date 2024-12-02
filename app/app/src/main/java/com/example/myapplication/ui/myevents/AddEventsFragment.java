@@ -60,6 +60,7 @@ import com.example.myapplication.ui.user_profile.ManageProfilePictureFragment;
 import com.google.firebase.firestore.auth.User;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -76,6 +77,7 @@ public class AddEventsFragment extends Fragment {
     private Switch geoLocationSwitch, repeatingSwitch;
     private Uri selectedImageUri;
     private EditText endDateDD, endDateMM, endDateYY;
+    private EditText regStartDD, regStartMM, regStartYY, regEndDD, regEndMM, regEndYY;
 
     private DBConnection connection;
     private EventDB eventDB;
@@ -104,9 +106,9 @@ public class AddEventsFragment extends Fragment {
 
         initializeViews(view);
 
-        //
+        //assume the event is repeating at first
         repeatingSwitch.setChecked(true);
-        event.set
+        event.setRepeating(Boolean.TRUE);
 
         setOnClickListeners();
 
@@ -142,6 +144,14 @@ public class AddEventsFragment extends Fragment {
         endDateYY = view.findViewById(R.id.end_date_picker_YY);
         dateRangeTextTo = view.findViewById(R.id.date_range_text_to);
 
+        regStartDD = view.findViewById(R.id.regstart_date_picker_DD);
+        regStartMM = view.findViewById(R.id.regstart_date_picker_MM);
+        regStartYY = view.findViewById(R.id.regstart_date_picker_YY);
+
+        regEndDD = view.findViewById(R.id.regend_date_picker_DD);
+        regEndMM = view.findViewById(R.id.regend_date_picker_MM);
+        regEndYY = view.findViewById(R.id.regend_date_picker_YY);
+
     }
 
     /**
@@ -176,6 +186,8 @@ public class AddEventsFragment extends Fragment {
                     endDateDD.setVisibility(View.VISIBLE);
                     dateRangeTextTo.setVisibility(TextView.VISIBLE);
 
+                    event.setRepeating(Boolean.TRUE);
+
                 } else {
                     // if toggled off, make repeating stuff invisible!
                     repeatingWeek.setVisibility(View.GONE);
@@ -183,6 +195,8 @@ public class AddEventsFragment extends Fragment {
                     endDateMM.setVisibility(View.GONE);
                     endDateDD.setVisibility(View.GONE);
                     dateRangeTextTo.setVisibility(TextView.GONE);
+
+                    event.setRepeating(Boolean.FALSE);
                 }
             }
         });
@@ -200,12 +214,59 @@ public class AddEventsFragment extends Fragment {
         String maxEntrants = waitingListLimitEditText.getText().toString().trim();
         String eventDetails = eventDetailsEditText.getText().toString().trim();
 
+        // get info for all the dates
+        String eventStartDay = dateDayEditText.getText().toString().trim();
+        String eventStartMonth = dateMonthEditText.getText().toString().trim();
+        String eventStartYear = dateYearEditText.getText().toString().trim();
 
+        String eventEndDay = endDateDD.getText().toString().trim();
+        String eventEndMonth = endDateMM.getText().toString().trim();
+        String eventEndYear = endDateYY.getText().toString().trim();
 
+        String regStartDay = regStartDD.getText().toString().trim();
+        String regStartMonth = regStartMM.getText().toString().trim();
+        String regStartYear = regStartYY.getText().toString().trim();
+
+        String regEndDay = regEndDD.getText().toString().trim();
+        String regEndMonth = regEndMM.getText().toString().trim();
+        String regEndYear = regEndYY.getText().toString().trim();
+
+        // run through all reasons to not let the event be saved
         if (eventName.isEmpty() || eventLocation.isEmpty()) {
-            Toast.makeText(getContext(), "Please fill in all required fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Please fill in the event name and location", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        Date startDate = stringToDate(eventStartDay, eventStartMonth, eventStartYear);
+        // if you could not make a valid date, dont save the event
+        if(startDate == null){
+            Toast.makeText(getContext(), "Please provide a valid start date for your event", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Date endDate = null;
+        if(event.getRepeating()){
+            endDate = stringToDate(eventEndDay, eventEndMonth, eventEndYear);
+            if(endDate == null){
+                Toast.makeText(getContext(), "Please provide a valid end date for your event", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        Date regStartDate = stringToDate(regStartDay, regStartMonth, regStartYear);
+        if(regStartDate == null){
+            Toast.makeText(getContext(), "Please provide a valid start registration date for you event", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Date regEndDate = stringToDate(regEndDay, regEndMonth, regEndYear);
+        if(regEndDate == null){
+            Toast.makeText(getContext(), "Please provide a valid end registration date for you event", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+
 
         //Set all the event data
         event.setEventName(eventName);
@@ -232,7 +293,13 @@ public class AddEventsFragment extends Fragment {
         }
 
 
-        event.setEventDate(new Date());
+        event.setEventDate(startDate);
+        event.setLotteryOpens(regStartDate);
+        event.setLotteryCloses(regEndDate);
+
+        if(event.getRepeating()){
+            event.setEventDateEnd(endDate);
+        }
 
         event.setContact(contactNumberEditText.getText().toString().trim());
 
@@ -252,6 +319,7 @@ public class AddEventsFragment extends Fragment {
         event.setOrganizerRef(currentUserProfile.getDocRef());
 
         event.eventOver = Boolean.FALSE;
+
 
         try {
             eventDB.addEvent(event);
@@ -295,6 +363,28 @@ public class AddEventsFragment extends Fragment {
             posterImageView.setImageResource(0);
         }
     }
+
+    /**
+     * Converts a day, month and year string into a date object
+     */
+    public Date stringToDate(String day, String month, String year) {
+
+        // Combine the strings into a date format
+        String dateString = day + "-" + month + "-" + year;
+
+        // Define the date format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+        try {
+            // Parse the string into a Date object
+            Date date = dateFormat.parse(dateString);
+            return date;
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+
 
 
 }
