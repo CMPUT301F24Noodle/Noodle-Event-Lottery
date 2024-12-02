@@ -45,7 +45,7 @@ public class AdminFragment extends Fragment {
             // Initialize the buttons
             Button profileButton = rootView.findViewById(R.id.nav_admin_profile);
             Button eventButton = rootView.findViewById(R.id.nav_admin_event);
-            Button qrCodeButton = rootView.findViewById(R.id.nav_admin_qr);
+            Button facilityButton = rootView.findViewById(R.id.nav_admin_facility);
             Button imageButton = rootView.findViewById(R.id.nav_admin_img);
 
             // Set click listeners for each button
@@ -66,7 +66,7 @@ public class AdminFragment extends Fragment {
                 // Navigate to Event Fragment or Activity
             });
 
-            qrCodeButton.setOnClickListener(v -> {
+            facilityButton.setOnClickListener(v -> {
                 // Handle QR Code button click
                 Toast.makeText(getContext(), "QR Code button clicked", Toast.LENGTH_SHORT).show();
                 // Perform action for QR Code
