@@ -52,6 +52,7 @@ import com.google.android.gms.maps.model.LatLng;
 //import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.GeoPoint;
 
 /**
  * Author Erin-marie
@@ -333,7 +334,7 @@ public class ManageEventFragment extends Fragment {
 
                             ArrayList<UserProfile> allUsers = eventDB.getEntrantsList();
                             // get location of all users in the waitlist
-                            ArrayList<Location> allLocations = new ArrayList<>();
+                            ArrayList<GeoPoint> allLocations = new ArrayList<>();
                             for(UserProfile user : allUsers) {
                                 allLocations.add(user.getGeoLocation());
                             }
@@ -350,12 +351,12 @@ public class ManageEventFragment extends Fragment {
                 }
             }
 
-            private void setMarkers(ArrayList<Location> allLocations) {
+            private void setMarkers(ArrayList<GeoPoint> allLocations) {
                 /*
                  * Get the best and most recent location of the device, which may be null in rare
                  * cases when a location is not available.
                  */
-                for(Location location : allLocations) {
+                for(GeoPoint location : allLocations) {
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                             new LatLng(location.getLatitude(),
                                     location.getLongitude()), DEFAULT_ZOOM));

@@ -12,6 +12,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.myapplication.databinding.ActivityGeolocationViewGooglemapsBinding;
 
+/**
+ * Author: Jin
+ * Edited: Erin-Marie
+ * Class for displaying an events geolocation map
+ */
 public class Geolocation_view_googlemaps extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;

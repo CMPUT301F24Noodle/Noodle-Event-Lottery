@@ -117,13 +117,6 @@ public class AdminFragmentTests {
         onView(withContentDescription("Open navigation drawer")).perform(click());
         onView(withText("App Management")).perform(click());
         onView(withId(R.id.nav_admin_event)).perform(click());
-//        onData(allOf(is(instanceOf(Event.class)), hasEntry(equalTo("title"), "DeleteThisEvent")))
-//                .inAdapterView(withId(R.id.event_list_view))
-//                .onChildView(withId(R.id.event_title))
-//                .perform(click());
-//        onView(withId(R.id.event_list_view))
-//                .perform(RecyclerViewActions.actionOnItem(
-//                        hasDescendant(withText("DeleteThisEvent")), click()));
         onView(withText("DeleteThisEvent")).perform(click());
         onView(withText("Remove")).perform(click());
 
