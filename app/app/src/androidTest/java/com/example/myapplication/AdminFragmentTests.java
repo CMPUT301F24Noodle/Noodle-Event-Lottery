@@ -6,6 +6,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.action.ViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.MediumTest;
@@ -29,7 +30,6 @@ import java.util.Date;
 /**
  * Author: Erin-Marie
  * Tests for the manage event fragment
- * TODO: make them work
  */
 @RunWith(AndroidJUnit4.class)
 @MediumTest
@@ -78,13 +78,11 @@ public class AdminFragmentTests {
 
         user = userDB.getCurrentUser();
         user.setIsAdmin(Boolean.TRUE);
+        user.setName("DeleteProfileTest");
+        userDB.updateUserDocument(user);
         facility = new Facility("test Facility", "test location", user);
         Event mockEvent = new Event(facility, user, eventName, null, new Date(), "MockDetails", "MockContact", -1, 5, new Date(), Boolean.FALSE);
         eventDB.addEvent(mockEvent);
-
-        Thread.sleep(5000);
-        eventDB.getUserOrgEvents(user);
-
         Thread.sleep(5000);
         return mockEvent;
     }
@@ -101,11 +99,27 @@ public class AdminFragmentTests {
 
         onView(withContentDescription("Open navigation drawer")).perform(click());
         onView(withText("App Management")).perform(click());
-        onView(withId(R.id.nav_admin_event)).perform(click());
+        onView(withText("Events")).perform(click());
+        Thread.sleep(1000);
         onView(withText("DeleteThisEvent")).perform(click());
+        onView(withText("Remove")).perform(click());
+    }
+
+
+    /**
+     * US 03.02.01 As an administrator, I want to be able to remove profiles
+     * US.03.05.01 As an administrator, I want to be able to browse profiles
+     * @throws InterruptedException
+     * @throws WriterException
+     */
+    @Test
+    public void DeleteProfileTest() throws InterruptedException, WriterException {
+        onView(withContentDescription("Open navigation drawer")).perform(click());
+        onView(withText("App Management")).perform(click());
+        onView(withId(R.id.nav_admin_profile)).perform(click());
+        onView(withText("DeleteProfileTest")).perform(ViewActions.scrollTo()).perform(click());
         onView(withText("Remove")).perform(click());
 
 
     }
-    
 }
