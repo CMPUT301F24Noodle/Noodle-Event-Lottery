@@ -36,7 +36,7 @@ import com.example.myapplication.objects.UserProfile;
  * US 01.03.02 As an entrant I want remove profile picture if need be
  * US 01.03.01 As an entrant I want to upload a profile picture for a more personalized experience
  * US 01.03.03 As an entrant I want my profile picture to be deterministically generated from my profile name if I haven't uploaded a profile image yet
- * US 01.04.03 As an entrant I want to opt out of receiving notifications from organizers and admin -> just show flicking the button
+ * US 01.07.01 As an entrant, I want to be identified by my device, so that I don't have to use a username and password
  */
 
 @RunWith(AndroidJUnit4.class)
@@ -201,5 +201,18 @@ public class MyProfileFragmentTest {
         onView(withId(R.id.profile_facility_name)).check(matches(withText("")));
         onView(withId(R.id.profile_facility_location)).check(matches(withText("")));
 
+    }
+
+    /**
+     * Tests if the toggle for notifications works
+     * US 01.04.03 As an entrant I want to opt out of receiving notifications from organizers and admin
+     */
+    @Test
+    public void ToggleNotificationsOffTest(){
+        // toggle off notifications
+        onView(withId(R.id.switch_notifications)).perform(click());
+        //check that notifications attr in db is now set to off
+        user = userDB.getCurrentUser();
+        assert (user.getAllowNotifs() == Boolean.FALSE);
     }
 }
