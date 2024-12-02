@@ -21,7 +21,7 @@
             android:layout_height="50dp"
             android:fontFamily="@font/belanosima"
             android:layout_gravity="center"
-            android:text="PROFILE"
+            android:text="Profiles"
             android:textStyle="bold"
             android:background="@drawable/mybutton"/>
 
@@ -31,7 +31,7 @@
             android:layout_height="50dp"
             android:fontFamily="@font/belanosima"
             android:layout_gravity="center"
-            android:text="EVENT"
+            android:text="Events"
             android:background="@drawable/mybutton"
             android:layout_marginTop="30dp"/>
 
@@ -44,7 +44,8 @@
             android:text="QR CODE"
             android:textStyle="bold"
             android:background="@drawable/mybutton"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="30dp"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/nav_admin_img"
@@ -52,7 +53,7 @@
             android:layout_height="50dp"
             android:fontFamily="@font/belanosima"
             android:layout_gravity="center"
-            android:text="IMAGE"
+            android:text="Images"
             android:textStyle="bold"
             android:background="@drawable/mybutton"
             android:layout_marginTop="30dp"/>

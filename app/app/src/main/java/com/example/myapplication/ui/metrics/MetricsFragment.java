@@ -38,7 +38,7 @@ public class MetricsFragment extends Fragment {
         MainActivity main = (MainActivity) requireActivity();
         connection = main.connection;
         eventDB = connection.getEventDB();
-        user = main.user;
+        user = connection.getUser();
 
         TextView usernameText = view.findViewById(R.id.metric_username);
         if (user.getName() != null){

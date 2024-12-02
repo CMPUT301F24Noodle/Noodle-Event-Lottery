@@ -35,7 +35,7 @@ public class AdminProfileFragment extends Fragment {
     private static final String TAG = "AdminProfileFragment";
     private ListView emailListView;
     private ArrayList<String> userList;
-    private ArrayAdapter<String> userAdapter;
+    private ArrayAdapter<UserProfile> userAdapter;
     private ArrayList<UserProfile> fullUserList;
     private FirebaseFirestore db;
     private String finalUuid;
@@ -43,11 +43,8 @@ public class AdminProfileFragment extends Fragment {
     public MainActivity main;
     public DBConnection connection;
     public UserDB userDB; // userDB instance for the current user
-    public EventDB eventDB;
-    public NotificationDB notifDB;
-    public String uuid;
     public UserProfile user;
-    public Event event;
+
 
     public AdminProfileFragment() {
         // Required empty public constructor
@@ -68,7 +65,7 @@ public class AdminProfileFragment extends Fragment {
             db = FirebaseFirestore.getInstance();
 
 
-            userAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, userList);
+            userAdapter = new AdminProfileArrayAdapter(getContext(), fullUserList);
             emailListView.setAdapter(userAdapter);
 
             emailListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -130,6 +127,7 @@ public class AdminProfileFragment extends Fragment {
                         Toast.makeText(requireContext(), "User deleted successfully!", Toast.LENGTH_SHORT).show();
                         UserProfile delUser = fullUserList.get(position);
                         userList.remove(position);
+                        fullUserList.remove(position);
                         assert delUser != null;
                         db.collection("AllUsers").document("User"+delUser.getUuid()).delete();
                         userAdapter.notifyDataSetChanged();
@@ -143,83 +141,6 @@ public class AdminProfileFragment extends Fragment {
                 })
                 .show();
 
-
-
-
-//        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.admin_text_delete_view_profile, null);
-//        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(requireContext());
-//        builder.setView(dialogView);
-//        android.app.AlertDialog dialog = builder.create();
-//
-//        TextView profileName = dialogView.findViewById(R.id.profile_name);
-//        TextView email = dialogView.findViewById(R.id.email);
-//        TextView profilePhone = dialogView.findViewById(R.id.profileid);
-//        Button saveButton = dialogView.findViewById(R.id.save_button);
-//        Button deleteButton = dialogView.findViewById(R.id.delete_button);
-//        Button backButton = dialogView.findViewById(R.id.back_button);
-//
-//
-//        String[] userParts = userData.split("\n");
-//        for (String part : userParts) {
-//            if (part.startsWith("Name: ")) {
-//                profileName.setText(part.replace("Name: ", ""));
-//            } else if (part.startsWith("Email: ")) {
-//                email.setText(part.replace("Email: ", ""));
-//            } else if (part.startsWith("Phone: ")) {
-//                profilePhone.setText(part.replace("Phone: ", ""));
-//            }
-//        }
-
-//        String finalUuid = uuid
-
-//        saveButton.setOnClickListener(v -> {
-//            String updatedName = profileName.getText().toString().trim();
-//            String updatedEmail = email.getText().toString().trim();
-//            String updatedPhone = profilePhone.getText().toString().trim();
-//
-//            if (updatedName.isEmpty() || updatedEmail.isEmpty()) {
-//                Toast.makeText(requireContext(), "Name and Email cannot be empty!", Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//
-//            if (finalUuid != null) {
-//                db.collection("AllUsers").document(finalUuid)
-//                        .update("name", updatedName, "email", updatedEmail, "phonenumber", updatedPhone)
-//                        .addOnSuccessListener(aVoid -> {
-//                            Toast.makeText(requireContext(), "User updated successfully!", Toast.LENGTH_SHORT).show();
-//                            fetchUserDetails();
-//                            dialog.dismiss();
-//                        })
-//                        .addOnFailureListener(e -> {
-//                            Toast.makeText(requireContext(), "Failed to update user.", Toast.LENGTH_SHORT).show();
-//                            Log.e(TAG, "Error updating user: ", e);
-//                        });
-//            } else {
-//                Toast.makeText(requireContext(), "Error: UUID is null.", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        deleteButton.setOnClickListener(v -> {
-//            if (finalUuid != null) {
-//                db.collection("AllUsers").document(finalUuid)
-//                        .delete()
-//                        .addOnSuccessListener(aVoid -> {
-//                            Toast.makeText(requireContext(), "User deleted successfully!", Toast.LENGTH_SHORT).show();
-//                            userList.remove(position);
-//                            userAdapter.notifyDataSetChanged();
-//                            dialog.dismiss();
-//                        })
-//                        .addOnFailureListener(e -> {
-//                            Toast.makeText(requireContext(), "Failed to delete user.", Toast.LENGTH_SHORT).show();
-//                            Log.e(TAG, "Error deleting user: ", e);
-//                        });
-//            } else {
-//                Toast.makeText(requireContext(), "Error: UUID is null.", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-
-
     }
     /**
      * Author: Erin-Marie
@@ -229,10 +150,7 @@ public class AdminProfileFragment extends Fragment {
         main = (MainActivity) getActivity();
         assert main != null;
         connection = main.connection;
-
-        notifDB = connection.getNotifDB();
         user = connection.getUser();
-        eventDB = connection.getEventDB();
         userDB = connection.getUserDB();
     }
 }
