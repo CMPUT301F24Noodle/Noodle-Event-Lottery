@@ -102,6 +102,7 @@
     </fragment>
 
 
+
     <fragment
         android:id="@id/nav_metrics"
         android:name="com.example.myapplication.ui.metrics.MetricsFragment"

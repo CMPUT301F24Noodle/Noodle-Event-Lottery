@@ -2,8 +2,11 @@ package com.example.myapplication;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasData;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasType;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
@@ -14,13 +17,24 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.Espresso;
+import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.assertion.ViewAssertions;
+import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -35,6 +49,10 @@ import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.Facility;
 import com.example.myapplication.objects.UserProfile;
+import com.example.myapplication.ui.user_profile.ManageProfilePictureFragment;
+import com.example.myapplication.ui.user_profile.MyProfileFragment;
+
+import java.io.IOException;
 
 /**
  * Author: Xavier Salm
@@ -48,12 +66,14 @@ import com.example.myapplication.objects.UserProfile;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class MyProfileFragmentTest {
+
     @Rule
     public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<>(MainActivity.class);
 
     UserProfile user;
     UserDB userDB;
     DBConnection connection;
+    Uri imageUri;
 
     // run this before every test to save repeating code
     @Before
@@ -259,7 +279,7 @@ public class MyProfileFragmentTest {
         scenario.getScenario().onActivity(activity -> {
 
             // get the image view
-            ImageView imageView = activity.findViewById(R.id.profile_image);
+            ImageView imageView = activity.findViewById(R.id.my_profile_image);
 
             // get the bitmap that has been put in the image view
             BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
@@ -275,6 +295,37 @@ public class MyProfileFragmentTest {
             assertTrue(givenProfilePicture.sameAs(expectedProfilePicture));
         });
     }
+
+    @Test
+    public void deleteProfilePictureTest(){
+
+        scenario.getScenario().onActivity(activity -> {
+            imageUri = Uri.parse("android.resource://" + activity.getPackageName() + "/" + R.drawable.testposter);
+            BitmapHelper helper = new BitmapHelper();
+            Bitmap profPic = null;
+            try {
+                profPic = helper.UriToBitmap(imageUri, activity.getApplicationContext());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Bitmap realProfPic = helper.resizeBitmap(profPic);
+            String encoded = helper.encodeBitmapToBase64(realProfPic);
+            user.setHasProfilePic(true);
+            user.setEncodedPicture(encoded);
+
+        });
+
+        assert(user.getHasProfilePic());
+        assert(user.getEncodedPicture() != null);
+
+        onView(withId(R.id.my_profile_image)).perform(click());
+        onView(withId(R.id.delete_picture_button)).perform(click());
+
+        assert(!user.getHasProfilePic());
+        assert(user.getEncodedPicture() == null);
+
+    }
+
 
 
 }
