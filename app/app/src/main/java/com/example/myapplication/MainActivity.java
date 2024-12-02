@@ -166,34 +166,37 @@ public class MainActivity extends AppCompatActivity {
                     // done through addUser() method in order to get the value returned from checkUserExists()
                     userDB.setCurrentProfile(snapshot);
                     user = userDB.getCurrentUser();
-                    Bitmap pfp = helper.loadProfilePicture(user);
-                    updateSidebarHeader(user.getName(),user.getEmail(),pfp);
-                    updateSidebarForUserType(user);
+                    connection.setUser(user);
                     eventDB.getUserEnteredEvents(user); //initiate their list of entered events
                     eventDB.getUserOrgEvents(user); //initiate their list of organized events
-                    connection.setUser(user);
                     notifDB.getUserNotifications(); //intitiate their list of all notifications
                     if (user.getAllowNotifs() == Boolean.TRUE) {
                         notifDB.getUserNewNotifications(); //get the list of users unseen notifications
                     }
 
                     Log.v("SetUpDB", "Set profile for existing user");
+                    Bitmap pfp = helper.loadProfilePicture(user);
+                    updateSidebarHeader(user.getName(),user.getEmail(),pfp);
+                    updateSidebarForUserType(user);
 
                 } else { // User is not already in the database
                     // create a new profile objet, and store it in the db
                     // done through addUser() method in order to get the value returned from checkUserExists()
                     userDB.addCurrentUser();
                     user = userDB.getCurrentUser();
+                    connection.setUser(user);
+                    eventDB.getUserEnteredEvents(user);
+                    eventDB.getUserOrgEvents(user);
+
+                    Log.v("SetUpDB", "Set profile for new user");
+
                     Bitmap pfp = helper.loadProfilePicture(user);
                     updateSidebarHeader("","",pfp);
                     updateSidebarForUserType(user);
-                    eventDB.getUserEnteredEvents(user);
-                    eventDB.getUserOrgEvents(user);
-                    connection.setUser(user);
-                    Log.v("SetUpDB", "Set profile for new user");
                 }
                 //testCreateNotif();
                 createNewNotifications(); //populate the new notifications to the device notifications
+
 
             }
         });
@@ -285,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
         if (name!= null){
             headerName.setText(name);
         } else{
-            headerName.setText("Username");
+            headerName.setText("Try updating your profile data!");
         }
 
         // Update email
@@ -293,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
         if (email!= null){
             headerEmail.setText(email);
         } else{
-            headerEmail.setText("Your Email");
+            headerEmail.setText("");
         }
 
 
@@ -312,8 +315,11 @@ public class MainActivity extends AppCompatActivity {
         MenuItem navORG = menu.findItem(R.id.nav_myevents);
         MenuItem navADM = menu.findItem(R.id.nav_admin);
 
-        navORG.setVisible(user.getPrivileges() == 1);
-        navADM.setVisible(user.getAdmin());
+
+
+        //TODO this is for demo only
+//        navORG.setVisible(user.getPrivileges() == 1);
+//        navADM.setVisible(user.getAdmin());
     }
 
     // a method used for testing
