@@ -31,6 +31,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.text.SimpleDateFormat;
+import com.google.firebase.firestore.GeoPoint;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -39,7 +41,6 @@ import java.util.List;
 /**
  * Authors: Erin-Marie and Sam Lee
  * Activity for viewing and entering an event scanned from a QR code.
- *[US 01.06.01, US 01.06.02]
  */
 public class ViewScannedEventFragment extends Fragment {
 
@@ -264,10 +265,10 @@ public class ViewScannedEventFragment extends Fragment {
     private void saveLocationToFirebase(Location geoLocation) {
         UserDB userDB = connection.getUserDB();
         // Update location
-        user.setGeoLocation(geoLocation);
+        GeoPoint geoPoint = new GeoPoint(geoLocation.getLatitude(), geoLocation.getLongitude());
+        user.setGeoLocation(geoPoint);
         userDB.updateUserDocument(user);
     }
-
     /**
      * Author: Sam Lee
      * Edited: Erin-Marie

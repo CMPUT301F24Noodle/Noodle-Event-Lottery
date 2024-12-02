@@ -135,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
      * gets the current users UserProfile object based on the data stored in the db
      * If the user is not in the db, it adds them to the db.
      * No return, but does set the currentUser attributes of MainActivity and UserDB
-     * TODO Uncomment lines 165 to 167 and 178 to 180 once the profile bug has been fixed
      */
     public void setUpDB() {
         // Add the user to the db, added by Erin-Marie, if it breaks everything its my
@@ -237,7 +236,6 @@ public class MainActivity extends AppCompatActivity {
      * Author: Erin-Marie
      * This method displays/sends a notification as a device notification
      * Reference: <a href="https://developer.android.com/develop/ui/views/notifications/build-notification">...</a>
-     * TODO does it check that the user has allowed notifications?
      *
      * @param notification the notification instance to be displayed
      * @param id the index of the nortification from myNewNotifications

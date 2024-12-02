@@ -22,30 +22,57 @@ import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.Event;
 import com.example.myapplication.objects.UserProfile;
 
+/**
+ * AdminFragment
+ *
+ * This fragment represents the administrative interface for the application.
+ * It provides navigation to different administrative functionalities, such as
+ * managing user profiles, events, facilities, and images. Access to this fragment
+ * is restricted to admin users, and a toast message is displayed if a non-admin user
+ * attempts to access it.
+ *
+ * Author: Nishchay Ranjan
+ */
 public class AdminFragment extends Fragment {
 
-    public MainActivity main;
-    public DBConnection connection;
-    public UserDB userDB; // userDB instance for the current user
-    public EventDB eventDB;
-    public NotificationDB notifDB;
-    public String uuid;
-    public UserProfile user;
-    public Event event;
+    public MainActivity main; // Reference to the MainActivity
+    public DBConnection connection; // Database connection object
+    public UserDB userDB; // User database instance
+    public EventDB eventDB; // Event database instance
+    public NotificationDB notifDB; // Notification database instance
+    public String uuid; // UUID of the user
+    public UserProfile user; // Current user's profile
+    public Event event; // Current event object
 
+    /**
+     * onCreateView
+     *
+     * This method inflates the admin fragment layout and initializes its components.
+     * It sets up navigation for buttons to various admin features and ensures that
+     * only admin users can access the interface. Non-admin users receive a toast notification.
+     *
+     * @param inflater LayoutInflater used to inflate the fragment layout
+     * @param container Optional parent view
+     * @param savedInstanceState Bundle containing saved state
+     * @return View representing the admin interface or null if user is not an admin
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the fragment_admin layout
         View rootView = null;
 
+        // Retrieve variables from MainActivity
         getVarFromMain();
-        if ( user.getAdmin() != Boolean.FALSE){
+
+        // Check if the user is an admin
+        if (user.getAdmin() != Boolean.FALSE) {
             rootView = inflater.inflate(R.layout.fragment_admin, container, false);
+
             // Initialize the buttons
             Button profileButton = rootView.findViewById(R.id.nav_admin_profile);
             Button eventButton = rootView.findViewById(R.id.nav_admin_event);
-            Button qrCodeButton = rootView.findViewById(R.id.nav_admin_qr);
+            Button facilityButton = rootView.findViewById(R.id.nav_admin_facility);
             Button imageButton = rootView.findViewById(R.id.nav_admin_img);
 
             // Set click listeners for each button
@@ -53,35 +80,28 @@ public class AdminFragment extends Fragment {
                 // Navigate to AdminProfileFragment using NavController
                 NavController navController = NavHostFragment.findNavController(this);
                 navController.navigate(R.id.adminProfileFragment);
-
-                Toast.makeText(getContext(), "Navigating to Admin Profile", Toast.LENGTH_SHORT).show();
             });
-
 
             eventButton.setOnClickListener(v -> {
-                // Handle Event button click
+                // Navigate to AdminEventFragment using NavController
                 NavController navController = NavHostFragment.findNavController(this);
                 navController.navigate(R.id.adminEventFragment);
-                Toast.makeText(getContext(), "Event button clicked", Toast.LENGTH_SHORT).show();
-                // Navigate to Event Fragment or Activity
             });
 
-            qrCodeButton.setOnClickListener(v -> {
-                // Handle QR Code button click
-                Toast.makeText(getContext(), "QR Code button clicked", Toast.LENGTH_SHORT).show();
-                // Perform action for QR Code
+            facilityButton.setOnClickListener(v -> {
+                // Navigate to AdminFacilityFragment using NavController
+                NavController navController = NavHostFragment.findNavController(this);
+                navController.navigate(R.id.adminFacilityFragment);
             });
 
             imageButton.setOnClickListener(v -> {
-                // Handle Image button click
+                // Navigate to AdminPhotoFragment using NavController
                 NavController navController = NavHostFragment.findNavController(this);
                 navController.navigate(R.id.adminPhotoFragment);
-
-                Toast.makeText(getContext(), "Image button clicked", Toast.LENGTH_SHORT).show();
-                // Navigate to Image Fragment or Activity
             });
 
         } else {
+            // Display a toast if the user is not an admin
             Toast.makeText(getContext(), "You are not an Admin", Toast.LENGTH_SHORT).show();
         }
 
@@ -89,14 +109,20 @@ public class AdminFragment extends Fragment {
     }
 
     /**
-     * Author: Erin-Marie
-     * Gets some of the variables from MainActivity that we will need
+     * getVarFromMain
+     *
+     * This method retrieves necessary variables from MainActivity, including
+     * database connections and the current user's profile. These variables are
+     * essential for the functionality of the admin fragment.
+     *
+     * Author: Erin Marie
      */
     public void getVarFromMain() {
         main = (MainActivity) getActivity();
         assert main != null;
-        connection = main.connection;
 
+        // Retrieve database connections and user details from MainActivity
+        connection = main.connection;
         notifDB = connection.getNotifDB();
         user = connection.getUser();
         eventDB = connection.getEventDB();

@@ -25,25 +25,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentMyeventsBinding;
 import com.example.myapplication.objects.Event;
 import com.example.myapplication.objects.UserProfile;
 import com.example.myapplication.database.EventDB;
-import com.example.myapplication.ui.myevents.editEvent.EditEventFragment;
-import com.example.myapplication.ui.myevents.manageEvent.ManageEventFragment;
 import com.example.myapplication.ui.myevents.viewMyEvents.OrganizedEventArrayAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
+
 
 /**
  * Author: Nishchay, Erin-Marie

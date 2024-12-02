@@ -47,7 +47,7 @@
     <fragment
         android:id="@+id/adminProfileFragment"
         android:name="com.example.myapplication.ui.admin.AdminProfileFragment"
-        android:label="Admin Profile"
+        android:label="Admin All Profiles"
         tools:layout="@layout/item_admin_profile" />
     <fragment
         android:id="@+id/adminEventFragment"
@@ -58,6 +58,12 @@
         android:id="@+id/adminPhotoFragment"
         android:name="com.example.myapplication.ui.admin.AdminPhotosFragment"
         android:label="Admin All Photos"
+        tools:layout="@layout/item_admin_profile" />
+
+    <fragment
+        android:id="@+id/adminFacilityFragment"
+        android:name="com.example.myapplication.ui.admin.AdminFacilityFragment"
+        android:label="Admin All Facilities"
         tools:layout="@layout/item_admin_profile" />
 
     <fragment
