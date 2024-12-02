@@ -54,7 +54,6 @@ public class AdminFragment extends Fragment {
                 NavController navController = NavHostFragment.findNavController(this);
                 navController.navigate(R.id.adminProfileFragment);
 
-                Toast.makeText(getContext(), "Navigating to Admin Profile", Toast.LENGTH_SHORT).show();
             });
 
 
@@ -62,14 +61,14 @@ public class AdminFragment extends Fragment {
                 // Handle Event button click
                 NavController navController = NavHostFragment.findNavController(this);
                 navController.navigate(R.id.adminEventFragment);
-                Toast.makeText(getContext(), "Event button clicked", Toast.LENGTH_SHORT).show();
-                // Navigate to Event Fragment or Activity
+
             });
 
             facilityButton.setOnClickListener(v -> {
                 // Handle QR Code button click
-                Toast.makeText(getContext(), "QR Code button clicked", Toast.LENGTH_SHORT).show();
-                // Perform action for QR Code
+                NavController navController = NavHostFragment.findNavController(this);
+                navController.navigate(R.id.adminFacilityFragment);
+
             });
 
             imageButton.setOnClickListener(v -> {
@@ -77,8 +76,6 @@ public class AdminFragment extends Fragment {
                 NavController navController = NavHostFragment.findNavController(this);
                 navController.navigate(R.id.adminPhotoFragment);
 
-                Toast.makeText(getContext(), "Image button clicked", Toast.LENGTH_SHORT).show();
-                // Navigate to Image Fragment or Activity
             });
 
         } else {
