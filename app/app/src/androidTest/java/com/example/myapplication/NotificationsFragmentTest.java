@@ -60,6 +60,7 @@ public class NotificationsFragmentTest {
     EventDB eventDB;
     UserDB userDB;
     NotificationDB notifDB;
+    UserProfile owner;
     Facility facility;
 
     @Before
@@ -71,11 +72,11 @@ public class NotificationsFragmentTest {
 
                 connection = activity.getConnection();
                 user = connection.getUser();
+                owner = new UserProfile("04ec3457-ed00-426c-b580-fde9bb67735f");
                 eventDB = connection.getEventDB();
                 userDB = connection.getUserDB();
                 notifDB = connection.getNotifDB();
                 userDocRef = connection.getUserDocumentRef();
-                UserProfile owner = new UserProfile("04ec3457-ed00-426c-b580-fde9bb67735f");
                 facility = new Facility("test Facility", "test location", owner);
             }
         });

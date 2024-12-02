@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
         MenuItem navORG = menu.findItem(R.id.nav_myevents);
         MenuItem navADM = menu.findItem(R.id.nav_admin);
 
-        navORG.setVisible(user.checkIsOrganizer());
+        navORG.setVisible(true);
         navADM.setVisible(user.getAdmin());
     }
 
