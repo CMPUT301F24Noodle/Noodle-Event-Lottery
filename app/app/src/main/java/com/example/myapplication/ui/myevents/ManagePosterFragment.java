@@ -1,35 +1,26 @@
 package com.example.myapplication.ui.myevents;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-
 import com.example.myapplication.BitmapHelper;
 import com.example.myapplication.R;
 import com.example.myapplication.database.EventDB;
-import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.Event;
-import com.example.myapplication.objects.UserProfile;
-
 import java.io.IOException;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ManagePosterFragment extends DialogFragment {
     Event event;

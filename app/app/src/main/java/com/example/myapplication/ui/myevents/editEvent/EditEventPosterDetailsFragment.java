@@ -52,7 +52,7 @@ public class EditEventPosterDetailsFragment  extends Fragment {
     private EventDB eventDB;
     private UserProfile currentUserProfile;
 
-    Event event; // the event that will be made
+    private Event event; // the event that will be made
 
 
     @Nullable
