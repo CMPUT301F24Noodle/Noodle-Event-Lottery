@@ -27,6 +27,14 @@ import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 
+/**
+ * AdminPhotosFragment is responsible for managing user profile images and event posters
+ * for administrative purposes. It listens to Firestore for updates, displays user data,
+ * and provides functionalities to delete profile pictures.
+ *
+ * Author: Nishchay Ranjan
+ */
+
 public class AdminPhotosFragment extends Fragment {
 
     private static final String TAG = "AdminPhotosFragment";
