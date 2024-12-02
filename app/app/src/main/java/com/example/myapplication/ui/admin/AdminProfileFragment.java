@@ -69,20 +69,23 @@ public class AdminProfileFragment extends Fragment {
                         userList.clear();
 
                         for (com.google.firebase.firestore.DocumentSnapshot document : task.getResult().getDocuments()) {
-                            fullUserList.add(document.toObject(UserProfile.class));
-                            String name = document.getString("name");
-                            String email = document.getString("email");
-                            String phoneNumber = document.getString("phonenumber");
-                            String uuid = document.getId();
+                            Log.v(TAG, "gettign documents");
+                            if (document.exists()) {
+                                fullUserList.add(document.toObject(UserProfile.class));
+                                String name = document.getString("name");
+                                String email = document.getString("email");
+                                String phoneNumber = document.getString("phonenumber");
+                                String uuid = document.getId();
 
-                            StringBuilder userInfo = new StringBuilder();
-                            userInfo.append("Name: ").append(name != null ? name : "N/A").append("\n");
-                            userInfo.append("Email: ").append(email != null ? email : "N/A").append("\n");
-                            userInfo.append("Phone: ").append(phoneNumber != null ? phoneNumber : "N/A").append("\n");
-                            userInfo.append("UUID: ").append(uuid);
+                                StringBuilder userInfo = new StringBuilder();
+                                userInfo.append("Name: ").append(name != null ? name : "N/A").append("\n");
+                                userInfo.append("Email: ").append(email != null ? email : "N/A").append("\n");
+                                userInfo.append("Phone: ").append(phoneNumber != null ? phoneNumber : "N/A").append("\n");
+                                userInfo.append("UUID: ").append(uuid);
 
 
-                            userList.add(userInfo.toString());
+                                userList.add(userInfo.toString());
+                            }
                         }
 
                         userAdapter.notifyDataSetChanged();
@@ -103,7 +106,7 @@ public class AdminProfileFragment extends Fragment {
                         UserProfile delUser = fullUserList.get(position);
                         userList.remove(position);
                         assert delUser != null;
-                        db.collection("AllUsers").document(delUser.getUuid()).delete();
+                        db.collection("AllUsers").document("User"+delUser.getUuid()).delete();
                         userAdapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }})
