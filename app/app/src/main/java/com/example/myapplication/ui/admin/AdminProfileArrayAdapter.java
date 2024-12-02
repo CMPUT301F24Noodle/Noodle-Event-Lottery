@@ -47,6 +47,8 @@ public class AdminProfileArrayAdapter extends ArrayAdapter<UserProfile> {
         assert userProfile != null;
         if (userProfile.getName() != null) {
             headingView.setText(userProfile.getName());
+        } else {
+            headingView.setText("Anon_User");
         }
         if (userProfile.getEmail() != null) {
             subheading1View.setText(userProfile.getEmail());
