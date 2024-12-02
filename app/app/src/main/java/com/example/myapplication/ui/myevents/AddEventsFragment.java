@@ -30,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -62,7 +63,9 @@ import com.google.firebase.firestore.auth.User;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class AddEventsFragment extends Fragment {
@@ -78,6 +81,8 @@ public class AddEventsFragment extends Fragment {
     private Uri selectedImageUri;
     private EditText endDateDD, endDateMM, endDateYY;
     private EditText regStartDD, regStartMM, regStartYY, regEndDD, regEndMM, regEndYY;
+    private EditText eventTimeViewMM, eventTimeViewHH;
+    private CheckBox repeatMonView, repeatTueView, repeatWedView, repeatThurView, repeatFriView, repeatSatView, repeatSunView;
 
     private DBConnection connection;
     private EventDB eventDB;
@@ -151,6 +156,18 @@ public class AddEventsFragment extends Fragment {
         regEndDD = view.findViewById(R.id.regend_date_picker_DD);
         regEndMM = view.findViewById(R.id.regend_date_picker_MM);
         regEndYY = view.findViewById(R.id.regend_date_picker_YY);
+
+        eventTimeViewMM = view.findViewById(R.id.time_picker_mm);
+        eventTimeViewHH = view.findViewById(R.id.time_picker_hh);
+
+        repeatMonView = view.findViewById(R.id.repeat_monday);
+        repeatTueView = view.findViewById(R.id.repeat_tuesday);
+        repeatWedView = view.findViewById(R.id.repeat_wednesday);
+        repeatThurView = view.findViewById(R.id.repeat_thursday);
+        repeatFriView = view.findViewById(R.id.repeat_friday);
+        repeatSatView = view.findViewById(R.id.repeat_saturday);
+        repeatSunView = view.findViewById(R.id.repeat_sunday);
+
 
     }
 
@@ -231,6 +248,36 @@ public class AddEventsFragment extends Fragment {
         String regEndMonth = regEndMM.getText().toString().trim();
         String regEndYear = regEndYY.getText().toString().trim();
 
+        String eventTimeMM = eventTimeViewMM.getText().toString().trim();
+        String eventTimeHH = eventTimeViewHH.getText().toString().trim();
+        String eventTime = eventTimeHH + ":" + eventTimeMM;
+
+        if(event.isRepeating{
+            List<String> repeatingDays = new ArrayList<String>();
+            if(repeatMonView.isChecked()){
+                repeatingDays.add("Mon");
+            }
+            if(repeatTueView.isChecked()){
+                repeatingDays.add("Tue");
+            }
+            if(repeatWedView.isChecked()){
+                repeatingDays.add("Wed");
+            }
+            if(repeatThurView.isChecked()){
+                repeatingDays.add("Thur");
+            }
+            if(repeatFriView.isChecked()){
+                repeatingDays.add("Fri");
+            }
+            if(repeatSatView.isChecked()){
+                repeatingDays.add("Sat");
+            }
+            if(repeatSunView.isChecked()){
+                repeatingDays.add("Sun");
+            }
+            event.setRepeatingDays(repeatingDays);
+        }
+
         // run through all reasons to not let the event be saved
         if (eventName.isEmpty() || eventLocation.isEmpty()) {
             Toast.makeText(getContext(), "Please fill in the event name and location", Toast.LENGTH_SHORT).show();
@@ -265,7 +312,10 @@ public class AddEventsFragment extends Fragment {
             return;
         }
 
-
+        if(eventTimeMM.isEmpty() || eventTimeHH.isEmpty()){
+            Toast.makeText(getContext(), "Please provide a time for your event", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
 
         //Set all the event data
@@ -296,6 +346,7 @@ public class AddEventsFragment extends Fragment {
         event.setEventDate(startDate);
         event.setLotteryOpens(regStartDate);
         event.setLotteryCloses(regEndDate);
+        event.setEventTime(eventTime);
 
         if(event.getRepeating()){
             event.setEventDateEnd(endDate);
