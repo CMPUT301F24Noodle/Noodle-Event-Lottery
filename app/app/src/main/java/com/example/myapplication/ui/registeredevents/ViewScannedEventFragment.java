@@ -29,9 +29,12 @@ import com.example.myapplication.objects.UserProfile;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Authors: Erin-Marie and Sam Lee
@@ -102,8 +105,44 @@ public class ViewScannedEventFragment extends Fragment {
         }
         LocalDateTime newDate = LocalDateTime.parse(eventDateString, DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
-        String newString = formatter.format(newDate);
-        eventDateTime.setText(newString);
+
+        String eventDateTimeText;
+
+        TextView eventRepeatDaysView = view.findViewById(R.id.event_repeat);
+        if(event.getRepeating()){
+            List<String> repeatingDays = event.getRepeatingDays();
+
+            // get proper event time range
+            eventDateTimeText = dateToString(event.getEventDate())
+                    + " to "
+                    + dateToString(event.getEventDateEnd())
+                    +" at "
+                    + event.getEventTime();
+
+            // and then populate repeating days
+            String repeatDaysText = "Repeats:";
+            if(repeatingDays.isEmpty() || repeatingDays == null){
+                eventRepeatDaysView.setVisibility(View.GONE);
+            }
+            else{
+                // Using for-each loop to iterate through the list
+                for (String day : repeatingDays) {
+                    repeatDaysText = repeatDaysText + " " + day;
+                }
+                eventRepeatDaysView.setText(repeatDaysText);
+            }
+
+
+        }
+        else{
+            eventDateTimeText = dateToString(event.getEventDate())
+                    +" at "
+                    + event.getEventTime();
+            eventRepeatDaysView.setVisibility(View.GONE);
+        }
+
+
+        eventDateTime.setText(eventDateTimeText);
 
         //POSTER IMAGE
         ImageView posterImage = view.findViewById(R.id.event_poster);
@@ -261,5 +300,10 @@ public class ViewScannedEventFragment extends Fragment {
             }
         }
 
+    }
+    public String dateToString(Date date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
+        String dateString = dateFormat.format(date);
+        return dateString;
     }
 }

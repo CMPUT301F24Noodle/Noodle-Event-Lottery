@@ -43,6 +43,7 @@ import com.google.zxing.WriterException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -55,7 +56,7 @@ import java.util.Objects;
 public class EditEventFragment extends Fragment {
 
     private EditText eventNameEditText, eventLocationEditText, eventDateTimeEditText, eventDetailsEditText, eventWaitingListEditText;
-    private TextView eventStatusTextView;
+    private TextView eventStatusTextView, eventRepeatDaysView;
     private ImageView eventPosterView;
     private Button editButton, saveButton, manageEventButton, QRButton;
     private DBConnection connection;
@@ -76,7 +77,8 @@ public class EditEventFragment extends Fragment {
         eventDateTimeEditText = view.findViewById(R.id.event_date_time);
         eventDetailsEditText = view.findViewById(R.id.event_details);
         eventWaitingListEditText = view.findViewById(R.id.event_waiting_list);
-        eventStatusTextView = view.findViewById((R.id.event_status));
+        eventStatusTextView = view.findViewById(R.id.event_status);
+        eventRepeatDaysView = view.findViewById(R.id.event_repeat);
 
         // Initialize Buttons
         editButton = view.findViewById(R.id.edit_event);
@@ -104,16 +106,35 @@ public class EditEventFragment extends Fragment {
 
 
         if(event.getRepeating()){
+            List<String> repeatingDays = event.getRepeatingDays();
+
+            // get proper event time range
             eventDateTime = dateToString(event.getEventDate())
                     + " to "
                     + dateToString(event.getEventDateEnd())
                     +" at "
                     + event.getEventTime();
+
+            // and then populate repeating days
+            String repeatDaysText = "Repeats:";
+            if(repeatingDays.isEmpty() || repeatingDays == null){
+                eventRepeatDaysView.setVisibility(View.GONE);
+            }
+            else{
+                // Using for-each loop to iterate through the list
+                for (String day : repeatingDays) {
+                    repeatDaysText = repeatDaysText + " " + day;
+                }
+                eventRepeatDaysView.setText(repeatDaysText);
+            }
+
+
         }
         else{
             eventDateTime = dateToString(event.getEventDate())
                     +" at "
                     + event.getEventTime();
+            eventRepeatDaysView.setVisibility(View.GONE);
         }
 
         if (event.getEventOver() == Boolean.FALSE){

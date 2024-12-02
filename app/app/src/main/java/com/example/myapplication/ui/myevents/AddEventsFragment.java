@@ -252,7 +252,7 @@ public class AddEventsFragment extends Fragment {
         String eventTimeHH = eventTimeViewHH.getText().toString().trim();
         String eventTime = eventTimeHH + ":" + eventTimeMM;
 
-        if(event.isRepeating{
+        if(event.isRepeating){
             List<String> repeatingDays = new ArrayList<String>();
             if(repeatMonView.isChecked()){
                 repeatingDays.add("Mon");
