@@ -10,8 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textColor="@color/text_cyan"
-        android:background="@color/text_cyan"
-        android:divider="@android:color/darker_gray"
+        android:divider="@color/text_cyan"
         android:dividerHeight="1dp" />
 
     <TextView

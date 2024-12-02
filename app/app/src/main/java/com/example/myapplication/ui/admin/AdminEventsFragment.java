@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,10 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
 
 public class AdminEventsFragment extends Fragment {
 
@@ -56,7 +51,7 @@ public class AdminEventsFragment extends Fragment {
         fullEventList = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
 
-        eventAdapter = new AdminArrayAdapter(requireContext(), fullEventList);
+        eventAdapter = new AdminEventArrayAdapter(requireContext(), fullEventList);
 
         eventListView.setAdapter(eventAdapter);
 

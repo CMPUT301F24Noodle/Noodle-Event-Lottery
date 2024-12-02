@@ -13,15 +13,14 @@ import androidx.annotation.Nullable;
 
 import com.example.myapplication.R;
 import com.example.myapplication.objects.Event;
-import com.example.myapplication.objects.Notification;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class AdminArrayAdapter extends ArrayAdapter<Event>{
+public class AdminEventArrayAdapter extends ArrayAdapter<Event>{
 
 
-    public AdminArrayAdapter(@NonNull Context context, @NonNull ArrayList<Event> events) {
+    public AdminEventArrayAdapter(@NonNull Context context, @NonNull ArrayList<Event> events) {
         super(context, 0, events);
     }
 
