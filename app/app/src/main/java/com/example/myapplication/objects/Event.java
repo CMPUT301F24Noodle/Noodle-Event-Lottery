@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Event Class
@@ -57,8 +58,14 @@ public class Event implements Serializable {
     public ArrayList<DocumentReference> losersList; // list of all users who lost the lottery
     public ArrayList<DocumentReference> acceptedList; // list of all users who have accepted their invitation
     public ArrayList<DocumentReference> declinedList; // list of all users who have accepted their invitation
+
+    // for the addtional event data tied to repeating
     public Date eventDateEnd; // the date the event ends if repeating
-    public
+    public List<String> repeatingDays; // the days repeating, if there
+    public Boolean isRepeating; // true if the event is repeating
+    public Date lotteryOpens; // the date registration starts
+
+
 
 
 
@@ -494,5 +501,37 @@ public class Event implements Serializable {
         }
         BitmapHelper helper = new BitmapHelper();
         return helper.decodeBase64StringToBitmap(eventPoster);
+    }
+
+    public void setLotteryOpens(Date lotteryOpens) {
+        this.lotteryOpens = lotteryOpens;
+    }
+
+    public Date getLotteryOpens() {
+        return lotteryOpens;
+    }
+
+    public void setRepeating(Boolean repeating) {
+        isRepeating = repeating;
+    }
+
+    public Boolean getRepeating() {
+        return isRepeating;
+    }
+
+    public void setRepeatingDays(List<String> repeatingDays) {
+        this.repeatingDays = repeatingDays;
+    }
+
+    public List<String> getRepeatingDays() {
+        return repeatingDays;
+    }
+
+    public void setEventDateEnd(Date eventDateEnd) {
+        this.eventDateEnd = eventDateEnd;
+    }
+
+    public Date getEventDateEnd() {
+        return eventDateEnd;
     }
 }

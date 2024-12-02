@@ -106,6 +106,7 @@ public class AddEventsFragment extends Fragment {
 
         //
         repeatingSwitch.setChecked(true);
+        event.set
 
         setOnClickListeners();
 
