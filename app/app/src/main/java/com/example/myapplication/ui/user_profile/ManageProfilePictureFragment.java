@@ -35,6 +35,10 @@ public class ManageProfilePictureFragment extends DialogFragment {
     // TODO TEST
     private ActivityResultLauncher<Intent> galleryLauncher;
 
+    public ActivityResultLauncher<Intent> getGalleryLauncher(){
+        return galleryLauncher;
+    }
+
     public void setUser(UserProfile user) {
         this.user = user;
     }
@@ -61,24 +65,24 @@ public class ManageProfilePictureFragment extends DialogFragment {
         fullProfilePicture.setImageBitmap(profilePicture);
 
 
-        //TODO
-        // what happens after a the user selects an image from their gallery
-        // the Uri of their selected image is gotten through result.getData().getData()
+        // handles what happens upon getting a result from launching the intent to provide a picture
         galleryLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        // get the Uri of the selected image
                         Uri selectedImage = result.getData().getData();
 
                         try {
                             // you have to do error catching because UriToBitmap can throw an error
                             Context context = getContext();
-
                             assert context != null;
+
+                            // turn it into a bitmap and resize it so it fits in firebase
                             Bitmap originalProfilePicture = helper.UriToBitmap(selectedImage, context);
                             Bitmap resizedProfilePicture = helper.resizeBitmap(originalProfilePicture); // need to resize so the string representation isn't too long
 
-                            // encode the bitmap
+                            // encode the bitmap into a string for firebase
                             String encodedBitmap = helper.encodeBitmapToBase64(resizedProfilePicture);
 
 

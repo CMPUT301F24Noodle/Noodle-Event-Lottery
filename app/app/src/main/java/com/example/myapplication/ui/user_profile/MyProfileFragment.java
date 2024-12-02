@@ -77,7 +77,7 @@ public class MyProfileFragment extends Fragment {
         addressText.setText(user.getAddress());
 
         // display the generated image:
-        CircleImageView profilePictureView = view.findViewById(R.id.profile_image);
+        CircleImageView profilePictureView = view.findViewById(R.id.my_profile_image);
         Bitmap ProfilePic = helper.loadProfilePicture(user);
         profilePictureView.setImageBitmap(ProfilePic);
 

@@ -2,8 +2,11 @@ package com.example.myapplication;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasData;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasType;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
@@ -11,9 +14,27 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.widget.ImageView;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.Espresso;
+import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.assertion.ViewAssertions;
+import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -28,6 +49,10 @@ import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.Facility;
 import com.example.myapplication.objects.UserProfile;
+import com.example.myapplication.ui.user_profile.ManageProfilePictureFragment;
+import com.example.myapplication.ui.user_profile.MyProfileFragment;
+
+import java.io.IOException;
 
 /**
  * Author: Xavier Salm
@@ -35,19 +60,20 @@ import com.example.myapplication.objects.UserProfile;
  *TODO:
  * US 01.03.02 As an entrant I want remove profile picture if need be
  * US 01.03.01 As an entrant I want to upload a profile picture for a more personalized experience
- * US 01.03.03 As an entrant I want my profile picture to be deterministically generated from my profile name if I haven't uploaded a profile image yet
- * US 01.07.01 As an entrant, I want to be identified by my device, so that I don't have to use a username and password
+ *
  */
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class MyProfileFragmentTest {
+
     @Rule
     public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<>(MainActivity.class);
 
     UserProfile user;
     UserDB userDB;
     DBConnection connection;
+    Uri imageUri;
 
     // run this before every test to save repeating code
     @Before
@@ -69,6 +95,8 @@ public class MyProfileFragmentTest {
         user.setName("TestName");
         user.setEmail("TestEmail");
         user.setPhoneNumber(null);
+        user.setEncodedPicture(null);
+        user.setHasProfilePic(false);
         if(user.getFacility() != null){
             Facility facility = user.getFacility();
             user.removeFacility(facility);
@@ -215,4 +243,89 @@ public class MyProfileFragmentTest {
         user = userDB.getCurrentUser();
         assert (user.getAllowNotifs() == Boolean.FALSE);
     }
+
+    /**
+     * Tests if app identifies the user device and displays the specific info for that user
+     * US 01.07.01 As an entrant, I want to be identified by my device, so that I don't have to use a username and password
+     */
+    @Test
+    public void testIdentifiedDevice() throws InterruptedException {
+        onView(withId(R.id.profile_user_name)).perform(ViewActions.clearText());
+        onView(withId(R.id.profile_user_email)).perform(ViewActions.clearText());
+        onView(withId(R.id.profile_user_name)).perform(ViewActions.typeText("steve"));
+        onView(withId(R.id.profile_user_email)).perform(ViewActions.typeText("steve@gmail.com"));
+
+        onView(withId(R.id.profile_save_info_button)).perform(click());
+
+        scenario.getScenario().close();
+        ActivityScenario.launch(MainActivity.class);
+
+        Thread.sleep(2000);
+
+
+        onView(withContentDescription("Open navigation drawer")).perform(click());
+        onView(withId(R.id.nav_profile)).perform(click());
+
+        onView(withId(R.id.profile_user_name)).check(matches(withText("steve")));
+        onView(withId(R.id.profile_user_email)).check(matches(withText("steve@gmail.com")));
+    }
+
+    /**
+     * Tests if a profile picture is generated for a user without a profile picture
+     * US 01.03.03 As an entrant I want my profile picture to be deterministically generated from my profile name if I haven't uploaded a profile image yet
+     */
+    @Test
+    public void generateProfilePictureTest() {
+        scenario.getScenario().onActivity(activity -> {
+
+            // get the image view
+            ImageView imageView = activity.findViewById(R.id.my_profile_image);
+
+            // get the bitmap that has been put in the image view
+            BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+            Bitmap givenProfilePicture = drawable.getBitmap();
+
+            // generate the expected bitmap
+            BitmapHelper helper = new BitmapHelper();
+            Bitmap expectedProfilePicture = helper.generateProfilePicture(user);
+
+            // both bitmaps should be the same
+            assertNotNull(givenProfilePicture);
+            assertNotNull(expectedProfilePicture);
+            assertTrue(givenProfilePicture.sameAs(expectedProfilePicture));
+        });
+    }
+
+    @Test
+    public void deleteProfilePictureTest(){
+
+        scenario.getScenario().onActivity(activity -> {
+            imageUri = Uri.parse("android.resource://" + activity.getPackageName() + "/" + R.drawable.testposter);
+            BitmapHelper helper = new BitmapHelper();
+            Bitmap profPic = null;
+            try {
+                profPic = helper.UriToBitmap(imageUri, activity.getApplicationContext());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Bitmap realProfPic = helper.resizeBitmap(profPic);
+            String encoded = helper.encodeBitmapToBase64(realProfPic);
+            user.setHasProfilePic(true);
+            user.setEncodedPicture(encoded);
+
+        });
+
+        assert(user.getHasProfilePic());
+        assert(user.getEncodedPicture() != null);
+
+        onView(withId(R.id.my_profile_image)).perform(click());
+        onView(withId(R.id.delete_picture_button)).perform(click());
+
+        assert(!user.getHasProfilePic());
+        assert(user.getEncodedPicture() == null);
+
+    }
+
+
+
 }

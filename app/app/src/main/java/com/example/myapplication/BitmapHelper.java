@@ -8,14 +8,17 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.util.Base64;
+import android.widget.ImageView;
 
 import com.example.myapplication.objects.UserProfile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.regex.Matcher;
 
 /**
  * Author: Xavier Salm
@@ -171,4 +174,5 @@ public class BitmapHelper {
         // return the generated profile picture
         return profilePic;
     }
+
 }

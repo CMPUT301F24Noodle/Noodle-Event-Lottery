@@ -17,11 +17,12 @@
         tools:context=".MainActivity">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image"
+            android:id="@+id/my_profile_image"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:src="@mipmap/placeholderpfp"
+
             android:contentDescription="@string/profile_picture" />
 
         <EditText
