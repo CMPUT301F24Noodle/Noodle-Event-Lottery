@@ -115,6 +115,7 @@
             android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/date_range_text_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/aleo_medium"
@@ -237,7 +238,7 @@
                     android:maxEms="2"
                     android:minEms="2"
                     android:inputType="number"
-                    android:hint="22"
+                    android:hint="hh"
                     android:fontFamily="@font/anybody"
                     android:textColorHint="@color/text_cyan"
                     android:backgroundTint="@color/text_cyan"
@@ -264,7 +265,7 @@
                     android:maxEms="2"
                     android:minEms="2"
                     android:inputType="number"
-                    android:hint="00"
+                    android:hint="mm"
                     android:fontFamily="@font/anybody"
                     android:textColorHint="@color/text_cyan"
                     android:backgroundTint="@color/text_cyan"
@@ -274,6 +275,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/repeat_week_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -612,7 +614,8 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/mybutton"
             android:fontFamily="@font/belanosima"
-            android:text="Save" />
+            android:text="Save"
+            android:textColor="@color/bonus_yellow"/>
 
     </LinearLayout>
 

@@ -82,15 +82,6 @@ public class QRFragment extends Fragment {
             }
         });
 
-        // Launch the QR scanner
-        ScanOptions options = new ScanOptions();
-        options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
-        options.setPrompt("Scan a QR code");
-        options.setCameraId(0);
-        options.setBeepEnabled(true);
-        options.setBarcodeImageEnabled(true);
-
-        barcodeLauncher.launch(options);
 
         v = view;
         return view;

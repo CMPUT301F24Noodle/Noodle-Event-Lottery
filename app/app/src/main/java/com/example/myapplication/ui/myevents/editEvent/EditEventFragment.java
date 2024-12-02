@@ -40,6 +40,8 @@ import com.example.myapplication.ui.myevents.manageEvent.DisplayQRCodeFragment;
 import com.google.zxing.WriterException;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -51,7 +53,7 @@ import java.util.Objects;
 public class EditEventFragment extends Fragment {
 
     private EditText eventNameEditText, eventLocationEditText, eventDateTimeEditText, eventDetailsEditText, eventWaitingListEditText;
-    private TextView eventStatusTextView;
+    private TextView eventStatusTextView, eventRepeatDaysView;
     private ImageView eventPosterView;
     private Button editButton, saveButton, manageEventButton, QRButton;
     private DBConnection connection;
@@ -72,7 +74,8 @@ public class EditEventFragment extends Fragment {
         eventDateTimeEditText = view.findViewById(R.id.event_date_time);
         eventDetailsEditText = view.findViewById(R.id.event_details);
         eventWaitingListEditText = view.findViewById(R.id.event_waiting_list);
-        eventStatusTextView = view.findViewById((R.id.event_status));
+        eventStatusTextView = view.findViewById(R.id.event_status);
+        eventRepeatDaysView = view.findViewById(R.id.event_repeat);
 
         // Initialize Buttons
         editButton = view.findViewById(R.id.edit_event);
@@ -89,19 +92,46 @@ public class EditEventFragment extends Fragment {
             this.event = main.currentEvent;
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+
 
         String eventName = event.getEventName();
         String eventLocation = event.getFacility().getLocation();
-        String eventDateTime = dateFormat.format(Objects.requireNonNull(event.getEventDate()));
+        String eventDateTime;
         String eventDetails = event.getEventDetails();
-        String eventWaitingList;
+        String eventWaitingList = Integer.toString(event.getWaitingListSize()) ;
         String eventStatus;
 
-        if (event.getMaxEntrants() == -1){
-            eventWaitingList = event.getWaitingListSize() + " entrants";
-        } else {
-           eventWaitingList = event.getWaitingListSize() + " / " + event.getMaxEntrants();
+
+        if(event.getRepeating()){
+            List<String> repeatingDays = event.getRepeatingDays();
+
+            // get proper event time range
+            eventDateTime = dateToString(event.getEventDate())
+                    + " to "
+                    + dateToString(event.getEventDateEnd())
+                    +" at "
+                    + event.getEventTime();
+
+            // and then populate repeating days
+            String repeatDaysText = "Repeats:";
+            if(repeatingDays.isEmpty() || repeatingDays == null){
+                eventRepeatDaysView.setVisibility(View.GONE);
+            }
+            else{
+                // Using for-each loop to iterate through the list
+                for (String day : repeatingDays) {
+                    repeatDaysText = repeatDaysText + " " + day;
+                }
+                eventRepeatDaysView.setText(repeatDaysText);
+            }
+
+
+        }
+        else{
+            eventDateTime = dateToString(event.getEventDate())
+                    +" at "
+                    + event.getEventTime();
+            eventRepeatDaysView.setVisibility(View.GONE);
         }
 
         if (event.getEventOver() == Boolean.FALSE){
@@ -113,9 +143,14 @@ public class EditEventFragment extends Fragment {
         // Populate fields with data from the Bundle
         eventNameEditText.setText(eventName != null ? eventName : "");
         eventLocationEditText.setText(eventLocation != null ? "Location: " + eventLocation : "Location:");
-        eventDateTimeEditText.setText(eventDateTime != null ? "Event Date: " + eventDateTime : "Event Date");
+        eventDateTimeEditText.setText(eventDateTime);
         eventDetailsEditText.setText(eventDetails != null ? eventDetails : "");
-        eventWaitingListEditText.setText("Capacity: " + eventWaitingList);
+        if(event.getMaxParticipants() != -1){
+            eventWaitingListEditText.setText("Current Participants: " + eventWaitingList + "/" + event.getMaxParticipants());
+        }
+        else{
+            eventWaitingListEditText.setText("Current Participants: " + eventWaitingList);
+        }
         eventStatusTextView.setText("Status: " + eventStatus);
 
         //prep for the manage event page
@@ -144,10 +179,6 @@ public class EditEventFragment extends Fragment {
         });
 
         manageEventButton.setOnClickListener(v -> {
-            //Bundle manageArgs = new Bundle();
-            //manageArgs.putSerializable("event", event);
-            //manageArgs.putSerializable("eventDB", eventDB);
-            //openManageEventFragment(manageArgs);
 
             // set event and eventDB in main
             if (main != null) {
@@ -250,5 +281,10 @@ public class EditEventFragment extends Fragment {
         }
     }
 
+    public String dateToString(Date date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MM yyyy");
+        String dateString = dateFormat.format(date);
+        return dateString;
+    }
 
 }

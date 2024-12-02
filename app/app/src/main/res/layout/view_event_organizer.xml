@@ -156,7 +156,8 @@
                 android:text="Generate QR"
                 android:background="@drawable/mybutton"
                 android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"/>
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/bonus_yellow"/>
 
             <View
                 android:layout_width="0dp"
@@ -171,7 +172,8 @@
                 android:text="Manage Event"
                 android:background="@drawable/mybutton"
                 android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"/>
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/bonus_yellow"/>
         </LinearLayout>
 
         <LinearLayout
@@ -191,7 +193,8 @@
                 android:text="Edit Event"
                 android:background="@drawable/mybutton"
                 android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"/>
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/bonus_yellow"/>
 
             <View
                 android:layout_width="0dp"
@@ -206,7 +209,8 @@
                 android:text="Save Changes"
                 android:background="@drawable/mybutton"
                 android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"/>
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/bonus_yellow"/>
         </LinearLayout>
 
 

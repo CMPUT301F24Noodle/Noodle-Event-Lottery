@@ -85,7 +85,8 @@
                 android:text="Save"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/belanosima"
-                android:background="@drawable/mybutton" />
+                android:background="@drawable/mybutton"
+                android:textColor="@color/bonus_yellow"/>
 
             <Button
                 android:id="@+id/delete_button"
@@ -94,7 +95,8 @@
                 android:text="Delete"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/belanosima"
-                android:background="@drawable/mybutton" />
+                android:background="@drawable/mybutton"
+                android:textColor="@color/bonus_yellow"/>
 
             <Button
                 android:id="@+id/back_button"
@@ -102,7 +104,8 @@
                 android:layout_height="wrap_content"
                 android:text="Back"
                 android:fontFamily="@font/belanosima"
-                android:background="@drawable/mybutton" />
+                android:background="@drawable/mybutton"
+                android:textColor="@color/bonus_yellow"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

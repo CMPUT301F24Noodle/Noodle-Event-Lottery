@@ -195,6 +195,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/belanosima"
+                android:textColor="@color/bonus_yellow"
                 android:text="Save"
                 android:background="@drawable/mybutton"/>
 
@@ -205,6 +206,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
                 android:fontFamily="@font/belanosima"
+                android:textColor="@color/bonus_yellow"
                 android:text="Delete Facility"
                 android:visibility="gone"
                 android:background="@drawable/mybutton"/>
