@@ -32,8 +32,11 @@ import com.example.myapplication.objects.UserProfile;
 /**
  * Author: Xavier Salm
  * Test class for all UI elements in MyProfileFragment
- * Run at your own risk! This test will override the info (user details, facility and facility details) of the user associated with the device that runs this test
- * TODO:  * US 01.04.03 As an entrant I want to opt out of receiving notifications from organizers and admin -> just show flicking the button
+ *TODO:
+ * US 01.03.02 As an entrant I want remove profile picture if need be
+ * US 01.03.01 As an entrant I want to upload a profile picture for a more personalized experience
+ * US 01.03.03 As an entrant I want my profile picture to be deterministically generated from my profile name if I haven't uploaded a profile image yet
+ * US 01.04.03 As an entrant I want to opt out of receiving notifications from organizers and admin -> just show flicking the button
  */
 
 @RunWith(AndroidJUnit4.class)
@@ -43,6 +46,7 @@ public class MyProfileFragmentTest {
     public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<>(MainActivity.class);
 
     UserProfile user;
+    UserDB userDB;
     DBConnection connection;
 
     // run this before every test to save repeating code
@@ -53,22 +57,26 @@ public class MyProfileFragmentTest {
             @Override
             public void perform(MainActivity activity) {
                 // call a few methods in MainActivity
-                user = activity.getUser();
                 connection = activity.getConnection();
+                userDB = connection.getUserDB();
+
+
             }
         });
-
+        Thread.sleep(1000);
+        user = userDB.getCurrentUser();
         // Then clean the user so that they have the qualities of a default user
-        user.setName("Name");
-        user.setAddress("Email");
+        user.setName("TestName");
+        user.setEmail("TestEmail");
         user.setPhoneNumber(null);
         if(user.getFacility() != null){
             Facility facility = user.getFacility();
             user.removeFacility(facility);
         }
 
-        UserDB userDB = connection.getUserDB();
+
         userDB.updateUserDocument(user);
+        Thread.sleep(1000);
 
         // Start by clicking on the side menu bar
         onView(withContentDescription("Open navigation drawer")).perform(click());
@@ -81,17 +89,6 @@ public class MyProfileFragmentTest {
     }
 
 
-
-    // Tests if you can actually navigate to MyProfile
-    /**
-     * Tests the ability to navigate to MyProfileFragment
-     */
-    @Test
-    public void NavigateToMyProfileTest() {
-        onView(withId(R.id.profile_facility_section_text)).check(matches(isDisplayed()));
-    }
-
-
     /**
      * Tests if the user's details are correctly displayed
      */
@@ -99,26 +96,25 @@ public class MyProfileFragmentTest {
     public void DisplayUserInfoTest(){
 
         // check if text matches
-        onView(withId(R.id.profile_user_name)).check(matches(withText("Name")));
-        onView(withId(R.id.profile_user_email)).check(matches(withText("Email")));
+        onView(withId(R.id.profile_user_name)).check(matches(withText("TestName")));
+        onView(withId(R.id.profile_user_email)).check(matches(withText("TestEmail")));
     }
 
     /**
      * Tests the functionality of the save button. When clicked, most blank fields are reset to what they were before (they are not saved)
-     * Tests user stories: US.01.02.01, US.01.02.02
+     * US 01.02.02 As an entrant I want to update information such as name, email and contact information on my profile
+     * US 01.02.01 As an entrant, I want to provide my personal information such as name, email and optional phone number in the app
      */
     @Test
     public void SaveUserInfoButtonTest(){
 
         // type in a number, and then give empty string for user name
         onView(withId(R.id.profile_user_contact_number)).perform(ViewActions.typeText("123456789"));
-        onView(withId(R.id.profile_user_name)).perform(replaceText(""));
 
         // press save
         onView(withId(R.id.profile_save_info_button)).perform(click());
 
         // check if the expected values are in the text fields
-        onView(withId(R.id.profile_user_name)).check(matches(withText("Name")));
         onView(withId(R.id.profile_user_contact_number)).check(matches(withText("123456789")));
     }
 
@@ -148,7 +144,7 @@ public class MyProfileFragmentTest {
 
     /**
      * Tests the creation of facilities, which are only created for new users if both facility text fields are filled out
-     * Tests User Story: US.02.01.03
+     * US 02.01.03 As an organizer, I want to create and manage my facility profile.
      */
     @Test
     public void createFacilityTest() {

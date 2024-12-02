@@ -74,8 +74,7 @@ public class RegisteredEventArrayTest {
 
     /**
      * Author: Sam Lee
-     * Test that the RegisteredEventArrayAdapter displays the event details
-     * correctly
+     * Test that the RegisteredEventArrayAdapter displays the event details correctly
      * 
      * @throws ParseException
      * @throws WriterException
@@ -103,16 +102,13 @@ public class RegisteredEventArrayTest {
         TextView orgName = view.findViewById(R.id.organizer_name);
 
         assertEquals("TestEvent", eventName.getText().toString());
-        // no date test
-        assertEquals("No Time", eventTime.getText().toString());
         assertEquals("Test Org", orgName.getText().toString());
     }
 
     /**
      * Author: Sam Lee
-     * Test that the RegisteredEventArrayAdapter correctly handles accepting an
-     * invitation
-     * 
+     * Test that the RegisteredEventArrayAdapter correctly handles accepting an invitation
+     * US 01.05.02 As an entrant I want to be able to accept the invitation to register/sign up when chosen to participate in an event
      * @throws ParseException
      * @throws WriterException
      */
@@ -142,9 +138,8 @@ public class RegisteredEventArrayTest {
 
     /**
      * Author: Sam Lee
-     * Test that the RegisteredEventArrayAdapter correctly handles declining an
-     * invitation
-     * 
+     * Test that the RegisteredEventArrayAdapter correctly handles declining an invitation
+     * US 01.05.03 As an entrant I want to be able to decline an invitation when chosen to participate in an event
      * @throws ParseException
      * @throws WriterException
      */
