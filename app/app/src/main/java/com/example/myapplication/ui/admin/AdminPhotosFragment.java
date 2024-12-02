@@ -27,6 +27,14 @@ import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 
+/**
+ * AdminPhotosFragment is responsible for managing user profile images and event posters
+ * for administrative purposes. It listens to Firestore for updates, displays user data,
+ * and provides functionalities to delete profile pictures.
+ *
+ * Author: Nishchay Ranjan
+ */
+
 public class AdminPhotosFragment extends Fragment {
 
     private static final String TAG = "AdminPhotosFragment";
@@ -34,7 +42,8 @@ public class AdminPhotosFragment extends Fragment {
     private ListView docRefListView;
     private ArrayList<UserItem> userList;
     private UserAdapter userAdapter;
-    private ListenerRegistration listenerRegistration;
+    private ListenerRegistration listenerRegistrationUsers;
+    private ListenerRegistration listenerRegistrationEvents;
 
     @Nullable
     @Override
@@ -53,7 +62,8 @@ public class AdminPhotosFragment extends Fragment {
 
         docRefListView.setOnItemClickListener((parent, v, position, id) -> showPopupDialog(userList.get(position)));
 
-        startListeningToFirestore();
+        startListeningToFirestoreUsers(); // For user data
+        startListeningToFirestoreEvents(); // For event data
     }
 
     @Override
@@ -62,13 +72,13 @@ public class AdminPhotosFragment extends Fragment {
         stopListeningToFirestore();
     }
 
-    private void startListeningToFirestore() {
+    private void startListeningToFirestoreUsers() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        listenerRegistration = db.collection("AllUsers")
+        listenerRegistrationUsers = db.collection("AllUsers")
                 .addSnapshotListener((snapshots, error) -> {
                     if (error != null) {
-                        Log.e(TAG, "Error listening to Firestore changes: ", error);
+                        Log.e(TAG, "Error listening to Firestore changes (Users): ", error);
                         return;
                     }
 
@@ -90,10 +100,42 @@ public class AdminPhotosFragment extends Fragment {
                 });
     }
 
+    private void startListeningToFirestoreEvents() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        listenerRegistrationEvents = db.collection("AllEvents")
+                .addSnapshotListener((snapshots, error) -> {
+                    if (error != null) {
+                        Log.e(TAG, "Error listening to Firestore changes (Events): ", error);
+                        return;
+                    }
+
+                    if (snapshots != null) {
+                        for (DocumentChange change : snapshots.getDocumentChanges()) {
+                            switch (change.getType()) {
+                                case ADDED:
+                                    logEventPoster(change);
+                                    break;
+                                case MODIFIED:
+                                    logEventPoster(change);
+                                    break;
+                                case REMOVED:
+                                    Log.d(TAG, "Event removed: ID = " + change.getDocument().getId());
+                                    break;
+                            }
+                        }
+                    }
+                });
+    }
+
     private void stopListeningToFirestore() {
-        if (listenerRegistration != null) {
-            listenerRegistration.remove();
-            listenerRegistration = null;
+        if (listenerRegistrationUsers != null) {
+            listenerRegistrationUsers.remove();
+            listenerRegistrationUsers = null;
+        }
+        if (listenerRegistrationEvents != null) {
+            listenerRegistrationEvents.remove();
+            listenerRegistrationEvents = null;
         }
     }
 
@@ -102,11 +144,25 @@ public class AdminPhotosFragment extends Fragment {
         String uuid = change.getDocument().getString("uuid");
         String encodedPicture = change.getDocument().getString("encodedPicture");
 
-        if (name != null && uuid != null && encodedPicture != null) { // Add only if encodedPicture is not null
+        if (name != null && uuid != null && encodedPicture != null) {
             userList.add(new UserItem(name, uuid, encodedPicture));
             userAdapter.notifyDataSetChanged();
         } else {
             Log.d(TAG, "Skipping user with null encodedPicture: uuid=" + uuid);
+        }
+    }
+
+    private void logEventPoster(DocumentChange change) {
+        String eventName = change.getDocument().getString("eventName");
+        String eventId = change.getDocument().getString("eventId");
+        String eventPoster = change.getDocument().getString("eventPoster");
+
+        if (eventName != null && eventPoster != null) {
+            Log.d(TAG, "Event Poster for Event \"" + eventName + "\" (ID: " + eventId + "): " + eventPoster);
+        } else if (eventName != null) {
+            Log.d(TAG, "No eventPoster available for Event \"" + eventName + "\" (ID: " + eventId + ")");
+        } else {
+            Log.e(TAG, "Invalid event data: eventName=" + eventName + ", eventId=" + eventId);
         }
     }
 
@@ -117,9 +173,9 @@ public class AdminPhotosFragment extends Fragment {
 
         for (int i = 0; i < userList.size(); i++) {
             if (userList.get(i).getUuid().equals(uuid)) {
-                if (encodedPicture != null) { // Update only if encodedPicture is not null
+                if (encodedPicture != null) {
                     userList.set(i, new UserItem(name, uuid, encodedPicture));
-                } else { // Remove if encodedPicture becomes null
+                } else {
                     userList.remove(i);
                 }
                 userAdapter.notifyDataSetChanged();
@@ -176,7 +232,7 @@ public class AdminPhotosFragment extends Fragment {
 
                         for (int i = 0; i < userList.size(); i++) {
                             if (userList.get(i).getUuid().equals(userItem.getUuid())) {
-                                userList.remove(i); // Remove item from the list
+                                userList.remove(i);
                                 userAdapter.notifyDataSetChanged();
                                 break;
                             }
