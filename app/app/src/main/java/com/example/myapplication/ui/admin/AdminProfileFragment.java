@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
+import com.example.myapplication.objects.UserProfile;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class AdminProfileFragment extends Fragment {
     private ListView emailListView;
     private ArrayList<String> userList;
     private ArrayAdapter<String> userAdapter;
+    private ArrayAdapter<UserProfile> fullUserList;
     private FirebaseFirestore db;
     private String finalUuid;
 
@@ -66,11 +68,11 @@ public class AdminProfileFragment extends Fragment {
                         userList.clear();
 
                         for (com.google.firebase.firestore.DocumentSnapshot document : task.getResult().getDocuments()) {
+                            fullUserList.add(document.toObject(UserProfile.class));
                             String name = document.getString("name");
                             String email = document.getString("email");
                             String phoneNumber = document.getString("phonenumber");
                             String uuid = document.getId();
-                            finalUuid = uuid;
 
                             StringBuilder userInfo = new StringBuilder();
                             userInfo.append("Name: ").append(name != null ? name : "N/A").append("\n");
@@ -97,7 +99,10 @@ public class AdminProfileFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(requireContext(), "User deleted successfully!", Toast.LENGTH_SHORT).show();
+                        UserProfile delUser = fullUserList.getItem(position);
                         userList.remove(position);
+                        assert delUser != null;
+                        db.collection("AllUsers").document(delUser.getUuid()).delete();
                         userAdapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }})
