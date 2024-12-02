@@ -163,9 +163,9 @@ public class MainActivity extends AppCompatActivity {
                         notifDB.getUserNewNotifications(); //get the list of users unseen notifications
                     }
 
-                    //Bitmap pfp = helper.loadProfilePicture(user);
-                    //updateSidebarHeader(user.getName(),user.getEmail(),pfp);
-                    //updateSidebarForUserType(user);
+                    Bitmap pfp = helper.loadProfilePicture(user);
+                    updateSidebarHeader(user.getName(),user.getEmail(),pfp);
+                    updateSidebarForUserType(user);
                     Log.v("SetUpDB", "Set profile for existing user");
 
                 } else { // User is not already in the database
@@ -176,9 +176,9 @@ public class MainActivity extends AppCompatActivity {
                     eventDB.getUserEnteredEvents(user);
                     eventDB.getUserOrgEvents(user);
                     connection.setUser(user);
-                    //Bitmap pfp = helper.loadProfilePicture(user);
-                    //updateSidebarHeader("Name","Email Address",pfp);
-                    //updateSidebarForUserType(user);
+                    Bitmap pfp = helper.loadProfilePicture(user);
+                    updateSidebarHeader("Name","Email Address",pfp);
+                    updateSidebarForUserType(user);
                     Log.v("SetUpDB", "Set profile for new user");
                 }
                 //testCreateNotif();
