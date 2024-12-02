@@ -2,6 +2,8 @@ package com.example.myapplication.objects;
 
 import static android.app.PendingIntent.getActivity;
 
+import android.location.Location;
+
 import com.google.firebase.firestore.DocumentReference;
 
 import java.io.Serializable;
@@ -24,6 +26,7 @@ public class UserProfile implements Serializable {
     public Boolean isAdmin; // true if the user has admin privileges
     public Boolean allowNotifs = Boolean.TRUE; // False if they do not want to receive notifications, True if they do allow notifications
     public  Boolean geoLocationOn; // True if they allow geoLocation, False if not
+    public Location geoLocation;
     public ArrayList<DocumentReference> myEvents; // the users ENTERED events
     public ArrayList<Event> myEnteredEvents; // the users organized events
     public ArrayList<DocumentReference> myNotifications;
@@ -289,4 +292,8 @@ public class UserProfile implements Serializable {
     public void setGeoLocationOn(Boolean geoLocationOn) {
         this.geoLocationOn = geoLocationOn;
     }
+
+    public Location getGeoLocation() { return geoLocation; }
+
+    public void setGeoLocation(Location geoLocation) { this.geoLocation = geoLocation; }
 }
