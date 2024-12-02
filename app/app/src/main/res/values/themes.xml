@@ -18,7 +18,8 @@
 
     <style name="CustomFABStyle" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="backgroundTint">@color/fore_purple</item>
-        <item name="rippleColor">@color/accent_pink</item> <!-- Optional ripple effect -->
+        <item name="rippleColor">@color/accent_pink</item>
+        <item name="elevation">0dp</item><!-- Optional ripple effect -->
     </style>
 
     <style name="Theme.MyApplication.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
