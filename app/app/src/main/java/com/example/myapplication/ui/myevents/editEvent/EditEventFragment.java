@@ -48,7 +48,7 @@ import java.util.Objects;
 /**
  * Authors: Erin-Marie, Nishchay
  * Fragment that appears when the user wants to edit an events details
- * TODO: make the event poster appear if the organizer submitted one
+ * TODO: make the event poster appear if the organizer submitted one, Apoorv: If thats ever done then set the view to visible if the user has a poster. (Don't change xml)
  */
 
 public class EditEventFragment extends Fragment {

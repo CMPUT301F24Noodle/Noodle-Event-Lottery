@@ -58,10 +58,10 @@
         <TextView
             android:id="@+id/event_date_time"
             android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/alexandria_semibold"
-            android:text="@string/sample_date_time"
+            android:fontFamily="@font/aleo_medium"
+            android:text="Start Date to End Date At Time"
             android:textColor="@color/text_cyan"
             android:textSize="22dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -69,18 +69,31 @@
             app:layout_constraintTop_toBottomOf="@id/event_poster"
             app:layout_goneMarginTop="0dp" />
 
+        <TextView
+            android:id="@+id/event_repeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repeats: Mon, Tue, Fri"
+            android:textColor="@color/text_cyan"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/event_date_time"
+            android:fontFamily="@font/aleo_medium"/>
 
-    <TextView
-        android:id="@+id/event_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/aleo_medium"
-        android:text="@string/ccis_university_of_alberta"
-        android:textColor="@color/text_cyan"
-        android:textSize="22dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/event_date_time" />
+
+        <TextView
+            android:id="@+id/event_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/aleo_medium"
+            android:text="@string/ccis_university_of_alberta"
+            android:textColor="@color/text_cyan"
+            android:textSize="22dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/event_repeat"
+            android:layout_marginTop="10dp"/>
 
     <TextView
         android:id="@+id/event_details"
@@ -105,7 +118,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/event_details"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="15dp"/>
 
         <TextView
             android:id="@+id/event_status"
@@ -120,13 +133,26 @@
             app:layout_constraintTop_toBottomOf="@id/event_waiting_list"
             app:layout_goneMarginTop="5dp" />
 
+        <TextView
+            android:id="@+id/event_registration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/aleo_medium"
+            android:text="Registration Period: Start to End"
+            android:textColor="@color/text_cyan"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/event_status"
+            app:layout_goneMarginTop="5dp" />
+
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/event_status">
+        app:layout_constraintTop_toBottomOf="@id/event_registration">
 
         <TextView
             android:id="@+id/geoText"
@@ -150,7 +176,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/event_save_button"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
