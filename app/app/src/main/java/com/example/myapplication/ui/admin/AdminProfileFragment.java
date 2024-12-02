@@ -30,6 +30,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * AdminProfileFragment is responsible for displaying a list of user profiles and
+ * enabling administrators to view and delete user data from Firestore. 
+ * This fragment ensures only admin users can access its functionality.
+ * 
+ * Author: Nishchay Ranjan
+ */
+
 public class AdminProfileFragment extends Fragment {
 
     private static final String TAG = "AdminProfileFragment";
