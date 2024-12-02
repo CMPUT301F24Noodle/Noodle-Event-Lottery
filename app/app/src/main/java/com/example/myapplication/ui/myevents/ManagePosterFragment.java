@@ -21,7 +21,11 @@ import com.example.myapplication.database.EventDB;
 import com.example.myapplication.objects.Event;
 import java.io.IOException;
 
-
+/**
+ * class used when creating an event in createeventfragment to upload a poster,
+ * also used in editeventdetails to update the poster if need be
+ * launches the gallery to view the image
+ */
 public class ManagePosterFragment extends DialogFragment {
     Event event;
     EventDB eventDB;
