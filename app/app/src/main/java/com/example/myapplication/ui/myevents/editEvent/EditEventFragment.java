@@ -28,7 +28,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import com.example.myapplication.MainActivity;
@@ -38,7 +37,6 @@ import com.example.myapplication.database.EventDB;
 import com.example.myapplication.objects.Event;
 import com.example.myapplication.objects.UserProfile;
 import com.example.myapplication.ui.myevents.manageEvent.DisplayQRCodeFragment;
-import com.example.myapplication.ui.myevents.manageEvent.ManageEventFragment;
 import com.google.zxing.WriterException;
 
 import java.text.SimpleDateFormat;
@@ -46,9 +44,8 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Authors: Erin-Marie, Nishchay
+ * Authors: Erin-Marie, Nishchay, Xavier
  * Fragment that appears when the user wants to edit an events details
- * TODO: make the event poster appear if the organizer submitted one, Apoorv: If thats ever done then set the view to visible if the user has a poster. (Don't change xml)
  */
 
 public class EditEventFragment extends Fragment {
