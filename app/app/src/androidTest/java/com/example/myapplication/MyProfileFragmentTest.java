@@ -326,6 +326,43 @@ public class MyProfileFragmentTest {
 
     }
 
+    // TODO THIS IS GARBAGE AND DOESN'T WORK haha
+    @Test
+    public void uploadProfilePictureTest(){
+        // Navigate to the fragment that handles profile picture editing
+        onView(withId(R.id.my_profile_image)).perform(click());
+        onView(withId(R.id.edit_picture_button)).perform(click());
+
+        // Retrieve the fragment and the gallery launcher
+        scenario.getScenario().onActivity(activity -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            ManageProfilePictureFragment managePPFragment =
+                    (ManageProfilePictureFragment) activity.getSupportFragmentManager()
+                            .findFragmentByTag("ProfilePictureManagementFragment");
+
+
+            assertNotNull(managePPFragment); // Ensure the dialog fragment exists
+
+            ActivityResultLauncher<Intent> launcher = ((ManageProfilePictureFragment) managePPFragment).getGalleryLauncher();
+
+            // Create an Intent with the test image URI (simulating a gallery selection)
+            Uri imageUri = Uri.parse("android.resource://" + activity.getPackageName() + "/" + R.drawable.testposter);
+            Intent resultIntent = new Intent();
+            resultIntent.setData(imageUri);
+
+            // Simulate the gallery result (image selection)
+            launcher.launch(resultIntent);
+
+            int a = 1+1;
+        });
+
+    }
+
+
 
 
 }
