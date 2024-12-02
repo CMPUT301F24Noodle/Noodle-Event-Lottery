@@ -289,4 +289,9 @@ public class UserProfile implements Serializable {
     public void setGeoLocationOn(Boolean geoLocationOn) {
         this.geoLocationOn = geoLocationOn;
     }
+
+    public void setIsAdmin(Boolean b) {
+        this.isAdmin = b;
+        this.setAdmin(b);
+    }
 }

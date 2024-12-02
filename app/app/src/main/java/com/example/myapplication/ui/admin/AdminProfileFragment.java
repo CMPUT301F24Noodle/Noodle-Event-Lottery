@@ -18,7 +18,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.database.DBConnection;
+import com.example.myapplication.database.EventDB;
+import com.example.myapplication.database.NotificationDB;
+import com.example.myapplication.database.UserDB;
+import com.example.myapplication.objects.Event;
 import com.example.myapplication.objects.UserProfile;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -34,6 +40,15 @@ public class AdminProfileFragment extends Fragment {
     private FirebaseFirestore db;
     private String finalUuid;
 
+    public MainActivity main;
+    public DBConnection connection;
+    public UserDB userDB; // userDB instance for the current user
+    public EventDB eventDB;
+    public NotificationDB notifDB;
+    public String uuid;
+    public UserProfile user;
+    public Event event;
+
     public AdminProfileFragment() {
         // Required empty public constructor
     }
@@ -43,20 +58,30 @@ public class AdminProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.item_admin_profile, container, false);
 
-        emailListView = rootView.findViewById(R.id.email_list_view);
-        userList = new ArrayList<>();
-        fullUserList = new ArrayList<UserProfile>();
-        db = FirebaseFirestore.getInstance();
 
-        userAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, userList);
-        emailListView.setAdapter(userAdapter);
+        getVarFromMain();
 
-        emailListView.setOnItemClickListener((parent, view, position, id) -> {
-            String userData = userList.get(position);
-            showUserDetailsDialog(userData, position);
-        });
+        if ( user.getAdmin() != Boolean.FALSE){
+            emailListView = rootView.findViewById(R.id.email_list_view);
+            userList = new ArrayList<>();
+            fullUserList = new ArrayList<UserProfile>();
+            db = FirebaseFirestore.getInstance();
 
-        fetchUserDetails();
+
+            userAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, userList);
+            emailListView.setAdapter(userAdapter);
+
+            emailListView.setOnItemClickListener((parent, view, position, id) -> {
+                String userData = userList.get(position);
+                showUserDetailsDialog(userData, position);
+            });
+
+            fetchUserDetails();
+
+        } else {
+            Toast.makeText(getContext(), "You are not an Admin", Toast.LENGTH_SHORT).show();
+        }
+
 
         return rootView;
     }
@@ -194,5 +219,20 @@ public class AdminProfileFragment extends Fragment {
 //        });
 
 
+
+    }
+    /**
+     * Author: Erin-Marie
+     * Gets some of the variables from MainActivity that we will need
+     */
+    public void getVarFromMain() {
+        main = (MainActivity) getActivity();
+        assert main != null;
+        connection = main.connection;
+
+        notifDB = connection.getNotifDB();
+        user = connection.getUser();
+        eventDB = connection.getEventDB();
+        userDB = connection.getUserDB();
     }
 }
