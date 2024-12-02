@@ -65,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
     public UserProfile user;
     public NotificationManager notificationManager;
     private final String CHANNEL_ID = "NoodleNotifs";
-
-    // for myEvents and registeredEvents
     public Event currentEvent;
     public Event scannedEvent;
 
@@ -82,9 +80,9 @@ public class MainActivity extends AppCompatActivity {
         // Create the users NotificationChannel
         setUpNotifChannel();
 
+        //Set the view and its attr
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         setSupportActionBar(binding.appBarMain.toolbar);
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
@@ -99,12 +97,7 @@ public class MainActivity extends AppCompatActivity {
         navORG.setVisible(true);
         navADM.setVisible(true);
 
-
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.g
-        // TODONE: add UserProfile to the nav drawer so it can be selected and we can view the UserProfile fragment
-        //MAYBE: to add nav_home activity back into the menu, uncomment the MAYBE below, as well as both MAYBE in mobile_navigation.XML and in activity_drawer_main.XML
+        //configure the nav bar
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_profile, R.id.nav_myevents, R.id.nav_registered, R.id.nav_notifications, R.id.nav_metrics)
                 .setOpenableLayout(drawer)
