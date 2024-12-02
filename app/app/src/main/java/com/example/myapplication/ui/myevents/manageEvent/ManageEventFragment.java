@@ -4,6 +4,7 @@ import static androidx.navigation.ui.NavigationUI.navigateUp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -28,9 +29,15 @@ import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.objects.Event;
 import com.example.myapplication.objects.UserProfile;
 import com.example.myapplication.objects.Notification;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
@@ -63,6 +70,16 @@ public class ManageEventFragment extends Fragment {
     ArrayList<String> expandableListTitle;
     HashMap<String, ArrayList<UserProfile>> expandableListDetail;
 
+    // The entry point to the Fused Location Provider.
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private Location lastKnownLocation;
+    private static final String TAG = ManageEventFragment.class.getSimpleName();
+    private GoogleMap map;
+    private CameraPosition cameraPosition;
+    private static final int DEFAULT_ZOOM = 15;
+    private final LatLng defaultLocation = new LatLng(53.5461, -113.4937);
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +95,9 @@ public class ManageEventFragment extends Fragment {
         }
         notifDB = connection.getNotifDB();
         assert eventDB != null;
+
+        // Construct a FusedLocationProviderClient.
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         //initialize buttons
         FloatingActionButton viewMapButton = view.findViewById(R.id.FAB_map);
@@ -281,7 +301,7 @@ public class ManageEventFragment extends Fragment {
                 // check if the map fragment already exists
                 SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentByTag("map_fragment");
 
-                CharSequence text = "Opening the map... This will take a while";
+                CharSequence text = "Opening the map... This might take a while";
                 Toast.makeText(getContext(), text, Toast.LENGTH_LONG).show();
 
                 if (mapFragment == null) {
@@ -309,14 +329,16 @@ public class ManageEventFragment extends Fragment {
                     mapFragment.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
-                            double edmontonLatitude = 53.5461;
-                            double edmontonLongitude = -113.4937;
-                            int zoomLevel = 12;
+                            map = googleMap;
 
-                            // camera position
-                            LatLng edmonton = new LatLng(edmontonLatitude, edmontonLongitude);
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(edmonton, zoomLevel));
-
+                            ArrayList<UserProfile> allUsers = eventDB.getEntrantsList();
+                            // get location of all users in the waitlist
+                            ArrayList<Location> allLocations = new ArrayList<>();
+                            for(UserProfile user : allUsers) {
+                                allLocations.add(user.getGeoLocation());
+                            }
+                            // set each marker on the map
+                            setMarkers(allLocations);
                         }
                     });
 
@@ -325,6 +347,23 @@ public class ManageEventFragment extends Fragment {
                     getChildFragmentManager().beginTransaction()
                             .remove(mapFragment)
                             .commit();
+                }
+            }
+
+            private void setMarkers(ArrayList<Location> allLocations) {
+                /*
+                 * Get the best and most recent location of the device, which may be null in rare
+                 * cases when a location is not available.
+                 */
+                for(Location location : allLocations) {
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                            new LatLng(location.getLatitude(),
+                                    location.getLongitude()), DEFAULT_ZOOM));
+                    // marker
+                    map.addMarker(new MarkerOptions()
+                            .position(new LatLng(location.getLatitude(),
+                                    location.getLongitude()))
+                            .title("User's location"));
                 }
             }
         });
