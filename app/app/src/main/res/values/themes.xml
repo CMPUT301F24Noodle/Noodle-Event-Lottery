@@ -4,20 +4,21 @@
         <!-- Primary brand color. -->
         <item name="android:windowBackground">@color/back_gray</item>
         <item name="colorPrimary">@color/fore_purple</item>
-        <item name="colorPrimaryVariant">@color/accent_pink</item>
         <item name="colorOnPrimary">@color/bonus_yellow</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/fore_purple</item>
-        <item name="colorSecondaryVariant">@color/accent_pink</item>
         <item name="colorOnSecondary">@color/bonus_yellow</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
     </style>
 
     <style name="Theme.MyApplication.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CustomFABStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/fore_purple</item>
+        <item name="rippleColor">@color/accent_pink</item> <!-- Optional ripple effect -->
     </style>
 
     <style name="Theme.MyApplication.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>

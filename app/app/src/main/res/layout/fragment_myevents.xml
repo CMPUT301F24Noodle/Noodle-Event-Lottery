@@ -32,7 +32,9 @@
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginBottom="16dp"
             app:maxImageSize="28dp"
-            app:srcCompat="@drawable/createevent" />
+            app:srcCompat="@drawable/createevent"
+            app:tint="@color/bonus_yellow"
+            style="@style/CustomFABStyle"/>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
