@@ -1,50 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center">
-
-    <ImageView
-        android:id="@+id/full_profile_image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@mipmap/placeholderpfp" />
-
+    android:layout_gravity="center"
+    app:cardCornerRadius="16dp"
+    app:cardBackgroundColor="@color/back_gray"
+    app:cardElevation="8dp"
+    android:padding="8dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
-        android:layout_margin= "16dp">
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:gravity="center"
+        android:background="@color/back_gray">
 
-        <Button
-            android:id="@+id/edit_picture_button"
+        <ImageView
+            android:id="@+id/full_profile_image"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@mipmap/placeholderpfp" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edit"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/belanosima"
-            android:background="@drawable/mybutton"/>
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_margin="16dp">
+
+            <Button
+                android:id="@+id/edit_picture_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/belanosima"
+                android:background="@drawable/mybutton" />
+
+            <Button
+                android:id="@+id/delete_picture_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/mybutton"
+                android:fontFamily="@font/belanosima"
+                android:text="Delete" />
+        </LinearLayout>
 
         <Button
-            android:id="@+id/delete_picture_button"
+            android:id="@+id/picture_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/mybutton"
+            android:text="Back"
             android:fontFamily="@font/belanosima"
-            android:text="Delete" />
-
+            android:background="@drawable/mybutton" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/picture_back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        android:fontFamily="@font/belanosima"
-        android:background="@drawable/mybutton"/>
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>
