@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         CircleImageView profileImage = headerView.findViewById(R.id.nav_header_profile_image);
 
         //TODO apoorv this is the code Erin adde to fix the menu bar delay
-        updateSidebarHeader("","",null);
+        updateSidebarHeader("Information Loading","Please Wait",null);
         Menu menu = navigationView.getMenu();
         MenuItem navORG = menu.findItem(R.id.nav_myevents);
         MenuItem navADM = menu.findItem(R.id.nav_admin);
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.v("SetUpDB", "Set profile for new user");
 
                     Bitmap pfp = helper.loadProfilePicture(user);
-                    updateSidebarHeader("","",pfp);
+                    updateSidebarHeader("Try updating your profile data!","Welcome to Noodle!",pfp);
                     updateSidebarForUserType(user);
                 }
                 //testCreateNotif();
@@ -296,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
         if (email!= null){
             headerEmail.setText(email);
         } else{
-            headerEmail.setText("");
+            headerEmail.setText("Welcome to Noodle!");
         }
 
 
