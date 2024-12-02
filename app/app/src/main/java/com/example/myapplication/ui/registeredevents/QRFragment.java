@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -61,7 +62,7 @@ public class QRFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.qr_scanner, container, false);
-        ImageView cameraView = view.findViewById(R.id.camera_preview);
+        FrameLayout cameraView = view.findViewById(R.id.camera_preview);
         cameraView.setVisibility(View.INVISIBLE); // because we didn't use this and its too late
 
         Button scanButton = view.findViewById(R.id.scan_qr);
