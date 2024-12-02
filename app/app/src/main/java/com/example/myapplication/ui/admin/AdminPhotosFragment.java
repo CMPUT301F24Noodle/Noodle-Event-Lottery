@@ -51,7 +51,6 @@ public class AdminPhotosFragment extends Fragment {
         userAdapter = new UserAdapter();
         docRefListView.setAdapter(userAdapter);
 
-        // Set item click listener to show popup
         docRefListView.setOnItemClickListener((parent, v, position, id) -> showPopupDialog(userList.get(position)));
 
         startListeningToFirestore();
@@ -79,11 +78,9 @@ public class AdminPhotosFragment extends Fragment {
                                 case ADDED:
                                     addUser(change);
                                     break;
-
                                 case MODIFIED:
                                     updateUser(change);
                                     break;
-
                                 case REMOVED:
                                     removeUser(change);
                                     break;
@@ -105,28 +102,27 @@ public class AdminPhotosFragment extends Fragment {
         String uuid = change.getDocument().getString("uuid");
         String encodedPicture = change.getDocument().getString("encodedPicture");
 
-        if (name != null && uuid != null) {
+        if (name != null && uuid != null && encodedPicture != null) { // Add only if encodedPicture is not null
             userList.add(new UserItem(name, uuid, encodedPicture));
             userAdapter.notifyDataSetChanged();
         } else {
-            Log.e(TAG, "Invalid user data: name=" + name + ", uuid=" + uuid);
+            Log.d(TAG, "Skipping user with null encodedPicture: uuid=" + uuid);
         }
     }
 
     private void updateUser(DocumentChange change) {
         String uuid = change.getDocument().getString("uuid");
+        String name = change.getDocument().getString("name");
+        String encodedPicture = change.getDocument().getString("encodedPicture");
 
         for (int i = 0; i < userList.size(); i++) {
             if (userList.get(i).getUuid().equals(uuid)) {
-                String name = change.getDocument().getString("name");
-                String encodedPicture = change.getDocument().getString("encodedPicture");
-
-                if (name != null) {
+                if (encodedPicture != null) { // Update only if encodedPicture is not null
                     userList.set(i, new UserItem(name, uuid, encodedPicture));
-                    userAdapter.notifyDataSetChanged();
-                } else {
-                    Log.e(TAG, "Invalid updated user data: uuid=" + uuid);
+                } else { // Remove if encodedPicture becomes null
+                    userList.remove(i);
                 }
+                userAdapter.notifyDataSetChanged();
                 return;
             }
         }
@@ -145,19 +141,14 @@ public class AdminPhotosFragment extends Fragment {
     }
 
     private void showPopupDialog(UserItem userItem) {
-        // Inflate the popup layout
         View popupView = LayoutInflater.from(requireContext()).inflate(R.layout.delete_view_images, null);
 
-        // Create the AlertDialog
         AlertDialog dialog = new AlertDialog.Builder(requireContext()).setView(popupView).create();
 
-        // Bind views
         ImageView fullProfileImage = popupView.findViewById(R.id.full_profile_image);
-       // Button editButton = popupView.findViewById(R.id.edit_picture_button);
         Button deleteButton = popupView.findViewById(R.id.delete_picture_button);
         Button backButton = popupView.findViewById(R.id.picture_back_button);
 
-        // Set the profile image
         try {
             BitmapHelper bitmapHelper = new BitmapHelper();
             UserProfile userProfile = new UserProfile();
@@ -175,22 +166,18 @@ public class AdminPhotosFragment extends Fragment {
             Log.e(TAG, "Error loading full profile picture for UUID: " + userItem.getUuid(), e);
         }
 
-        // Set button actions
-        
-
         deleteButton.setOnClickListener(v -> {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("AllUsers").document(userItem.getUuid())
-                    .update("encodedPicture", null) // Set the encodedPicture field to null
+                    .update("encodedPicture", null)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(requireContext(), "Profile picture deleted successfully!", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
 
-                        // Update the user item in the list and refresh the adapter
                         for (int i = 0; i < userList.size(); i++) {
                             if (userList.get(i).getUuid().equals(userItem.getUuid())) {
-                                userList.get(i).setEncodedPicture(null); // Update local object
-                                userAdapter.notifyDataSetChanged(); // Refresh the ListView
+                                userList.remove(i); // Remove item from the list
+                                userAdapter.notifyDataSetChanged();
                                 break;
                             }
                         }
@@ -203,7 +190,6 @@ public class AdminPhotosFragment extends Fragment {
 
         backButton.setOnClickListener(v -> dialog.dismiss());
 
-        // Show the dialog
         dialog.show();
     }
 
@@ -234,7 +220,7 @@ public class AdminPhotosFragment extends Fragment {
                 UserProfile userProfile = new UserProfile();
                 userProfile.setUuid(userItem.getUuid());
                 userProfile.setEncodedPicture(userItem.getEncodedPicture());
-                userProfile.setHasProfilePic(userItem.getEncodedPicture() != null);
+                userProfile.setHasProfilePic(true);
 
                 Bitmap profilePicture = bitmapHelper.loadProfilePicture(userProfile);
                 if (profilePicture != null) {
@@ -251,9 +237,9 @@ public class AdminPhotosFragment extends Fragment {
     }
 
     private static class UserItem {
-        private String name;
-        private String uuid;
-        private String encodedPicture;
+        private final String name;
+        private final String uuid;
+        private final String encodedPicture;
 
         public UserItem(String name, String uuid, String encodedPicture) {
             this.name = name;
@@ -271,10 +257,6 @@ public class AdminPhotosFragment extends Fragment {
 
         public String getEncodedPicture() {
             return encodedPicture;
-        }
-
-        public void setEncodedPicture(String encodedPicture) {
-            this.encodedPicture = encodedPicture;
         }
     }
 }
