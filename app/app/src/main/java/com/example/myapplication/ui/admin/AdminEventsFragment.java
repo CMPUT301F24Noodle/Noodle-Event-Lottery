@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class AdminEventsFragment extends Fragment {
 
@@ -37,7 +38,7 @@ public class AdminEventsFragment extends Fragment {
     private ArrayList<String> eventList;
     private ArrayList<String> eventIDs;
     private ArrayList<Event> fullEventList;
-    private ArrayAdapter<String> eventAdapter;
+    private ArrayAdapter<Event> eventAdapter;
     private FirebaseFirestore db;
 
     public AdminEventsFragment() {
@@ -47,15 +48,16 @@ public class AdminEventsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.item_admin_event, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_sub_admin_listview, container, false);
 
-        eventListView = rootView.findViewById(R.id.event_list_view);
+        eventListView = rootView.findViewById(R.id.admin_item_list);
         eventList = new ArrayList<>();
         eventIDs = new ArrayList<>();
         fullEventList = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
 
-        eventAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, eventList);
+        eventAdapter = new AdminArrayAdapter(requireContext(), fullEventList);
+
         eventListView.setAdapter(eventAdapter);
 
         eventListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -115,10 +117,11 @@ public class AdminEventsFragment extends Fragment {
                         Toast.makeText(requireContext(), "Event deleted successfully!", Toast.LENGTH_SHORT).show();
                         deleteEvent(eventID);
                         Event delEvent = fullEventList.get(position);
+                        fullEventList.remove(position);
                         eventList.remove(position);
+                        eventAdapter.notifyDataSetChanged();
                         assert delEvent != null;
                         db.collection("AllEvents").document(delEvent.getEventID()).delete();
-                        eventAdapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }})
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
