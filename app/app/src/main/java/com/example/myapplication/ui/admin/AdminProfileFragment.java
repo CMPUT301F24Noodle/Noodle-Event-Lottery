@@ -30,7 +30,7 @@ public class AdminProfileFragment extends Fragment {
     private ListView emailListView;
     private ArrayList<String> userList;
     private ArrayAdapter<String> userAdapter;
-    private ArrayAdapter<UserProfile> fullUserList;
+    private ArrayList<UserProfile> fullUserList;
     private FirebaseFirestore db;
     private String finalUuid;
 
@@ -45,6 +45,7 @@ public class AdminProfileFragment extends Fragment {
 
         emailListView = rootView.findViewById(R.id.email_list_view);
         userList = new ArrayList<>();
+        fullUserList = new ArrayList<UserProfile>();
         db = FirebaseFirestore.getInstance();
 
         userAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, userList);
@@ -99,7 +100,7 @@ public class AdminProfileFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(requireContext(), "User deleted successfully!", Toast.LENGTH_SHORT).show();
-                        UserProfile delUser = fullUserList.getItem(position);
+                        UserProfile delUser = fullUserList.get(position);
                         userList.remove(position);
                         assert delUser != null;
                         db.collection("AllUsers").document(delUser.getUuid()).delete();
