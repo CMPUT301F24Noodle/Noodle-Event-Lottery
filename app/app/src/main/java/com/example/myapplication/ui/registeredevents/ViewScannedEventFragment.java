@@ -1,5 +1,8 @@
 package com.example.myapplication.ui.registeredevents;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,14 +16,19 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.database.UserDB;
 import com.example.myapplication.objects.Event;
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.EventDB;
 import com.example.myapplication.objects.UserProfile;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -38,6 +46,7 @@ public class ViewScannedEventFragment extends Fragment {
     private Boolean locationSharingAllowed = Boolean.FALSE; // Boolean for whether the entrant has allowed their geolocation to be shared
     private Boolean geolocationRequired; //Boolean for whether or not the event requires entrants geolocation
     private Boolean userCanEnter = Boolean.FALSE; //Boolean for whether or not the user has been approved to enter the event
+    private FusedLocationProviderClient fusedLocationClient;
 
 
     @Override
@@ -46,6 +55,9 @@ public class ViewScannedEventFragment extends Fragment {
         // Inflate the layout for the fragment
         assert inflater != null;
         View view = inflater.inflate(R.layout.view_event_user, container, false);
+
+        // Initialize location
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         // Retrieve instances from MainActivity
         MainActivity main = (MainActivity) getActivity();
@@ -169,6 +181,7 @@ public class ViewScannedEventFragment extends Fragment {
                             // user has accepted to share geolocation, is approved to enter the event
                         } else if (locationSharingAllowed == Boolean.TRUE) {
                             userCanEnter = Boolean.TRUE;
+                            saveUserLocation();
                         }
                         //if geolocation is not required, they can just enter the event
                     } else {
@@ -182,6 +195,38 @@ public class ViewScannedEventFragment extends Fragment {
         saveButton.setOnClickListener(v -> saveEvent(v));
 
         return view;
+    }
+
+    // Get the current location
+    private void saveUserLocation() {
+        // Check if the location permission is granted
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Handle the location result
+                            if (location != null) {
+                                saveLocationToFirebase(location);
+                            } else {
+                                // Location is null, handle the case when location is not available
+                                Toast.makeText(getContext(), "Unable to retrieve location.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        } else {
+            // If permissions are not granted, request them
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+    }
+
+    // Save location to Firebase
+    private void saveLocationToFirebase(Location geoLocation) {
+        UserDB userDB = connection.getUserDB();
+        // Update location
+        user.setGeoLocation(geoLocation);
+        userDB.updateUserDocument(user);
     }
 
     /**
