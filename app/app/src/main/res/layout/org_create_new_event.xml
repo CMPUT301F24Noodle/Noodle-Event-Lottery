@@ -612,7 +612,8 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/mybutton"
             android:fontFamily="@font/belanosima"
-            android:text="Save" />
+            android:text="Save"
+            android:textColor="@color/bonus_yellow"/>
 
     </LinearLayout>
 

@@ -23,7 +23,8 @@
             android:layout_gravity="center"
             android:text="Profiles"
             android:textStyle="bold"
-            android:background="@drawable/mybutton"/>
+            android:background="@drawable/mybutton"
+            android:textColor="@color/bonus_yellow"/>
 
         <Button
             android:id="@+id/nav_admin_event"
@@ -33,7 +34,8 @@
             android:layout_gravity="center"
             android:text="Events"
             android:background="@drawable/mybutton"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="30dp"
+            android:textColor="@color/bonus_yellow"/>
 
         <Button
             android:id="@+id/nav_admin_facility"
@@ -44,7 +46,8 @@
             android:text="Facilities"
             android:textStyle="bold"
             android:background="@drawable/mybutton"
-            android:layout_marginTop="30dp" />
+            android:layout_marginTop="30dp"
+            android:textColor="@color/bonus_yellow"/>
 
         <Button
             android:id="@+id/nav_admin_img"
@@ -55,7 +58,8 @@
             android:text="Images"
             android:textStyle="bold"
             android:background="@drawable/mybutton"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="30dp"
+            android:textColor="@color/bonus_yellow"/>
 
     </LinearLayout>
 

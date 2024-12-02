@@ -71,7 +71,8 @@
         android:text="Export CSV"
         app:layout_constraintBottom_toTopOf="@id/FAB_map"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/mybutton" />
+        android:background="@drawable/mybutton"
+        android:textColor="@color/bonus_yellow"/>
 
     <Button
         android:id="@+id/notify_button"
@@ -83,7 +84,8 @@
         android:text="Send Message"
         app:layout_constraintBottom_toTopOf="@id/export_csv_button"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/mybutton" />
+        android:background="@drawable/mybutton"
+        android:textColor="@color/bonus_yellow"/>
 
     <Button
         android:id="@+id/replace_button"
@@ -95,7 +97,8 @@
         android:text="Replace Cancelled"
         app:layout_constraintBottom_toTopOf="@id/notify_button"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/mybutton" />
+        android:background="@drawable/mybutton"
+        android:textColor="@color/bonus_yellow"/>
 
     <Button
         android:id="@+id/draw_name_button"
@@ -107,7 +110,8 @@
         android:text="End Lottery"
         app:layout_constraintBottom_toTopOf="@id/notify_button"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/mybutton" />
+        android:background="@drawable/mybutton"
+        android:textColor="@color/bonus_yellow"/>
 
 
 

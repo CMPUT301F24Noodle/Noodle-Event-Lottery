@@ -149,7 +149,8 @@
             android:fontFamily="@font/belanosima"
             android:text="Accept"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/mybutton"/>
+            android:background="@drawable/mybutton"
+            android:textColor="@color/bonus_yellow"/>
 
         <View
             android:layout_width="0dp"
@@ -163,7 +164,8 @@
             android:fontFamily="@font/belanosima"
             android:text="Decline"
             android:layout_marginRight="20dp"
-            android:background="@drawable/mybutton"/>
+            android:background="@drawable/mybutton"
+            android:textColor="@color/bonus_yellow"/>
 
     </LinearLayout>
 
