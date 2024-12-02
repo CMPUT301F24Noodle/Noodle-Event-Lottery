@@ -26,6 +26,10 @@ import java.util.TimeZone;
 /**
  * Author: Sam Lee
  * Tests for the ViewEventActivity
+ * TODO:
+ *  US 01.08.01 As an entrant, I want to be warned before joining a waiting list that requires geolocation.
+ *  US 01.08.01 As an entrant, I want to be warned before joining a waiting list that requires geolocation.
+ *  US 01.06.02 As an entrant I want to be able to be sign up for an event by scanning the QR code
  */
 @RunWith(AndroidJUnit4.class)
 public class ViewScannedEventFragmentTest {

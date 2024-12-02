@@ -49,9 +49,10 @@ import static org.mockito.Mockito.when;
 import static java.util.regex.Pattern.matches;
 
 /**
- * Author: Sam Lee
+ * Author: Sam Lee and Erin-Marie
  * Tests for the RegisteredEventArrayAdapter
  */
+
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class RegisteredEventArrayTest {
