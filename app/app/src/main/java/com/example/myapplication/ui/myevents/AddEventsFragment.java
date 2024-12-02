@@ -18,6 +18,7 @@ package com.example.myapplication.ui.myevents;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,8 +30,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,16 +71,19 @@ public class AddEventsFragment extends Fragment {
     private EditText eventNameEditText, eventLocationEditText, dateDayEditText, dateMonthEditText, dateYearEditText;
     private EditText eventDetailsEditText, contactNumberEditText, maxParticipantsEditText, waitingListLimitEditText;
     private Button addPosterButton, saveButton;
-    private TextView currentStatusTextView, removeActionTextView;
+    private TextView currentStatusTextView, removeActionTextView, dateRangeTextTo;
     private ImageView posterImageView;
-    private Switch geoLocationSwitch;
+    private Switch geoLocationSwitch, repeatingSwitch;
     private Uri selectedImageUri;
+    private EditText endDateDD, endDateMM, endDateYY;
 
     private DBConnection connection;
     private EventDB eventDB;
     private UserProfile currentUserProfile;
 
     Event event; // the event that will be made
+
+    LinearLayout repeatingWeek;
 
 
     @Nullable
@@ -97,7 +103,11 @@ public class AddEventsFragment extends Fragment {
 
 
         initializeViews(view);
-        setButtonListeners();
+
+        //
+        repeatingSwitch.setChecked(true);
+
+        setOnClickListeners();
 
         return view;
     }
@@ -123,13 +133,20 @@ public class AddEventsFragment extends Fragment {
         removeActionTextView = view.findViewById(R.id.remove_action);
 
         geoLocationSwitch = view.findViewById(R.id.geolocation_toggle);
+        repeatingSwitch = view.findViewById(R.id.repeating_event_toggle);
+
+        repeatingWeek = view.findViewById(R.id.repeat_week_layout);
+        endDateDD = view.findViewById(R.id.end_date_picker_DD);
+        endDateMM = view.findViewById(R.id.end_date_picker_MM);
+        endDateYY = view.findViewById(R.id.end_date_picker_YY);
+        dateRangeTextTo = view.findViewById(R.id.date_range_text_to);
 
     }
 
     /**
-     * Sets button click listeners for adding/removing poster and saving event details.
+     * Sets button/toggle click listeners for adding/removing poster and saving event details.
      */
-    private void setButtonListeners() {
+    private void setOnClickListeners() {
 
 
         addPosterButton.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +163,28 @@ public class AddEventsFragment extends Fragment {
         });
 
         saveButton.setOnClickListener(v -> saveEventDetails(v));
+
+        repeatingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    // if toggled on: make repeating stuff visible!
+                    repeatingWeek.setVisibility(View.VISIBLE);
+                    endDateYY.setVisibility(View.VISIBLE);
+                    endDateMM.setVisibility(View.VISIBLE);
+                    endDateDD.setVisibility(View.VISIBLE);
+                    dateRangeTextTo.setVisibility(TextView.VISIBLE);
+
+                } else {
+                    // if toggled off, make repeating stuff invisible!
+                    repeatingWeek.setVisibility(View.GONE);
+                    endDateYY.setVisibility(View.GONE);
+                    endDateMM.setVisibility(View.GONE);
+                    endDateDD.setVisibility(View.GONE);
+                    dateRangeTextTo.setVisibility(TextView.GONE);
+                }
+            }
+        });
     }
 
 

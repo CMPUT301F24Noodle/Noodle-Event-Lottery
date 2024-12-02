@@ -57,6 +57,8 @@ public class Event implements Serializable {
     public ArrayList<DocumentReference> losersList; // list of all users who lost the lottery
     public ArrayList<DocumentReference> acceptedList; // list of all users who have accepted their invitation
     public ArrayList<DocumentReference> declinedList; // list of all users who have accepted their invitation
+    public Date eventDateEnd; // the date the event ends if repeating
+    public
 
 
 
