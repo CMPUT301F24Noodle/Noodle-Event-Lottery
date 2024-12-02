@@ -11,6 +11,13 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.widget.ImageView;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.action.ViewActions;
@@ -35,8 +42,7 @@ import com.example.myapplication.objects.UserProfile;
  *TODO:
  * US 01.03.02 As an entrant I want remove profile picture if need be
  * US 01.03.01 As an entrant I want to upload a profile picture for a more personalized experience
- * US 01.03.03 As an entrant I want my profile picture to be deterministically generated from my profile name if I haven't uploaded a profile image yet
- * US 01.07.01 As an entrant, I want to be identified by my device, so that I don't have to use a username and password
+ *
  */
 
 @RunWith(AndroidJUnit4.class)
@@ -69,6 +75,8 @@ public class MyProfileFragmentTest {
         user.setName("TestName");
         user.setEmail("TestEmail");
         user.setPhoneNumber(null);
+        user.setEncodedPicture(null);
+        user.setHasProfilePic(false);
         if(user.getFacility() != null){
             Facility facility = user.getFacility();
             user.removeFacility(facility);
@@ -241,4 +249,32 @@ public class MyProfileFragmentTest {
         onView(withId(R.id.profile_user_name)).check(matches(withText("steve")));
         onView(withId(R.id.profile_user_email)).check(matches(withText("steve@gmail.com")));
     }
+
+    /**
+     * Tests if a profile picture is generated for a user without a profile picture
+     * US 01.03.03 As an entrant I want my profile picture to be deterministically generated from my profile name if I haven't uploaded a profile image yet
+     */
+    @Test
+    public void generateProfilePictureTest() {
+        scenario.getScenario().onActivity(activity -> {
+
+            // get the image view
+            ImageView imageView = activity.findViewById(R.id.profile_image);
+
+            // get the bitmap that has been put in the image view
+            BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+            Bitmap givenProfilePicture = drawable.getBitmap();
+
+            // generate the expected bitmap
+            BitmapHelper helper = new BitmapHelper();
+            Bitmap expectedProfilePicture = helper.generateProfilePicture(user);
+
+            // both bitmaps should be the same
+            assertNotNull(givenProfilePicture);
+            assertNotNull(expectedProfilePicture);
+            assertTrue(givenProfilePicture.sameAs(expectedProfilePicture));
+        });
+    }
+
+
 }
