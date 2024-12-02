@@ -1,22 +1,12 @@
 package com.example.myapplication;
 
-import static org.junit.Assert.assertEquals;
 
-import android.content.Intent;
-import android.widget.TextView;
-
-import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-
 import com.example.myapplication.objects.Event;
 import com.example.myapplication.objects.Facility;
 import com.example.myapplication.objects.UserProfile;
-import com.example.myapplication.ui.registeredevents.ViewScannedEventFragment;
 import com.google.zxing.WriterException;
-
-import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

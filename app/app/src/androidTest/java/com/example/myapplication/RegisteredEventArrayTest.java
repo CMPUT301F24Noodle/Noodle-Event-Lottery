@@ -2,22 +2,17 @@ package com.example.myapplication;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
-
 import com.example.myapplication.database.DBConnection;
 import com.example.myapplication.database.NotificationDB;
 import com.example.myapplication.objects.Event;
@@ -28,26 +23,19 @@ import com.example.myapplication.database.UserDB;
 import com.example.myapplication.database.EventDB;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.zxing.WriterException;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
-import static java.util.regex.Pattern.matches;
-
 /**
  * Author: Sam Lee and Erin-Marie
  * Tests for the RegisteredEventArrayAdapter
