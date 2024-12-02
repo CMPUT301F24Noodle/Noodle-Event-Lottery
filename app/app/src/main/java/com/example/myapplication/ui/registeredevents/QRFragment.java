@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -59,6 +61,25 @@ public class QRFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.qr_scanner, container, false);
+        ImageView cameraView = view.findViewById(R.id.camera_preview);
+        cameraView.setVisibility(View.INVISIBLE); // because we didn't use this and its too late
+
+        Button scanButton = view.findViewById(R.id.scan_qr);
+        scanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Launch the QR scanner
+                ScanOptions options = new ScanOptions();
+                options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
+                options.setPrompt("Scan a QR code");
+                options.setCameraId(0);
+                options.setBeepEnabled(true);
+                options.setBarcodeImageEnabled(true);
+
+                barcodeLauncher.launch(options);
+            }
+        });
 
         // Launch the QR scanner
         ScanOptions options = new ScanOptions();

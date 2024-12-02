@@ -32,7 +32,10 @@ import java.util.Date;
 import java.util.Locale;
 
 
-
+/**
+ * Authors: Xavier Salm
+ * Fragment for editing the details of an event, as well as launching the poster management fragment
+ */
 public class EditEventPosterDetailsFragment  extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int PERMISSION_REQUEST_CODE = 100;
@@ -63,7 +66,7 @@ public class EditEventPosterDetailsFragment  extends Fragment {
             this.connection = main.connection;
             this.currentUserProfile = main.user;
             this.eventDB = main.eventDB;
-            this.event = main.currentEvent; // TODO this SHOULD solve the issue of getting event without bundles.
+            this.event = main.currentEvent;
         }
 
         initializeViews(view);
@@ -87,7 +90,7 @@ public class EditEventPosterDetailsFragment  extends Fragment {
         maxParticipantsEditText = view.findViewById(R.id.max_participants);
         waitingListLimitEditText = view.findViewById(R.id.waiting_list_limit);
 
-        // TODO THIS WASNT USED AT ALL IN ADDEVENTS????
+
         eventTimeHour = view.findViewById(R.id.time_picker_hh);
         eventTimeMinute = view.findViewById(R.id.time_picker_mm);
         eventTimeColon = view.findViewById(R.id.colon);
