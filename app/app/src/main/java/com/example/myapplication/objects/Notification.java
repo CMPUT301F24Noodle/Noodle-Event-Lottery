@@ -61,7 +61,7 @@ public class Notification {
         this.recipients = recipients;
         this.notReadBy = recipients;
         //If the user who sent the message does not have a Name set in their UserProfile, display "<Title> from Event Organizer" instead
-        if (senderUser.getName().equals("Name")){
+        if (senderUser.getName() == null){
             this.sender = "Event Organizer";
         }else {
             this.sender = senderUser.getName();

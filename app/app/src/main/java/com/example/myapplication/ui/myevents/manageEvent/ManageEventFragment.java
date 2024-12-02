@@ -264,6 +264,8 @@ public class ManageEventFragment extends Fragment {
                 eventDB.sendMessageToWinners(event);
                 //remove all of the declined users and notify them
                 removeDeclinedUsers();
+                expandableListAdapter.notifyDataSetChanged();
+
 
                 //print a toast
                 CharSequence text = usersNeeded + " Replacement winners have been selected and notified";
@@ -341,6 +343,8 @@ public class ManageEventFragment extends Fragment {
         //clear all of the declined users
         event.getDeclinedList().clear();
         eventDB.updateEvent(event);
+        eventDB.getEventWinners(event);
+        expandableListAdapter.notifyDataSetChanged();
 
         //send a notification to all of the declined users
         Notification notif = new Notification("Event Status Change", "Since you declined your invitation, you have been removed from " + event.getEventName() + "event.", recipients, event.getOrganizer());

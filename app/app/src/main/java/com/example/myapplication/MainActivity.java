@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 //testCreateNotif();
                 createNewNotifications(); //populate the new notifications to the device notifications
+                updateSidebarForUserType(user);
             }
         });
         // sets the currentUser attribute for MainActivity
@@ -310,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Author: Apoorv
      * This method updates the sidebar to show menus that the user has access to.
-     * @param user the user who's priveledges are being checked.
+     * @param user the user who's privileges are being checked.
      */
     public void updateSidebarForUserType(UserProfile user) {
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -318,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
         MenuItem navORG = menu.findItem(R.id.nav_myevents);
         MenuItem navADM = menu.findItem(R.id.nav_admin);
 
-        navORG.setVisible(user.checkIsOrganizer());
+        navORG.setVisible(true);
         navADM.setVisible(user.getAdmin());
     }
 
