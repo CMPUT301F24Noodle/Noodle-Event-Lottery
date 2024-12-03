@@ -53,9 +53,6 @@ public class MetricsFragment extends Fragment {
 
         metric = new MetricsHelper();
 
-        TextView enteredEvent = view.findViewById(R.id.metric_entered);
-        enteredEvent.setText("Events Currently Entered: "+metric.getNumberOfEnteredEvents(user));
-
         TextView enteredLife = view.findViewById(R.id.metric_entered_life);
         enteredLife.setText("Events Entered (Lifetime): "+metric.getNumberOfLiftimeEvents(user, eventDB));
 

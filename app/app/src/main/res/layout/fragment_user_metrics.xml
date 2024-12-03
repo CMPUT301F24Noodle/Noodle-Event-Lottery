@@ -80,16 +80,6 @@
                 android:paddingBottom="8dp" />
 
             <TextView
-                android:id="@+id/metric_entered"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Events Currently Entered: 0"
-                android:textColor="@color/text_cyan"
-                android:textSize="18dp"
-                android:fontFamily="@font/aleo_medium"
-                android:paddingBottom="8dp" />
-
-            <TextView
                 android:id="@+id/metric_entered_life"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

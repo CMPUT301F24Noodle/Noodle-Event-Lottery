@@ -12,19 +12,6 @@ import java.util.Arrays;
  * Helper class to provide various metrics related to events, users, and their performance.
  */
 public class MetricsHelper {
-
-    /**
-     * Author Apoorv
-     * Returns the number of events the user has entered.
-     * @param user current user
-     * @return the number of events the user has entered
-     */
-    public int getNumberOfEnteredEvents(UserProfile user) {
-        ArrayList<DocumentReference> myEvents = user.getMyEvents();
-        if (myEvents != null) { return myEvents.size();}
-        else { return 0;}
-    }
-
     /**
      * Author Apoorv
      * Returns the total number of events the user has entered in their lifetime.
