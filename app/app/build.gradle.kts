@@ -56,21 +56,21 @@ android {
 
 
 }
-android.applicationVariants.configureEach{ variant ->
-    tasks.register("generateJavadoc", Javadoc::class.java) {
-        // ... other configurations ...
-        val buildDir = layout.buildDirectory
-        //classpath = project.files("C://Users//Erins//AppData//Local//Android//Sdk//platforms//android-34//android.jar")
-        classpath += project.files("$buildDir/intermediates/javac/debug/classes") //
-    // ...
-    }
-}
+//android.applicationVariants.configureEach{ variant ->
+//    tasks.register("generateJavadoc", Javadoc::class.java) {
+//        // ... other configurations ...
+//        val buildDir = layout.buildDirectory
+//        //classpath = project.files("C://Users//Erins//AppData//Local//Android//Sdk//platforms//android-34//android.jar")
+//        classpath += project.files("$buildDir/intermediates/javac/debug/classes") //
+//    // ...
+//    }
+//}
 
 
 
 dependencies {
-
-    implementation(files("C:/Users/Erins/AppData/Local/Android/Sdk/platforms/android-34/android.jar"))
+//
+//    implementation(files("C:/Users/Erins/AppData/Local/Android/Sdk/platforms/android-34/android.jar"))
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation("de.hdodenhof:circleimageview:3.1.0")
