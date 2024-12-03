@@ -76,6 +76,8 @@ public class EditEventFragment extends Fragment {
         eventWaitingListEditText = view.findViewById(R.id.event_waiting_list);
         eventStatusTextView = view.findViewById(R.id.event_status);
         eventRepeatDaysView = view.findViewById(R.id.event_repeat);
+        TextView eventRegPeriod = view.findViewById(R.id.event_registration);
+        eventRegPeriod.setVisibility(View.GONE);
 
         // Initialize Buttons
         editButton = view.findViewById(R.id.edit_event);
