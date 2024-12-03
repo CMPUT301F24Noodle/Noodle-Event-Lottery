@@ -123,6 +123,25 @@ public class ManageEventFragmentTest {
     }
 
     /**
+     *  * US 02.01.02 As an organizer I want to store hash data of the generated QR code in my database
+     *  * US 02.01.01 As an organizer I want to create a new event and generate a unique promotional QR code that links to the event description and event poster in the app
+     * @throws InterruptedException
+     * @throws WriterException
+     */
+    @Test
+    public void TestGenQR() throws InterruptedException, WriterException {
+        Event mockEvent = MockEvent("Test Event 7");
+        onView(withContentDescription("Open navigation drawer")).perform(click());
+        onView(withText("My Organized Events")).perform(click());
+        onView(withText("Test Event 7")).perform(click());
+        onView(withText("Manage Event")).perform(click());
+        onView(withId(R.id.generate_qr)).perform(click());
+
+        // hope and pray
+        onView(withId(R.id.full_QR_image)).check(matches(isDisplayed()));
+    }
+
+    /**
      * Author: Erin-Marie
      *  Test that the list of cancelled entrants is shown on the manage event page
      *  *  US 02.02.01 As an organizer I want to view the list of entrants who joined my event waiting list

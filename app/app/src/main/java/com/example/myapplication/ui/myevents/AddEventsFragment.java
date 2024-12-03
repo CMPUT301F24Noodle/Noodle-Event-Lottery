@@ -26,6 +26,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -382,6 +384,7 @@ public class AddEventsFragment extends Fragment {
         } catch (Exception e) {
             CharSequence sorry = "Event details could not be saved, please try again.";
             Toast.makeText(getContext(), sorry, Toast.LENGTH_SHORT).show();
+            Log.v("Add Event", e.toString() + " " + Arrays.toString(e.getStackTrace()));
             return;
         }
 

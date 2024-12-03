@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -24,6 +25,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * Includes the test for all userstory about creating an event
+ */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class GenerateQRCodeTest {
@@ -77,27 +81,14 @@ public class GenerateQRCodeTest {
     /**
      * US 02.01.02 As an organizer I want to store hash data of the generated QR code in my database
      * US 02.01.01 As an organizer I want to create a new event and generate a unique promotional QR code that links to the event description and event poster in the app
+     * US 02.05.02 As an organizer I want to set the system to sample a specified number of attendees to register for the event
+     * US 02.02.03 As an organizer I want to enable or disable the geolocation requirement for my event.
+     *
      * @throws InterruptedException
      */
     @Test
     public void generateQRCodeTest() throws InterruptedException {
-        // create event
-        onView(withId(R.id.create_event_button)).perform(click());
-
-        onView(withId(R.id.event_name_edit)).perform(ViewActions.typeText("event name"));
-        onView(withId(R.id.event_location_edit)).perform(ViewActions.typeText("event location"));
-        onView(withId(R.id.date_picker_DD)).perform(ViewActions.typeText("1"));
-        onView(withId(R.id.date_picker_MM)).perform(ViewActions.typeText("1"));
-        onView(withId(R.id.date_picker_YY)).perform(ViewActions.typeText("1"));
-        onView(withId(R.id.time_picker_hh)).perform(ViewActions.typeText("1"));
-        onView(withId(R.id.time_picker_mm)).perform(ViewActions.typeText("1"));
-        onView(withId(R.id.waiting_list_limit)).perform(ViewActions.typeText("1"));
-        onView(withId(R.id.contact_num)).perform(ViewActions.typeText("1"));
-        onView(withId(R.id.max_participants)).perform(ViewActions.typeText("10"));
-
-
-
-        onView(withId(R.id.save_button)).perform(ViewActions.scrollTo()).perform(click());
+        makeEvent();
 
         Thread.sleep(5000); // wait for query
 
@@ -126,5 +117,45 @@ public class GenerateQRCodeTest {
         onView(withId(R.id.profile_save_info_button)).perform(click());
     }
 
+    public void makeEvent() throws InterruptedException {
+        // create event
+        onView(withId(R.id.create_event_button)).perform(click());
+        onView(withId(R.id.repeating_event_toggle)).perform(click());
+
+        onView(withId(R.id.event_name_edit)).perform(ViewActions.typeText("TestEventName"));
+        onView(withId(R.id.event_location_edit)).perform(ViewActions.typeText("TestEventLocation"));
+        onView(withId(R.id.date_picker_DD)).perform(ViewActions.typeText("11"));
+        onView(withId(R.id.date_picker_MM)).perform(ViewActions.typeText("11"));
+        onView(withId(R.id.date_picker_YY)).perform(ViewActions.typeText("1111"));
+        onView(withId(R.id.time_picker_hh)).perform(ViewActions.typeText("11"));
+        onView(withId(R.id.time_picker_mm)).perform(ViewActions.typeText("11"));
+
+        onView(withId(R.id.regstart_date_picker_DD)).perform(ViewActions.typeText("11"));
+        onView(withId(R.id.regstart_date_picker_MM)).perform(ViewActions.typeText("11"));
+        onView(withId(R.id.regstart_date_picker_YY)).perform(ViewActions.typeText("1111"));
+
+        onView(withId(R.id.regend_date_picker_DD)).perform(ViewActions.typeText("11"));
+        onView(withId(R.id.regend_date_picker_MM)).perform(ViewActions.typeText("11"));
+        onView(withId(R.id.regend_date_picker_YY)).perform(ViewActions.typeText("1111"));
+
+
+        //US 02.03.01 As an organizer I want to OPTIONALLY limit the number of entrants who can join my waiting list
+        onView(withId(R.id.waiting_list_limit)).perform(ViewActions.typeText("20"));
+
+
+        onView(withId(R.id.contact_num)).perform(ViewActions.typeText("1"));
+
+        //US 02.05.02 As an organizer I want to set the system to sample a specified number of attendees to register for the event
+        onView(withId(R.id.max_participants)).perform(ViewActions.typeText("10"));
+
+        //US 02.02.03 As an organizer I want to enable or disable the geolocation requirement for my event.
+        onView(withId(R.id.geolocation_toggle)).perform(click());
+
+
+
+        onView(withText("Save")).perform(scrollTo()).perform(click());
+
+        Thread.sleep(5000);
+    }
 
 }
