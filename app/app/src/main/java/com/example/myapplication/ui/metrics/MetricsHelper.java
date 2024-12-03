@@ -84,9 +84,17 @@ public class MetricsHelper {
 
         for (Event event : myEvents) {
             ArrayList<DocumentReference> entrantsList = event.getEntrantsList();
+            ArrayList<DocumentReference> winnersList = event.getWinnersList();
+            ArrayList<DocumentReference> declineList = event.getDeclinedList();
 
             if (entrantsList != null) {
                 totalEntrants += entrantsList.size();
+            }
+            if (winnersList != null){
+                totalEntrants += winnersList.size();
+            }
+            if (declineList != null){
+                totalEntrants += declineList.size();
             }
         }
         return totalEntrants;
@@ -126,8 +134,16 @@ public class MetricsHelper {
 
         for (Event event : myEvents) {
             ArrayList<DocumentReference> entrantList = event.getEntrantsList();
+            ArrayList<DocumentReference> winnersList = event.getWinnersList();
+            ArrayList<DocumentReference> declineList = event.getDeclinedList();
             if (entrantList != null) {
                 averageEntrants += entrantList.size();
+            }
+            if (winnersList != null){
+                averageEntrants += winnersList.size();
+            }
+            if (declineList != null){
+                averageEntrants += declineList.size();
             }
         }
         averageEntrants = averageEntrants/events;
@@ -180,7 +196,7 @@ public class MetricsHelper {
                 if (loserList != null) totalDeclines += loserList.size();
 
                 // Calculate the decline rate for this event
-                double eventDeclineRate = (double) totalDeclines / entrantsList.size();
+                double eventDeclineRate = (double) totalDeclines / (entrantsList.size()+totalDeclines);
                 totalDeclineRate += eventDeclineRate;
             }
         }
