@@ -36,7 +36,7 @@ public class OrganizedEventArrayAdapter extends ArrayAdapter<Event> {
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.registered_event_items, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.organizer_event_items, parent, false);
         }
 
         TextView eventName = convertView.findViewById(R.id.eventname_status);
