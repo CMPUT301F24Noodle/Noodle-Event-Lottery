@@ -1,3 +1,5 @@
+
+import com.android.build.gradle.internal.dsl.decorator.SupportedPropertyType.Collection.List.type
 import org.apache.commons.io.filefilter.FalseFileFilter
 import org.gradle.internal.impldep.org.bouncycastle.oer.OERDefinition.optional
 
@@ -34,6 +36,11 @@ android {
             )
         }
     }
+
+
+    buildFeatures{
+        dataBinding = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -46,10 +53,24 @@ android {
         unitTests.isReturnDefaultValues = true
         animationsDisabled = true
     }
+
+
 }
+android.applicationVariants.configureEach{ variant ->
+    tasks.register("generateJavadoc", Javadoc::class.java) {
+        // ... other configurations ...
+        val buildDir = layout.buildDirectory
+        //classpath = project.files("C://Users//Erins//AppData//Local//Android//Sdk//platforms//android-34//android.jar")
+        classpath += project.files("$buildDir/intermediates/javac/debug/classes") //
+    // ...
+    }
+}
+
+
 
 dependencies {
 
+    implementation(files("C:/Users/Erins/AppData/Local/Android/Sdk/platforms/android-34/android.jar"))
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation("de.hdodenhof:circleimageview:3.1.0")
@@ -135,4 +156,8 @@ secrets {
     // "sdk.dir" is ignored by default.
     ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
     ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
+}
+
+fun <T> DomainObjectSet<T>.configureEach(function: T.(Any?) -> Unit) {
+
 }

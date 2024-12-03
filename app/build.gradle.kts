@@ -10,6 +10,8 @@ plugins {
 
 
 
+
+
 buildscript {
     //tried adding this to fix the javadoc error
 //    repositories{
@@ -17,6 +19,7 @@ buildscript {
 //        google()
 //        jcenter()
 //    }
+
     dependencies {
         //tried adding this to fix the javadoc error
 //        classpath(libs.gradle)
